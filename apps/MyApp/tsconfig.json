@@ -3,7 +3,7 @@
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "jsx": "react-native",
+    "jsx": "react-jsx",
     "module": "es2015",
     "moduleResolution": "node",
     "strict": true,
