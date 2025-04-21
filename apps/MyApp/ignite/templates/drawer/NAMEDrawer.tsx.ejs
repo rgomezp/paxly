@@ -1,0 +1,170 @@
+---
+destinationDir: app/drawers
+patch:
+  path: "app/drawers/index.ts"
+  append: "export * from \"./<%= props.subdirectory %><%= props.pascalCaseName %>Drawer\"\n"
+  skip: <%= props.skipIndexFile %>
+---
+import { FC, ReactElement, useCallback, useRef, useState } from "react"
+import { Image, ImageStyle, Platform, View, ViewStyle } from "react-native"
+import { Drawer } from "react-native-drawer-layout"
+import { type ContentStyle } from "@shopify/flash-list"
+import { ListView, ListViewRef, Screen, Text, DrawerIconButton } from "@/components"
+import { TxKeyPath, isRTL, translate } from "@/i18n"
+import type { Theme, ThemedStyle } from "@/theme"
+import { $styles } from "@/theme"
+import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
+import { useAppTheme } from "@/utils/useAppTheme"
+
+interface <%= props.pascalCaseName %>DrawerProps {
+  logo?: any
+  sections: {
+    name: string
+    description: TxKeyPath
+    data: ({ themed, theme }: { themed: any; theme: Theme }) => ReactElement[]
+  }[]
+  renderContent: (props: {
+    themed: any
+    theme: Theme
+    handleScroll: (sectionIndex: number, itemIndex?: number) => void
+  }) => ReactElement
+}
+
+interface MenuItem {
+  name: string
+  useCases: string[]
+}
+
+const WebMenuItem: FC<{
+  item: MenuItem
+  sectionIndex: number
+  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
+  themed: any
+}> = ({ item, sectionIndex, themed }) => {
+  return (
+    <View>
+      <Text preset="bold" style={themed($menuContainer)}>
+        {item.name}
+      </Text>
+      {item.useCases.map((u) => (
+        <Text key={`section${sectionIndex}-${u}`}>{u}</Text>
+      ))}
+    </View>
+  )
+}
+
+const NativeMenuItem: FC<{
+  item: MenuItem
+  sectionIndex: number
+  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
+  themed: any
+}> = ({ item, sectionIndex, handleScroll, themed }) => {
+  return (
+    <View>
+      <Text
+        onPress={() => handleScroll?.(sectionIndex)}
+        preset="bold"
+        style={themed($menuContainer)}
+      >
+        {item.name}
+      </Text>
+      {item.useCases.map((u, index) => (
+        <Text
+          key={`section${sectionIndex}-${u}`}
+          onPress={() => handleScroll?.(sectionIndex, index)}
+        >
+          {u}
+        </Text>
+      ))}
+    </View>
+  )
+}
+
+const MenuItem = Platform.select({
+  web: WebMenuItem,
+  native: NativeMenuItem,
+}) as FC<{
+  item: MenuItem
+  sectionIndex: number
+  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
+  themed: any
+}>
+
+export const <%= props.pascalCaseName %>Drawer: FC<<%= props.pascalCaseName %>DrawerProps> = ({ logo, sections, renderContent }) => {
+  const [open, setOpen] = useState(false)
+  const menuRef = useRef<ListViewRef<MenuItem>>(null)
+  const { themed, theme } = useAppTheme()
+
+  const toggleDrawer = useCallback(() => {
+    setOpen(!open)
+  }, [open])
+
+  const handleScroll = useCallback((sectionIndex: number, _itemIndex = 0) => {
+    // Implement scroll logic here
+  }, [])
+
+  const $drawerInsets = useSafeAreaInsetsStyle(["top"])
+
+  return (
+    <Drawer
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      drawerType="back"
+      drawerPosition={isRTL ? "right" : "left"}
+      renderDrawerContent={() => (
+        <View style={themed([$drawer, $drawerInsets])}>
+          {logo && (
+            <View style={themed($logoContainer)}>
+              <Image source={logo} style={$logoImage} />
+            </View>
+          )}
+          <ListView<MenuItem>
+            ref={menuRef}
+            contentContainerStyle={themed($listContentContainer)}
+            estimatedItemSize={250}
+            data={sections.map((d) => ({
+              name: d.name,
+              useCases: d.data({ theme, themed }).map((u) => translate(u.props.name)),
+            }))}
+            keyExtractor={(item) => item.name}
+            renderItem={({ item, index: sectionIndex }) => (
+              <MenuItem {...{ item, sectionIndex, handleScroll, themed }} />
+            )}
+          />
+        </View>
+      )}
+    >
+      <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.flex1}>
+        <DrawerIconButton onPress={toggleDrawer} />
+        {renderContent({ themed, theme, handleScroll })}
+      </Screen>
+    </Drawer>
+  )
+}
+
+const $drawer: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.background,
+  flex: 1,
+})
+
+const $listContentContainer: ThemedStyle<ContentStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.lg,
+})
+
+const $logoImage: ImageStyle = {
+  height: 42,
+  width: 77,
+}
+
+const $logoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  alignSelf: "flex-start",
+  justifyContent: "center",
+  height: 56,
+  paddingHorizontal: spacing.lg,
+})
+
+const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingBottom: spacing.xs,
+  paddingTop: spacing.lg,
+})
