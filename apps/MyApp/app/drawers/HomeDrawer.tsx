@@ -1,10 +1,3 @@
----
-destinationDir: app/drawers
-patch:
-  path: "app/drawers/index.ts"
-  append: "export * from \"./<%= props.subdirectory %><%= props.pascalCaseName %>Drawer\"\n"
-  skip: <%= props.skipIndexFile %>
----
 import { FC, ReactElement, useCallback, useRef, useState } from "react"
 import { Image, ImageStyle, Platform, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
@@ -16,7 +9,7 @@ import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-interface <%= props.pascalCaseName %>DrawerProps {
+interface HomeDrawerProps {
   logo?: any
   sections: {
     name: string
@@ -90,7 +83,7 @@ const MenuItem = Platform.select({
   themed: any
 }>
 
-export const <%= props.pascalCaseName %>Drawer: FC<<%= props.pascalCaseName %>DrawerProps> = ({ logo, sections, renderContent }) => {
+export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent }) => {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<ListViewRef<MenuItem>>(null)
   const { themed, theme } = useAppTheme()
