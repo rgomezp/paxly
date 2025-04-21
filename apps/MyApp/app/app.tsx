@@ -24,16 +24,13 @@ import { useEffect, useState } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
-import { useInitialRootStore } from "./models"
-import { AppNavigator, useNavigationPersistence } from "./navigators"
+import { useInitialRootStore } from "./state/helpers/useStores"
+import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import Config from "./config"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { loadDateFnsLocale } from "./utils/formatDate"
-
-export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -62,12 +59,6 @@ const config = {
  * @returns {JSX.Element} The rendered `App` component.
  */
 export function App() {
-  const {
-    initialNavigationState,
-    onNavigationStateChange,
-    isRestored: isNavigationStateRestored,
-  } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
-
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
   const [isI18nInitialized, setIsI18nInitialized] = useState(false)
 
@@ -91,12 +82,7 @@ export function App() {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (
-    !rehydrated ||
-    !isNavigationStateRestored ||
-    !isI18nInitialized ||
-    (!areFontsLoaded && !fontLoadError)
-  ) {
+  if (!rehydrated || !isI18nInitialized || (!areFontsLoaded && !fontLoadError)) {
     return null
   }
 
@@ -110,11 +96,7 @@ export function App() {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <KeyboardProvider>
-          <AppNavigator
-            linking={linking}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
+          <AppNavigator linking={linking} />
         </KeyboardProvider>
       </ErrorBoundary>
     </SafeAreaProvider>

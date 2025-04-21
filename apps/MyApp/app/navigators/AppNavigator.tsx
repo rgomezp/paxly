@@ -9,7 +9,6 @@ import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navig
 import { observer } from "mobx-react-lite"
 import * as Screens from "@/screens"
 import Config from "../config"
-import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
@@ -52,10 +51,6 @@ const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
   const {
-    authenticationStore: { isAuthenticated },
-  } = useStores()
-
-  const {
     theme: { colors },
   } = useAppTheme()
 
@@ -68,19 +63,13 @@ const AppStack = observer(function AppStack() {
           backgroundColor: colors.background,
         },
       }}
-      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
+      initialRouteName={"Welcome"}
     >
-      {isAuthenticated ? (
-        <>
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
+      <>
+        <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
 
-          <Stack.Screen name="Demo" component={DemoNavigator} />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Login" component={Screens.LoginScreen} />
-        </>
-      )}
+        <Stack.Screen name="Demo" component={DemoNavigator} />
+      </>
 
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}

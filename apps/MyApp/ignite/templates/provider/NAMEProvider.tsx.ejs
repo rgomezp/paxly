@@ -1,0 +1,39 @@
+---
+destinationDir: app/providers
+patch:
+  path: "app/providers/index.ts"
+  append: "export * from \"./<%= props.subdirectory %><%= props.pascalCaseName %>Provider\"\n"
+  skip: <%= props.skipIndexFile %>
+---
+
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+
+type <%= props.pascalCaseName %>ContextType = {}
+
+export interface <%= props.pascalCaseName %>ProviderProps {
+  children: ReactNode
+}
+
+const <%= props.pascalCaseName %>Context = createContext<
+  <%= props.pascalCaseName %>ContextType | undefined
+>(undefined)
+
+export const <%= props.pascalCaseName %>Provider = observer(function <%= props.pascalCaseName %>Provider(props: <%= props.pascalCaseName %>ProviderProps) {
+
+  useEffect(() => {}, []);
+
+  return (
+    <%= props.pascalCaseName %>Context.Provider value={}>
+      {props.children}
+    </%= props.pascalCaseName %>Context.Provider>
+  )
+})
+
+export const use<%= props.pascalCaseName %> = () => {
+  const context = useContext(<%= props.pascalCaseName %>Context)
+  if (!context) {
+    throw new Error("use<%= props.pascalCaseName %> must be used within a <%= props.pascalCaseName %>Provider")
+  }
+  return context
+}

@@ -3,7 +3,6 @@ import { FC } from "react"
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Text, Screen } from "@/components"
 import { isRTL } from "@/i18n"
-import { useStores } from "../models"
 import { AppStackScreenProps } from "../navigators"
 import { $styles, type ThemedStyle } from "@/theme"
 import { useHeader } from "../utils/useHeader"
@@ -19,9 +18,6 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   const { themed, theme } = useAppTheme()
 
   const { navigation } = _props
-  const {
-    authenticationStore: { logout },
-  } = useStores()
 
   function goNext() {
     navigation.navigate("Demo", { screen: "DemoShowroom", params: {} })
@@ -30,9 +26,8 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   useHeader(
     {
       rightTx: "common:logOut",
-      onRightPress: logout,
     },
-    [logout],
+    [],
   )
 
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])

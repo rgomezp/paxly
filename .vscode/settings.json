@@ -3,5 +3,9 @@
     {
       "pattern": "apps/*/"
     }
-  ]
-} 
+  ],
+  "files.associations": {
+    "*.ejs": "html"
+  },
+  "html.validate.styles": false
+}
