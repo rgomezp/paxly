@@ -93,3 +93,5 @@ web-build/
 
 app/ios/
 app/android/
+
+googleServices/

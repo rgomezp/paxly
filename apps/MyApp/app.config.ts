@@ -12,11 +12,81 @@ require("ts-node/register")
  * You can read more about Expo's Configuration Resolution Rules here:
  * https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
  */
-module.exports = ({ config }: ConfigContext): Partial<ExpoConfig> => {
+export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
   const existingPlugins = config.plugins ?? []
 
   return {
-    ...config,
-    plugins: [...existingPlugins, require("./plugins/withSplashScreen").withSplashScreen],
+    name: "MyApp",
+    slug: "MyApp",
+    scheme: "myapp",
+    owner: "honeywolf",
+    version: "1.0.0",
+    orientation: "portrait",
+    userInterfaceStyle: "automatic",
+    icon: "./assets/images/app-icon-all.png",
+    updates: {
+      fallbackToCacheTimeout: 0,
+    },
+    newArchEnabled: false,
+    jsEngine: "hermes",
+    assetBundlePatterns: ["**/*"],
+    android: {
+      icon: "./assets/images/app-icon-android-legacy.png",
+      package: "com.honeywolf.myapp",
+      adaptiveIcon: {
+        foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
+        backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
+      },
+      allowBackup: false,
+    },
+    ios: {
+      icon: "./assets/images/app-icon-ios.png",
+      supportsTablet: true,
+      bundleIdentifier: "com.honeywolf.myapp",
+      config: {
+        usesNonExemptEncryption: false,
+      },
+      usesAppleSignIn: true,
+      infoPlist: {
+        NSLocationWhenInUseUsageDescription:
+          "This app needs access to your location to send push notifications.",
+      },
+      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
+    },
+    extra: {
+      eas: {
+        projectId: "bc2c5c21-b7da-4a11-8072-32564adf1d10",
+      },
+    },
+    web: {
+      favicon: "./assets/images/app-icon-web-favicon.png",
+      bundler: "metro",
+    },
+    plugins: [
+      "expo-localization",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/app-icon-android-adaptive-foreground.png",
+          imageWidth: 300,
+          resizeMode: "contain",
+          backgroundColor: "#191015",
+        },
+      ],
+      [
+        "expo-build-properties",
+        {
+          ios: {
+            useFrameworks: "static",
+          },
+        },
+      ],
+      ...existingPlugins,
+      require("./plugins/withSplashScreen").withSplashScreen,
+    ],
+    experiments: {
+      tsconfigPaths: true,
+    },
   }
 }
