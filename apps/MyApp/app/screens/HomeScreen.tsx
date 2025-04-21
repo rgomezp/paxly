@@ -1,8 +1,11 @@
 import { FC } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
+import { View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { Screen, Text } from "@/components"
+import { Text } from "@/components"
+import { HomeDrawer } from "../drawers/HomeDrawer"
+import { TxKeyPath } from "@/i18n"
+import type { Theme } from "@/theme"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -14,13 +17,59 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
+
+  const sections = [
+    {
+      name: "Getting Started",
+      description: "homeScreen.gettingStarted" as TxKeyPath,
+      data: ({ themed, theme }: { themed: any; theme: Theme }) => [
+        <Text key="welcome" text="Welcome" style={themed({ color: theme.colors.text })} />,
+        <Text key="setup" text="Setup" style={themed({ color: theme.colors.text })} />,
+      ],
+    },
+    {
+      name: "Features",
+      description: "homeScreen.features" as TxKeyPath,
+      data: ({ themed, theme }: { themed: any; theme: Theme }) => [
+        <Text key="drawer" text="Drawer Navigation" style={themed({ color: theme.colors.text })} />,
+        <Text key="theming" text="Theming" style={themed({ color: theme.colors.text })} />,
+      ],
+    },
+  ]
+
   return (
-    <Screen style={$root} preset="scroll">
-      <Text text="home" />
-    </Screen>
+    <HomeDrawer
+      sections={sections}
+      renderContent={({
+        themed,
+        theme,
+        handleScroll,
+      }: {
+        themed: any
+        theme: Theme
+        handleScroll: (sectionIndex: number, itemIndex?: number) => void
+      }) => (
+        <View style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
+          <Text
+            text="Welcome to Potion Forge"
+            preset="heading"
+            style={themed({ color: theme.colors.text })}
+            onPress={() => handleScroll(0)}
+          />
+          <Text
+            text="Select an option from the drawer menu to get started"
+            style={themed({ color: theme.colors.text })}
+            onPress={() => handleScroll(1)}
+          />
+        </View>
+      )}
+    />
   )
 })
 
-const $root: ViewStyle = {
+const $contentContainer: ViewStyle = {
   flex: 1,
+  padding: 20,
+  alignItems: "center",
+  justifyContent: "center",
 }
