@@ -90,3 +90,6 @@ web-build/
 
 # Yarn
 .yarn/*
+
+app/ios/
+app/android/

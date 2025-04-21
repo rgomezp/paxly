@@ -9,11 +9,11 @@ import { ArgType } from "reactotron-core-client"
 import { mst } from "reactotron-mst"
 import mmkvPlugin from "reactotron-react-native-mmkv"
 
-import { storage, clear } from "@/utils/storage"
 import { goBack, resetRoot, navigate } from "@/navigators/navigationUtilities"
 
 import { Reactotron } from "./ReactotronClient"
 import { ReactotronReactNative } from "reactotron-react-native"
+import { MMKV } from "react-native-mmkv"
 
 const reactotron = Reactotron.configure({
   name: require("../../package.json").name,
@@ -30,6 +30,7 @@ reactotron.use(
   }),
 )
 
+const storage = new MMKV()
 reactotron.use(mmkvPlugin<ReactotronReactNative>({ storage }))
 
 if (Platform.OS !== "web") {
@@ -67,7 +68,7 @@ reactotron.onCustomCommand({
   command: "resetStore",
   handler: () => {
     Reactotron.log("resetting store")
-    clear()
+    storage.clearAll()
   },
 })
 
