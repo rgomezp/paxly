@@ -1,0 +1,17 @@
+{
+  "name": "@potionforge/root",
+  "private": true,
+  "version": "0.0.1",
+  "workspaces": {
+    "packages": [
+      "apps/*"
+    ]
+  },
+  "scripts": {
+    "clean": "yarn workspaces run clean"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
