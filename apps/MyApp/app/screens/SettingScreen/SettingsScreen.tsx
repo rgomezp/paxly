@@ -5,6 +5,9 @@ import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
+import { IAppSettingsBinaryConfig, IAppSettingsModalConfig } from "@/models/IAppSettingsConfig"
+import SettingRow from "./components/SettingRow"
+import CenteredView from "@/components/CenteredView"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -16,6 +19,28 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
+
+  const settings: (IAppSettingsBinaryConfig | IAppSettingsModalConfig)[] = [
+    {
+      title: "Test",
+      iconName: "search",
+      iconType: "font-awesome",
+      getValue: () => "Test Value",
+      toggleBinarySetting: () => {},
+    },
+    {
+      title: "Test Modal",
+      iconName: "search",
+      iconType: "font-awesome",
+      getValue: () => "Test Modal",
+      modalContent: (
+        <CenteredView>
+          <Text>Test</Text>
+        </CenteredView>
+      ),
+    },
+  ]
+
   return (
     <Screen style={$root} preset="scroll">
       <Text
@@ -23,6 +48,9 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
         preset="heading"
         style={$heading}
       />
+      {settings.map((setting) => (
+        <SettingRow key={setting.title} config={setting} value={setting.getValue()} />
+      ))}
     </Screen>
   )
 })
