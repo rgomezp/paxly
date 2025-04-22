@@ -157,11 +157,12 @@ export function EmptyState(props: EmptyStateProps) {
       {isButtonPresent && (
         <Button
           onPress={buttonOnPress}
-          text={button}
           textStyle={$buttonTextStyleOverride}
           {...ButtonProps}
           style={$buttonStyles}
-        />
+        >
+          {button}
+        </Button>
       )}
     </View>
   )
