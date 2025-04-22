@@ -1,6 +1,6 @@
 import { ViewStyle, View } from "react-native"
 import Modal from "react-native-modal"
-import ModalBaseScene from "./ModalBaseScene"
+import { useAppTheme } from "@/utils/useAppTheme"
 
 interface BottomModalProps {
   children: React.ReactNode
@@ -8,22 +8,21 @@ interface BottomModalProps {
   onClose?: () => void
 }
 
-export default class BottomModal extends ModalBaseScene<BottomModalProps> {
-  renderModal(): React.ReactElement<any> {
-    const { children, visible, onClose } = this.props
-    return (
-      <Modal
-        testID={"modal"}
-        isVisible={visible}
-        onBackdropPress={onClose}
-        onSwipeComplete={onClose}
-        swipeDirection={["down"]}
-        style={$view}
-      >
-        <View style={$content}>{children}</View>
-      </Modal>
-    )
-  }
+export default function BottomModal({ children, visible, onClose }: BottomModalProps) {
+  const { theme } = useAppTheme()
+
+  return (
+    <Modal
+      testID={"modal"}
+      isVisible={visible}
+      onBackdropPress={onClose}
+      onSwipeComplete={onClose}
+      swipeDirection={["down"]}
+      style={$view}
+    >
+      <View style={[$content, { backgroundColor: theme.colors.background }]}>{children}</View>
+    </Modal>
+  )
 }
 
 const $view: ViewStyle = {
