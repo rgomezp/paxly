@@ -9,12 +9,18 @@ import { FC, ReactElement, useCallback, useRef, useState } from "react"
 import { Image, ImageStyle, Platform, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
-import { ListView, ListViewRef, Screen, Text, DrawerIconButton } from "@/components"
+import { ListView, ListViewRef, Screen, Text, DrawerIconButton, MenuItem } from "@/components"
 import type { Theme, ThemedStyle } from "@/theme"
 import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
+/**
+ * Props interface for the <%= props.pascalCaseName %>Drawer component.
+ * @property {any} logo - Optional logo image to display in the drawer
+ * @property {Array} sections - Array of sections to display in the drawer menu
+ * @property {Function} renderContent - Function to render the main content of the screen
+ */
 interface <%= props.pascalCaseName %>DrawerProps {
   logo?: any
   sections: {
@@ -25,19 +31,31 @@ interface <%= props.pascalCaseName %>DrawerProps {
   renderContent: (props: {
     themed: any
     theme: Theme
-    handleScroll: (sectionIndex: number, itemIndex?: number) => void
   }) => ReactElement
 }
 
+/**
+ * Interface representing a menu item in the drawer.
+ * @property {string} name - The name/title of the menu section
+ * @property {Array} useCases - Array of use cases/items within the menu section
+ */
 interface MenuItem {
   name: string
-  useCases: { text: string; key: string }[]
+  useCases: { text: string; key: string; route: string; params?: any }[]
 }
 
+/**
+ * Web-specific implementation of the menu item component.
+ * This version is simpler as it doesn't need to handle touch interactions.
+ * Use this component when rendering menu items in a web environment.
+ *
+ * @param {MenuItem} item - The menu item data to display
+ * @param {number} sectionIndex - The index of the current section
+ * @param {any} themed - The themed styling function
+ */
 const WebMenuItem: FC<{
   item: MenuItem
   sectionIndex: number
-  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
   themed: any
 }> = ({ item, sectionIndex, themed }) => {
   return (
@@ -46,46 +64,62 @@ const WebMenuItem: FC<{
         {item.name}
       </Text>
       {item.useCases.map((u) => (
-        <Text key={`section${sectionIndex}-${u.key}`}>{u.text}</Text>
+        <MenuItem
+          key={`section${sectionIndex}-${u.key}`}
+          text={u.text}
+          route={u.route as any}
+          params={u.params}
+        />
       ))}
     </View>
   )
 }
 
+/**
+ * Native-specific implementation of the menu item component.
+ * This version includes touch interactions (onPress handlers) for both
+ * the section header and individual items.
+ * Use this component when rendering menu items in a native mobile environment.
+ *
+ * @param {MenuItem} item - The menu item data to display
+ * @param {number} sectionIndex - The index of the current section
+ * @param {any} themed - The themed styling function
+ */
 const NativeMenuItem: FC<{
   item: MenuItem
   sectionIndex: number
-  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
   themed: any
-}> = ({ item, sectionIndex, handleScroll, themed }) => {
+}> = ({ item, sectionIndex, themed }) => {
   return (
     <View>
       <Text
-        onPress={() => handleScroll?.(sectionIndex)}
         preset="bold"
         style={themed($menuContainer)}
       >
         {item.name}
       </Text>
-      {item.useCases.map((u, index) => (
-        <Text
+      {item.useCases.map((u) => (
+        <MenuItem
           key={`section${sectionIndex}-${u.key}`}
-          onPress={() => handleScroll?.(sectionIndex, index)}
-        >
-          {u.text}
-        </Text>
+          text={u.text}
+          route={u.route as any}
+          params={u.params}
+        />
       ))}
     </View>
   )
 }
 
-const MenuItem = Platform.select({
+/**
+ * Platform-specific menu item component that adapts to web or native environments.
+ * Uses WebMenuItem for web platform and NativeMenuItem for native platforms.
+ */
+const PlatformMenuItem = Platform.select({
   web: WebMenuItem,
   native: NativeMenuItem,
 }) as FC<{
   item: MenuItem
   sectionIndex: number
-  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
   themed: any
 }>
 
@@ -97,10 +131,6 @@ export const <%= props.pascalCaseName %>Drawer: FC<<%= props.pascalCaseName %>Dr
   const toggleDrawer = useCallback(() => {
     setOpen(!open)
   }, [open])
-
-  const handleScroll = useCallback((sectionIndex: number, _itemIndex = 0) => {
-    // Implement scroll logic here
-  }, [])
 
   const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
@@ -127,11 +157,13 @@ export const <%= props.pascalCaseName %>Drawer: FC<<%= props.pascalCaseName %>Dr
               useCases: d.data({ theme, themed }).map((u) => ({
                 text: u.props.text as string,
                 key: u.key as string,
+                route: u.props.route as string,
+                params: u.props.params,
               })),
             }))}
             keyExtractor={(item) => item.name}
             renderItem={({ item, index: sectionIndex }) => (
-              <MenuItem {...{ item, sectionIndex, handleScroll, themed }} />
+              <PlatformMenuItem {...{ item, sectionIndex, themed }} />
             )}
           />
         </View>
@@ -142,7 +174,7 @@ export const <%= props.pascalCaseName %>Drawer: FC<<%= props.pascalCaseName %>Dr
           <View style={$styles.flex1} />
           <DrawerIconButton onPress={toggleDrawer} />
         </View>
-        {renderContent({ themed, theme, handleScroll })}
+        {renderContent({ themed, theme })}
       </Screen>
     </Drawer>
   )
