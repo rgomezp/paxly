@@ -34,6 +34,7 @@ export type AppStackParamList = {
   Home: undefined
   MyTab: undefined
   Settings: undefined
+  TabNavigator: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -100,9 +101,9 @@ const AppStack = observer(function AppStack() {
           backgroundColor: colors.background,
         },
       }}
-      initialRouteName={"Home"}
+      initialRouteName="TabNavigator"
     >
-      <Stack.Screen name="Home" component={TabNavigator} />
+      <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
     </Stack.Navigator>
   )
