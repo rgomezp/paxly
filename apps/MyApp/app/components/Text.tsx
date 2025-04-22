@@ -51,7 +51,6 @@ export const Text = forwardRef(function Text(props: TextProps, ref: ForwardedRef
 
   const preset: Presets = props.preset ?? "default"
   const $styles: StyleProp<TextStyle> = [
-    $rtlStyle,
     themed($presets[preset]),
     weight && $fontWeightStyles[weight],
     size && $sizeStyles[size],
@@ -99,4 +98,3 @@ const $presets: Record<Presets, ThemedStyleArray<TextStyle>> = {
   formLabel: [$baseStyle, { ...$fontWeightStyles.medium }],
   formHelper: [$baseStyle, { ...$sizeStyles.sm, ...$fontWeightStyles.normal }],
 }
-const $rtlStyle: TextStyle = { writingDirection: "rtl" }

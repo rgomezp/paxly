@@ -5,6 +5,8 @@ import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
+import Language from "@/internationalization/Language"
+import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -22,7 +24,11 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       name: "Getting Started",
       description: "homeScreen.gettingStarted",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
-        <Text key="welcome" text="Welcome" style={themed({ color: theme.colors.text })} />,
+        <Text
+          key="welcome"
+          text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
+          style={themed({ color: theme.colors.text })}
+        />,
         <Text key="setup" text="Setup" style={themed({ color: theme.colors.text })} />,
       ],
     },
@@ -50,13 +56,13 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       }) => (
         <View style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
           <Text
-            text="Welcome to Potion Forge"
+            text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
             preset="heading"
             style={themed({ color: theme.colors.text })}
             onPress={() => handleScroll(0)}
           />
           <Text
-            text="Select an option from the drawer menu to get started"
+            text={(LANGUAGE_COPY.homeScreen as any).selectOption[Language.current]}
             style={themed({ color: theme.colors.text })}
             onPress={() => handleScroll(1)}
           />
