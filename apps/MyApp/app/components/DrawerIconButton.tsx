@@ -1,7 +1,6 @@
 import { Pressable, PressableProps, ViewStyle, Platform } from "react-native"
 import Animated, { interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated"
 import { useDrawerProgress } from "react-native-drawer-layout"
-import { isRTL } from "@/i18n"
 import { useAppTheme } from "@/utils/useAppTheme"
 
 interface DrawerIconButtonProps extends PressableProps {}
@@ -22,7 +21,7 @@ export function DrawerIconButton(props: DrawerIconButtonProps) {
   } = useAppTheme()
 
   const animatedContainerStyles = useAnimatedStyle(() => {
-    const translateX = interpolate(progress.value, [0, 1], [0, isRTL ? 60 : -60])
+    const translateX = interpolate(progress.value, [0, 1], [0, -60])
 
     return {
       transform: [{ translateX }],
@@ -32,15 +31,14 @@ export function DrawerIconButton(props: DrawerIconButtonProps) {
   const animatedTopBarStyles = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(progress.value, [0, 1], [colors.text, colors.tint])
     const marginStart = interpolate(progress.value, [0, 1], [0, -11.5])
-    const rotate = interpolate(progress.value, [0, 1], [0, isRTL ? 45 : -45])
+    const rotate = interpolate(progress.value, [0, 1], [0, -45])
     const marginBottom = interpolate(progress.value, [0, 1], [0, -2])
     const width = interpolate(progress.value, [0, 1], [18, 12])
-    const marginHorizontal =
-      isWeb && isRTL
-        ? { marginRight: marginStart }
-        : {
-            marginLeft: marginStart,
-          }
+    const marginHorizontal = isWeb
+      ? { marginRight: marginStart }
+      : {
+          marginLeft: marginStart,
+        }
 
     return {
       ...marginHorizontal,
@@ -65,14 +63,13 @@ export function DrawerIconButton(props: DrawerIconButtonProps) {
     const marginTop = interpolate(progress.value, [0, 1], [4, 2])
     const backgroundColor = interpolateColor(progress.value, [0, 1], [colors.text, colors.tint])
     const marginStart = interpolate(progress.value, [0, 1], [0, -11.5])
-    const rotate = interpolate(progress.value, [0, 1], [0, isRTL ? -45 : 45])
+    const rotate = interpolate(progress.value, [0, 1], [0, -45])
     const width = interpolate(progress.value, [0, 1], [18, 12])
-    const marginHorizontal =
-      isWeb && isRTL
-        ? { marginRight: marginStart }
-        : {
-            marginLeft: marginStart,
-          }
+    const marginHorizontal = isWeb
+      ? { marginRight: marginStart }
+      : {
+          marginLeft: marginStart,
+        }
 
     return {
       ...marginHorizontal,

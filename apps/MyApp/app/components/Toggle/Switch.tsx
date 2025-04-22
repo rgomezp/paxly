@@ -12,7 +12,6 @@ import {
 
 import { $styles } from "@/theme"
 import { iconRegistry } from "@/components/Icon"
-import { isRTL } from "@/i18n"
 import { $inputOuterBase, BaseToggleInputProps, Toggle, ToggleProps } from "./Toggle"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -123,7 +122,6 @@ function SwitchInput(props: SwitchInputProps) {
     }
   })()
 
-  const rtlAdjustment = isRTL ? -1 : 1
   const $themedSwitchInner = useMemo(() => themed([$styles.toggleInner, $switchInner]), [themed])
 
   const offsetLeft = ($innerStyleOverride?.paddingStart ||
@@ -140,10 +138,8 @@ function SwitchInput(props: SwitchInputProps) {
 
   const outputRange =
     Platform.OS === "web"
-      ? isRTL
-        ? [+(knobWidth || 0) + offsetRight, offsetLeft]
-        : [offsetLeft, +(knobWidth || 0) + offsetRight]
-      : [rtlAdjustment * offsetLeft, rtlAdjustment * (+(knobWidth || 0) + offsetRight)]
+      ? [+(knobWidth || 0) + offsetRight, offsetLeft]
+      : [offsetLeft, +(knobWidth || 0) + offsetRight]
 
   const $animatedSwitchKnob = animate.current.interpolate({
     inputRange: [0, 1],
