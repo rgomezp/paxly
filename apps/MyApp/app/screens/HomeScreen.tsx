@@ -45,26 +45,16 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   return (
     <HomeDrawer
       sections={sections}
-      renderContent={({
-        themed,
-        theme,
-        handleScroll,
-      }: {
-        themed: any
-        theme: Theme
-        handleScroll: (sectionIndex: number, itemIndex?: number) => void
-      }) => (
+      renderContent={({ themed, theme }: { themed: any; theme: Theme }) => (
         <View style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
           <Text
             text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
             preset="heading"
             style={themed({ color: theme.colors.text })}
-            onPress={() => handleScroll(0)}
           />
           <Text
             text={(LANGUAGE_COPY.homeScreen as any).selectOption[Language.current]}
             style={themed({ color: theme.colors.text })}
-            onPress={() => handleScroll(1)}
           />
         </View>
       )}
