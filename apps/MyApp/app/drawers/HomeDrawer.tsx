@@ -131,7 +131,10 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
       )}
     >
       <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.flex1}>
-        <DrawerIconButton onPress={toggleDrawer} />
+        <View style={themed($headerContainer)}>
+          <View style={$styles.flex1} />
+          <DrawerIconButton onPress={toggleDrawer} />
+        </View>
         {renderContent({ themed, theme, handleScroll })}
       </Screen>
     </Drawer>
@@ -162,4 +165,10 @@ const $logoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingBottom: spacing.xs,
   paddingTop: spacing.lg,
+})
+
+const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  paddingHorizontal: spacing.md,
+  paddingVertical: spacing.sm,
 })
