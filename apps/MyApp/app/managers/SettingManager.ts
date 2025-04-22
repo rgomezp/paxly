@@ -1,5 +1,5 @@
 import { ganon } from "@/services/ganon/ganon"
-import ITheme from "@/models/ITheme"
+import ITheme from "@/types/ITheme"
 
 type SettingMapping = {
   theme: ITheme

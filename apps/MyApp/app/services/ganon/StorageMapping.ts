@@ -1,4 +1,4 @@
-import IUser from "@/models/IUser"
+import IUser from "@/types/IUser"
 import { ModelSnapshotType } from "mobx-state-tree"
 
 interface StorageStaticMapping {
