@@ -4,7 +4,6 @@ import { View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
-import { TxKeyPath } from "@/i18n"
 import type { Theme } from "@/theme"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
@@ -21,7 +20,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   const sections = [
     {
       name: "Getting Started",
-      description: "homeScreen.gettingStarted" as TxKeyPath,
+      description: "homeScreen.gettingStarted",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
         <Text key="welcome" text="Welcome" style={themed({ color: theme.colors.text })} />,
         <Text key="setup" text="Setup" style={themed({ color: theme.colors.text })} />,
@@ -29,7 +28,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
     },
     {
       name: "Features",
-      description: "homeScreen.features" as TxKeyPath,
+      description: "homeScreen.features",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
         <Text key="drawer" text="Drawer Navigation" style={themed({ color: theme.colors.text })} />,
         <Text key="theming" text="Theming" style={themed({ color: theme.colors.text })} />,

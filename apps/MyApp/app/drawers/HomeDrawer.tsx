@@ -3,7 +3,6 @@ import { Image, ImageStyle, Platform, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
 import { ListView, ListViewRef, Screen, Text, DrawerIconButton } from "@/components"
-import { TxKeyPath, isRTL } from "@/i18n"
 import type { Theme, ThemedStyle } from "@/theme"
 import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
@@ -13,7 +12,7 @@ interface HomeDrawerProps {
   logo?: any
   sections: {
     name: string
-    description: TxKeyPath
+    description: string
     data: ({ themed, theme }: { themed: any; theme: Theme }) => ReactElement[]
   }[]
   renderContent: (props: {
@@ -104,7 +103,7 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       drawerType="back"
-      drawerPosition={isRTL ? "right" : "left"}
+      drawerPosition="right"
       renderDrawerContent={() => (
         <View style={themed([$drawer, $drawerInsets])}>
           {logo && (

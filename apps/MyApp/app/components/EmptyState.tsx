@@ -4,7 +4,6 @@ import { Button, ButtonProps } from "./Button"
 import { Text, TextProps } from "./Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import { translate } from "@/i18n/translate"
 
 const sadFace = require("../../assets/images/sad-face.png")
 
@@ -34,15 +33,6 @@ interface EmptyStateProps {
    */
   heading?: TextProps["text"]
   /**
-   * Heading text which is looked up via i18n.
-   */
-  headingTx?: TextProps["tx"]
-  /**
-   * Optional heading options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  headingTxOptions?: TextProps["txOptions"]
-  /**
    * Style overrides for heading text.
    */
   headingStyle?: StyleProp<TextStyle>
@@ -55,15 +45,6 @@ interface EmptyStateProps {
    */
   content?: TextProps["text"]
   /**
-   * Content text which is looked up via i18n.
-   */
-  contentTx?: TextProps["tx"]
-  /**
-   * Optional content options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  contentTxOptions?: TextProps["txOptions"]
-  /**
    * Style overrides for content text.
    */
   contentStyle?: StyleProp<TextStyle>
@@ -75,15 +56,6 @@ interface EmptyStateProps {
    * The button text to display if not using `buttonTx`.
    */
   button?: TextProps["text"]
-  /**
-   * Button text which is looked up via i18n.
-   */
-  buttonTx?: TextProps["tx"]
-  /**
-   * Optional button options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  buttonTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for button.
    */
@@ -102,13 +74,6 @@ interface EmptyStateProps {
   ButtonProps?: ButtonProps
 }
 
-interface EmptyStatePresetItem {
-  imageSource: ImageProps["source"]
-  heading: TextProps["text"]
-  content: TextProps["text"]
-  button: TextProps["text"]
-}
-
 /**
  * A component to use when there is no data to display. It can be utilized to direct the user what to do next.
  * @see [Documentation and Examples]{@link https://docs.infinite.red/ignite-cli/boilerplate/app/components/EmptyState/}
@@ -122,29 +87,12 @@ export function EmptyState(props: EmptyStateProps) {
     theme: { spacing },
   } = useAppTheme()
 
-  const EmptyStatePresets = {
-    generic: {
-      imageSource: sadFace,
-      heading: translate("emptyStateComponent:generic.heading"),
-      content: translate("emptyStateComponent:generic.content"),
-      button: translate("emptyStateComponent:generic.button"),
-    } as EmptyStatePresetItem,
-  } as const
-
-  const preset = EmptyStatePresets[props.preset ?? "generic"]
-
   const {
-    button = preset.button,
-    buttonTx,
+    button,
     buttonOnPress,
-    buttonTxOptions,
-    content = preset.content,
-    contentTx,
-    contentTxOptions,
-    heading = preset.heading,
-    headingTx,
-    headingTxOptions,
-    imageSource = preset.imageSource,
+    content,
+    heading,
+    imageSource,
     style: $containerStyleOverride,
     buttonStyle: $buttonStyleOverride,
     buttonTextStyle: $buttonTextStyleOverride,
@@ -158,9 +106,9 @@ export function EmptyState(props: EmptyStateProps) {
   } = props
 
   const isImagePresent = !!imageSource
-  const isHeadingPresent = !!(heading || headingTx)
-  const isContentPresent = !!(content || contentTx)
-  const isButtonPresent = !!(button || buttonTx)
+  const isHeadingPresent = !!heading
+  const isContentPresent = !!content
+  const isButtonPresent = !!button
 
   const $containerStyles = [$containerStyleOverride]
   const $imageStyles = [
@@ -191,9 +139,9 @@ export function EmptyState(props: EmptyStateProps) {
 
   return (
     <View style={$containerStyles}>
-      {isImagePresent && (
+      {(isImagePresent || heading || content || button) && (
         <Image
-          source={imageSource}
+          source={imageSource || sadFace}
           {...ImageProps}
           style={$imageStyles}
           tintColor={theme.isDark ? theme.colors.palette.neutral900 : undefined}
@@ -201,32 +149,15 @@ export function EmptyState(props: EmptyStateProps) {
       )}
 
       {isHeadingPresent && (
-        <Text
-          preset="subheading"
-          text={heading}
-          tx={headingTx}
-          txOptions={headingTxOptions}
-          {...HeadingTextProps}
-          style={$headingStyles}
-        />
+        <Text preset="subheading" text={heading} {...HeadingTextProps} style={$headingStyles} />
       )}
 
-      {isContentPresent && (
-        <Text
-          text={content}
-          tx={contentTx}
-          txOptions={contentTxOptions}
-          {...ContentTextProps}
-          style={$contentStyles}
-        />
-      )}
+      {isContentPresent && <Text text={content} {...ContentTextProps} style={$contentStyles} />}
 
       {isButtonPresent && (
         <Button
           onPress={buttonOnPress}
           text={button}
-          tx={buttonTx}
-          txOptions={buttonTxOptions}
           textStyle={$buttonTextStyleOverride}
           {...ButtonProps}
           style={$buttonStyles}
