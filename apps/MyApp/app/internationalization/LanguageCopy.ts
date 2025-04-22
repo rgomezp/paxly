@@ -27,6 +27,13 @@ const LANGUAGE_COPY: LanguageCopy = {
       de: "Wählen Sie eine Option aus dem Menü des Kastens, um loszulegen",
     },
   },
+  words: {
+    settings: {
+      en: "Settings",
+      es: "Configuración",
+      de: "Einstellungen",
+    },
+  },
 }
 
 export default LANGUAGE_COPY

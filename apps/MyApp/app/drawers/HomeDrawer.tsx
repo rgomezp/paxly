@@ -19,7 +19,6 @@ interface HomeDrawerProps {
   logo?: any
   sections: {
     name: string
-    description: string
     data: ({ themed, theme }: { themed: any; theme: Theme }) => ReactElement[]
   }[]
   renderContent: (props: { themed: any; theme: Theme }) => ReactElement

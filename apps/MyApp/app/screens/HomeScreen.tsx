@@ -22,38 +22,30 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
   const sections = [
     {
-      name: "Getting Started",
-      description: "homeScreen.gettingStarted",
+      name: "Welcome",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
         <MenuItem
-          key="welcome"
-          text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
+          key="settings"
+          text={(LANGUAGE_COPY.words as any).settings[Language.current]}
           style={themed({ color: theme.colors.text })}
-          route="Welcome"
-        />,
-        <MenuItem
-          key="setup"
-          text="Setup"
-          style={themed({ color: theme.colors.text })}
-          route="Login"
+          route="Settings"
         />,
       ],
     },
     {
       name: "Features",
-      description: "homeScreen.features",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
         <MenuItem
           key="drawer"
           text="Drawer Navigation"
           style={themed({ color: theme.colors.text })}
-          route="Home"
+          route="MyTab"
         />,
         <MenuItem
           key="theming"
           text="Theming"
           style={themed({ color: theme.colors.text })}
-          route="Home"
+          route="MyTab"
         />,
       ],
     },
