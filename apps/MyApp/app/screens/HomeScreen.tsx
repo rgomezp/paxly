@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle } from "react-native"
+import { ScrollView, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
@@ -63,17 +63,19 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
     <HomeDrawer
       sections={sections}
       renderContent={({ themed, theme }: { themed: any; theme: Theme }) => (
-        <View style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
-          <Text
-            text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
-            preset="heading"
-            style={themed({ color: theme.colors.text })}
-          />
-          <Text
-            text={(LANGUAGE_COPY.homeScreen as any).selectOption[Language.current]}
-            style={themed({ color: theme.colors.text })}
-          />
-        </View>
+        <ScrollView>
+          <View style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
+            <Text
+              text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
+              preset="heading"
+              style={themed({ color: theme.colors.text })}
+            />
+            <Text
+              text={(LANGUAGE_COPY.homeScreen as any).selectOption[Language.current]}
+              style={themed({ color: theme.colors.text })}
+            />
+          </View>
+        </ScrollView>
       )}
     />
   )
