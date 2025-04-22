@@ -7,6 +7,7 @@ import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
+import { MenuItem } from "@/components/MenuItem"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -24,20 +25,36 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       name: "Getting Started",
       description: "homeScreen.gettingStarted",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
-        <Text
+        <MenuItem
           key="welcome"
           text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
           style={themed({ color: theme.colors.text })}
+          route="Welcome"
         />,
-        <Text key="setup" text="Setup" style={themed({ color: theme.colors.text })} />,
+        <MenuItem
+          key="setup"
+          text="Setup"
+          style={themed({ color: theme.colors.text })}
+          route="Login"
+        />,
       ],
     },
     {
       name: "Features",
       description: "homeScreen.features",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
-        <Text key="drawer" text="Drawer Navigation" style={themed({ color: theme.colors.text })} />,
-        <Text key="theming" text="Theming" style={themed({ color: theme.colors.text })} />,
+        <MenuItem
+          key="drawer"
+          text="Drawer Navigation"
+          style={themed({ color: theme.colors.text })}
+          route="Home"
+        />,
+        <MenuItem
+          key="theming"
+          text="Theming"
+          style={themed({ color: theme.colors.text })}
+          route="Home"
+        />,
       ],
     },
   ]
@@ -64,7 +81,5 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
 const $contentContainer: ViewStyle = {
   flex: 1,
-  padding: 20,
-  alignItems: "center",
-  justifyContent: "center",
+  padding: 16,
 }

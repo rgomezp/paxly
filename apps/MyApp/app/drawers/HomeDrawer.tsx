@@ -7,6 +7,7 @@ import type { Theme, ThemedStyle } from "@/theme"
 import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { MenuItem } from "@/components/MenuItem"
 
 /**
  * Props interface for the HomeDrawer component.
@@ -21,11 +22,7 @@ interface HomeDrawerProps {
     description: string
     data: ({ themed, theme }: { themed: any; theme: Theme }) => ReactElement[]
   }[]
-  renderContent: (props: {
-    themed: any
-    theme: Theme
-    handleScroll: (sectionIndex: number, itemIndex?: number) => void
-  }) => ReactElement
+  renderContent: (props: { themed: any; theme: Theme }) => ReactElement
 }
 
 /**
@@ -35,7 +32,7 @@ interface HomeDrawerProps {
  */
 interface MenuItem {
   name: string
-  useCases: { text: string; key: string }[]
+  useCases: { text: string; key: string; route: string; params?: any }[]
 }
 
 /**
@@ -50,7 +47,6 @@ interface MenuItem {
 const WebMenuItem: FC<{
   item: MenuItem
   sectionIndex: number
-  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
   themed: any
 }> = ({ item, sectionIndex, themed }) => {
   return (
@@ -59,7 +55,12 @@ const WebMenuItem: FC<{
         {item.name}
       </Text>
       {item.useCases.map((u) => (
-        <Text key={`section${sectionIndex}-${u.key}`}>{u.text}</Text>
+        <MenuItem
+          key={`section${sectionIndex}-${u.key}`}
+          text={u.text}
+          route={u.route as any}
+          params={u.params}
+        />
       ))}
     </View>
   )
@@ -73,31 +74,25 @@ const WebMenuItem: FC<{
  *
  * @param {MenuItem} item - The menu item data to display
  * @param {number} sectionIndex - The index of the current section
- * @param {Function} handleScroll - Optional function to handle scrolling when items are pressed
  * @param {any} themed - The themed styling function
  */
 const NativeMenuItem: FC<{
   item: MenuItem
   sectionIndex: number
-  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
   themed: any
-}> = ({ item, sectionIndex, handleScroll, themed }) => {
+}> = ({ item, sectionIndex, themed }) => {
   return (
     <View>
-      <Text
-        onPress={() => handleScroll?.(sectionIndex)}
-        preset="bold"
-        style={themed($menuContainer)}
-      >
+      <Text preset="bold" style={themed($menuContainer)}>
         {item.name}
       </Text>
-      {item.useCases.map((u, index) => (
-        <Text
+      {item.useCases.map((u) => (
+        <MenuItem
           key={`section${sectionIndex}-${u.key}`}
-          onPress={() => handleScroll?.(sectionIndex, index)}
-        >
-          {u.text}
-        </Text>
+          text={u.text}
+          route={u.route as any}
+          params={u.params}
+        />
       ))}
     </View>
   )
@@ -113,7 +108,6 @@ const PlatformMenuItem = Platform.select({
 }) as FC<{
   item: MenuItem
   sectionIndex: number
-  handleScroll?: (sectionIndex: number, itemIndex?: number) => void
   themed: any
 }>
 
@@ -125,10 +119,6 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
   const toggleDrawer = useCallback(() => {
     setOpen(!open)
   }, [open])
-
-  const handleScroll = useCallback((sectionIndex: number, _itemIndex = 0) => {
-    // Implement scroll logic here
-  }, [])
 
   const $drawerInsets = useSafeAreaInsetsStyle(["top"])
 
@@ -155,11 +145,13 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
               useCases: d.data({ theme, themed }).map((u) => ({
                 text: u.props.text as string,
                 key: u.key as string,
+                route: u.props.route as string,
+                params: u.props.params,
               })),
             }))}
             keyExtractor={(item) => item.name}
             renderItem={({ item, index: sectionIndex }) => (
-              <PlatformMenuItem {...{ item, sectionIndex, handleScroll, themed }} />
+              <PlatformMenuItem {...{ item, sectionIndex, themed }} />
             )}
           />
         </View>
@@ -170,7 +162,7 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
           <View style={$styles.flex1} />
           <DrawerIconButton onPress={toggleDrawer} />
         </View>
-        {renderContent({ themed, theme, handleScroll })}
+        {renderContent({ themed, theme })}
       </Screen>
     </Drawer>
   )
