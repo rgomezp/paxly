@@ -246,7 +246,7 @@ export function Screen(props: ScreenProps) {
     backgroundColor,
     KeyboardAvoidingViewProps,
     keyboardOffset = 0,
-    safeAreaEdges,
+    safeAreaEdges = ["top", "bottom", "left", "right"],
     StatusBarProps,
     statusBarStyle,
   } = props

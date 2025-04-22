@@ -30,7 +30,7 @@ interface HomeDrawerProps {
  * @property {string} name - The name/title of the menu section
  * @property {Array} useCases - Array of use cases/items within the menu section
  */
-interface MenuItem {
+interface DrawerMenuItem {
   name: string
   useCases: { text: string; key: string; route: string; params?: any }[]
 }
@@ -40,12 +40,12 @@ interface MenuItem {
  * This version is simpler as it doesn't need to handle touch interactions.
  * Use this component when rendering menu items in a web environment.
  *
- * @param {MenuItem} item - The menu item data to display
+ * @param {DrawerMenuItem} item - The menu item data to display
  * @param {number} sectionIndex - The index of the current section
  * @param {any} themed - The themed styling function
  */
 const WebMenuItem: FC<{
-  item: MenuItem
+  item: DrawerMenuItem
   sectionIndex: number
   themed: any
 }> = ({ item, sectionIndex, themed }) => {
@@ -72,12 +72,12 @@ const WebMenuItem: FC<{
  * the section header and individual items.
  * Use this component when rendering menu items in a native mobile environment.
  *
- * @param {MenuItem} item - The menu item data to display
+ * @param {DrawerMenuItem} item - The menu item data to display
  * @param {number} sectionIndex - The index of the current section
  * @param {any} themed - The themed styling function
  */
 const NativeMenuItem: FC<{
-  item: MenuItem
+  item: DrawerMenuItem
   sectionIndex: number
   themed: any
 }> = ({ item, sectionIndex, themed }) => {
@@ -106,14 +106,14 @@ const PlatformMenuItem = Platform.select({
   web: WebMenuItem,
   native: NativeMenuItem,
 }) as FC<{
-  item: MenuItem
+  item: DrawerMenuItem
   sectionIndex: number
   themed: any
 }>
 
 export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent }) => {
   const [open, setOpen] = useState(false)
-  const menuRef = useRef<ListViewRef<MenuItem>>(null)
+  const menuRef = useRef<ListViewRef<DrawerMenuItem>>(null)
   const { themed, theme } = useAppTheme()
 
   const toggleDrawer = useCallback(() => {
@@ -136,7 +136,7 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
               <Image source={logo} style={$logoImage} />
             </View>
           )}
-          <ListView<MenuItem>
+          <ListView<DrawerMenuItem>
             ref={menuRef}
             contentContainerStyle={themed($listContentContainer)}
             estimatedItemSize={250}

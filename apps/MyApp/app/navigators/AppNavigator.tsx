@@ -6,6 +6,7 @@
  */
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { observer } from "mobx-react-lite"
 import * as Screens from "@/screens"
 import Config from "../config"
@@ -31,6 +32,7 @@ export type AppStackParamList = {
   Login: undefined
   // 🔥 Your screens go here
   Home: undefined
+  MyTab: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -47,6 +49,41 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<AppStackParamList>()
+const Tab = createBottomTabNavigator<AppStackParamList>()
+
+const TabNavigator = observer(function TabNavigator() {
+  const {
+    theme: { colors },
+  } = useAppTheme()
+
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: colors.background,
+        },
+        tabBarActiveTintColor: colors.tint,
+        tabBarInactiveTintColor: colors.text,
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Screens.HomeScreen}
+        options={{
+          tabBarLabel: "Home",
+        }}
+      />
+      <Tab.Screen
+        name="MyTab"
+        component={Screens.MyTabScreen}
+        options={{
+          tabBarLabel: "My Tab",
+        }}
+      />
+    </Tab.Navigator>
+  )
+})
 
 const AppStack = observer(function AppStack() {
   const {
@@ -64,9 +101,7 @@ const AppStack = observer(function AppStack() {
       }}
       initialRouteName={"Home"}
     >
-      <>
-        <Stack.Screen name="Home" component={Screens.HomeScreen} />
-      </>
+      <Stack.Screen name="Home" component={TabNavigator} />
     </Stack.Navigator>
   )
 })
