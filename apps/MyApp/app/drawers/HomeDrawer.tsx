@@ -8,6 +8,12 @@ import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
+/**
+ * Props interface for the HomeDrawer component.
+ * @property {any} logo - Optional logo image to display in the drawer
+ * @property {Array} sections - Array of sections to display in the drawer menu
+ * @property {Function} renderContent - Function to render the main content of the screen
+ */
 interface HomeDrawerProps {
   logo?: any
   sections: {
@@ -22,11 +28,25 @@ interface HomeDrawerProps {
   }) => ReactElement
 }
 
+/**
+ * Interface representing a menu item in the drawer.
+ * @property {string} name - The name/title of the menu section
+ * @property {Array} useCases - Array of use cases/items within the menu section
+ */
 interface MenuItem {
   name: string
   useCases: { text: string; key: string }[]
 }
 
+/**
+ * Web-specific implementation of the menu item component.
+ * This version is simpler as it doesn't need to handle touch interactions.
+ * Use this component when rendering menu items in a web environment.
+ *
+ * @param {MenuItem} item - The menu item data to display
+ * @param {number} sectionIndex - The index of the current section
+ * @param {any} themed - The themed styling function
+ */
 const WebMenuItem: FC<{
   item: MenuItem
   sectionIndex: number
@@ -45,6 +65,17 @@ const WebMenuItem: FC<{
   )
 }
 
+/**
+ * Native-specific implementation of the menu item component.
+ * This version includes touch interactions (onPress handlers) for both
+ * the section header and individual items.
+ * Use this component when rendering menu items in a native mobile environment.
+ *
+ * @param {MenuItem} item - The menu item data to display
+ * @param {number} sectionIndex - The index of the current section
+ * @param {Function} handleScroll - Optional function to handle scrolling when items are pressed
+ * @param {any} themed - The themed styling function
+ */
 const NativeMenuItem: FC<{
   item: MenuItem
   sectionIndex: number
@@ -72,7 +103,11 @@ const NativeMenuItem: FC<{
   )
 }
 
-const MenuItem = Platform.select({
+/**
+ * Platform-specific menu item component that adapts to web or native environments.
+ * Uses WebMenuItem for web platform and NativeMenuItem for native platforms.
+ */
+const PlatformMenuItem = Platform.select({
   web: WebMenuItem,
   native: NativeMenuItem,
 }) as FC<{
@@ -124,7 +159,7 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
             }))}
             keyExtractor={(item) => item.name}
             renderItem={({ item, index: sectionIndex }) => (
-              <MenuItem {...{ item, sectionIndex, handleScroll, themed }} />
+              <PlatformMenuItem {...{ item, sectionIndex, handleScroll, themed }} />
             )}
           />
         </View>
@@ -141,20 +176,36 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
   )
 }
 
+/**
+ * Styled object for the drawer container.
+ * Sets the background color and flex properties for the drawer.
+ */
 const $drawer: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.background,
   flex: 1,
 })
 
+/**
+ * Styled object for the list content container.
+ * Adds horizontal padding to the list items.
+ */
 const $listContentContainer: ThemedStyle<ContentStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.lg,
 })
 
+/**
+ * Styled object for the logo image.
+ * Defines the dimensions of the logo image.
+ */
 const $logoImage: ImageStyle = {
   height: 42,
   width: 77,
 }
 
+/**
+ * Styled object for the logo container.
+ * Positions and sizes the container for the logo.
+ */
 const $logoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   alignSelf: "flex-start",
   justifyContent: "center",
@@ -162,11 +213,19 @@ const $logoContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.lg,
 })
 
+/**
+ * Styled object for the menu container.
+ * Adds vertical padding to menu items.
+ */
 const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingBottom: spacing.xs,
   paddingTop: spacing.lg,
 })
 
+/**
+ * Styled object for the header container.
+ * Defines the layout and spacing of the header section.
+ */
 const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   paddingHorizontal: spacing.md,
