@@ -14,6 +14,10 @@ export interface IAppSettingsModalConfig extends IAppSettingsConfigBase {
   onPress?: () => void
 }
 
+export interface IAppSettingsThemeConfig extends IAppSettingsConfigBase {
+  toggleTheme: () => void
+}
+
 // predicates
 export const isBinaryConfig = (config: IAppSettingsConfig): config is IAppSettingsBinaryConfig => {
   return (config as IAppSettingsBinaryConfig).toggleBinarySetting !== undefined
@@ -23,6 +27,10 @@ export const isModalConfig = (config: IAppSettingsConfig): config is IAppSetting
   return (config as IAppSettingsModalConfig).modalContent !== undefined
 }
 
-type IAppSettingsConfig = IAppSettingsBinaryConfig | IAppSettingsModalConfig
+export const isThemeConfig = (config: IAppSettingsConfig): config is IAppSettingsThemeConfig => {
+  return (config as IAppSettingsThemeConfig).toggleTheme !== undefined
+}
+
+type IAppSettingsConfig = IAppSettingsBinaryConfig | IAppSettingsModalConfig | IAppSettingsThemeConfig
 
 export default IAppSettingsConfig
