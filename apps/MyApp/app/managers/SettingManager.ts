@@ -1,16 +1,12 @@
 import { ganon } from "@/services/ganon/ganon"
-import ITheme from "@/types/ITheme"
-
-type SettingMapping = {
-  theme: ITheme
-}
+import StorageMapping from "@/services/ganon/StorageMapping"
 
 export default class SettingManager {
-  static saveSetting<K extends keyof SettingMapping>(key: K, value: SettingMapping[K]) {
-    ganon.set(`setting:${key}`, value)
+  static saveSetting<K extends keyof StorageMapping>(key: K, value: StorageMapping[K]) {
+    ganon.set(key, value)
   }
 
-  static getSetting<K extends keyof SettingMapping>(key: K): SettingMapping[K] | undefined {
-    return ganon.get(`setting:${key}`)
+  static getSetting<K extends keyof StorageMapping>(key: K): StorageMapping[K] | undefined {
+    return ganon.get(key)
   }
 }

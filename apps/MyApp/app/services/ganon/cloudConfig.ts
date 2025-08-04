@@ -6,6 +6,9 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   user: {
     docKeys: ["user"],
   },
+  settings: {
+    docKeys: ["theme"],
+  },
 }
 
 export default CLOUD_BACKUP_CONFIG
