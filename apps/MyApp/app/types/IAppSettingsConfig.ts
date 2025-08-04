@@ -31,6 +31,9 @@ export const isThemeConfig = (config: IAppSettingsConfig): config is IAppSetting
   return (config as IAppSettingsThemeConfig).toggleTheme !== undefined
 }
 
-type IAppSettingsConfig = IAppSettingsBinaryConfig | IAppSettingsModalConfig | IAppSettingsThemeConfig
+type IAppSettingsConfig =
+  | IAppSettingsBinaryConfig
+  | IAppSettingsModalConfig
+  | IAppSettingsThemeConfig
 
 export default IAppSettingsConfig

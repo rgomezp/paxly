@@ -58,4 +58,4 @@ export const useTestModalSettingConfig = (): IAppSettingsModalConfig => {
     getValue: () => "Test Modal",
     modalContent: null, // Simplified for now
   }
-} 
+}
