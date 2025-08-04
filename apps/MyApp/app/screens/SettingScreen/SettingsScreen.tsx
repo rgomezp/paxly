@@ -5,48 +5,29 @@ import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
-import { IAppSettingsBinaryConfig, IAppSettingsModalConfig } from "@/types/IAppSettingsConfig"
 import SettingRow from "./components/SettingRow"
-import CenteredView from "@/components/CenteredView"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "@/models"
+import { useThemeSettingConfig, useTestSettingConfig, useTestModalSettingConfig } from "./configs"
+import { useAppTheme } from "@/utils/useAppTheme"
+import type { ThemedStyle } from "@/theme"
 
 interface SettingsScreenProps extends AppStackScreenProps<"Settings"> {}
 
 export const SettingsScreen: FC<SettingsScreenProps> = observer(function SettingsScreen() {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+  const { themed } = useAppTheme()
 
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
+  // Get setting configurations
+  const themeSetting = useThemeSettingConfig()
+  const testSetting = useTestSettingConfig()
+  const testModalSetting = useTestModalSettingConfig()
 
-  const settings: (IAppSettingsBinaryConfig | IAppSettingsModalConfig)[] = [
-    {
-      title: "Test",
-      iconName: "search",
-      iconType: "font-awesome",
-      getValue: () => "Test Value",
-      toggleBinarySetting: () => {},
-    },
-    {
-      title: "Test Modal",
-      iconName: "search",
-      iconType: "font-awesome",
-      getValue: () => "Test Modal",
-      modalContent: (
-        <CenteredView>
-          <Text>Test</Text>
-        </CenteredView>
-      ),
-    },
-  ]
+  const settings = [themeSetting, testSetting, testModalSetting]
 
   return (
-    <Screen style={$root} preset="scroll">
+    <Screen style={themed($root)} preset="scroll">
       <Text
         text={(LANGUAGE_COPY.words as any).settings[Language.current]}
         preset="heading"
-        style={$heading}
+        style={themed($heading)}
       />
       {settings.map((setting) => (
         <SettingRow key={setting.title} config={setting} value={setting.getValue()} />
@@ -55,11 +36,13 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   )
 })
 
-const $root: ViewStyle = {
+const $root: ThemedStyle<ViewStyle> = (theme) => ({
   flex: 1,
   padding: 16,
-}
+  backgroundColor: theme.colors.background,
+})
 
-const $heading: TextStyle = {
+const $heading: ThemedStyle<TextStyle> = (theme) => ({
   marginTop: 16,
-}
+  color: theme.colors.text,
+})
