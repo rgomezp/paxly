@@ -1,19 +1,23 @@
-import { isBinaryConfig, isModalConfig } from "@/types/IAppSettingsConfig"
+import { isBinaryConfig, isModalConfig, isThemeConfig } from "@/types/IAppSettingsConfig"
 import { IAppSettingsModalConfig } from "@/types/IAppSettingsConfig"
 import { IAppSettingsBinaryConfig } from "@/types/IAppSettingsConfig"
+import { IAppSettingsThemeConfig } from "@/types/IAppSettingsConfig"
 import { useState } from "react"
 import { TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { Text } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import BottomModal from "@/components/modals/BottomModal"
+import { useAppTheme } from "@/utils/useAppTheme"
+import type { ThemedStyle } from "@/theme"
 
 interface SettingRowProps {
-  config: IAppSettingsBinaryConfig | IAppSettingsModalConfig
+  config: IAppSettingsBinaryConfig | IAppSettingsModalConfig | IAppSettingsThemeConfig
   value: string
 }
 
 const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
   const [isModalVisible, setModalVisible] = useState(false)
+  const { themed } = useAppTheme()
 
   const handlePress = () => {
     if (isModalConfig(config) && config.onPress) {
@@ -23,6 +27,8 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
 
     if (isBinaryConfig(config)) {
       config.toggleBinarySetting(value === "Off")
+    } else if (isThemeConfig(config)) {
+      config.toggleTheme()
     } else {
       setModalVisible(true)
     }
@@ -30,10 +36,14 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
 
   return (
     <>
-      <TouchableOpacity style={$container} onPress={handlePress}>
-        <ThemedFontAwesome5Icon name={config.iconName} type={config.iconType} style={$icon} />
-        <Text style={$title}>{config.title}</Text>
-        <Text style={$value}>{value}</Text>
+      <TouchableOpacity style={themed($container)} onPress={handlePress}>
+        <ThemedFontAwesome5Icon
+          name={config.iconName}
+          type={config.iconType}
+          style={themed($icon)}
+        />
+        <Text style={themed($title)}>{config.title}</Text>
+        <Text style={themed($value)}>{value}</Text>
       </TouchableOpacity>
       {isModalConfig(config) && !config.onPress && (
         <BottomModal visible={isModalVisible} onClose={() => setModalVisible(false)}>
@@ -46,26 +56,29 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
 
 export default SettingRow
 
-const $container: ViewStyle = {
+const $container: ThemedStyle<ViewStyle> = (theme) => ({
   flexDirection: "row",
   alignItems: "center",
   paddingVertical: 15,
   paddingHorizontal: 20,
   borderBottomWidth: 1,
-  borderBottomColor: "#333",
-}
+  borderBottomColor: theme.colors.border,
+  backgroundColor: theme.colors.background,
+})
 
-const $icon: TextStyle = {
+const $icon: ThemedStyle<TextStyle> = (theme) => ({
   marginRight: 10,
-}
+  color: theme.colors.text,
+})
 
-const $title: TextStyle = {
+const $title: ThemedStyle<TextStyle> = (theme) => ({
   flex: 1,
   fontSize: 16,
+  color: theme.colors.text,
   backgroundColor: "transparent",
-}
+})
 
-const $value: TextStyle = {
+const $value: ThemedStyle<TextStyle> = (theme) => ({
   fontSize: 16,
-  color: "grey",
-}
+  color: theme.colors.textDim,
+})
