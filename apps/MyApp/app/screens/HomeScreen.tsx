@@ -25,6 +25,12 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       name: "Welcome",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
         <MenuItem
+          key="login"
+          text={(LANGUAGE_COPY.homeScreen as any).loginCreateAccount[Language.current]}
+          style={themed({ color: theme.colors.text })}
+          route="Login"
+        />,
+        <MenuItem
           key="settings"
           text={(LANGUAGE_COPY.words as any).settings[Language.current]}
           style={themed({ color: theme.colors.text })}

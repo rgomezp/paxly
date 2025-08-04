@@ -35,7 +35,12 @@ export type AppStackParamList = {
   MyTab: undefined
   Settings: undefined
   TabNavigator: undefined
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Login: undefined
+	Login: undefined
+	Login: undefined
+	Login: undefined
+	Login: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -105,6 +110,7 @@ const AppStack = observer(function AppStack() {
     >
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
+      <Stack.Screen name="Login" component={Screens.LoginScreen} />
     </Stack.Navigator>
   )
 })
