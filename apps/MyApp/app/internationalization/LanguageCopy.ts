@@ -14,6 +14,12 @@ const LANGUAGE_COPY: ILanguageCopy = {
       de: "Wählen Sie eine Option aus dem Menü des Kastens, um loszulegen",
       fr: "Sélectionnez une option dans le menu latéral pour commencer",
     },
+    loginCreateAccount: {
+      en: "Login / Create Account",
+      es: "Iniciar sesión / Crear cuenta",
+      de: "Anmelden / Konto erstellen",
+      fr: "Se connecter / Créer un compte",
+    },
   },
   words: {
     settings: {

@@ -10,19 +10,21 @@ type IAlertCopy = {
   button: ITranslation
 }
 
-type LanguageCopyValue = ITranslation | IAlertCopy | { [key: string]: LanguageCopyValue }
-
 interface ILanguageCopy {
   homeScreen: {
-    welcome: LanguageCopyValue
-    selectOption: LanguageCopyValue
+    welcome: ITranslation
+    selectOption: ITranslation
+    loginCreateAccount: ITranslation
   }
   words: {
-    settings: LanguageCopyValue
-    theme: LanguageCopyValue
-    light: LanguageCopyValue
-    dark: LanguageCopyValue
-    system: LanguageCopyValue
+    settings: ITranslation
+    theme: ITranslation
+    light: ITranslation
+    dark: ITranslation
+    system: ITranslation
+  }
+  alerts: {
+    error: IAlertCopy
   }
 }
 
