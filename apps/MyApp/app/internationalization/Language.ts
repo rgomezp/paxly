@@ -1,4 +1,4 @@
-export type SupportedLanguages = "en" | "es" | "de"
+export type SupportedLanguages = "en" | "es" | "de" | "fr"
 
 export default class Language {
   static readonly DEFAULT_LANGUAGE = "en"
