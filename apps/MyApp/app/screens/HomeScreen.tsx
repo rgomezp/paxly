@@ -7,7 +7,7 @@ import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
-import { MenuItem } from "@/components/MenuItem"
+import { getHomeScreenSections } from "./HomeScreenSections"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -20,42 +20,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   // Pull in navigation via hook
   // const navigation = useNavigation()
 
-  const sections = [
-    {
-      name: "Welcome",
-      data: ({ themed, theme }: { themed: any; theme: Theme }) => [
-        <MenuItem
-          key="login"
-          text={(LANGUAGE_COPY.homeScreen as any).loginCreateAccount[Language.current]}
-          style={themed({ color: theme.colors.text })}
-          route="Login"
-        />,
-        <MenuItem
-          key="settings"
-          text={(LANGUAGE_COPY.words as any).settings[Language.current]}
-          style={themed({ color: theme.colors.text })}
-          route="Settings"
-        />,
-      ],
-    },
-    {
-      name: "Features",
-      data: ({ themed, theme }: { themed: any; theme: Theme }) => [
-        <MenuItem
-          key="drawer"
-          text="Drawer Navigation"
-          style={themed({ color: theme.colors.text })}
-          route="MyTab"
-        />,
-        <MenuItem
-          key="theming"
-          text="Theming"
-          style={themed({ color: theme.colors.text })}
-          route="MyTab"
-        />,
-      ],
-    },
-  ]
+  const sections = getHomeScreenSections()
 
   return (
     <HomeDrawer
@@ -64,12 +29,12 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
         <ScrollView>
           <View style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
             <Text
-              text={(LANGUAGE_COPY.homeScreen as any).welcome[Language.current]}
+              text={LANGUAGE_COPY.homeScreen.welcome[Language.current]}
               preset="heading"
               style={themed({ color: theme.colors.text })}
             />
             <Text
-              text={(LANGUAGE_COPY.homeScreen as any).selectOption[Language.current]}
+              text={LANGUAGE_COPY.homeScreen.selectOption[Language.current]}
               style={themed({ color: theme.colors.text })}
             />
           </View>
