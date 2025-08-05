@@ -65,13 +65,6 @@ const $button: ThemedStyle<any> = () => ({
   justifyContent: "center",
   alignItems: "center",
   elevation: 2,
-  shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
-  },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
 })
 
 const $content: ThemedStyle<any> = () => ({
