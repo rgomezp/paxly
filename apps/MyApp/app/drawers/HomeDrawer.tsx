@@ -2,12 +2,19 @@ import { FC, ReactElement, useCallback, useRef, useState } from "react"
 import { Image, ImageStyle, Platform, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
-import { ListView, ListViewRef, Screen, Text, DrawerIconButton } from "@/components"
+import {
+  ListView,
+  ListViewRef,
+  Screen,
+  Text,
+  DrawerIconButton,
+  MenuItem,
+  ExternalLinkItem,
+} from "@/components"
 import type { Theme, ThemedStyle } from "@/theme"
 import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { MenuItem } from "@/components/MenuItem"
 
 /**
  * Props interface for the HomeDrawer component.
@@ -31,7 +38,7 @@ interface HomeDrawerProps {
  */
 interface DrawerMenuItem {
   name: string
-  useCases: { text: string; key: string; route: string; params?: any }[]
+  useCases: { text: string; key: string; route?: string; url?: string; params?: any }[]
 }
 
 /**
@@ -53,14 +60,22 @@ const WebMenuItem: FC<{
       <Text preset="bold" style={themed($menuContainer)}>
         {item.name}
       </Text>
-      {item.useCases.map((u) => (
-        <MenuItem
-          key={`section${sectionIndex}-${u.key}`}
-          text={u.text}
-          route={u.route as any}
-          params={u.params}
-        />
-      ))}
+      {item.useCases.map((u) => {
+        if (u.url) {
+          return (
+            <ExternalLinkItem key={`section${sectionIndex}-${u.key}`} text={u.text} url={u.url} />
+          )
+        } else {
+          return (
+            <MenuItem
+              key={`section${sectionIndex}-${u.key}`}
+              text={u.text}
+              route={u.route as any}
+              params={u.params}
+            />
+          )
+        }
+      })}
     </View>
   )
 }
@@ -85,14 +100,22 @@ const NativeMenuItem: FC<{
       <Text preset="bold" style={themed($menuContainer)}>
         {item.name}
       </Text>
-      {item.useCases.map((u) => (
-        <MenuItem
-          key={`section${sectionIndex}-${u.key}`}
-          text={u.text}
-          route={u.route as any}
-          params={u.params}
-        />
-      ))}
+      {item.useCases.map((u) => {
+        if (u.url) {
+          return (
+            <ExternalLinkItem key={`section${sectionIndex}-${u.key}`} text={u.text} url={u.url} />
+          )
+        } else {
+          return (
+            <MenuItem
+              key={`section${sectionIndex}-${u.key}`}
+              text={u.text}
+              route={u.route as any}
+              params={u.params}
+            />
+          )
+        }
+      })}
     </View>
   )
 }
@@ -144,7 +167,8 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
               useCases: d.data({ theme, themed }).map((u) => ({
                 text: u.props.text as string,
                 key: u.key as string,
-                route: u.props.route as string,
+                route: u.props.route as string | undefined,
+                url: u.props.url as string | undefined,
                 params: u.props.params,
               })),
             }))}
