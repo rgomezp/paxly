@@ -5,15 +5,29 @@
 import { type Locale } from "date-fns/locale"
 import { format } from "date-fns/format"
 import { parseISO } from "date-fns/parseISO"
-import i18n from "i18next"
+import Language from "@/internationalization/Language"
 
 type Options = Parameters<typeof format>[2]
 
 let dateFnsLocale: Locale
 export const loadDateFnsLocale = () => {
-  const primaryTag = i18n.language.split("-")[0]
-  switch (primaryTag) {
-    case "en":
+  // Map app languages to date-fns locales
+  const languageToLocaleMap: Record<string, string> = {
+    en: "en-US",
+    es: "es",
+    de: "de",
+    fr: "fr",
+    ar: "ar",
+    ko: "ko",
+    hi: "hi",
+    ja: "ja",
+  }
+
+  const currentLanguage = Language.current
+  const localeKey = languageToLocaleMap[currentLanguage] || "en-US"
+
+  switch (localeKey) {
+    case "en-US":
       dateFnsLocale = require("date-fns/locale/en-US").default
       break
     case "ar":
