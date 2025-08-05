@@ -1,12 +1,13 @@
 import { FC } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, TextStyle } from "react-native"
+import { ViewStyle, TextStyle, View } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemedStyle } from "@/theme"
+import { AppleLoginButton, GoogleLoginButton } from "@/components/login"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -27,7 +28,10 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
         preset="heading"
         style={themed($heading)}
       />
-      <Text text="Login and account creation functionality will be implemented here." />
+      <View style={themed($buttons)}>
+        <AppleLoginButton onPress={() => {}} />
+        <GoogleLoginButton onPress={() => {}} />
+      </View>
     </Screen>
   )
 })
@@ -35,6 +39,14 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
 const $root: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
   padding: 16,
+})
+
+const $buttons: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: 46,
+  gap: 16,
 })
 
 const $heading: ThemedStyle<TextStyle> = (theme) => ({
