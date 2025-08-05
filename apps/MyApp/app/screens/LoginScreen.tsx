@@ -22,12 +22,14 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
   // Pull in navigation via hook
   // const navigation = useNavigation()
   return (
-    <Screen style={themed($root)} preset="scroll">
-      <Text
-        text={LANGUAGE_COPY.homeScreen.loginCreateAccount[Language.current]}
-        preset="heading"
-        style={themed($heading)}
-      />
+    <Screen style={themed($root)} contentContainerStyle={themed($contentContainer)} preset="scroll">
+      <View style={themed($titleContainer)}>
+        <Text
+          text={LANGUAGE_COPY.homeScreen.loginCreateAccount[Language.current]}
+          preset="heading"
+          style={themed($heading)}
+        />
+      </View>
       <View style={themed($buttons)}>
         <AppleLoginButton onPress={() => {}} />
         <GoogleLoginButton onPress={() => {}} />
@@ -41,11 +43,23 @@ const $root: ThemedStyle<ViewStyle> = () => ({
   padding: 16,
 })
 
+const $contentContainer: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
+})
+
+const $titleContainer: ThemedStyle<ViewStyle> = () => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1,
+})
+
 const $buttons: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignItems: "center",
-  marginTop: 46,
   gap: 16,
 })
 
