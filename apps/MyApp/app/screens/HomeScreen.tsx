@@ -7,7 +7,7 @@ import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
-import { getHomeScreenSections } from "./HomeScreenSections"
+import { getHomeDrawerSections } from "./HomeDrawerSections"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -20,7 +20,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   // Pull in navigation via hook
   // const navigation = useNavigation()
 
-  const sections = getHomeScreenSections()
+  const sections = getHomeDrawerSections()
 
   return (
     <HomeDrawer
