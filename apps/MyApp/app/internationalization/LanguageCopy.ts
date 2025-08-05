@@ -52,6 +52,40 @@ const LANGUAGE_COPY: ILanguageCopy = {
       de: "System",
       fr: "Système",
     },
+    termsOfService: {
+      en: "Terms of Service",
+      es: "Términos de Servicio",
+      de: "Nutzungsbedingungen",
+      fr: "Conditions d'utilisation",
+    },
+    privacyPolicy: {
+      en: "Privacy Policy",
+      es: "Política de Privacidad",
+      de: "Datenschutzrichtlinie",
+      fr: "Politique de confidentialité",
+    },
+  },
+  alerts: {
+    error: {
+      title: {
+        en: "Error",
+        es: "Error",
+        de: "Fehler",
+        fr: "Erreur",
+      },
+      message: {
+        en: "An error occurred",
+        es: "Ocurrió un error",
+        de: "Ein Fehler ist aufgetreten",
+        fr: "Une erreur s'est produite",
+      },
+      button: {
+        en: "OK",
+        es: "OK",
+        de: "OK",
+        fr: "OK",
+      },
+    },
   },
 }
 
