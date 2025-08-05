@@ -29,18 +29,12 @@ import { ComponentProps } from "react"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  Login: undefined
   // 🔥 Your screens go here
   Home: undefined
   MyTab: undefined
   Settings: undefined
   TabNavigator: undefined
   Login: undefined
-	Login: undefined
-	Login: undefined
-	Login: undefined
-	Login: undefined
-	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
