@@ -1,4 +1,5 @@
 import { ExpoConfig, ConfigContext } from "@expo/config"
+import customConfig from "./customConfig"
 
 /**
  * Use ts-node here so we can use TypeScript for our Config Plugins
@@ -57,6 +58,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       eas: {
         projectId: "bc2c5c21-b7da-4a11-8072-32564adf1d10",
       },
+      ...customConfig(),
     },
     web: {
       favicon: "./assets/images/app-icon-web-favicon.png",
