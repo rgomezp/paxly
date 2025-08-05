@@ -1,11 +1,13 @@
 import { ExpoConfig, ConfigContext } from "@expo/config"
-import customConfig from "./customConfig"
 
 /**
  * Use ts-node here so we can use TypeScript for our Config Plugins
  * and not have to compile them to JavaScript
  */
 require("ts-node/register")
+
+// Import customConfig after ts-node is registered
+const { default: customConfig } = require("./customConfig")
 
 /**
  * @param config ExpoConfig coming from the static config app.json if it exists
