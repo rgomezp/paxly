@@ -23,16 +23,16 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
   // const navigation = useNavigation()
   return (
     <Screen style={themed($root)} contentContainerStyle={themed($contentContainer)} preset="scroll">
-      <View style={themed($titleContainer)}>
-        <Text
-          text={LANGUAGE_COPY.homeScreen.loginCreateAccount[Language.current]}
-          preset="heading"
-          style={themed($heading)}
-        />
-      </View>
       <View style={themed($buttons)}>
         <AppleLoginButton onPress={() => {}} />
         <GoogleLoginButton onPress={() => {}} />
+      </View>
+      <View style={themed($titleContainer)}>
+        <Text
+          text={LANGUAGE_COPY.homeScreen.loginCreateAccount[Language.current]}
+          preset="subheading"
+          style={themed($heading)}
+        />
       </View>
     </Screen>
   )
@@ -45,18 +45,15 @@ const $root: ThemedStyle<ViewStyle> = () => ({
 
 const $contentContainer: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
+  justifyContent: "center",
 })
 
 const $titleContainer: ThemedStyle<ViewStyle> = () => ({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  zIndex: 1,
+  alignItems: "center",
+  marginTop: 32,
 })
 
 const $buttons: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
@@ -64,6 +61,6 @@ const $buttons: ThemedStyle<ViewStyle> = () => ({
 })
 
 const $heading: ThemedStyle<TextStyle> = (theme) => ({
-  marginTop: 16,
   color: theme.colors.text,
+  textAlign: "center",
 })
