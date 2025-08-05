@@ -9,6 +9,8 @@ interface StorageMapping {
   user: IUser
   rootState: ModelSnapshotType<any>
   theme: ITheme
+  lastRunMigration: string
+  migrationLock: boolean
 }
 
 export default StorageMapping

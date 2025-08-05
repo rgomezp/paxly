@@ -9,6 +9,9 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   settings: {
     docKeys: ["theme"],
   },
+  utils: {
+    docKeys: ["lastRunMigration"],
+  },
 }
 
 export default CLOUD_BACKUP_CONFIG
