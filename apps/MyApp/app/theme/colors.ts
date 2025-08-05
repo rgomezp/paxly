@@ -1,20 +1,20 @@
 const palette = {
   neutral100: "#FFFFFF",
-  neutral200: "#F4F2F1",
-  neutral300: "#D7CEC9",
-  neutral400: "#B6ACA6",
-  neutral500: "#978F8A",
-  neutral600: "#564E4A",
-  neutral700: "#3C3836",
-  neutral800: "#191015",
+  neutral200: "#F5F5F5",
+  neutral300: "#E0E0E0",
+  neutral400: "#BDBDBD",
+  neutral500: "#9E9E9E",
+  neutral600: "#757575",
+  neutral700: "#616161",
+  neutral800: "#424242",
   neutral900: "#000000",
 
-  primary100: "#F4E0D9",
-  primary200: "#E8C1B4",
-  primary300: "#DDA28E",
-  primary400: "#D28468",
-  primary500: "#C76542",
-  primary600: "#A54F31",
+  primary100: "#F5F7F8",
+  primary200: "#E8ECF0",
+  primary300: "#D1DCE3",
+  primary400: "#A3B8C7",
+  primary500: "#5A7A8F",
+  primary600: "#2a3845",
 
   secondary100: "#DCDDE9",
   secondary200: "#BCC0D6",
@@ -57,7 +57,7 @@ export const colors = {
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral200,
+  background: palette.neutral100,
   /**
    * The default border color.
    */

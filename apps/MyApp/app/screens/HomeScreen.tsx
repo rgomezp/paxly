@@ -85,7 +85,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
                   <Icon
                     icon="components"
                     size={32}
-                    color={theme.colors.tint}
+                    color={theme.colors.palette.primary600}
                     containerStyle={themed($cardIcon)}
                   />
                 }
@@ -100,7 +100,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
                   <Icon
                     icon="heart"
                     size={32}
-                    color={theme.colors.error}
+                    color={theme.colors.palette.primary600}
                     containerStyle={themed($cardIcon)}
                   />
                 }
@@ -115,7 +115,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
                   <Icon
                     icon="lock"
                     size={32}
-                    color={theme.colors.palette.primary500}
+                    color={theme.colors.palette.primary600}
                     containerStyle={themed($cardIcon)}
                   />
                 }
@@ -197,7 +197,6 @@ const $contentContainer: ViewStyle = {
 
 const $headerSection: ViewStyle = {
   marginBottom: 24,
-  alignItems: "center",
 }
 
 const $sectionContainer: ViewStyle = {
