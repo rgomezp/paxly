@@ -1,4 +1,3 @@
-import { FC } from "react"
 import { MenuItem, ExternalLinkItem } from "@/components"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
