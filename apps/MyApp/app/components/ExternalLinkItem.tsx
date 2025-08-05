@@ -29,4 +29,4 @@ export const ExternalLinkItem: FC<ExternalLinkItemProps> = ({
       <Text {...textProps} style={textStyle} />
     </TouchableOpacity>
   )
-} 
+}
