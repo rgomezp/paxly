@@ -3,6 +3,8 @@ import type { ThemedStyle, ThemedStyleArray } from "@/theme"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { typography } from "@/theme/typography"
 import { ReactNode, forwardRef, ForwardedRef } from "react"
+import LanguageCopy from "../internationalization/LanguageCopy"
+import Language from "../internationalization/Language"
 
 type Sizes = keyof typeof $sizeStyles
 type Weights = keyof typeof typography.primary
@@ -13,6 +15,18 @@ export interface TextProps extends RNTextProps {
    * The text to display if not using `tx` or nested components.
    */
   text?: string
+
+  /**
+   * Text which is looked up via the LanguageCopy system.
+   * Format: "namespace:key" (e.g., "homeScreen:welcome")
+   */
+  tx?: string
+
+  /**
+   * Optional options to pass to the translation system. Useful for interpolation
+   * as well as explicitly setting locale or translation fallbacks.
+   */
+  txOptions?: Record<string, any>
 
   /**
    * An optional style override useful for padding & margin.
@@ -44,10 +58,16 @@ export interface TextProps extends RNTextProps {
  * @returns {JSX.Element} The rendered `Text` component.
  */
 export const Text = forwardRef(function Text(props: TextProps, ref: ForwardedRef<RNText>) {
-  const { weight, size, text, children, style: $styleOverride, ...rest } = props
+  const { weight, size, text, tx, txOptions, children, style: $styleOverride, ...rest } = props
   const { themed } = useAppTheme()
 
-  const content = text || children
+  // Handle translation
+  let translatedText = text
+  if (tx) {
+    translatedText = getTranslation(tx, txOptions)
+  }
+
+  const content = translatedText || children
 
   const preset: Presets = props.preset ?? "default"
   const $styles: StyleProp<TextStyle> = [
@@ -63,6 +83,53 @@ export const Text = forwardRef(function Text(props: TextProps, ref: ForwardedRef
     </RNText>
   )
 })
+
+/**
+ * Get translation from the LanguageCopy system
+ */
+function getTranslation(key: string, options?: Record<string, any>): string {
+  try {
+    const keys = key.split(":")
+    if (keys.length !== 2) {
+      console.warn(`Invalid translation key format: ${key}. Expected format: "namespace:key"`)
+      return key
+    }
+
+    const [namespace, translationKey] = keys
+    const currentLanguage = Language.current
+
+    // Navigate through the nested object structure
+    const namespaceObj = (LanguageCopy as any)[namespace]
+    if (!namespaceObj) {
+      console.warn(`Translation namespace not found: ${namespace}`)
+      return key
+    }
+
+    const translationObj = namespaceObj[translationKey]
+    if (!translationObj) {
+      console.warn(`Translation key not found: ${translationKey} in namespace ${namespace}`)
+      return key
+    }
+
+    const translation = translationObj[currentLanguage]
+    if (!translation) {
+      console.warn(`Translation not found for language: ${currentLanguage}`)
+      return key
+    }
+
+    // Handle interpolation if options are provided
+    if (options) {
+      return Object.keys(options).reduce((result, optionKey) => {
+        return result.replace(new RegExp(`{{${optionKey}}}`, "g"), String(options[optionKey]))
+      }, translation)
+    }
+
+    return translation
+  } catch (error) {
+    console.warn(`Error getting translation for key: ${key}`, error)
+    return key
+  }
+}
 
 const $sizeStyles = {
   xxl: { fontSize: 36, lineHeight: 44 } satisfies TextStyle,

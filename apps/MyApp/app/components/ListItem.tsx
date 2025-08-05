@@ -34,7 +34,8 @@ export interface ListItemProps extends TouchableOpacityProps {
    */
   text?: TextProps["text"]
   /**
-   * Text which is looked up via i18n.
+   * Text which is looked up via the LanguageCopy system.
+   * Format: "namespace:key" (e.g., "homeScreen:welcome")
    */
   tx?: TextProps["tx"]
   /**
@@ -42,7 +43,7 @@ export interface ListItemProps extends TouchableOpacityProps {
    */
   children?: TextProps["children"]
   /**
-   * Optional options to pass to i18n. Useful for interpolation
+   * Optional options to pass to the translation system. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
   txOptions?: TextProps["txOptions"]

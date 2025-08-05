@@ -67,11 +67,12 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
    */
   label?: TextProps["text"]
   /**
-   * Label text which is looked up via i18n.
+   * Label text which is looked up via the LanguageCopy system.
+   * Format: "namespace:key" (e.g., "homeScreen:welcome")
    */
   labelTx?: TextProps["tx"]
   /**
-   * Optional label options to pass to i18n. Useful for interpolation
+   * Optional label options to pass to the translation system. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
   labelTxOptions?: TextProps["txOptions"]
@@ -88,11 +89,12 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
    */
   helper?: TextProps["text"]
   /**
-   * Helper text which is looked up via i18n.
+   * Helper text which is looked up via the LanguageCopy system.
+   * Format: "namespace:key" (e.g., "homeScreen:welcome")
    */
   helperTx?: TextProps["tx"]
   /**
-   * Optional helper options to pass to i18n. Useful for interpolation
+   * Optional helper options to pass to the translation system. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
   helperTxOptions?: TextProps["txOptions"]

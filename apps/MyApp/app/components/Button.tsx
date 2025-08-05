@@ -60,6 +60,16 @@ export interface ButtonProps extends PressableProps {
    */
   children?: React.ReactNode
   /**
+   * Text which is looked up via the LanguageCopy system.
+   * Format: "namespace:key" (e.g., "homeScreen:welcome")
+   */
+  tx?: string
+  /**
+   * Optional options to pass to the translation system. Useful for interpolation
+   * as well as explicitly setting locale or translation fallbacks.
+   */
+  txOptions?: Record<string, any>
+  /**
    * disabled prop, accessed directly for declarative styling reasons.
    * https://reactnative.dev/docs/pressable#disabled
    */
@@ -96,6 +106,8 @@ export function Button(props: ButtonProps) {
     LeftAccessory,
     disabled,
     disabledStyle: $disabledViewStyleOverride,
+    tx,
+    txOptions,
     ...rest
   } = props
 
@@ -143,7 +155,9 @@ export function Button(props: ButtonProps) {
             <LeftAccessory style={$leftAccessoryStyle} pressableState={state} disabled={disabled} />
           )}
 
-          <Text style={$textStyle(state)}>{children}</Text>
+          <Text style={$textStyle(state)} tx={tx} txOptions={txOptions}>
+            {children}
+          </Text>
 
           {!!RightAccessory && (
             <RightAccessory
