@@ -26,7 +26,8 @@
     "typeRoots": [
       "./node_modules/@types",
       "./types"
-    ]
+    ],
+    "types": ["jest", "node"]
   },
   "extends": "expo/tsconfig.base",
   "ts-node": {
@@ -36,10 +37,12 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "types/**/*.d.ts"
   ],
   "exclude": [
-    "node_modules",
-    "test/**/*"
+    "node_modules"
   ]
 }
