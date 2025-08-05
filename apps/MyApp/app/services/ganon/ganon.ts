@@ -1,14 +1,23 @@
-import { Ganon, LogLevel } from "@rgomezp/ganon"
+import { Ganon, LocalGanon, LogLevel } from "@rgomezp/ganon"
 import CLOUD_BACKUP_CONFIG from "./cloudConfig"
 import StorageMapping from "./StorageMapping"
+import customConfig from "../../../customConfig"
 
 const logLevel = process.env.NODE_ENV === "development" ? LogLevel.VERBOSE : LogLevel.NONE
+const config = customConfig()
 
-// Initialize once using your specialized type.
-export const ganon: Ganon<StorageMapping> = new Ganon<StorageMapping>({
-  identifierKey: "email",
-  cloudConfig: CLOUD_BACKUP_CONFIG,
-  logLevel,
-  autoStartSync: false,
-  // remoteReadonly: true,
-})
+// Initialize based on localGanon setting
+const ganonInstance = config.localGanon
+  ? new LocalGanon<StorageMapping>({
+      identifierKey: "email",
+      logLevel,
+    })
+  : new Ganon<StorageMapping>({
+      identifierKey: "email",
+      cloudConfig: CLOUD_BACKUP_CONFIG,
+      logLevel,
+      autoStartSync: false,
+      // remoteReadonly: true,
+    })
+
+export const ganon = ganonInstance

@@ -3,6 +3,7 @@ interface CustomConfig {
   privacyPolicyUrl: string
   includeLoginScreen?: boolean
   includeSettingsScreen?: boolean
+  localGanon?: boolean
 }
 
 export default function customConfig(): CustomConfig {
@@ -11,5 +12,6 @@ export default function customConfig(): CustomConfig {
     privacyPolicyUrl: "https://www.google.com",
     includeLoginScreen: true,
     includeSettingsScreen: true,
+    localGanon: true,
   }
 }
