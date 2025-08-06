@@ -1,0 +1,121 @@
+#!/bin/bash
+
+# Make script to copy MyApp into a new app with user-provided name
+# Usage: ./scripts/make [app-name]
+
+set -e  # Exit on any error
+
+# Check if app name is provided
+if [ $# -eq 0 ]; then
+    echo "Error: Please provide an app name"
+    echo "Usage: ./scripts/make [app-name]"
+    echo "Example: ./scripts/make MyNewApp"
+    exit 1
+fi
+
+APP_NAME="$1"
+SOURCE_DIR="apps/MyApp"
+TARGET_DIR="apps/$APP_NAME"
+
+# Validate app name (only allow alphanumeric and hyphens)
+if [[ ! "$APP_NAME" =~ ^[a-zA-Z0-9-]+$ ]]; then
+    echo "Error: App name can only contain letters, numbers, and hyphens"
+    exit 1
+fi
+
+# Check if target directory already exists
+if [ -d "$TARGET_DIR" ]; then
+    echo "Error: App '$APP_NAME' already exists in $TARGET_DIR"
+    exit 1
+fi
+
+# Check if source directory exists
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Error: Source directory $SOURCE_DIR does not exist"
+    exit 1
+fi
+
+echo "Creating new app '$APP_NAME' from MyApp..."
+
+# Copy the entire MyApp directory to the new app name
+cp -r "$SOURCE_DIR" "$TARGET_DIR"
+
+# Update package.json name field
+PACKAGE_JSON="$TARGET_DIR/package.json"
+if [ -f "$PACKAGE_JSON" ]; then
+    # Convert app name to lowercase for package.json (npm convention)
+    PACKAGE_NAME=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
+
+    # Update the name field in package.json
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        sed -i '' "s/\"name\": \"myapp\"/\"name\": \"$PACKAGE_NAME\"/" "$PACKAGE_JSON"
+    else
+        # Linux
+        sed -i "s/\"name\": \"myapp\"/\"name\": \"$PACKAGE_NAME\"/" "$PACKAGE_JSON"
+    fi
+
+    echo "✓ Updated package.json name to '$PACKAGE_NAME'"
+else
+    echo "Warning: package.json not found in $TARGET_DIR"
+fi
+
+# Create googleServices directory
+GOOGLE_SERVICES_DIR="$TARGET_DIR/googleServices"
+if [ ! -d "$GOOGLE_SERVICES_DIR" ]; then
+    mkdir -p "$GOOGLE_SERVICES_DIR"
+    echo "✓ Created googleServices directory"
+else
+    echo "✓ googleServices directory already exists"
+fi
+
+# Get the absolute path of the workspace
+WORKSPACE_DIR=$(pwd)
+NEW_APP_GOOGLE_SERVICES_JSON="$WORKSPACE_DIR/apps/$APP_NAME/googleServices/google-services.json"
+NEW_APP_GOOGLE_SERVICES_PLIST="$WORKSPACE_DIR/apps/$APP_NAME/googleServices/GoogleService-Info.plist"
+
+# Create .env file with Google Services environment variables
+ENV_FILE="$TARGET_DIR/.env"
+cat > "$ENV_FILE" << EOF
+# Google Services Configuration
+export GOOGLE_SERVICES_JSON=$NEW_APP_GOOGLE_SERVICES_JSON
+export GOOGLE_SERVICES_PLIST=$NEW_APP_GOOGLE_SERVICES_PLIST
+EOF
+
+echo "✓ Created .env file with Google Services environment variables"
+
+# Clean up any unnecessary files
+echo "Cleaning up copied app..."
+
+# Remove node_modules if it exists (user should run yarn install in the new app)
+if [ -d "$TARGET_DIR/node_modules" ]; then
+    rm -rf "$TARGET_DIR/node_modules"
+    echo "✓ Removed node_modules (run 'yarn install' in the new app)"
+fi
+
+# Remove .expo directory if it exists
+if [ -d "$TARGET_DIR/.expo" ]; then
+    rm -rf "$TARGET_DIR/.expo"
+    echo "✓ Removed .expo directory"
+fi
+
+# Remove any build artifacts
+if [ -d "$TARGET_DIR/android" ]; then
+    rm -rf "$TARGET_DIR/android"
+    echo "✓ Removed android build directory"
+fi
+
+if [ -d "$TARGET_DIR/ios" ]; then
+    rm -rf "$TARGET_DIR/ios"
+    echo "✓ Removed ios build directory"
+fi
+
+echo ""
+echo "✓ Successfully created new app '$APP_NAME' in $TARGET_DIR"
+echo ""
+echo "Next steps:"
+echo "1. cd $TARGET_DIR"
+echo "2. yarn install"
+echo "3. Update app configuration as needed"
+echo "4. Run your app with: yarn start"
+echo ""
