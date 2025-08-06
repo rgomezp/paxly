@@ -40,7 +40,7 @@ potionforge/
 
 ## Creating a New App
 
-To create a new mobile app in the monorepo:
+1. Create a new project in https://expo.dev. Copy the project ID.
 
 1. Make a new app
 
@@ -48,13 +48,19 @@ To create a new mobile app in the monorepo:
 ./scripts/make
 ```
 
+Follow the instructions, input the project ID, and update the assets if desired.
+
 2. Create a new Firebase project
 
-3. Add iOS app
+3. Add/register iOS app
 
-4. Choose a bundleId
+4. Input a bundle id.
 
-5. Download iOS plist
+5. Download iOS plist and move it to the googleServices directory in the new project.
+
+6. Add/register Android app
+
+7. Download google-services.json and move it to the googleServices directory in the new project.
 
 ## Development
 
