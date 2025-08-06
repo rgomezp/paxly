@@ -1,14 +1,21 @@
 # PotionForge 🧪
 
-A monorepo for React Native mobile applications powered by [Ignite](https://github.com/infinitered/ignite).
+A monorepo for React Native mobile applications powered by [Ignite](https://github.com/infinitered/ignite), using [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) for package management.
 
 ## Project Structure
+
+This project uses a **Yarn Workspaces monorepo** structure where:
+
+- **Single workspace**: The entire project is one Yarn workspace
+- **Multiple packages**: Each directory in `/apps` is a package within that workspace
+- **Shared dependencies**: Dependencies are hoisted to the root `node_modules` when possible
+- **Unified management**: Commands can be run across all packages from the root
 
 ```
 potionforge/
 ├── apps/           # Mobile applications directory
-│   └── ...        # Each app is a separate workspace
-├── package.json    # Root package configuration
+│   └── MyApp/     # Each app is a package within the workspace
+├── package.json    # Root workspace configuration
 └── README.md      # This file
 ```
 
@@ -26,7 +33,7 @@ potionforge/
    cd potionforge
    ```
 
-2. Install dependencies:
+2. Install dependencies (this will install for all packages in the workspace):
    ```bash
    yarn install
    ```
@@ -45,15 +52,21 @@ To create a new mobile app in the monorepo:
    npx ignite-cli@latest new YourAppName
    ```
 
-3. The new app will be automatically added to the workspace.
+3. The new app will be automatically added to the workspace and can be managed from the root.
 
 ## Development
 
-Each app in the `apps` directory is a standalone React Native application with its own:
+Each app in the `apps` directory is a React Native application package with its own:
 - `package.json`
 - Dependencies
 - Scripts
 - Configuration
+
+However, they all share the same workspace, which provides benefits like:
+- **Dependency sharing**: Common dependencies are installed once at the root
+- **Cross-package development**: Easy to develop multiple related apps together
+- **Unified tooling**: Linting, testing, and building can be coordinated across all apps
+- **Version consistency**: Ensures all apps use compatible versions of shared dependencies
 
 To work on a specific app:
 
@@ -76,9 +89,9 @@ To work on a specific app:
    yarn android
    ```
 
-## Scripts
+## Workspace Scripts
 
-- `yarn clean`: Clean all workspaces
+- `yarn clean`: Clean all workspaces (runs the clean script in each package)
 
 ## License
 
