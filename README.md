@@ -42,17 +42,19 @@ potionforge/
 
 To create a new mobile app in the monorepo:
 
-1. Navigate to the apps directory:
-   ```bash
-   cd apps
-   ```
+1. Make a new app
 
-2. Create a new Ignite app:
-   ```bash
-   npx ignite-cli@latest new YourAppName
-   ```
+```sh
+./scripts/make
+```
 
-3. The new app will be automatically added to the workspace and can be managed from the root.
+2. Create a new Firebase project
+
+3. Add iOS app
+
+4. Choose a bundleId
+
+5. Download iOS plist
 
 ## Development
 
@@ -84,7 +86,7 @@ To work on a specific app:
    ```bash
    # For iOS
    yarn ios
-   
+
    # For Android
    yarn android
    ```
@@ -95,4 +97,4 @@ To work on a specific app:
 
 ## License
 
-Private - All Rights Reserved 
+Private - All Rights Reserved
