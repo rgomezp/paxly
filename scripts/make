@@ -35,6 +35,49 @@ if [ ! -d "$SOURCE_DIR" ]; then
     exit 1
 fi
 
+# Prompt user for bundle ID/package name
+echo ""
+echo "Please enter the bundle ID/package name for your app (e.g., com.yourcompany.yourapp):"
+read -p "Bundle ID: " BUNDLE_ID
+
+# Validate bundle ID format (should be in reverse domain notation)
+if [[ ! "$BUNDLE_ID" =~ ^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$ ]]; then
+    echo "Error: Bundle ID should be in reverse domain notation (e.g., com.yourcompany.yourapp)"
+    exit 1
+fi
+
+# Prompt user for owner (Expo username)
+echo ""
+echo "Please enter your Expo username (owner field):"
+read -p "Expo Username: " EXPO_USERNAME
+
+# Validate Expo username (should be alphanumeric and hyphens only)
+if [[ ! "$EXPO_USERNAME" =~ ^[a-zA-Z0-9-]+$ ]]; then
+    echo "Error: Expo username can only contain letters, numbers, and hyphens"
+    exit 1
+fi
+
+# Prompt user for version
+echo ""
+echo "Please enter the app version (e.g., 1.0.0):"
+read -p "Version: " APP_VERSION
+
+# Validate version format (should be x.y.z)
+if [[ ! "$APP_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "Error: Version should be in format x.y.z (e.g., 1.0.0)"
+    exit 1
+fi
+
+# Prompt user for EAS project ID (optional)
+echo ""
+echo "Please enter your EAS project ID (optional, press Enter to skip):"
+read -p "EAS Project ID: " EAS_PROJECT_ID
+
+# Prompt user about app icons
+echo ""
+echo "Do you want to update the app icons? (y/n):"
+read -p "Update icons: " UPDATE_ICONS
+
 echo "Creating new app '$APP_NAME' from MyApp..."
 
 # Copy the entire MyApp directory to the new app name
@@ -58,6 +101,75 @@ if [ -f "$PACKAGE_JSON" ]; then
     echo "✓ Updated package.json name to '$PACKAGE_NAME'"
 else
     echo "Warning: package.json not found in $TARGET_DIR"
+fi
+
+# Update app.config.ts with new bundle ID
+APP_CONFIG_TS="$TARGET_DIR/app.config.ts"
+if [ -f "$APP_CONFIG_TS" ]; then
+    # Convert app name to lowercase for scheme
+    SCHEME_NAME=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
+    
+    # Update the bundle identifier and package name in app.config.ts
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        sed -i '' "s/com\.honeywolf\.myapp/$BUNDLE_ID/g" "$APP_CONFIG_TS"
+        sed -i '' "s/name: \"MyApp\"/name: \"$APP_NAME\"/" "$APP_CONFIG_TS"
+        sed -i '' "s/slug: \"MyApp\"/slug: \"$APP_NAME\"/" "$APP_CONFIG_TS"
+        sed -i '' "s/scheme: \"myapp\"/scheme: \"$SCHEME_NAME\"/" "$APP_CONFIG_TS"
+        sed -i '' "s/owner: \"honeywolf\"/owner: \"$EXPO_USERNAME\"/" "$APP_CONFIG_TS"
+        sed -i '' "s/version: \"1.0.0\"/version: \"$APP_VERSION\"/" "$APP_CONFIG_TS"
+        
+        # Update EAS project ID if provided
+        if [ ! -z "$EAS_PROJECT_ID" ]; then
+            sed -i '' "s/projectId: \"bc2c5c21-b7da-4a11-8072-32564adf1d10\"/projectId: \"$EAS_PROJECT_ID\"/" "$APP_CONFIG_TS"
+        fi
+    else
+        # Linux
+        sed -i "s/com\.honeywolf\.myapp/$BUNDLE_ID/g" "$APP_CONFIG_TS"
+        sed -i "s/name: \"MyApp\"/name: \"$APP_NAME\"/" "$APP_CONFIG_TS"
+        sed -i "s/slug: \"MyApp\"/slug: \"$APP_NAME\"/" "$APP_CONFIG_TS"
+        sed -i "s/scheme: \"myapp\"/scheme: \"$SCHEME_NAME\"/" "$APP_CONFIG_TS"
+        sed -i "s/owner: \"honeywolf\"/owner: \"$EXPO_USERNAME\"/" "$APP_CONFIG_TS"
+        sed -i "s/version: \"1.0.0\"/version: \"$APP_VERSION\"/" "$APP_CONFIG_TS"
+        
+        # Update EAS project ID if provided
+        if [ ! -z "$EAS_PROJECT_ID" ]; then
+            sed -i "s/projectId: \"bc2c5c21-b7da-4a11-8072-32564adf1d10\"/projectId: \"$EAS_PROJECT_ID\"/" "$APP_CONFIG_TS"
+        fi
+    fi
+
+    echo "✓ Updated app.config.ts with bundle ID '$BUNDLE_ID', name '$APP_NAME', slug '$APP_NAME', scheme '$SCHEME_NAME', owner '$EXPO_USERNAME', and version '$APP_VERSION'"
+    if [ ! -z "$EAS_PROJECT_ID" ]; then
+        echo "✓ Updated EAS project ID to '$EAS_PROJECT_ID'"
+    fi
+else
+    echo "Warning: app.config.ts not found in $TARGET_DIR"
+fi
+
+# Handle app icon updates
+if [[ "$UPDATE_ICONS" =~ ^[Yy]$ ]]; then
+    echo ""
+    echo "⚠️  App Icon Update Required:"
+    echo "Please replace the following icon files in $TARGET_DIR/assets/images/:"
+    echo "  - app-icon-all.png (1024x1024)"
+    echo "  - app-icon-android-legacy.png (512x512)"
+    echo "  - app-icon-android-adaptive-foreground.png (1024x1024)"
+    echo "  - app-icon-android-adaptive-background.png (1024x1024)"
+    echo "  - app-icon-ios.png (1024x1024)"
+    echo "  - app-icon-web-favicon.png (48x48)"
+    echo "  - notifIcons/ic_stat_onesignal_default.png (24x24)"
+    echo "  - notifIcons/ic_onesignal_large_icon_default.png (96x96)"
+    echo ""
+    
+    # Open the assets directory in Finder
+    ASSETS_DIR="$TARGET_DIR/assets/images"
+    if [ -d "$ASSETS_DIR" ]; then
+        open "$ASSETS_DIR"
+        echo "✓ Opened assets directory in Finder"
+    else
+        echo "Warning: Assets directory not found at $ASSETS_DIR"
+    fi
+    echo ""
 fi
 
 # Create googleServices directory
