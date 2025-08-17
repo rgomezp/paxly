@@ -4,7 +4,7 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, useNavigation } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { observer } from "mobx-react-lite"
@@ -13,6 +13,9 @@ import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
 import { ComponentProps } from "react"
+import Log from "@/utils/Log"
+import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
+import { OneSignal } from "react-native-onesignal"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -90,6 +93,22 @@ const AppStack = observer(function AppStack() {
   const {
     theme: { colors },
   } = useAppTheme()
+  const navigation = useNavigation()
+
+  OneSignal.Notifications.addEventListener("click", (event) => {
+    if (isOneSignalAdditionalData(event.notification.additionalData)) {
+      const route = event?.notification?.additionalData?.route
+      Log.info(`OneSignal: Clicked notification with route: ${route}`)
+      try {
+        if (route) {
+          // @ts-ignore
+          navigation.navigate(route)
+        }
+      } catch (error) {
+        Log.error(`OneSignal: Error navigating to route: ${route}`, error)
+      }
+    }
+  })
 
   return (
     <Stack.Navigator
