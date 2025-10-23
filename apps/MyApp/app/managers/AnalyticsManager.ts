@@ -1,7 +1,7 @@
 import { getAnalytics, logEvent } from "@react-native-firebase/analytics"
 import Log from "../utils/Log"
 import { TEST_EVENTS } from "@/constants/events"
-import { EventRegister } from "react-native-event-listeners"
+import { EventRegister } from "@/utils/EventEmitter"
 
 type Entry = {
   message: string
