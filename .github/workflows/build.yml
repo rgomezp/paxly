@@ -1,0 +1,269 @@
+name: Build App
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        type: choice
+        description: OS to build on. Ubuntu is faster, MacOS supports iOS builds
+        options:
+          - ubuntu-latest
+          - macos-latest
+      platform:
+        type: choice
+        description: Platform to build for
+        options:
+          - android
+          - ios
+      profile:
+        type: choice
+        description: Build profile to use
+        options:
+          - preview
+          - production
+          - development
+      should_submit:
+        type: boolean
+        description: Whether to perform the submit step
+        required: true
+        default: true
+
+jobs:
+  build:
+    runs-on: ${{ github.event.inputs.os }}
+    env:
+      TZ: "America/Chicago"
+      GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+      GOOGLE_SERVICES_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICES_PLIST_BASE64 }}
+      GOOGLE_SERVICES_SUBMITTER_BASE64: ${{ secrets.GOOGLE_SERVICES_SUBMITTER_BASE64 }}
+      GOOGLE_SERVICES_PLIST: ${{ secrets.GOOGLE_SERVICES_PLIST }}
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      EXPO_PUBLIC_FIREBASE_WEB_CLIENT_ID: ${{ secrets.EXPO_PUBLIC_FIREBASE_WEB_CLIENT_ID }}
+    steps:
+      - name: 🏗 Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Checking Inputs
+        run: |
+          if [ "${{ github.event.inputs.profile }}" = "development" ] && [ "${{ github.event.inputs.should_submit }}" = "true" ]; then
+            echo "Error: 'submit' step cannot be performed with the 'development' profile"
+            exit 1
+          fi
+          if [ "${{ github.event.inputs.platform }}" = "ios" ] && [ "${{ github.event.inputs.os }}" != "macos-latest" ]; then
+            echo "Error: ios builds require macos-latest operating system"
+            exit 1
+          fi
+          if [ "${{ github.event.inputs.platform }}" = "android" ] && [ "${{ github.event.inputs.os }}" != "ubuntu-latest" ]; then
+            echo "Error: android builds require ubuntu-latest operating system"
+            exit 1
+          fi
+
+      - name: 📂 Setup Google Services Files
+        working-directory: apps/app
+        run: ./scripts/eas_pre_install
+
+      - name: Check Google Services Files
+        working-directory: apps/app  # Ensure this runs in the correct directory
+        run: |
+          echo "Searching for Google Services files..."
+          GOOGLE_SERVICES_JSON_PATH=$(find . -type f -name "google-services.json" | head -n 1)
+          GOOGLE_SERVICES_PLIST_PATH=$(find . -type f -name "GoogleService-Info.plist" | head -n 1)
+          GOOGLE_SERVICES_SUBMITTER_PATH=$(find . -type f -name "google-play-submitter.json" | head -n 1)
+
+          if [ -z "$GOOGLE_SERVICES_JSON_PATH" ]; then
+            echo "::error::google-services.json not found."
+            exit 1
+          else
+            echo "Found google-services.json at: $GOOGLE_SERVICES_JSON_PATH"
+          fi
+
+          if [ -z "$GOOGLE_SERVICES_PLIST_PATH" ]; then
+            echo "::error::GoogleService-Info.plist not found."
+            exit 1
+          else
+            echo "Found GoogleService-Info.plist at: $GOOGLE_SERVICES_PLIST_PATH"
+          fi
+
+          if [ -z "$GOOGLE_SERVICES_SUBMITTER_PATH" ]; then
+            echo "::error::google-play-submitter.json not found."
+            exit 1
+          else
+            echo "Found google-play-submitter.json at: $GOOGLE_SERVICES_SUBMITTER_PATH"
+          fi
+
+      - name: Compute source hash
+        working-directory: apps/app
+        id: compute_hash
+        run: |
+          find . -type f \
+            -not -path '*/.git/*' \
+            -not -path '*/node_modules/*' \
+            -not -path '*/.expo/*' \
+            -not -path '*/__tests__/*' \
+            -not -path '*/test/*' \
+            -not -path '*/tests/*' \
+            -not -path '*.test.*' \
+            -not -path '*.spec.*' \
+            -not -path 'app.config.js' \
+            -print0 \
+          | sort -z \
+          | xargs -0 sha256sum \
+          | sha256sum \
+          | cut -d ' ' -f1 > codehash.txt
+
+          CODE_HASH=$(cat codehash.txt)
+          echo "Computed code hash: $CODE_HASH"
+
+          echo "::set-output name=code_hash::$CODE_HASH"
+        shell: bash
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: ♻️ Cache Yarn dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            **/node_modules
+            ~/.yarn/cache
+            ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 📦 Install EAS CLI
+        run: npm -g i eas-cli
+
+      - name: Build shared-types
+        run: yarn workspace @rgomezp/fw-shared-types run build
+
+      - name: 📦 Build project
+        run: yarn build
+
+      - name: Prebuild
+        working-directory: apps/app
+        run: echo 'current dir:' && pwd && ls -la && npx expo prebuild
+
+      - name: 📋 Test project
+        run: yarn workspace workoutapp test
+
+      - name: Set up JDK 17
+        if: github.event.inputs.platform == 'android'
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: 🔄 Update Android Version Code
+        if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'android' }}
+        working-directory: apps/app  # Ensure this runs in the correct directory
+        run: ./scripts/updateAndroidVersionCode
+
+      - name: 🔄 Update iOS Build Number
+        if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'ios' }}
+        working-directory: apps/app  # Ensure this runs in the correct directory
+        run: ./scripts/updateIosBuildNumber
+
+      - name: ♻️ Cache Expo CLI
+        uses: actions/cache@v3
+        with:
+          path: ~/.expo
+          key: ${{ runner.os }}-expo-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-expo-
+
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: latest
+          eas-version: latest
+
+      - name: setup-cocoapods
+        if: ${{ github.event.inputs.platform == 'ios' }}
+        uses: maxim-lobanov/setup-cocoapods@v1
+        with:
+          version: 1.14.3
+
+      - name: Download build artifact (if exists)
+        id: download_app_build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ steps.compute_hash.outputs.code_hash }}-${{ github.event.inputs.platform }}-${{ github.event.inputs.profile }}
+          path: apps/app  # Ensure artifacts are downloaded to the correct directory
+        continue-on-error: true  # Don't fail if not found
+
+      - name: Check if artifact was downloaded
+        working-directory: apps/app  # Ensure this runs in the correct directory
+        id: check_app_build
+        run: |
+          if [ "${{ github.event.inputs.platform }}" = "android" ]; then
+            if [ -f "./app-build.aab" ]; then
+              echo "Artifact found, skipping build."
+              echo "::set-output name=found::true"
+            else
+              echo "::set-output name=found::false"
+            fi
+          else
+            # iOS
+            if [ -f "./app-build.ipa" ]; then
+              echo "Artifact found, skipping build."
+              echo "::set-output name=found::true"
+            else
+              echo "::set-output name=found::false"
+            fi
+          fi
+        shell: bash
+
+      # Build steps (skip if we already have an artifact):
+      - name: 👷 Build app
+        if: steps.check_app_build.outputs.found == 'false'
+        working-directory: apps/app
+        run: |
+          OUTPUT_PATH=app-build.${{ github.event.inputs.platform == 'android' && 'aab' || 'ipa' }}
+          eas build \
+            --local \
+            --non-interactive \
+            --output=$OUTPUT_PATH \
+            --platform=${{ github.event.inputs.platform }} \
+            --profile=${{ github.event.inputs.profile }}
+
+      # Upload new artifact only if it didn't exist:
+      - name: Upload build artifact
+        if: steps.check_app_build.outputs.found == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ steps.compute_hash.outputs.code_hash }}-${{ github.event.inputs.platform }}-${{ github.event.inputs.profile }}
+          path: apps/app/app-build.*  # Ensure the correct files are uploaded
+          retention-days: 7  # Optional: Set artifact retention period
+
+      - name: 🚢 Submit
+        if: ${{ github.event.inputs.should_submit }} == "true"
+        working-directory: apps/app
+        run: |
+          if [ "${{ github.event.inputs.platform }}" = "android" ]; then
+            npx eas submit -p android --profile ${{ github.event.inputs.profile }} --path app-build.aab
+          elif [ "${{ github.event.inputs.platform }}" = "ios" ]; then
+            npx eas submit -p ios --profile ${{ github.event.inputs.profile }} --path app-build.ipa
+          fi
+
+      - name: 🔧 Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: 📝 Commit changes
+        working-directory: apps/app
+        run: |
+          git status
+          git add app.config.js
+          git diff --staged --quiet || git commit -m "Update version numbers"
+
+      - name: ⬆️ Push changes
+        run: git push

@@ -1,0 +1,44 @@
+name: Bump Version
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        type: choice
+        description: Platform to build for
+        options:
+          - android
+          - ios
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.BRANCH_BYPASSER_TOKEN }}
+
+    - name: 🔄 Update Android Version Code
+      if: ${{ github.event.inputs.platform == 'android' }}
+      run: ./scripts/updateAndroidVersionCode
+
+    - name: 🔄 Update iOS Build Number
+      if: ${{ github.event.inputs.platform == 'ios' }}
+      run: ./scripts/updateIosBuildNumber
+
+    - name: Check Git Status
+      run: git status
+
+    - name: 🔧 Set up Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+    - name: 📝 Commit changes
+      run: |
+        git add app.config.js
+        git diff --staged --quiet || git commit -m "Update version numbers"
+        git status
+
+    - name: ⬆️ Push changes
+      run: git push
