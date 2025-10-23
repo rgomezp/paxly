@@ -163,12 +163,12 @@ jobs:
       - name: 🔄 Update Android Version Code
         if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'android' }}
         working-directory: apps/app  # Ensure this runs in the correct directory
-        run: ./scripts/updateAndroidVersionCode
+        run: ./scripts/update_android_version_code
 
       - name: 🔄 Update iOS Build Number
         if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'ios' }}
         working-directory: apps/app  # Ensure this runs in the correct directory
-        run: ./scripts/updateIosBuildNumber
+        run: ./scripts/update_ios_build_number
 
       - name: ♻️ Cache Expo CLI
         uses: actions/cache@v3

@@ -20,11 +20,11 @@ jobs:
 
     - name: 🔄 Update Android Version Code
       if: ${{ github.event.inputs.platform == 'android' }}
-      run: ./scripts/updateAndroidVersionCode
+      run: ./scripts/update_android_version_code
 
     - name: 🔄 Update iOS Build Number
       if: ${{ github.event.inputs.platform == 'ios' }}
-      run: ./scripts/updateIosBuildNumber
+      run: ./scripts/update_ios_build_number
 
     - name: Check Git Status
       run: git status

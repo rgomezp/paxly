@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# Usage: ./scripts/check_build_size <platform>
+PLATFORM=$1
+if [[ "$PLATFORM" != "ios" && "$PLATFORM" != "android" ]]; then
+  echo "Usage: $0 <platform> (ios|android)"
+  exit 1
+fi
+
+ARCHIVE_DIR="./build_archive"
+PACKAGE_JSON="./package.json"
+
+# 1. Run eas build:inspect
+rm -rf "$ARCHIVE_DIR"
+eas build:inspect --platform "$PLATFORM" --stage archive --output "$ARCHIVE_DIR"
+
+# 2. Calculate the size of the build (in MB)
+ACTUAL_SIZE=$(du -sm "$ARCHIVE_DIR" | awk '{print $1}')
+
+# 3. Get reference size from package.json
+REFERENCE_SIZE=$(node -pe "require('$PACKAGE_JSON').referenceBuildSize")
+
+if [[ -z "$REFERENCE_SIZE" ]]; then
+  echo "Reference build size not found in package.json!"
+  exit 1
+fi
+
+# 4. Compare and warn if increased by more than 3%
+THRESHOLD=$(echo "$REFERENCE_SIZE * 1.03" | bc)
+
+if (( $(echo "$ACTUAL_SIZE > $THRESHOLD" | bc -l) )); then
+  echo -e "\033[1;33mWARNING: Build size for $PLATFORM increased!\033[0m"
+  echo -e "\033[1;31mReference: ${REFERENCE_SIZE}MB, Actual: ${ACTUAL_SIZE}MB (>3% increase)\033[0m"
+  echo -n "Continue? (y/n): "
+  read -r yn
+  if [[ "$yn" != "y" && "$yn" != "Y" ]]; then
+    echo "Aborting build."
+    rm -rf "$ARCHIVE_DIR"
+    exit 1
+  fi
+else
+  echo -e "\033[1;32mBuild size for $PLATFORM: ${ACTUAL_SIZE}MB (reference: ${REFERENCE_SIZE}MB)\033[0m"
+fi
+
+# 5. Clean up the build archive directory
+rm -rf "$ARCHIVE_DIR"
