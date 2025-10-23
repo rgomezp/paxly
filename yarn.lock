@@ -2370,6 +2370,19 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.2.4.tgz"
   integrity sha512-ROFF39F6ZrnzSUEmQQZUar0Jt4xVoP9WnDRdWwF4NNcXs3xBTLgBUDoOwW141y1jP+S8nahIbdxbFC7IShw9Iw==
 
+"@potionforge/ganon@^1.0.0-beta.1":
+  version "1.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@potionforge/ganon/-/ganon-1.0.0-beta.1.tgz#8c24e18ce22b321bdda8d5f64433bbadabeab56f"
+  integrity sha512-VHblSrQgk8ESyzgz2NNvtN9hrOQ48gUhhNaR6EC47Ta9MLvQ2/1u1JV8C8unUaMQRSuDb65ubhnb8Gs+VIrtDg==
+  dependencies:
+    "@types/crypto-js" "^4.2.2"
+    "@types/json-schema" "^7.0.15"
+    "@types/uuid" "^10.0.0"
+    ajv "^8.17.1"
+    crypto-js "^4.2.0"
+    json-schema "^0.4.0"
+    uuid "^11.1.0"
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@protobufjs/aspromise/-/aspromise-1.1.2.tgz"
@@ -2689,19 +2702,6 @@
   version "16.0.2"
   resolved "https://registry.npmjs.org/@revenuecat/purchases-typescript-internal/-/purchases-typescript-internal-16.0.2.tgz"
   integrity sha512-QrudS7vvGTVsrDTtPPBWTl5UFydjkaiyOfD8BsClw3RRsQMi3V6z58HgbPq6k5BEAHkvf8Hii6Zh6LBNwjsynw==
-
-"@rgomezp/ganon@^2.5.9":
-  version "2.5.9"
-  resolved "https://registry.npmjs.org/@rgomezp/ganon/-/ganon-2.5.9.tgz"
-  integrity sha512-hiY9FC21a20rKV/K1dsXE2rmncf+MXVb90hDU+5oV+w1cSnNVSnGZu8y3Qyeojl7AbH7YCEBJbFuNiFIXT7Ehg==
-  dependencies:
-    "@types/crypto-js" "^4.2.2"
-    "@types/json-schema" "^7.0.15"
-    "@types/uuid" "^10.0.0"
-    ajv "^8.17.1"
-    crypto-js "^4.2.0"
-    json-schema "^0.4.0"
-    uuid "^11.1.0"
 
 "@rtsao/scc@^1.1.0":
   version "1.1.0"

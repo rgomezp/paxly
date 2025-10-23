@@ -1,4 +1,4 @@
-import { Ganon, LocalGanon, LogLevel } from "@rgomezp/ganon"
+import { Ganon, LocalGanon, LogLevel } from "@potionforge/ganon"
 import CLOUD_BACKUP_CONFIG from "./cloudConfig"
 import StorageMapping from "./StorageMapping"
 import customConfig from "../../../customConfig"

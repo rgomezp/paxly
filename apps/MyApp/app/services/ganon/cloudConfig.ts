@@ -1,4 +1,4 @@
-import { CloudBackupConfig } from "@rgomezp/ganon"
+import { CloudBackupConfig } from "@potionforge/ganon"
 import StorageMapping from "./StorageMapping"
 
 const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
