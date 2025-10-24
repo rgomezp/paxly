@@ -35,7 +35,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     assetBundlePatterns: ["**/*"],
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
-      package: "com.honeywolf.myapp",
+      package: "com.honeywolf.covert",
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
@@ -45,7 +45,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     ios: {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
-      bundleIdentifier: "com.honeywolf.myapp",
+      bundleIdentifier: "com.honeywolf.covert",
       config: {
         usesNonExemptEncryption: false,
       },
@@ -54,7 +54,6 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         NSLocationWhenInUseUsageDescription:
           "This app needs access to your location to send push notifications.",
       },
-      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
     },
     extra: {
       eas: {
