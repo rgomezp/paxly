@@ -2,7 +2,7 @@ import { OneSignal } from "react-native-onesignal"
 import Purchases, { LOG_LEVEL } from "react-native-purchases"
 import crashlytics from "@react-native-firebase/crashlytics"
 
-export declare enum LogLevel {
+export enum LogLevel {
   None = 0,
   Fatal = 1,
   Error = 2,
