@@ -7,7 +7,7 @@ module.exports = function (api) {
       [
         "module-resolver",
         {
-          root: ["./app"],
+          root: ["."],
           alias: {
             "@": "./app",
           },
