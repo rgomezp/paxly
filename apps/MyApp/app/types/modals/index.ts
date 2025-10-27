@@ -1,1 +1,1 @@
-export * from "./modals/modals"
+export * from "./modals"
