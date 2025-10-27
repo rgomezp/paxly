@@ -64,6 +64,12 @@ const LANGUAGE_COPY: ILanguageCopy = {
       de: "Datenschutzrichtlinie",
       fr: "Politique de confidentialité",
     },
+    next: {
+      en: "Next",
+      es: "Siguiente",
+      de: "Weiter",
+      fr: "Suivant",
+    },
   },
   alerts: {
     error: {

@@ -24,6 +24,7 @@ interface ILanguageCopy {
     system: ITranslation
     termsOfService: ITranslation
     privacyPolicy: ITranslation
+    next: ITranslation
   }
   alerts: {
     error: IAlertCopy
