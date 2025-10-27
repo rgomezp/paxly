@@ -5,7 +5,7 @@
  * and a "main" flow which the user will use once logged in.
  */
 import { NavigationContainer, useNavigation } from "@react-navigation/native"
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { observer } from "mobx-react-lite"
 import * as Screens from "@/screens"
@@ -16,40 +16,13 @@ import { ComponentProps } from "react"
 import Log from "@/utils/Log"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
-
-/**
- * This type allows TypeScript to know what routes are defined in this navigator
- * as well as what properties (if any) they might take when navigating to them.
- *
- * If no params are allowed, pass through `undefined`. Generally speaking, we
- * recommend using your MobX-State-Tree store(s) to keep application state
- * rather than passing state through navigation params.
- *
- * For more information, see this documentation:
- *   https://reactnavigation.org/docs/params/
- *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
- *   https://reactnavigation.org/docs/typescript/#organizing-types
- */
-export type AppStackParamList = {
-  Welcome: undefined
-  // 🔥 Your screens go here
-  Home: undefined
-  MyTab: undefined
-  Settings: undefined
-  TabNavigator: undefined
-  Login: undefined
-}
+import type { AppStackParamList } from "./navigationTypes"
 
 /**
  * This is a list of all the route names that will exit the app if the back button
  * is pressed while in that screen. Only affects Android.
  */
 const exitRoutes = Config.exitRoutes
-
-export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStackScreenProps<
-  AppStackParamList,
-  T
->
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<AppStackParamList>()
