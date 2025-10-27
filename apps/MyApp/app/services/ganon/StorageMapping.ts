@@ -20,6 +20,8 @@ interface StorageMapping {
   entitlementId: string | null
   premiumOverride: boolean
   reviewBackoff: IReviewBackoffData
+  passedAppCheck: boolean
+  finishedOnboarding: boolean
 }
 
 export default StorageMapping
