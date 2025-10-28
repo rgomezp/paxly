@@ -20,12 +20,20 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isScrolling, setIsScrolling] = useState(false)
   const [hasShownReviewOnCurrentSlide, setHasShownReviewOnCurrentSlide] = useState(false)
-  const { slides } = useSlides()
   const { color } = useCustomColor()
 
   const scrollX = useRef(new Animated.Value(0)).current
   const scrollViewRef = useRef<ScrollView>(null)
   const { width } = Dimensions.get("window")
+
+  const handleSelection = () => {
+    // Automatically scroll to next slide after a short delay
+    setTimeout(() => {
+      scrollTo()
+    }, 200)
+  }
+
+  const { slides } = useSlides(handleSelection)
 
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x

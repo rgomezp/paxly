@@ -6,6 +6,7 @@ import useRevenueCat from "@/thirdParty/useRevenueCat"
 import { createContext } from "react"
 import useOneSignal from "@/thirdParty/useOneSignal"
 import { useAudio } from "@/hooks/useAudio"
+import Log, { LogLevel } from "@/utils/Log"
 
 interface InitializationState {
   isInitialized?: boolean
@@ -24,6 +25,7 @@ export function InitializationProvider({ children }: { children: React.ReactNode
   /* N O N - B L O C K I N G */
   useRevenueCat()
   useOneSignal()
+  Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Verbose : LogLevel.None)
 
   /* B L O C K I N G */
   const isInitialized = isAppCheckComplete && areFontsLoaded && isAudioSetup
