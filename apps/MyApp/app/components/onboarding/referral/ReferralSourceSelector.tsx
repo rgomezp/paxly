@@ -2,6 +2,7 @@ import RectangularButton from "@/components/buttons/RectangularButton"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
+import { useState } from "react"
 
 export const ReferralSource = {
   FRIENDS_OR_FAMILY: "FRIENDS_OR_FAMILY",
@@ -34,6 +35,7 @@ interface ReferralSourceSelectorProps {
 const ReferralSourceSelector = ({ showTitle = true, onSelection }: ReferralSourceSelectorProps) => {
   const { theme, themeContext } = useAppTheme()
   const isDark = themeContext === "dark"
+  const [selectedSource, setSelectedSource] = useState<ReferralSourceType | null>(null)
 
   const getSourceEnglishName = (source: ReferralSourceType): string => {
     switch (source) {
@@ -61,6 +63,9 @@ const ReferralSourceSelector = ({ showTitle = true, onSelection }: ReferralSourc
   }
 
   const handleSourceSelect = (source: ReferralSourceType) => {
+    // Set selected source
+    setSelectedSource(source)
+
     // Log analytics event
     const englishSourceName = getSourceEnglishName(source)
     AnalyticsManager.getInstance().logEvent("referral_source", {
@@ -133,6 +138,7 @@ const ReferralSourceSelector = ({ showTitle = true, onSelection }: ReferralSourc
                 textStyle={styles.buttonText}
                 customStyles={styles.buttonCustom}
                 testID={`referral-source-${source}`}
+                isSelected={selectedSource === source}
               />
             ))}
           </View>
