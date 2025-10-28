@@ -124,6 +124,7 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
               slides[currentIndex]?.showStoreReview ? handleStoreReviewPrompt : undefined
             }
             isDisabled={false}
+            backgroundColor={color}
           />
         </View>
       </SafeAreaView>

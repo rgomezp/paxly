@@ -1,11 +1,12 @@
 import { StyleSheet, View, Image, Linking, Text } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import LoginComponent from "../login/LoginComponent"
-import { colors } from "../../theme"
+import { useAppTheme } from "@/utils/useAppTheme"
 import customConfig from "../../../customConfig"
 
 const OnboardingLoginScreen: React.FC = () => {
   const config = customConfig()
+  const { theme } = useAppTheme()
 
   const openTerms = () => {
     Linking.openURL(config.termsOfServiceUrl)
@@ -16,7 +17,7 @@ const OnboardingLoginScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.contentContainer}>
           {/* Image container - takes up 1/2 of the screen */}
@@ -35,13 +36,13 @@ const OnboardingLoginScreen: React.FC = () => {
 
           {/* Terms and privacy text with links */}
           <View style={styles.legalContainer}>
-            <Text style={styles.legalText}>
+            <Text style={[styles.legalText, { color: theme.colors.textDim }]}>
               By continuing you accept the{" "}
-              <Text style={styles.linkText} onPress={openTerms}>
+              <Text style={[styles.linkText, { color: theme.colors.tint }]} onPress={openTerms}>
                 terms and conditions
               </Text>{" "}
               and have reviewed the{" "}
-              <Text style={styles.linkText} onPress={openPrivacy}>
+              <Text style={[styles.linkText, { color: theme.colors.tint }]} onPress={openPrivacy}>
                 privacy policy
               </Text>
             </Text>
@@ -54,7 +55,6 @@ const OnboardingLoginScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background,
     flex: 1,
   },
   contentContainer: {
@@ -73,13 +73,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   legalText: {
-    color: colors.textDim,
     fontSize: 14,
     lineHeight: 20,
     textAlign: "center",
   },
   linkText: {
-    color: colors.tint,
     textDecorationLine: "underline",
   },
   loginContainer: {

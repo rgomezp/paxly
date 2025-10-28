@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, useWindowDimensions } from "react-native"
 import { ISlide } from "@/types/ISlide"
 import { AnimatedTextSimulation } from "../AnimatedTextSimulation"
 import { Text } from "../Text"
+import { useAppTheme } from "@/utils/useAppTheme"
 
 interface OnboardingItemProps {
   item: ISlide
@@ -12,6 +13,7 @@ interface OnboardingItemProps {
 
 const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemProps) => {
   const { width } = useWindowDimensions()
+  const { theme } = useAppTheme()
 
   // Memoize the tokenizer function to prevent re-renders
   const tokenizer = useCallback((t: string) => t.split(" "), [])
@@ -26,7 +28,7 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
       )}
       {item.component && <View style={styles.component}>{item.component}</View>}
       <View style={styles.textContainer}>
-        <Text preset="heading" style={[styles.title, { color: item.titleColor }]}>
+        <Text preset="heading" style={[styles.title, { color: theme.colors.text }]}>
           {item.title}
         </Text>
         {item.description && (
@@ -35,7 +37,7 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
             tokenizer={tokenizer}
             separator=" "
             shouldStart={shouldStartAnimation}
-            style={styles.description}
+            style={[styles.description, { color: theme.colors.textDim }]}
           />
         )}
       </View>

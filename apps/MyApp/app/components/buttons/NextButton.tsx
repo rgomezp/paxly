@@ -8,9 +8,10 @@ type IProps = {
   scrollTo: () => void
   onPressOverride?: () => void
   isDisabled?: boolean
+  backgroundColor?: string
 }
 
-export default function NextButton({ scrollTo, onPressOverride, isDisabled }: IProps) {
+export default function NextButton({ scrollTo, onPressOverride, isDisabled, backgroundColor }: IProps) {
   const lang = Language.current
 
   const handlePress = () => {
@@ -31,6 +32,7 @@ export default function NextButton({ scrollTo, onPressOverride, isDisabled }: IP
         width={120}
         fontSize={16}
         isDisabled={isDisabled}
+        backgroundColor={backgroundColor}
       />
     </View>
   )

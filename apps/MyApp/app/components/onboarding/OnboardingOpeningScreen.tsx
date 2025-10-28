@@ -2,7 +2,7 @@ import { StyleSheet, Image, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import RectangularButton from "../buttons/RectangularButton"
 import { Text } from "../Text"
-import { colors } from "../../theme"
+import { useAppTheme } from "@/utils/useAppTheme"
 
 interface OnboardingOpeningScreenProps {
   onGetStarted: () => void
@@ -13,8 +13,10 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
   onGetStarted,
   onIHaveAccount,
 }) => {
+  const { theme } = useAppTheme()
+
   return (
-    <View style={styles.view}>
+    <View style={[styles.view, { backgroundColor: theme.colors.background }]}>
       <View style={styles.backgroundContainer}>{/* Background image */}</View>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
@@ -39,9 +41,6 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
             />
           </View>
         </View>
-        <View style={styles.mascotContainer}>
-          <Image source={require("../../../assets/images/welcome-face.png")} style={styles.logo} />
-        </View>
       </SafeAreaView>
     </View>
   )
@@ -57,12 +56,10 @@ const styles = StyleSheet.create({
     top: 0,
   },
   buttonContainer: {
-    backgroundColor: colors.transparent,
     paddingBottom: 40,
   },
   container: {
     alignItems: "center",
-    backgroundColor: colors.transparent,
     flex: 1,
     justifyContent: "space-between",
     paddingHorizontal: 24,
@@ -76,17 +73,7 @@ const styles = StyleSheet.create({
     width: 300,
   },
   logoContainer: {
-    backgroundColor: colors.transparent,
     paddingTop: 40,
-  },
-  mascotContainer: {
-    alignItems: "center",
-    backgroundColor: colors.transparent,
-    justifyContent: "center",
-    left: "50%",
-    position: "absolute",
-    top: "50%",
-    transform: [{ translateX: -100 }, { translateY: -100 }],
   },
   safeArea: {
     flex: 1,
@@ -95,10 +82,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   welcomeText: {
-    color: colors.palette.neutral100,
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: -20,
+    marginBottom: 50,
     marginLeft: 20,
     textAlign: "left",
   },

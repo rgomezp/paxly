@@ -29,8 +29,10 @@ import { KeyboardProvider } from "react-native-keyboard-controller"
 import { useAppInitialization } from "./initialization/useAppInitialization"
 import { OnboardingScreen } from "./screens"
 import { InitializationProvider } from "./initialization/InitializationProvider"
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native"
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { useThemeProvider } from "./utils/useAppTheme"
+import customConfig from "../customConfig"
+import type { ThemeContexts } from "./theme"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -59,14 +61,24 @@ const config = {
  * @returns {JSX.Element} The rendered `App` component.
  */
 function OnboardingWrapper() {
-  // Use DefaultTheme directly to avoid the useNavTheme hook requirement
-  // We don't need dynamic theming at this point since OnboardingScreen uses its own theme logic
+  const config = customConfig()
+  // Convert string theme to ThemeContexts type
+  // "auto" becomes undefined to follow system theme
+  const startingTheme: ThemeContexts = 
+    config.startingTheme === "auto" ? undefined : 
+    config.startingTheme === "dark" ? "dark" : 
+    config.startingTheme === "light" ? "light" : undefined
+  
+  const { ThemeProvider, navigationTheme } = useThemeProvider(startingTheme)
+  
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <KeyboardProvider>
-          <NavigationContainer ref={navigationRef} theme={DefaultTheme}>
-            <OnboardingScreen />
+          <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+            <ThemeProvider value={{ themeScheme: startingTheme, setThemeContextOverride: () => {} }}>
+              <OnboardingScreen />
+            </ThemeProvider>
           </NavigationContainer>
         </KeyboardProvider>
       </ErrorBoundary>
@@ -116,10 +128,18 @@ function AppContent() {
 }
 
 export function App() {
-  const { ThemeProvider } = useThemeProvider()
+  const config = customConfig()
+  // Convert string theme to ThemeContexts type
+  // "auto" becomes undefined to follow system theme
+  const startingTheme: ThemeContexts = 
+    config.startingTheme === "auto" ? undefined : 
+    config.startingTheme === "dark" ? "dark" : 
+    config.startingTheme === "light" ? "light" : undefined
+  
+  const { ThemeProvider } = useThemeProvider(startingTheme)
 
   return (
-    <ThemeProvider value={{ themeScheme: undefined, setThemeContextOverride: () => {} }}>
+    <ThemeProvider value={{ themeScheme: startingTheme, setThemeContextOverride: () => {} }}>
       <InitializationProvider>
         <AppContent />
       </InitializationProvider>

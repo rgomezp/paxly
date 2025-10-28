@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react"
-import { Text, StyleProp, TextStyle } from "react-native"
+import { StyleProp, TextStyle } from "react-native"
+import { Text } from "./Text"
 
 interface AnimatedTextSimulationProps {
   text: string

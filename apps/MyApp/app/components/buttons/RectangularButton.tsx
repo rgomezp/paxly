@@ -123,7 +123,7 @@ export default function RectangularButton(props: IProps) {
     const iconColor = props.isSelected
       ? theme.colors.palette.neutral900
       : props.lightBackground
-        ? colors.text
+        ? "#424242" // Dark color for light gray background (works in both themes)
         : colors.background
 
     // Show lock icon for paid features when user doesn't have access
@@ -162,7 +162,7 @@ export default function RectangularButton(props: IProps) {
         color: props.isSelected
           ? theme.colors.palette.neutral900 // Dark text for accent500 background
           : props.lightBackground
-            ? colors.text
+            ? "#424242" // Dark text for light gray background (works in both themes)
             : colors.background,
       },
       props.textStyle,
@@ -172,7 +172,6 @@ export default function RectangularButton(props: IProps) {
       props.lightBackground,
       props.textStyle,
       props.isSelected,
-      colors.text,
       colors.background,
       theme,
     ],
