@@ -1,7 +1,8 @@
 import { memo, useCallback } from "react"
-import { View, StyleSheet, Image, useWindowDimensions, Text } from "react-native"
+import { View, StyleSheet, Image, useWindowDimensions } from "react-native"
 import { ISlide } from "@/types/ISlide"
 import { AnimatedTextSimulation } from "../AnimatedTextSimulation"
+import { Text } from "../Text"
 
 interface OnboardingItemProps {
   item: ISlide
@@ -25,7 +26,9 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
       )}
       {item.component && <View style={styles.component}>{item.component}</View>}
       <View style={styles.textContainer}>
-        <Text style={[styles.title, { color: item.titleColor }]}>{item.title}</Text>
+        <Text preset="heading" style={[styles.title, { color: item.titleColor }]}>
+          {item.title}
+        </Text>
         {item.description && (
           <AnimatedTextSimulation
             text={item.description}
@@ -72,16 +75,15 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: "center",
-    height: 100,
     marginTop: 10,
+    minHeight: 100,
     width: "100%",
   },
   title: {
     fontSize: 28,
     fontWeight: "800",
     marginBottom: 10,
-    marginHorizontal: 20,
-    textAlign: "left",
+    textAlign: "center",
   },
   top: {
     flex: 3,

@@ -41,19 +41,25 @@ export function AnimatedTextSimulation({
       timeoutRef.current = null
     }
 
+    const tokens = tokenizer(text)
+
+    // Initialize with first token to avoid layout jank
+    if (tokens.length > 0) {
+      setCurrentTokens([tokens[0]])
+    } else {
+      setCurrentTokens([])
+    }
+
     // Only start animation if shouldStart is true
     if (!shouldStart) {
-      setCurrentTokens([])
       hasStartedRef.current = false
       return
     }
 
     let isMounted = true
-    const tokens = tokenizer(text)
-    setCurrentTokens([])
     hasStartedRef.current = true
 
-    let index = 0
+    let index = 1 // Start from 1 since the first token is already shown
 
     const addNextToken = () => {
       if (!isMounted || index >= tokens.length) {
