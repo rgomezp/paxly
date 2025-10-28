@@ -19,7 +19,7 @@ export function AnimatedTextSimulation({
   text,
   tokenizer = defaultTokenizer,
   minDelay = 50,
-  maxDelay = 200,
+  maxDelay = 100,
   separator = "",
   onAnimationComplete,
   shouldStart = true,

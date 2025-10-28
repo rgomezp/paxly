@@ -35,6 +35,9 @@
     "test-archive-android": "rm -rf ../test_archive && eas build:inspect --platform android --stage archive --output ../test_archive --profile production"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo-google-fonts/poppins": "^0.4.1",
+    "@expo-google-fonts/roboto": "^0.4.1",
     "@expo-google-fonts/space-grotesk": "^0.2.2",
     "@expo/metro-runtime": "~4.0.1",
     "@expo/vector-icons": "~14.0.4",

@@ -1627,6 +1627,21 @@
     "@eslint/core" "^0.16.0"
     levn "^0.4.1"
 
+"@expo-google-fonts/inter@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/inter/-/inter-0.4.2.tgz#2d37ffb1cb16600cff616b6c4c0efee9b6c47c28"
+  integrity sha512-syfiImMaDmq7cFi0of+waE2M4uSCyd16zgyWxdPOY7fN2VBmSLKEzkfbZgeOjJq61kSqPBNNtXjggiQiSD6gMQ==
+
+"@expo-google-fonts/poppins@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.4.1.tgz#bf49b2a14a5d255fa3404fdef7bcbbb04025f0a4"
+  integrity sha512-LiX5oEryJqDt3UmWwr4oqf11hGMz/JEffkkNcZ3UtGwyoMFzXmBmTwcrAWrEttxypxmLNmPykDg+CY2VjKve9A==
+
+"@expo-google-fonts/roboto@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/roboto/-/roboto-0.4.1.tgz#71b7281b0a133107ebc0726a2680e50ca310dad4"
+  integrity sha512-kil05iC3NGEhdwbkbftA++0xyWTDqdbCmQEuM2sCPdESzTJVtqXDyoRZqBoXRjvLZWH76uR0x115QPQEeNJa1w==
+
 "@expo-google-fonts/space-grotesk@^0.2.2":
   version "0.2.3"
   resolved "https://registry.npmjs.org/@expo-google-fonts/space-grotesk/-/space-grotesk-0.2.3.tgz"
@@ -10381,10 +10396,10 @@ typescript@^5.0.0:
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
   integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
-typescript@~5.6.0:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
-  integrity sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==
+typescript@~5.9.2:
+  version "5.9.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
+  integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
 ua-parser-js@^1.0.35:
   version "1.0.40"

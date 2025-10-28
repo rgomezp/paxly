@@ -20,6 +20,10 @@ interface CustomConfig {
    * The starting theme
    */
   startingTheme?: "light" | "dark" | "auto"
+  /**
+   * The primary font family to use throughout the app
+   */
+  primaryFont?: "poppins" | "inter" | "roboto" | "spaceGrotesk"
 }
 
 export default function customConfig(): CustomConfig {
@@ -30,5 +34,6 @@ export default function customConfig(): CustomConfig {
     includeSettingsScreen: true,
     localGanon: true,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
+    primaryFont: "inter", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
   }
 }
