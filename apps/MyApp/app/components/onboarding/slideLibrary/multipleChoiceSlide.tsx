@@ -23,13 +23,8 @@ export function multipleChoiceSlide({
   allowMultipleSelections = false,
   maxSelections,
 }: MultipleChoiceSlideProps): ISlide {
-  const buttonPressed = (optionId: string) => {
+  const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`MultipleChoiceSlide: buttonPressed: ${optionId}`)
-
-    // Only call onSelection for single selection mode
-    if (!allowMultipleSelections) {
-      onSelection?.()
-    }
 
     switch (optionId) {
       case "get_stronger":
@@ -42,6 +37,11 @@ export function multipleChoiceSlide({
         break
       default:
         break
+    }
+
+    // Auto-advance when shouldAutoAdvance is true
+    if (shouldAutoAdvance) {
+      onSelection?.()
     }
   }
 
@@ -56,6 +56,7 @@ export function multipleChoiceSlide({
         onSelection={buttonPressed}
         allowMultiple={allowMultipleSelections}
         maxSelections={maxSelections}
+        onAutoAdvance={onSelection}
       />
     ),
   }

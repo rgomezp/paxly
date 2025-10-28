@@ -13,9 +13,10 @@ interface MultipleChoiceSelectorProps {
   options: MultipleChoiceOption[]
   heroImage?: ImageRequireSource
   maxOptions?: number
-  onSelection?: (optionId: string) => void
+  onSelection?: (optionId: string, shouldAutoAdvance?: boolean) => void
   allowMultiple?: boolean
   maxSelections?: number
+  onAutoAdvance?: () => void
 }
 
 export const MultipleChoiceSelector = ({
@@ -25,6 +26,7 @@ export const MultipleChoiceSelector = ({
   onSelection,
   allowMultiple = false,
   maxSelections,
+  onAutoAdvance,
 }: MultipleChoiceSelectorProps) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
   const { theme } = useAppTheme()
@@ -37,7 +39,16 @@ export const MultipleChoiceSelector = ({
     allowMultiple && maxSelections && selectedOptions.length >= maxSelections
 
   const handleOptionSelect = (optionId: string) => {
+    let shouldAutoAdvance = false
+    
     if (allowMultiple) {
+      const wasAtMax = isMaxSelectionsReached
+      
+      // Check before state update if we should auto-advance
+      if (maxSelections && selectedOptions.length + 1 === maxSelections && !wasAtMax && !selectedOptions.includes(optionId)) {
+        shouldAutoAdvance = true
+      }
+      
       setSelectedOptions((prev) => {
         if (prev.includes(optionId)) {
           // Allow deselecting even if at max
@@ -50,12 +61,23 @@ export const MultipleChoiceSelector = ({
           return [...prev, optionId]
         }
       })
+      
+      // Auto-advance if we just reached max
+      if (shouldAutoAdvance) {
+        setTimeout(() => {
+          onAutoAdvance?.()
+        }, 0)
+      }
     } else {
-      // Single selection mode
+      // Single selection mode - always auto-advance on first selection
       setSelectedOptions([optionId])
+      shouldAutoAdvance = true
+      setTimeout(() => {
+        onAutoAdvance?.()
+      }, 0)
     }
 
-    onSelection?.(optionId)
+    onSelection?.(optionId, shouldAutoAdvance)
   }
 
   return (
