@@ -1,7 +1,6 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { useState } from "react"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
 
 export const ReferralSource = {
@@ -32,12 +31,8 @@ interface ReferralSourceSelectorProps {
   onSelection?: (source: ReferralSourceType) => void
 }
 
-const ReferralSourceSelector: React.FC<ReferralSourceSelectorProps> = ({
-  showTitle = true,
-  onSelection,
-}) => {
-  const [selectedSource, setSelectedSource] = useState<ReferralSourceType | null>(null)
-  const { themeContext } = useAppTheme()
+const ReferralSourceSelector = ({ showTitle = true, onSelection }: ReferralSourceSelectorProps) => {
+  const { theme, themeContext } = useAppTheme()
   const isDark = themeContext === "dark"
 
   const getSourceEnglishName = (source: ReferralSourceType): string => {
@@ -66,8 +61,6 @@ const ReferralSourceSelector: React.FC<ReferralSourceSelectorProps> = ({
   }
 
   const handleSourceSelect = (source: ReferralSourceType) => {
-    setSelectedSource(source)
-
     // Log analytics event
     const englishSourceName = getSourceEnglishName(source)
     AnalyticsManager.getInstance().logEvent("referral_source", {
@@ -115,7 +108,6 @@ const ReferralSourceSelector: React.FC<ReferralSourceSelectorProps> = ({
   ]
 
   const getTitleColor = () => (isDark ? styles.titleDark : styles.titleLight)
-  const getScrollHintBackground = () => (isDark ? styles.scrollHintDark : styles.scrollHintLight)
   const getScrollHintTextColor = () =>
     isDark ? styles.scrollHintTextDark : styles.scrollHintTextLight
 
@@ -138,14 +130,6 @@ const ReferralSourceSelector: React.FC<ReferralSourceSelectorProps> = ({
                 buttonText={getSourceDisplayName(source)}
                 onClick={() => handleSourceSelect(source)}
                 width={"70%"}
-                backgroundColor={
-                  selectedSource === source
-                    ? themeContext === "dark"
-                      ? colors.white
-                      : colors.black
-                    : colors.lightGray
-                }
-                lightBackground={selectedSource !== source}
                 textStyle={styles.buttonText}
                 customStyles={styles.buttonCustom}
                 testID={`referral-source-${source}`}
@@ -153,7 +137,7 @@ const ReferralSourceSelector: React.FC<ReferralSourceSelectorProps> = ({
             ))}
           </View>
         </ScrollView>
-        <View style={[styles.scrollHint, getScrollHintBackground()]}>
+        <View style={[styles.scrollHint, { backgroundColor: theme.colors.background }]}>
           <Text style={[styles.scrollHintText, getScrollHintTextColor()]}>
             Scroll for more options
           </Text>
@@ -194,12 +178,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     position: "absolute",
     right: 0,
-  },
-  scrollHintDark: {
-    backgroundColor: colors.black,
-  },
-  scrollHintLight: {
-    backgroundColor: colors.lightGray,
   },
   scrollHintText: {
     fontSize: 12,

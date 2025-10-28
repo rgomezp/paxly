@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: 10,
     marginHorizontal: 20,
-    textAlign: "left",
+    textAlign: "center",
   },
   image: {
     flex: 1,
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     minHeight: 100,
+    paddingHorizontal: 20,
     width: "100%",
   },
   title: {

@@ -6,6 +6,7 @@ import { nicknameSlide } from "../slideLibrary/nicknameSlide"
 import { testimonialsSlide } from "../slideLibrary/testimonialsSlide"
 import { heroSlide } from "../slideLibrary/heroSlide"
 import { problemSolutionSlide } from "../slideLibrary/problemSolutionSlide"
+import { referralSourceSlide } from "../slideLibrary/referralSourceSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -56,6 +57,7 @@ export const useSlides = (onSelection?: () => void) => {
     () => [
       heroSlide({ onSelection }),
       problemSolutionSlide({ onSelection }),
+      referralSourceSlide({ onSelection }),
       nicknameSlide({ onSelection, refreshNickname }),
       testimonialsSlide({ onSelection }),
     ],
