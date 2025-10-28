@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, DimensionValue, View, StyleProp, Text } from "react-native"
+import { TouchableOpacity, StyleSheet, DimensionValue, View, StyleProp } from "react-native"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { useEntitlements } from "../../entitlements/useEntitlements"
 import Log from "../../utils/Log"
@@ -9,6 +9,7 @@ import { $styles } from "../../theme/styles"
 import { triggerLightHaptic } from "../../utils/hapticFeedback"
 import { useMemo } from "react"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { Text } from "../Text"
 
 type IProps = {
   buttonText: string
@@ -32,11 +33,11 @@ export default function RectangularButton(props: IProps) {
 
   // Default colors if not provided
   const defaultColor = props.lightBackground ? "#F5F5F5" : colors.tint
-  
+
   // Use accent color for selected state, otherwise use provided or default
   const buttonBackgroundColor = props.isSelected
     ? theme.colors.palette.accent500
-    : props.backgroundColor ?? defaultColor
+    : (props.backgroundColor ?? defaultColor)
 
   // Determine darkenedBackgroundColor based on the button's color format
   let darkenedBackgroundColor
