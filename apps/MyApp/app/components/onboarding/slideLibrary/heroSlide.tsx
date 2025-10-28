@@ -1,9 +1,9 @@
-import { View, Text as RNText, Image, ImageRequireSource } from "react-native"
-import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
+import { View, Image, ImageRequireSource } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
-import type { ViewStyle, TextStyle, ImageStyle } from "react-native"
+import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
+import { IconTextItem } from "../shared/IconTextItem"
 
 const logoImage: ImageRequireSource = require("../../../../assets/images/logo.png")
 
@@ -45,7 +45,7 @@ const benefits: Benefit[] = [
 ]
 
 const HeroComponent: React.FC = () => {
-  const { themed, theme } = useAppTheme()
+  const { themed } = useAppTheme()
 
   return (
     <View style={themed($container)}>
@@ -57,20 +57,12 @@ const HeroComponent: React.FC = () => {
       {/* Benefits Section */}
       <View style={themed($benefitsContainer)}>
         {benefits.map((benefit, index) => (
-          <View key={index} style={themed($benefitRow)}>
-            <View style={themed($iconContainer)}>
-              <ThemedFontAwesome5Icon
-                name={benefit.icon}
-                size={28}
-                color={theme.colors.palette.accent500}
-                solid
-              />
-            </View>
-            <View style={themed($benefitTextContainer)}>
-              <RNText style={themed($benefitTitle)}>{benefit.title}</RNText>
-              <RNText style={themed($benefitDescription)}>{benefit.description}</RNText>
-            </View>
-          </View>
+          <IconTextItem
+            key={index}
+            icon={benefit.icon}
+            title={benefit.title}
+            description={benefit.description}
+          />
         ))}
       </View>
     </View>
@@ -102,39 +94,4 @@ const $logoImage: ThemedStyle<ImageStyle> = () => ({
 const $benefitsContainer: ThemedStyle<ViewStyle> = () => ({
   gap: 20,
   width: "100%",
-})
-
-const $benefitRow: ThemedStyle<ViewStyle> = () => ({
-  alignItems: "flex-start",
-  flexDirection: "row",
-  gap: 16,
-  width: "100%",
-})
-
-const $iconContainer: ThemedStyle<ViewStyle> = (theme) => ({
-  alignItems: "center",
-  backgroundColor: theme.isDark ? "#191015" : "#F5F5F5",
-  borderRadius: 12,
-  height: 56,
-  justifyContent: "center",
-  width: 56,
-})
-
-const $benefitTextContainer: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
-  justifyContent: "center",
-  minWidth: 0,
-})
-
-const $benefitTitle: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.isDark ? "#F4F2F1" : "#1A1A1A",
-  fontSize: 18,
-  fontWeight: "bold",
-  marginBottom: 4,
-})
-
-const $benefitDescription: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.isDark ? "#B6ACA6" : "#666666",
-  fontSize: 15,
-  lineHeight: 22,
 })
