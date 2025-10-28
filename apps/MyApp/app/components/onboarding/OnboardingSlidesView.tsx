@@ -1,7 +1,6 @@
 import { useRef, useState } from "react"
 import { StyleSheet, ScrollView, Animated, Dimensions, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import LottieView from "lottie-react-native"
 import OnboardingItem from "./OnboardingItem"
 import { useScrollContext } from "@/screens/OnboardingScreen/ScrollProvider"
 import { ISlide } from "@/types/ISlide"
@@ -11,8 +10,6 @@ import NextButton from "../buttons/NextButton"
 import StoreReviewManager from "@/managers/StoreReviewManager"
 import Log from "@/utils/Log"
 import { useCustomColor } from "@/hooks/useCustomColor"
-
-const DARK_OVERLAY_COLOR = "rgba(0, 0, 0, 0.7)"
 
 interface OnboardingSlidesViewProps {
   onComplete?: () => void
@@ -29,23 +26,6 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
   const scrollX = useRef(new Animated.Value(0)).current
   const scrollViewRef = useRef<ScrollView>(null)
   const { width } = Dimensions.get("window")
-
-  // Early return if no slides - at least show the background
-  if (slides.length === 0) {
-    return (
-      <View style={styles.rootContainer}>
-        <LottieView
-          source={require("../../../assets/blocks.json")}
-          autoPlay
-          loop
-          speed={2}
-          resizeMode="cover"
-          style={styles.backgroundAnimation}
-        />
-        <View style={styles.backgroundOverlay} />
-      </View>
-    )
-  }
 
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x
@@ -103,14 +83,6 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
 
   return (
     <View style={styles.rootContainer}>
-      <LottieView
-        source={require("../../../assets/blocks.json")}
-        autoPlay
-        loop
-        speed={2}
-        resizeMode="cover"
-        style={styles.backgroundAnimation}
-      />
       <View style={styles.backgroundOverlay} />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
@@ -152,17 +124,7 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
 }
 
 const styles = StyleSheet.create({
-  backgroundAnimation: {
-    bottom: 0,
-    height: "100%",
-    left: 0,
-    position: "absolute",
-    right: 0,
-    top: 0,
-    width: "100%",
-  },
   backgroundOverlay: {
-    backgroundColor: DARK_OVERLAY_COLOR,
     bottom: 0,
     left: 0,
     position: "absolute",

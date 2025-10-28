@@ -6,7 +6,9 @@ import { ISlide } from "@/types/ISlide"
 import { useAppTheme } from "@/utils/useAppTheme"
 
 export const useSlides = (onSelection?: () => void) => {
-  const { themeContext, theme: { colors } } = useAppTheme()
+  const {
+    theme: { colors },
+  } = useAppTheme()
   const titleColor = colors.text
   const [nickname, setNickname] = useState<string | null>(null)
 
