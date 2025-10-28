@@ -1,15 +1,11 @@
 import UserManager from "@/managers/UserManager"
 import Log from "@/utils/Log"
 import { useEffect, useState, useMemo } from "react"
-import NameInput from "@/components/NameInput"
 import { ISlide } from "@/types/ISlide"
-import { useAppTheme } from "@/utils/useAppTheme"
+import { nicknameSlide } from "../slideLibrary/nicknameSlide"
+import { testimonialsSlide } from "../slideLibrary/testimonialsSlide"
 
 export const useSlides = (onSelection?: () => void) => {
-  const {
-    theme: { colors },
-  } = useAppTheme()
-  const titleColor = colors.text
   const [nickname, setNickname] = useState<string | null>(null)
 
   // Load nickname when component mounts
@@ -55,23 +51,8 @@ export const useSlides = (onSelection?: () => void) => {
   }
 
   const slides: ISlide[] = useMemo(
-    () => [
-      {
-        id: "name_input",
-        title: "What should we call you?",
-        component: (
-          <NameInput
-            showTitle={false}
-            onSelection={() => {
-              refreshNickname()
-              onSelection?.()
-            }}
-          />
-        ),
-        titleColor,
-      },
-    ],
-    [titleColor, onSelection],
+    () => [nicknameSlide({ onSelection, refreshNickname }), testimonialsSlide({ onSelection })],
+    [onSelection],
   )
 
   return { slides, nickname }
