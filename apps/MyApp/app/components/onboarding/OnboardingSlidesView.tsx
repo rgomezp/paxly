@@ -15,10 +15,10 @@ import { useSlides } from "./hooks/useSlides"
 const DARK_OVERLAY_COLOR = "rgba(0, 0, 0, 0.7)"
 
 interface OnboardingSlidesViewProps {
-  onSplitSelector: () => void
+  onComplete?: () => void
 }
 
-const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onSplitSelector }) => {
+const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete }) => {
   const { scrollEnabled } = useScrollContext()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isScrolling, setIsScrolling] = useState(false)
@@ -78,25 +78,22 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onSplitSele
         setIsScrolling(false)
       }, 500)
     } else {
-      // Show split selector after last slide
-      onSplitSelector()
+      onComplete?.()
       setIsScrolling(false)
     }
   }
 
   return (
     <View style={styles.rootContainer}>
-      <View style={styles.backgroundContainer}>
-        <LottieView
-          source={require("../../assets/animations/blocks.json")}
-          autoPlay
-          loop
-          speed={2}
-          resizeMode="cover"
-          style={styles.backgroundAnimation}
-        />
-        <View style={styles.backgroundOverlay} />
-      </View>
+      <LottieView
+        source={require("../../../assets/blocks.json")}
+        autoPlay
+        loop
+        speed={2}
+        resizeMode="cover"
+        style={styles.backgroundAnimation}
+      />
+      <View style={styles.backgroundOverlay} />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <ProgressBar data={slides} scrollX={scrollX} highlightedColor={color} />
@@ -138,17 +135,13 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onSplitSele
 
 const styles = StyleSheet.create({
   backgroundAnimation: {
-    height: "100%",
-    width: "100%",
-    zIndex: -2,
-  },
-  backgroundContainer: {
     bottom: 0,
-    flex: 1,
+    height: "100%",
     left: 0,
     position: "absolute",
     right: 0,
     top: 0,
+    width: "100%",
   },
   backgroundOverlay: {
     backgroundColor: DARK_OVERLAY_COLOR,
@@ -157,7 +150,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     top: 0,
-    zIndex: -1,
   },
   container: {
     alignItems: "center",
@@ -169,6 +161,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
+    zIndex: 1,
   },
   scrollView: {
     flex: 1,
