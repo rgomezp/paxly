@@ -2,6 +2,7 @@ import { ISlide } from "@/types/ISlide"
 import { useEffect, useRef } from "react"
 import { View, Animated, useWindowDimensions } from "react-native"
 import { progressBarStyles } from "../theme/styles"
+import { colors } from "@/theme/colors"
 
 type ProgressBarProps = {
   data: ISlide[]
@@ -12,7 +13,7 @@ type ProgressBarProps = {
 export default function ProgressBar({
   data,
   scrollX,
-  highlightedColor = "#007AFF",
+  highlightedColor = colors.tint,
 }: ProgressBarProps) {
   const { width } = useWindowDimensions()
   const progressWidth = useRef(new Animated.Value(0)).current
