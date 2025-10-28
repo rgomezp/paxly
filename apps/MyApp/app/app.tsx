@@ -22,13 +22,15 @@ import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-c
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
 import { useInitialRootStore } from "./models"
-import { AppNavigator } from "./navigators"
+import { AppNavigator, navigationRef } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import Config from "./config"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { useAppInitialization } from "./initialization/useAppInitialization"
 import { OnboardingScreen } from "./screens"
 import { InitializationProvider } from "./initialization/InitializationProvider"
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native"
+import { useThemeProvider } from "./utils/useAppTheme"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -56,6 +58,22 @@ const config = {
  * @param {AppProps} props - The props for the `App` component.
  * @returns {JSX.Element} The rendered `App` component.
  */
+function OnboardingWrapper() {
+  // Use DefaultTheme directly to avoid the useNavTheme hook requirement
+  // We don't need dynamic theming at this point since OnboardingScreen uses its own theme logic
+  return (
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <ErrorBoundary catchErrors={Config.catchErrors}>
+        <KeyboardProvider>
+          <NavigationContainer ref={navigationRef} theme={DefaultTheme}>
+            <OnboardingScreen />
+          </NavigationContainer>
+        </KeyboardProvider>
+      </ErrorBoundary>
+    </SafeAreaProvider>
+  )
+}
+
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore(() => {
@@ -77,16 +95,7 @@ function AppContent() {
   }
 
   if (!isOnboardingComplete) {
-    return (
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
-          <KeyboardProvider>
-            {/* @ts-ignore - OnboardingScreen rendered outside navigation context */}
-            <OnboardingScreen />
-          </KeyboardProvider>
-        </ErrorBoundary>
-      </SafeAreaProvider>
-    )
+    return <OnboardingWrapper />
   }
 
   const linking = {
@@ -107,9 +116,13 @@ function AppContent() {
 }
 
 export function App() {
+  const { ThemeProvider } = useThemeProvider()
+
   return (
-    <InitializationProvider>
-      <AppContent />
-    </InitializationProvider>
+    <ThemeProvider value={{ themeScheme: undefined, setThemeContextOverride: () => {} }}>
+      <InitializationProvider>
+        <AppContent />
+      </InitializationProvider>
+    </ThemeProvider>
   )
 }
