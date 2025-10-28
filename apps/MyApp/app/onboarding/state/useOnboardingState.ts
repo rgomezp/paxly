@@ -51,6 +51,7 @@ export const useOnboardingState = () => {
   return {
     step,
     isLoggedIn,
+    setStep,
     // export handlers
     completeOnboarding,
   }
