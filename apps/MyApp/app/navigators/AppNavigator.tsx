@@ -4,15 +4,16 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer, useNavigation } from "@react-navigation/native"
+import { NavigationContainer, useNavigation, DarkTheme, DefaultTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { observer } from "mobx-react-lite"
 import * as Screens from "@/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
-import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
-import { ComponentProps } from "react"
+import { ThemeContext } from "@/utils/useAppTheme"
+import { lightTheme, darkTheme } from "@/theme"
+import { useContext, useMemo, ComponentProps } from "react"
 import Log from "@/utils/Log"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
@@ -29,19 +30,21 @@ const Stack = createNativeStackNavigator<AppStackParamList>()
 const Tab = createBottomTabNavigator<AppStackParamList>()
 
 const TabNavigator = observer(function TabNavigator() {
-  const {
-    theme: { colors },
-  } = useAppTheme()
+  const context = useContext(ThemeContext)
+  const theme = useMemo(
+    () => (context?.themeScheme === "dark" ? darkTheme : lightTheme),
+    [context?.themeScheme]
+  )
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: theme.colors.background,
         },
-        tabBarActiveTintColor: colors.tint,
-        tabBarInactiveTintColor: colors.text,
+        tabBarActiveTintColor: theme.colors.tint,
+        tabBarInactiveTintColor: theme.colors.text,
       }}
     >
       <Tab.Screen
@@ -63,9 +66,11 @@ const TabNavigator = observer(function TabNavigator() {
 })
 
 const AppStack = observer(function AppStack() {
-  const {
-    theme: { colors },
-  } = useAppTheme()
+  const context = useContext(ThemeContext)
+  const theme = useMemo(
+    () => (context?.themeScheme === "dark" ? darkTheme : lightTheme),
+    [context?.themeScheme]
+  )
   const navigation = useNavigation()
 
   OneSignal.Notifications.addEventListener("click", (event) => {
@@ -87,9 +92,9 @@ const AppStack = observer(function AppStack() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        navigationBarColor: colors.background,
+        navigationBarColor: theme.colors.background,
         contentStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: theme.colors.background,
         },
       }}
       initialRouteName="TabNavigator"
@@ -105,16 +110,18 @@ export interface NavigationProps
   extends Partial<ComponentProps<typeof NavigationContainer<AppStackParamList>>> {}
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
-  const { themeScheme, navigationTheme, setThemeContextOverride, ThemeProvider } =
-    useThemeProvider()
+  const context = useContext(ThemeContext)
+  
+  const navigationTheme = useMemo(
+    () => (context?.themeScheme === "dark" ? DarkTheme : DefaultTheme),
+    [context?.themeScheme]
+  )
 
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName))
 
   return (
-    <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
-      <NavigationContainer ref={navigationRef} theme={navigationTheme} {...props}>
-        <AppStack />
-      </NavigationContainer>
-    </ThemeProvider>
+    <NavigationContainer ref={navigationRef} theme={navigationTheme} {...props}>
+      <AppStack />
+    </NavigationContainer>
   )
 })

@@ -5,6 +5,8 @@ import Log from "@/utils/Log"
 import { OneSignal } from "react-native-onesignal"
 import { ganon } from "@/services/ganon/ganon"
 import AnalyticsManager from "@/managers/AnalyticsManager"
+import EventRegister from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
 
 export const useOnboardingState = () => {
   const [step, setStep] = useState<OnboardingStep>("welcome")
@@ -29,7 +31,7 @@ export const useOnboardingState = () => {
       OneSignal.User.addTag("onboard_no_login", "1")
     }
     OneSignal.User.addTag("onboard_email_opt_in", emailOptIn ? "1" : "0")
-    ganon.set("onboardCompleted", true)
+    ganon.set("finishedOnboarding", true)
 
     // trigger a sync for new users
     const lastBackup = ganon.get("lastBackup")
@@ -45,6 +47,7 @@ export const useOnboardingState = () => {
     }
 
     AnalyticsManager.getInstance().logEvent("onboard_complete", { emailOptIn })
+    EventRegister.emit(GLOBAL_EVENTS.ONBOARDING_COMPLETE)
     setStep("complete")
   }
 

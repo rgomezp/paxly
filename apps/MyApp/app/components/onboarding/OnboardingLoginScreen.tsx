@@ -1,12 +1,14 @@
-import { StyleSheet, View, Image, Linking, Text } from "react-native"
+import { StyleSheet, View, Image, Linking, Text, TouchableOpacity } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import LoginComponent from "../login/LoginComponent"
 import { useAppTheme } from "@/utils/useAppTheme"
 import customConfig from "../../../customConfig"
+import { useOnboardingState } from "@/onboarding/state/useOnboardingState"
 
 const OnboardingLoginScreen: React.FC = () => {
   const config = customConfig()
   const { theme } = useAppTheme()
+  const { completeOnboarding } = useOnboardingState()
 
   const openTerms = () => {
     Linking.openURL(config.termsOfServiceUrl)
@@ -14,6 +16,10 @@ const OnboardingLoginScreen: React.FC = () => {
 
   const openPrivacy = () => {
     Linking.openURL(config.privacyPolicyUrl)
+  }
+
+  const handleContinueAsGuest = async () => {
+    await completeOnboarding(false)
   }
 
   return (
@@ -47,6 +53,15 @@ const OnboardingLoginScreen: React.FC = () => {
               </Text>
             </Text>
           </View>
+
+          {/* Continue as Guest button */}
+          <View style={styles.guestContainer}>
+            <TouchableOpacity onPress={handleContinueAsGuest}>
+              <Text style={[styles.guestText, { color: theme.colors.textDim }]}>
+                Continue as Guest
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     </View>
@@ -61,6 +76,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingHorizontal: 24,
+  },
+  guestContainer: {
+    alignItems: "center",
+    paddingBottom: 40,
+    paddingTop: 16,
+  },
+  guestText: {
+    fontSize: 14,
+    textDecorationLine: "underline",
   },
   imageContainer: {
     alignItems: "center",
