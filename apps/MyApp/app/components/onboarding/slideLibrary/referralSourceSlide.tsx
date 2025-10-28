@@ -1,4 +1,3 @@
-import { View } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import ReferralSourceSelector from "../referral/ReferralSourceSelector"
 
@@ -10,12 +9,6 @@ export function referralSourceSlide({ onSelection }: ReferralSourceSlideProps): 
   return {
     id: "referralSource",
     title: "How did you hear about us?",
-    component: (
-      <View style={{ flex: 1 }}>
-        <ReferralSourceSelector showTitle={false} onSelection={onSelection} />
-      </View>
-    ),
+    component: <ReferralSourceSelector showTitle={false} onSelection={onSelection} />,
   }
 }
-
-
