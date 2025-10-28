@@ -16,19 +16,17 @@ export const InitializationContext = createContext<InitializationState | null>(n
 
 export function InitializationProvider({ children }: { children: React.ReactNode }) {
   const isAppCheckComplete = useAppCheck()
+
   const [areFontsLoaded, _fontLoadError] = useFonts(customFontsToLoad)
   const isOnboardingComplete = useOnboardingFlow()
   const isAudioSetup = useAudio()
-  const isRevenueCatSetup = useRevenueCat()
-  const isOneSignalSetup = useOneSignal()
 
-  const isInitialized =
-    isAppCheckComplete &&
-    areFontsLoaded &&
-    isOnboardingComplete &&
-    isRevenueCatSetup &&
-    isOneSignalSetup &&
-    isAudioSetup
+  /* N O N - B L O C K I N G */
+  useRevenueCat()
+  useOneSignal()
+
+  /* B L O C K I N G */
+  const isInitialized = isAppCheckComplete && areFontsLoaded && isAudioSetup
 
   return (
     <InitializationContext.Provider value={{ isInitialized, isOnboardingComplete }}>
