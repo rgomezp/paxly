@@ -1,5 +1,8 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
 import { View, StyleSheet, Image, ImageRequireSource } from "react-native"
+import { useState } from "react"
+import { useAppTheme } from "@/utils/useAppTheme"
+import { Text } from "@/components/Text"
 
 export interface MultipleChoiceOption {
   id: string
@@ -11,6 +14,8 @@ interface MultipleChoiceSelectorProps {
   heroImage?: ImageRequireSource
   maxOptions?: number
   onSelection?: (optionId: string) => void
+  allowMultiple?: boolean
+  maxSelections?: number
 }
 
 export const MultipleChoiceSelector = ({
@@ -18,11 +23,38 @@ export const MultipleChoiceSelector = ({
   heroImage,
   maxOptions = 4,
   onSelection,
+  allowMultiple = false,
+  maxSelections,
 }: MultipleChoiceSelectorProps) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const { theme } = useAppTheme()
+
   // Limit options to maxOptions
   const displayOptions = options.slice(0, maxOptions)
+  
+  // Check if max selections limit is reached
+  const isMaxSelectionsReached =
+    allowMultiple && maxSelections && selectedOptions.length >= maxSelections
 
   const handleOptionSelect = (optionId: string) => {
+    if (allowMultiple) {
+      setSelectedOptions((prev) => {
+        if (prev.includes(optionId)) {
+          // Allow deselecting even if at max
+          return prev.filter((id) => id !== optionId)
+        } else {
+          // Only add if not at max limit
+          if (maxSelections && prev.length >= maxSelections) {
+            return prev
+          }
+          return [...prev, optionId]
+        }
+      })
+    } else {
+      // Single selection mode
+      setSelectedOptions([optionId])
+    }
+
     onSelection?.(optionId)
   }
 
@@ -35,18 +67,33 @@ export const MultipleChoiceSelector = ({
       )}
 
       <View style={styles.optionsContainer}>
-        {displayOptions.map((option) => (
-          <RectangularButton
-            key={option.id}
-            buttonText={option.label}
-            onClick={() => handleOptionSelect(option.id)}
-            width={"70%"}
-            textStyle={styles.buttonText}
-            customStyles={styles.buttonCustom}
-            testID={`choice-${option.id}`}
-          />
-        ))}
+        {displayOptions.map((option) => {
+          const isSelected = selectedOptions.includes(option.id)
+          const isDisabled = Boolean(!isSelected && isMaxSelectionsReached)
+          
+          return (
+            <RectangularButton
+              key={option.id}
+              buttonText={option.label}
+              onClick={() => handleOptionSelect(option.id)}
+              width={"70%"}
+              textStyle={styles.buttonText}
+              customStyles={styles.buttonCustom}
+              testID={`choice-${option.id}`}
+              isSelected={allowMultiple && isSelected}
+              isDisabled={isDisabled}
+            />
+          )
+        })}
       </View>
+      
+      {isMaxSelectionsReached && maxSelections && (
+        <View style={styles.limitContainer}>
+          <Text style={styles.limitText}>
+            Maximum {maxSelections} selection{maxSelections > 1 ? "s" : ""} allowed
+          </Text>
+        </View>
+      )}
     </View>
   )
 }
@@ -83,5 +130,15 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 60,
     width: "100%",
+  },
+  limitContainer: {
+    alignItems: "center",
+    marginTop: -40,
+    paddingBottom: 10,
+  },
+  limitText: {
+    color: "#9E9E9E",
+    fontSize: 12,
+    textAlign: "center",
   },
 })

@@ -23,16 +23,20 @@ type IProps = {
   fontSize?: number // New prop for font size
   lightBackground?: boolean
   textStyle?: StyleProp<any> // New prop for text style
+  isSelected?: boolean // New prop for selected state
 }
 
 export default function RectangularButton(props: IProps) {
-  const {
-    theme: { colors },
-  } = useAppTheme()
+  const { theme } = useAppTheme()
+  const { colors } = theme
 
   // Default colors if not provided
   const defaultColor = props.lightBackground ? "#F5F5F5" : colors.tint
-  const buttonBackgroundColor = props.backgroundColor ?? defaultColor
+  
+  // Use accent color for selected state, otherwise use provided or default
+  const buttonBackgroundColor = props.isSelected
+    ? theme.colors.palette.accent500
+    : props.backgroundColor ?? defaultColor
 
   // Determine darkenedBackgroundColor based on the button's color format
   let darkenedBackgroundColor
@@ -115,7 +119,11 @@ export default function RectangularButton(props: IProps) {
 
   const renderIcon = () => {
     const iconMargin = props.buttonText ? 10 : 0
-    const iconColor = props.lightBackground ? colors.text : colors.background
+    const iconColor = props.isSelected
+      ? theme.colors.palette.neutral900
+      : props.lightBackground
+        ? colors.text
+        : colors.background
 
     // Show lock icon for paid features when user doesn't have access
     if (props.isPaidFeature && !hasAccess) {
@@ -150,11 +158,23 @@ export default function RectangularButton(props: IProps) {
         alignSelf: "center",
         fontWeight: "bold",
         fontSize: props.fontSize || 14,
-        color: props.lightBackground ? colors.text : colors.background,
+        color: props.isSelected
+          ? theme.colors.palette.neutral900 // Dark text for accent500 background
+          : props.lightBackground
+            ? colors.text
+            : colors.background,
       },
       props.textStyle,
     ],
-    [props.fontSize, props.lightBackground, props.textStyle, colors.text, colors.background],
+    [
+      props.fontSize,
+      props.lightBackground,
+      props.textStyle,
+      props.isSelected,
+      colors.text,
+      colors.background,
+      theme,
+    ],
   )
 
   const renderButtonText = () => {
@@ -165,6 +185,9 @@ export default function RectangularButton(props: IProps) {
     return <Text style={textStyles}>{props.buttonText.toUpperCase()}</Text>
   }
 
+  // Use theme color for selected state shadow
+  const selectedShadowColor = props.isSelected ? theme.colors.palette.accent500 : undefined
+
   return (
     <TouchableOpacity
       onPress={handleButtonPress}
@@ -172,6 +195,10 @@ export default function RectangularButton(props: IProps) {
         styles.button,
         { width: props.width, backgroundColor: darkenedBackgroundColor }, // Default width
         props.isDisabled ? styles.disabled : styles.active,
+        props.isSelected && [
+          styles.selected,
+          selectedShadowColor && { shadowColor: selectedShadowColor },
+        ], // Apply selected style with themed shadow color
         props.customStyles, // Merge custom styles
       ]}
       disabled={props.isDisabled}
@@ -205,5 +232,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     ...$styles.borderRadius,
     paddingHorizontal: 20,
+  },
+  selected: {
+    elevation: 8,
+    shadowOffset: {
+      height: 4,
+      width: 0,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
   },
 })

@@ -5,6 +5,8 @@ import Log from "@/utils/Log"
 
 type MultipleChoiceSlideProps = {
   onSelection?: () => void
+  allowMultipleSelections?: boolean
+  maxSelections?: number
 }
 
 const heroImage: ImageRequireSource = require("../../../../assets/images/logo.png")
@@ -16,9 +18,18 @@ const options: MultipleChoiceOption[] = [
   { id: "lose_fat", label: "Lose fat" },
 ]
 
-export function multipleChoiceSlide({ onSelection }: MultipleChoiceSlideProps): ISlide {
+export function multipleChoiceSlide({
+  onSelection,
+  allowMultipleSelections = false,
+  maxSelections,
+}: MultipleChoiceSlideProps): ISlide {
   const buttonPressed = (optionId: string) => {
     Log.info(`MultipleChoiceSlide: buttonPressed: ${optionId}`)
+
+    // Only call onSelection for single selection mode
+    if (!allowMultipleSelections) {
+      onSelection?.()
+    }
 
     switch (optionId) {
       case "get_stronger":
@@ -32,8 +43,6 @@ export function multipleChoiceSlide({ onSelection }: MultipleChoiceSlideProps): 
       default:
         break
     }
-
-    onSelection?.()
   }
 
   return {
@@ -41,7 +50,13 @@ export function multipleChoiceSlide({ onSelection }: MultipleChoiceSlideProps): 
     title: "What are your fitness goals?",
     description: "This will help us personalize your experience",
     component: (
-      <MultipleChoiceSelector options={options} heroImage={heroImage} onSelection={buttonPressed} />
+      <MultipleChoiceSelector
+        options={options}
+        heroImage={heroImage}
+        onSelection={buttonPressed}
+        allowMultiple={allowMultipleSelections}
+        maxSelections={maxSelections}
+      />
     ),
   }
 }
