@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
-import { View, StyleSheet, TextInput, Text, useColorScheme } from "react-native"
+import { View, StyleSheet, TextInput, Text } from "react-native"
 import { useCustomColor } from "@/hooks/useCustomColor"
 import UserManager from "@/managers/UserManager"
 import Log from "@/utils/Log"
 import RectangularButton from "./buttons/RectangularButton"
+import { useAppTheme } from "@/utils/useAppTheme"
 
 interface NameInputProps {
   onSelection?: () => void
@@ -12,8 +13,10 @@ interface NameInputProps {
 
 export default function NameInput({ showTitle = true, onSelection }: NameInputProps) {
   const [name, setName] = useState("")
-  const colorScheme = useColorScheme()
-  const isDark = colorScheme === "dark"
+  const {
+    theme: { colors },
+    themeContext,
+  } = useAppTheme()
   const { color } = useCustomColor()
 
   // Load existing nickname when component mounts
@@ -49,21 +52,20 @@ export default function NameInput({ showTitle = true, onSelection }: NameInputPr
     }
   }
 
+  const isDark = themeContext === "dark"
   const themedInputStyles = {
-    color: isDark ? "white" : "black",
-    backgroundColor: isDark ? "#333" : "#f0f0f0",
+    color: colors.text,
+    backgroundColor: isDark ? colors.palette.neutral300 : colors.palette.neutral200,
     width: "70%" as const,
   }
 
-  const placeholderColor = isDark ? "#888" : "#666"
+  const placeholderColor = colors.textDim
+
+  const titleStyle = { fontSize: 18, fontWeight: "600" as const, color: colors.text }
 
   return (
     <View style={styles.container}>
-      {showTitle && (
-        <Text style={[styles.title, { fontSize: 18, fontWeight: "600" }]}>
-          What should we call you?
-        </Text>
-      )}
+      {showTitle && <Text style={[styles.title, titleStyle]}>What should we call you?</Text>}
       <View style={styles.inputContainer}>
         <TextInput
           style={[styles.input, themedInputStyles]}

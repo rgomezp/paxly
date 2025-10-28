@@ -8,6 +8,7 @@ import { FEATURES } from "@/entitlements/constants/features"
 import { $styles } from "../../theme/styles"
 import { triggerLightHaptic } from "../../utils/hapticFeedback"
 import { useMemo } from "react"
+import { useAppTheme } from "@/utils/useAppTheme"
 
 type IProps = {
   buttonText: string
@@ -25,8 +26,12 @@ type IProps = {
 }
 
 export default function RectangularButton(props: IProps) {
+  const {
+    theme: { colors },
+  } = useAppTheme()
+
   // Default colors if not provided
-  const defaultColor = props.lightBackground ? "#F5F5F5" : "#5A7A8F"
+  const defaultColor = props.lightBackground ? "#F5F5F5" : colors.tint
   const buttonBackgroundColor = props.backgroundColor ?? defaultColor
 
   // Determine darkenedBackgroundColor based on the button's color format
@@ -110,6 +115,7 @@ export default function RectangularButton(props: IProps) {
 
   const renderIcon = () => {
     const iconMargin = props.buttonText ? 10 : 0
+    const iconColor = props.lightBackground ? colors.text : colors.background
 
     // Show lock icon for paid features when user doesn't have access
     if (props.isPaidFeature && !hasAccess) {
@@ -117,7 +123,7 @@ export default function RectangularButton(props: IProps) {
         <FontAwesome5
           name="lock"
           size={props.fontSize || 18}
-          color={props.lightBackground ? "#000" : "white"}
+          color={iconColor}
           style={{ marginRight: iconMargin }}
         />
       )
@@ -129,7 +135,7 @@ export default function RectangularButton(props: IProps) {
         <FontAwesome5
           name={props.icon}
           size={props.fontSize || 18}
-          color={props.lightBackground ? "#000" : "white"}
+          color={iconColor}
           style={{ marginRight: iconMargin }}
         />
       )
@@ -144,11 +150,11 @@ export default function RectangularButton(props: IProps) {
         alignSelf: "center",
         fontWeight: "bold",
         fontSize: props.fontSize || 14,
-        color: props.lightBackground ? "#000" : "white",
+        color: props.lightBackground ? colors.text : colors.background,
       },
       props.textStyle,
     ],
-    [props.fontSize, props.lightBackground, props.textStyle],
+    [props.fontSize, props.lightBackground, props.textStyle, colors.text, colors.background],
   )
 
   const renderButtonText = () => {

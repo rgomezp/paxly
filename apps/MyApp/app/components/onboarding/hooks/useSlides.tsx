@@ -1,14 +1,13 @@
 import UserManager from "@/managers/UserManager"
 import Log from "@/utils/Log"
-import { useColorScheme } from "react-native"
 import { useEffect, useState, useMemo } from "react"
 import NameInput from "@/components/NameInput"
 import { ISlide } from "@/types/ISlide"
+import { useAppTheme } from "@/utils/useAppTheme"
 
 export const useSlides = (onSelection?: () => void) => {
-  const colorScheme = useColorScheme()
-  const themeContext = colorScheme || "light"
-  const titleColor = themeContext === "dark" ? "white" : "black"
+  const { themeContext, theme: { colors } } = useAppTheme()
+  const titleColor = colors.text
   const [nickname, setNickname] = useState<string | null>(null)
 
   // Load nickname when component mounts
