@@ -7,11 +7,6 @@ import MigrationManager from "@/migrations/MigrationManager"
 export default function useOnboardingFlow() {
   const [isOnboardComplete, setIsOnboardingComplete] = useState<boolean | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(true)
-  const [stateChanged, setStateChanged] = useState(0)
-
-  EventRegister.on(GLOBAL_EVENTS.ONBOARDING_COMPLETE, () => {
-    setStateChanged(stateChanged + 1)
-  })
 
   useEffect(() => {
     const fetchValueFromDb = async () => {
@@ -26,8 +21,19 @@ export default function useOnboardingFlow() {
     }
 
     fetchValueFromDb()
-  }, [stateChanged])
 
+    // Set up event listener for onboarding completion
+    const handleOnboardingComplete = () => {
+      setIsOnboardingComplete(true)
+    }
+
+    EventRegister.on(GLOBAL_EVENTS.ONBOARDING_COMPLETE, handleOnboardingComplete)
+
+    // Cleanup listener on unmount
+    return () => {
+      EventRegister.off(GLOBAL_EVENTS.ONBOARDING_COMPLETE, handleOnboardingComplete)
+    }
+  }, [])
   // Return undefined while loading to prevent premature rendering
   return isLoading ? undefined : isOnboardComplete
 }
