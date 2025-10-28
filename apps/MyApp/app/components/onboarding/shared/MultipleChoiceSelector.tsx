@@ -1,5 +1,4 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
-import { useAppTheme } from "@/utils/useAppTheme"
 import { View, StyleSheet, Image, ImageRequireSource } from "react-native"
 
 export interface MultipleChoiceOption {
@@ -14,21 +13,12 @@ interface MultipleChoiceSelectorProps {
   onSelection?: (optionId: string) => void
 }
 
-const colors = {
-  grayBorder: "#ddd",
-  darkGray: "#888",
-  mediumGray: "#666",
-} as const
-
 export const MultipleChoiceSelector = ({
   options,
   heroImage,
   maxOptions = 4,
   onSelection,
 }: MultipleChoiceSelectorProps) => {
-  const { theme, themeContext } = useAppTheme()
-  const isDark = themeContext === "dark"
-
   // Limit options to maxOptions
   const displayOptions = options.slice(0, maxOptions)
 
@@ -72,15 +62,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
+    paddingBottom: 20,
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 20,
   },
   heroImage: {
     height: 140,
-    width: 140,
     maxHeight: "90%",
     maxWidth: "90%",
+    width: 140,
   },
   imageContainer: {
     alignItems: "center",
@@ -95,4 +85,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 })
-

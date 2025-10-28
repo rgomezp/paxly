@@ -8,7 +8,7 @@ import { heroSlide } from "../slideLibrary/heroSlide"
 import { problemSolutionSlide } from "../slideLibrary/problemSolutionSlide"
 import { referralSourceSlide } from "../slideLibrary/referralSourceSlide"
 import { howItWorksSlide } from "../slideLibrary/howItWorksSlide"
-import { fitnessGoalsSlide } from "../slideLibrary/fitnessGoalsSlide"
+import { multipleChoiceSlide } from "../slideLibrary/multipleChoiceSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -60,7 +60,7 @@ export const useSlides = (onSelection?: () => void) => {
       heroSlide({ onSelection }),
       problemSolutionSlide({ onSelection }),
       howItWorksSlide({ onSelection }),
-      fitnessGoalsSlide({ onSelection }),
+      multipleChoiceSlide({ onSelection }),
       referralSourceSlide({ onSelection }),
       nicknameSlide({ onSelection, refreshNickname }),
       testimonialsSlide({ onSelection }),

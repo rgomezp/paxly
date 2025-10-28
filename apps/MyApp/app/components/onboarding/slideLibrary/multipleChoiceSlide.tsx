@@ -1,8 +1,9 @@
 import { ImageRequireSource } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
+import Log from "@/utils/Log"
 
-type FitnessGoalsSlideProps = {
+type MultipleChoiceSlideProps = {
   onSelection?: () => void
 }
 
@@ -15,19 +16,32 @@ const options: MultipleChoiceOption[] = [
   { id: "lose_fat", label: "Lose fat" },
 ]
 
-export function fitnessGoalsSlide({ onSelection }: FitnessGoalsSlideProps): ISlide {
+export function multipleChoiceSlide({ onSelection }: MultipleChoiceSlideProps): ISlide {
+  const buttonPressed = (optionId: string) => {
+    Log.info(`MultipleChoiceSlide: buttonPressed: ${optionId}`)
+
+    switch (optionId) {
+      case "get_stronger":
+        break
+      case "build_muscle":
+        break
+      case "improve_endurance":
+        break
+      case "lose_fat":
+        break
+      default:
+        break
+    }
+
+    onSelection?.()
+  }
+
   return {
     id: "fitnessGoals",
     title: "What are your fitness goals?",
     description: "This will help us personalize your experience",
     component: (
-      <MultipleChoiceSelector
-        options={options}
-        heroImage={heroImage}
-        onSelection={() => onSelection?.()}
-      />
+      <MultipleChoiceSelector options={options} heroImage={heroImage} onSelection={buttonPressed} />
     ),
   }
 }
-
-
