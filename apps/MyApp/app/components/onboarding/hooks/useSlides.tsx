@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react"
 import { ISlide } from "@/types/ISlide"
 import { nicknameSlide } from "../slideLibrary/nicknameSlide"
 import { testimonialsSlide } from "../slideLibrary/testimonialsSlide"
+import { heroSlide } from "../slideLibrary/heroSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -51,7 +52,11 @@ export const useSlides = (onSelection?: () => void) => {
   }
 
   const slides: ISlide[] = useMemo(
-    () => [nicknameSlide({ onSelection, refreshNickname }), testimonialsSlide({ onSelection })],
+    () => [
+      heroSlide({ onSelection }),
+      nicknameSlide({ onSelection, refreshNickname }),
+      testimonialsSlide({ onSelection }),
+    ],
     [onSelection],
   )
 

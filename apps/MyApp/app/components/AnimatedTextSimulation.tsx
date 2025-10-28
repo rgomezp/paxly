@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { Text, TextProps, StyleProp, TextStyle } from "react-native"
+import { Text, StyleProp, TextStyle } from "react-native"
 
 interface AnimatedTextSimulationProps {
   text: string
@@ -17,8 +17,8 @@ const defaultTokenizer = (t: string) => t.split(/(\s+)/)
 export function AnimatedTextSimulation({
   text,
   tokenizer = defaultTokenizer,
-  minDelay = 50,
-  maxDelay = 250,
+  minDelay = 250,
+  maxDelay = 500,
   separator = "",
   onAnimationComplete,
   shouldStart = true,
@@ -84,9 +84,5 @@ export function AnimatedTextSimulation({
     }
   }, [text, tokenizer, minDelay, maxDelay, shouldStart])
 
-  return (
-    <Text style={style}>
-      {currentTokens.join(separator)}
-    </Text>
-  )
+  return <Text style={style}>{currentTokens.join(separator)}</Text>
 }
