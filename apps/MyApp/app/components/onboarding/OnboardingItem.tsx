@@ -1,8 +1,7 @@
 import { memo, useCallback } from "react"
-import { View, StyleSheet, Image, useWindowDimensions } from "react-native"
+import { View, StyleSheet, Image, useWindowDimensions, Text } from "react-native"
 import { ISlide } from "@/types/ISlide"
 import { AnimatedTextSimulation } from "../AnimatedTextSimulation"
-import { Text } from "../Text"
 
 interface OnboardingItemProps {
   item: ISlide

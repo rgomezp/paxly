@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react"
-import { View, StyleSheet, TextInput } from "react-native"
-import { useAppTheme } from "@/utils/useAppTheme"
+import { View, StyleSheet, TextInput, Text, useColorScheme } from "react-native"
 import { useCustomColor } from "@/hooks/useCustomColor"
 import UserManager from "@/managers/UserManager"
 import Log from "@/utils/Log"
 import RectangularButton from "./buttons/RectangularButton"
-import { Text } from "./Text"
 
 interface NameInputProps {
   onSelection?: () => void
@@ -14,8 +12,8 @@ interface NameInputProps {
 
 export default function NameInput({ showTitle = true, onSelection }: NameInputProps) {
   const [name, setName] = useState("")
-  const { themeContext } = useAppTheme()
-  const isDark = themeContext === "dark"
+  const colorScheme = useColorScheme()
+  const isDark = colorScheme === "dark"
   const { color } = useCustomColor()
 
   // Load existing nickname when component mounts
@@ -62,7 +60,7 @@ export default function NameInput({ showTitle = true, onSelection }: NameInputPr
   return (
     <View style={styles.container}>
       {showTitle && (
-        <Text style={styles.title} preset="subheading" weight="bold">
+        <Text style={[styles.title, { fontSize: 18, fontWeight: "600" }]}>
           What should we call you?
         </Text>
       )}

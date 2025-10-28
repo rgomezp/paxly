@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react"
-import { Text, TextProps } from "@/components/Text" // Import your themed Text component and its props
+import { Text, TextProps, StyleProp, TextStyle } from "react-native"
 
-interface AnimatedTextSimulationProps extends TextProps {
+interface AnimatedTextSimulationProps {
   text: string
   tokenizer?: (text: string) => string[]
   minDelay?: number
@@ -9,6 +9,7 @@ interface AnimatedTextSimulationProps extends TextProps {
   separator?: string
   onAnimationComplete?: () => void
   shouldStart?: boolean
+  style?: StyleProp<TextStyle>
 }
 
 const defaultTokenizer = (t: string) => t.split(/(\s+)/)
@@ -21,8 +22,7 @@ export function AnimatedTextSimulation({
   separator = "",
   onAnimationComplete,
   shouldStart = true,
-  style, // New style prop
-  ...otherProps // Capture remaining Text props
+  style,
 }: AnimatedTextSimulationProps) {
   const [currentTokens, setCurrentTokens] = useState<string[]>([])
   const onCompleteRef = useRef(onAnimationComplete)
@@ -85,7 +85,7 @@ export function AnimatedTextSimulation({
   }, [text, tokenizer, minDelay, maxDelay, shouldStart])
 
   return (
-    <Text style={style} {...otherProps}>
+    <Text style={style}>
       {currentTokens.join(separator)}
     </Text>
   )
