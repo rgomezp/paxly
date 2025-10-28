@@ -23,6 +23,7 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
       {item.image && (
         <Image source={item.image} style={[styles.image, { width }]} resizeMode="contain" />
       )}
+      {item.component && <View style={styles.component}>{item.component}</View>}
       <View style={styles.textContainer}>
         <Text style={[styles.title, { color: item.titleColor }]}>{item.title}</Text>
         {item.description && (
@@ -37,7 +38,6 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
           />
         )}
       </View>
-      {item.component && <View style={styles.component}>{item.component}</View>}
     </View>
   )
 })
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textContainer: {
+    alignItems: "center",
     height: 100,
     marginTop: 10,
     width: "100%",
