@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Log from "../utils/Log"
 import { FEATURES } from "./constants/features"
 import { getReferralUnlockableFeatures } from "./constants/featureDefinitions"
@@ -13,7 +13,7 @@ export function useReferralUnlocks(): ReferralHook {
     Set<keyof typeof FEATURES>
   >(new Set())
 
-  const checkReferralUnlocks = async () => {
+  const checkReferralUnlocks = useCallback(async () => {
     try {
       // Lazy require to avoid require cycle at module eval time
       const LoginManager = require("../managers/LoginManager")
@@ -41,11 +41,11 @@ export function useReferralUnlocks(): ReferralHook {
     } catch (err) {
       Log.error(`Error checking referral unlocks: ${err}`)
     }
-  }
+  }, [])
 
   useEffect(() => {
     checkReferralUnlocks()
-  }, [])
+  }, [checkReferralUnlocks])
 
   return {
     referralUnlockedFeatures,
