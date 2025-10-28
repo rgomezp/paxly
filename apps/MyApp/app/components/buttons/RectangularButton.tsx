@@ -4,6 +4,7 @@ import { useEntitlements } from "../../entitlements/useEntitlements"
 import Log from "../../utils/Log"
 import { presentPaywallSafely } from "../../thirdParty/revenueCatUtils"
 import darkenHex from "../../utils/darkenHex"
+import getTextColorForBackground from "../../utils/getTextColorForBackground"
 import { FEATURES } from "@/entitlements/constants/features"
 import { $styles } from "../../theme/styles"
 import { triggerLightHaptic } from "../../utils/hapticFeedback"
@@ -121,7 +122,7 @@ export default function RectangularButton(props: IProps) {
   const renderIcon = () => {
     const iconMargin = props.buttonText ? 10 : 0
     const iconColor = props.isSelected
-      ? theme.colors.palette.neutral900
+      ? getTextColorForBackground(theme.colors.palette.accent500) // Dynamically determine icon color based on background
       : props.lightBackground
         ? "#424242" // Dark color for light gray background (works in both themes)
         : colors.background
@@ -160,7 +161,7 @@ export default function RectangularButton(props: IProps) {
         fontWeight: "bold",
         fontSize: props.fontSize || 14,
         color: props.isSelected
-          ? theme.colors.palette.neutral900 // Dark text for accent500 background
+          ? getTextColorForBackground(theme.colors.palette.accent500) // Dynamically determine text color based on background
           : props.lightBackground
             ? "#424242" // Dark text for light gray background (works in both themes)
             : colors.background,
