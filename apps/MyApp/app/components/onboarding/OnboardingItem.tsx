@@ -34,8 +34,6 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
             text={item.description}
             tokenizer={tokenizer}
             separator=" "
-            minDelay={30}
-            maxDelay={100}
             shouldStart={shouldStartAnimation}
             style={styles.description}
           />

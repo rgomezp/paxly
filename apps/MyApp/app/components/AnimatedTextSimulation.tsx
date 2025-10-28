@@ -17,8 +17,8 @@ const defaultTokenizer = (t: string) => t.split(/(\s+)/)
 export function AnimatedTextSimulation({
   text,
   tokenizer = defaultTokenizer,
-  minDelay = 250,
-  maxDelay = 500,
+  minDelay = 50,
+  maxDelay = 200,
   separator = "",
   onAnimationComplete,
   shouldStart = true,
