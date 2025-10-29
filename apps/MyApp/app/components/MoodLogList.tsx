@@ -28,7 +28,7 @@ const MoodLogList: FC = observer(function MoodLogList() {
   return (
     <View style={themed($listWrapper)}>
       {history.map((item, idx) => {
-        let moodColor = colors.positive
+        let moodColor: string = colors.positive as string
         if (item.mood.category === MoodCategory.Negative) moodColor = colors.negative
         else if (item.mood.category === MoodCategory.Neutral) moodColor = colors.neutral
 
