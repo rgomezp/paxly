@@ -30,7 +30,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
     NoContactManager.initializeNoContactData()
   }, [])
 
-  const firstName = UserManager.getUser()?.first || "Friend"
+  const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
 
   return (
     <HomeDrawer
@@ -56,7 +56,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
             {/* Header Section */}
             <View style={themed($headerSection)}>
               <Text
-                text={`${firstName}, you've been no contact for:`}
+                text={`${name}, you've been no contact for:`}
                 preset="heading"
                 style={themed({ color: theme.colors.text, fontSize: 24, textAlign: "center" })}
               />
