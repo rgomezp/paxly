@@ -64,7 +64,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
               {/* Progress Wheel */}
               <NoContactProgressWheel refreshTrigger={refreshTrigger} />
-              <DailyTasksTimeline onPressMood={() => navigate("MoodLogger")} />
               <View style={themed($resetButtonContainer)}>
                 <RectangularButton
                   buttonText="Help"
@@ -72,6 +71,10 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
                   icon="exclamation-triangle"
                 />
               </View>
+              <DailyTasksTimeline
+                onPressMood={() => navigate("MoodLogger")}
+                onPressJournal={() => navigate("Journal")}
+              />
             </View>
           </ScrollView>
         )}

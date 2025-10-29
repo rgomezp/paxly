@@ -76,5 +76,3 @@ const MOOD_TO_EMOJI: Record<MoodId, string> = {
 const ALL_MOODS: MoodId[] = Object.keys(MOODS) as MoodId[]
 
 export { MoodId, MOODS, MOOD_TO_EMOJI, ALL_MOODS }
-
-

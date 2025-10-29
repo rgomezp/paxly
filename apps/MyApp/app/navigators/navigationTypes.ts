@@ -23,6 +23,7 @@ export type AppStackParamList = {
   Login: undefined
   Onboarding: undefined
   MoodLogger: undefined
+  Journal: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

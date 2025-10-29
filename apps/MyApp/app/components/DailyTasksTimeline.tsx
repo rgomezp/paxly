@@ -72,26 +72,39 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
   )
 
   return (
-    <View style={themed([$container])}>
-      {circle("Mood", done.mood, () => {
-        onPressMood()
-      })}
-      <Dash />
-      {circle("Lesson", done.lesson, () => {
-        onPressLesson?.()
-      })}
-      <Dash />
-      {circle("Journal", done.journal, () => {
-        onPressJournal?.()
-      })}
+    <View style={themed($container)}>
+      <View style={themed($header)}>
+        <Text text="Daily Tasks" size="xxs" style={themed({ color: theme.colors.text })} />
+      </View>
+      <View style={themed([$timeline])}>
+        {circle("Mood", done.mood, () => {
+          onPressMood()
+        })}
+        <Dash />
+        {circle("Lesson", done.lesson, () => {
+          onPressLesson?.()
+        })}
+        <Dash />
+        {circle("Journal", done.journal, () => {
+          onPressJournal?.()
+        })}
+      </View>
     </View>
   )
 }
 
 const $container: ViewStyle = {
+  marginVertical: 46,
+}
+
+const $header: ViewStyle = {
+  marginBottom: 20,
+  marginLeft: 30,
+}
+
+const $timeline: ViewStyle = {
   flexDirection: "row",
   justifyContent: "center",
-  marginTop: 16,
 }
 
 const $button: ViewStyle = {

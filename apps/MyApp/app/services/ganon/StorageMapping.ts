@@ -7,6 +7,7 @@ import IReviewBackoffData from "@/types/IReviewBackoffData"
 import INoContactData from "@/types/INoContactData"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
+import IJournalEntry from "@/types/IJournalEntry"
 interface StorageMapping {
   // v1
   email: string | null
@@ -28,6 +29,7 @@ interface StorageMapping {
   noContactData: INoContactData
   moodHistory: IMoodHistoryItem[]
   dailyTasks: IDailyTasks
+  journalEntries: IJournalEntry[]
 }
 
 export default StorageMapping
