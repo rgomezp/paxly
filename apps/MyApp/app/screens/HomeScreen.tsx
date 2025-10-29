@@ -11,6 +11,8 @@ import UserManager from "@/managers/UserManager"
 import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
 import NoContactManager from "@/managers/NoContactManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
+import HelpModal from "@/components/modals/HelpModal"
+import Log from "@/utils/Log"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -26,6 +28,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   const sections = getHomeDrawerSections()
   const insets = useSafeAreaInsets()
   const [refreshTrigger, setRefreshTrigger] = useState(0)
+  const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
 
   // Initialize no contact data if needed
   useEffect(() => {
@@ -35,50 +38,63 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
 
   return (
-    <HomeDrawer
-      sections={sections}
-      renderContent={({
-        themed,
-        theme,
-        toggleDrawer,
-      }: {
-        themed: any
-        theme: Theme
-        toggleDrawer: () => void
-      }) => (
-        <ScrollView
-          style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}
-        >
-          <View style={themed({ backgroundColor: theme.colors.background })}>
-            {/* Hamburger button at top */}
-            <View style={themed([$hamburgerContainer, { paddingTop: insets.top }])}>
-              <DrawerIconButton onPress={toggleDrawer} />
-            </View>
+    <>
+      <HomeDrawer
+        sections={sections}
+        renderContent={({
+          themed,
+          theme,
+          toggleDrawer,
+        }: {
+          themed: any
+          theme: Theme
+          toggleDrawer: () => void
+        }) => (
+          <ScrollView
+            style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}
+          >
+            <View style={themed({ backgroundColor: theme.colors.background })}>
+              {/* Hamburger button at top */}
+              <View style={themed([$hamburgerContainer, { paddingTop: insets.top }])}>
+                <DrawerIconButton onPress={toggleDrawer} />
+              </View>
 
-            {/* Header Section */}
-            <View style={themed($headerSection)}>
-              <Text
-                text={`${name}, you've been no contact for:`}
-                preset="heading"
-                style={themed({ color: theme.colors.text, fontSize: 24, textAlign: "center" })}
-              />
-            </View>
+              {/* Header Section */}
+              <View style={themed($headerSection)}>
+                <Text
+                  text={`${name}, you've been no contact for:`}
+                  preset="heading"
+                  style={themed({ color: theme.colors.text, fontSize: 24, textAlign: "center" })}
+                />
+              </View>
 
-            {/* Progress Wheel */}
-            <NoContactProgressWheel refreshTrigger={refreshTrigger} />
-            <View style={themed($resetButtonContainer)}>
-              <RectangularButton
-                buttonText="Help"
-                onClick={() => {
-                  NoContactManager.resetStreak()
-                  setRefreshTrigger((prev) => prev + 1)
-                }}
-              />
+              {/* Progress Wheel */}
+              <NoContactProgressWheel refreshTrigger={refreshTrigger} />
+              <View style={themed($resetButtonContainer)}>
+                <RectangularButton buttonText="Help" onClick={() => setIsHelpModalVisible(true)} />
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      )}
-    />
+          </ScrollView>
+        )}
+      />
+      <HelpModal
+        visible={isHelpModalVisible}
+        onClose={() => setIsHelpModalVisible(false)}
+        onThoughtContact={() => {
+          Log.info("HomeScreen: User selected 'I'm thinking about contacting'")
+          // TODO: Navigate to resources or show support
+        }}
+        onNeedEmotionalSupport={() => {
+          Log.info("HomeScreen: User selected 'I need emotional support'")
+          // TODO: Navigate to resources or show support
+        }}
+        onIContacted={() => {
+          Log.info("HomeScreen: User reset the streak")
+          NoContactManager.resetStreak()
+          setRefreshTrigger((prev) => prev + 1)
+        }}
+      />
+    </>
   )
 })
 
