@@ -32,55 +32,47 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
     return () => clearTimeout(id)
   }, [])
 
-  const circle = (label: string, completed: boolean, onPress?: () => void) => (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[
-        themed([$button, { backgroundColor: theme.colors.card }]),
-        $styles.borderRadius,
-        $styles.dropShadow,
-      ]}
-      activeOpacity={0.8}
-    >
-      <View style={$labelRow}>
-        <Text text={label} size="xxs" style={themed({ color: theme.colors.tint })} />
-        <Icon icon="caretRight" color={theme.colors.tint} size={10} containerStyle={$iconRight} />
-      </View>
-      {completed && (
-        <View style={[$checkBadge, { backgroundColor: theme.colors.tint }]}>
-          <Icon icon="check" color={theme.colors.background} size={10} />
+  const Row = (label: string, completed: boolean, onPress?: () => void) => (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={themed([$row])}>
+      <View
+        style={[
+          themed([$buttonContainer, { backgroundColor: theme.colors.card }]),
+          $styles.borderRadius,
+          $styles.dropShadow,
+        ]}
+      >
+        <View style={$leftGroup}>
+          <View
+            style={[
+              $checkCircle,
+              {
+                borderColor: theme.colors.tint,
+                ...(completed ? { backgroundColor: theme.colors.tint } : {}),
+              },
+            ]}
+          >
+            {completed && <Icon icon="check" size={12} color={theme.colors.background} />}
+          </View>
+          <Text text={label} size="xs" style={themed({ color: theme.colors.text })} />
         </View>
-      )}
+        <Icon icon="caretRight" color={theme.colors.tint} size={12} />
+      </View>
     </TouchableOpacity>
-  )
-
-  const Dash = () => (
-    <View style={$dashContainer}>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <View
-          // eslint-disable-next-line react/no-array-index-key
-          key={i}
-          style={[$dashSegment, { backgroundColor: theme.colors.textDim }]}
-        />
-      ))}
-    </View>
   )
 
   return (
     <View style={themed($container)}>
       <View style={themed($header)}>
-        <Text text="Daily Tasks" size="xxs" style={themed({ color: theme.colors.text })} />
+        <Text text="Daily Tasks" preset="subheading" style={themed({ color: theme.colors.text })} />
       </View>
       <View style={themed([$timeline])}>
-        {circle("Mood", done.mood, () => {
+        {Row("Log your mood", done.mood, () => {
           onPressMood()
         })}
-        <Dash />
-        {circle("Lesson", done.lesson, () => {
+        {Row("Learn with a lesson", done.lesson, () => {
           onPressLesson?.()
         })}
-        <Dash />
-        {circle("Journal", done.journal, () => {
+        {Row("Write in your journal", done.journal, () => {
           onPressJournal?.()
         })}
       </View>
@@ -98,49 +90,38 @@ const $header: ViewStyle = {
 }
 
 const $timeline: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "center",
+  flexDirection: "column",
+  gap: 12,
+  paddingHorizontal: 20,
 }
 
-const $button: ViewStyle = {
-  width: 80,
+const $row: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+}
+
+const $buttonContainer: ViewStyle = {
+  flex: 1,
   height: 56,
+  flexDirection: "row",
   alignItems: "center",
-  justifyContent: "center",
-  position: "relative",
+  justifyContent: "space-between",
+  paddingHorizontal: 16,
 }
 
-const $labelRow: ViewStyle = {
+const $checkCircle: ViewStyle = {
+  height: 32,
+  width: 32,
+  borderRadius: 16,
+  borderWidth: 2,
+  alignItems: "center",
+  justifyContent: "center",
+  marginRight: 12,
+}
+
+const $leftGroup: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
 }
 
-const $iconRight: ViewStyle = {
-  marginLeft: 6,
-}
-
-// deprecated placeholder kept for backward compatibility
-const $dashContainer: ViewStyle = {
-  width: 36,
-  flexDirection: "row",
-  alignItems: "center",
-  marginHorizontal: 6,
-  overflow: "hidden",
-}
-
-const $dashSegment: ViewStyle = {
-  width: 4,
-  height: 1,
-  marginHorizontal: 3,
-}
-
-const $checkBadge: ViewStyle = {
-  position: "absolute",
-  top: -4,
-  right: -4,
-  width: 14,
-  height: 14,
-  borderRadius: 7,
-  alignItems: "center",
-  justifyContent: "center",
-}
+// removed dashed timeline styles

@@ -49,7 +49,6 @@ export const MoodGraph: FC = () => {
       else bucket.positive += 1
       bucket.total += 1
     }
-    console.log(map)
     return Object.values(map)
   }, [])
 
