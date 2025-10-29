@@ -5,6 +5,7 @@ import { $styles } from "@/theme/styles"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { msUntilNextLocalMidnight } from "@/utils/date"
 import { Icon } from "@/components"
+import DailyTaskManager from "@/managers/DailyTaskManager"
 
 type Props = {
   onPressMood: () => void
@@ -17,11 +18,19 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
 
   useEffect(() => {
-    const reset = () => setDone({ mood: false, lesson: false, journal: false })
+    // Initialize from persisted state, ensuring today's dateKey
+    const state = DailyTaskManager.getState()
+    setDone({ mood: state.mood, lesson: state.lesson, journal: state.journal })
+
+    // Schedule a local midnight refresh to reflect reset
+    const reset = () => {
+      const fresh = DailyTaskManager.getState()
+      setDone({ mood: fresh.mood, lesson: fresh.lesson, journal: fresh.journal })
+    }
     const ms = msUntilNextLocalMidnight()
     const id = setTimeout(reset, ms)
     return () => clearTimeout(id)
-  }, [done])
+  }, [])
 
   const circle = (label: string, completed: boolean, onPress?: () => void) => (
     <TouchableOpacity
@@ -58,16 +67,19 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
     <View style={themed([$container])}>
       {circle("Mood", done.mood, () => {
         setDone((s) => ({ ...s, mood: true }))
+        DailyTaskManager.markCompleted("mood")
         onPressMood()
       })}
       <Dash />
       {circle("Lesson", done.lesson, () => {
         setDone((s) => ({ ...s, lesson: true }))
+        DailyTaskManager.markCompleted("lesson")
         onPressLesson?.()
       })}
       <Dash />
       {circle("Journal", done.journal, () => {
         setDone((s) => ({ ...s, journal: true }))
+        DailyTaskManager.markCompleted("journal")
         onPressJournal?.()
       })}
     </View>

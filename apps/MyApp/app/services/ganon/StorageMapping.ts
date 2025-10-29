@@ -6,6 +6,7 @@ import { IReferralData } from "@/types/IReferralData"
 import IReviewBackoffData from "@/types/IReviewBackoffData"
 import INoContactData from "@/types/INoContactData"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
+import { IDailyTasks } from "@/types/IDailyTasks"
 interface StorageMapping {
   // v1
   email: string | null
@@ -26,6 +27,7 @@ interface StorageMapping {
   finishedOnboarding: boolean
   noContactData: INoContactData
   moodHistory: IMoodHistoryItem[]
+  dailyTasks: IDailyTasks
 }
 
 export default StorageMapping
