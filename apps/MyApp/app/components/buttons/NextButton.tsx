@@ -11,7 +11,12 @@ type IProps = {
   backgroundColor?: string
 }
 
-export default function NextButton({ scrollTo, onPressOverride, isDisabled, backgroundColor }: IProps) {
+export default function NextButton({
+  scrollTo,
+  onPressOverride,
+  isDisabled,
+  backgroundColor,
+}: IProps) {
   const lang = Language.current
 
   const handlePress = () => {

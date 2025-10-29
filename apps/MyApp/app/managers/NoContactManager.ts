@@ -86,7 +86,7 @@ export default class NoContactManager {
   /**
    * Format time display based on elapsed time and goal duration
    */
-  private static formatTimeDisplay(timeElapsed: number, goalDuration: number): TimeDisplay {
+  private static formatTimeDisplay(timeElapsed: number, _goalDuration: number): TimeDisplay {
     const days = timeElapsed / (24 * 60 * 60 * 1000)
     const weeks = timeElapsed / (7 * 24 * 60 * 60 * 1000)
     const months = timeElapsed / (30 * 24 * 60 * 60 * 1000)
@@ -252,5 +252,23 @@ export default class NoContactManager {
         return "1 month"
     }
   }
-}
 
+  /**
+   * Update the last contacted date
+   */
+  static updateLastContactedDate(newDate: Date): void {
+    const data = this.getNoContactData()
+    if (!data) {
+      this.initializeNoContactData()
+      return
+    }
+
+    const updatedData: INoContactData = {
+      ...data,
+      lastContacted: newDate.getTime(),
+    }
+
+    ganon.set("noContactData", updatedData)
+    Log.info(`NoContactManager: Updated last contacted date to ${newDate.toISOString()}`)
+  }
+}

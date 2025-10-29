@@ -33,22 +33,27 @@ export const MultipleChoiceSelector = ({
 
   // Limit options to maxOptions
   const displayOptions = options.slice(0, maxOptions)
-  
+
   // Check if max selections limit is reached
   const isMaxSelectionsReached =
     allowMultiple && maxSelections && selectedOptions.length >= maxSelections
 
   const handleOptionSelect = (optionId: string) => {
     let shouldAutoAdvance = false
-    
+
     if (allowMultiple) {
       const wasAtMax = isMaxSelectionsReached
-      
+
       // Check before state update if we should auto-advance
-      if (maxSelections && selectedOptions.length + 1 === maxSelections && !wasAtMax && !selectedOptions.includes(optionId)) {
+      if (
+        maxSelections &&
+        selectedOptions.length + 1 === maxSelections &&
+        !wasAtMax &&
+        !selectedOptions.includes(optionId)
+      ) {
         shouldAutoAdvance = true
       }
-      
+
       setSelectedOptions((prev) => {
         if (prev.includes(optionId)) {
           // Allow deselecting even if at max
@@ -61,7 +66,7 @@ export const MultipleChoiceSelector = ({
           return [...prev, optionId]
         }
       })
-      
+
       // Auto-advance if we just reached max
       if (shouldAutoAdvance) {
         setTimeout(() => {
@@ -92,7 +97,7 @@ export const MultipleChoiceSelector = ({
         {displayOptions.map((option) => {
           const isSelected = selectedOptions.includes(option.id)
           const isDisabled = Boolean(!isSelected && isMaxSelectionsReached)
-          
+
           return (
             <RectangularButton
               key={option.id}
@@ -108,7 +113,7 @@ export const MultipleChoiceSelector = ({
           )
         })}
       </View>
-      
+
       {isMaxSelectionsReached && maxSelections && (
         <View style={styles.limitContainer}>
           <Text style={styles.limitText}>
@@ -147,12 +152,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: "100%",
   },
-  optionsContainer: {
-    alignItems: "center",
-    gap: 12,
-    marginBottom: 60,
-    width: "100%",
-  },
   limitContainer: {
     alignItems: "center",
     marginTop: -40,
@@ -162,5 +161,11 @@ const styles = StyleSheet.create({
     color: "#9E9E9E",
     fontSize: 12,
     textAlign: "center",
+  },
+  optionsContainer: {
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 60,
+    width: "100%",
   },
 })

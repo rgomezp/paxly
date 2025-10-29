@@ -4,7 +4,12 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer, useNavigation, DarkTheme, DefaultTheme } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  useNavigation,
+  DarkTheme,
+  DefaultTheme,
+} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { observer } from "mobx-react-lite"
@@ -33,7 +38,7 @@ const TabNavigator = observer(function TabNavigator() {
   const context = useContext(ThemeContext)
   const theme = useMemo(
     () => (context?.themeScheme === "dark" ? darkTheme : lightTheme),
-    [context?.themeScheme]
+    [context?.themeScheme],
   )
 
   return (
@@ -69,7 +74,7 @@ const AppStack = observer(function AppStack() {
   const context = useContext(ThemeContext)
   const theme = useMemo(
     () => (context?.themeScheme === "dark" ? darkTheme : lightTheme),
-    [context?.themeScheme]
+    [context?.themeScheme],
   )
   const navigation = useNavigation()
 
@@ -111,10 +116,10 @@ export interface NavigationProps
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const context = useContext(ThemeContext)
-  
+
   const navigationTheme = useMemo(
     () => (context?.themeScheme === "dark" ? DarkTheme : DefaultTheme),
-    [context?.themeScheme]
+    [context?.themeScheme],
   )
 
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName))

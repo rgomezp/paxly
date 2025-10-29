@@ -1,4 +1,4 @@
-import { EventEmitter } from 'eventemitter3'
+import { EventEmitter } from "eventemitter3"
 
 // Create a singleton event emitter instance
 class AppEventEmitter extends EventEmitter {
@@ -24,7 +24,7 @@ export const EventRegister = {
   on: (event: string, callback: (...args: any[]) => void) => {
     eventEmitter.on(event, callback)
   },
-  
+
   off: (event: string, callback?: (...args: any[]) => void) => {
     if (callback) {
       eventEmitter.off(event, callback)
@@ -32,22 +32,22 @@ export const EventRegister = {
       eventEmitter.removeAllListeners(event)
     }
   },
-  
+
   rm: (event: string, callback?: (...args: any[]) => void) => {
     EventRegister.off(event, callback)
   },
-  
+
   emit: (event: string, ...args: any[]) => {
     eventEmitter.emit(event, ...args)
   },
-  
+
   removeAllListeners: (event?: string) => {
     if (event) {
       eventEmitter.removeAllListeners(event)
     } else {
       eventEmitter.removeAllListeners()
     }
-  }
+  },
 }
 
 export default EventRegister

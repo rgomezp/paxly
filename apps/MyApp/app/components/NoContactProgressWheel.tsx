@@ -1,12 +1,14 @@
-import { FC, useEffect, useRef } from "react"
-import { Animated, View, ViewStyle, TextStyle } from "react-native"
+import { FC, useEffect, useRef, useState } from "react"
+import { Animated, View, ViewStyle, TextStyle, Pressable } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "@/components"
 import NoContactManager from "@/managers/NoContactManager"
+import DatePickerModal from "./modals/DatePickerModal"
 
 export const NoContactProgressWheel: FC = () => {
   const { theme, themed } = useAppTheme()
   const progressData = NoContactManager.calculateDisplay()
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
 
   // Animate the progress
   const animatedProgress = useRef(new Animated.Value(0)).current
@@ -39,54 +41,34 @@ export const NoContactProgressWheel: FC = () => {
   return (
     <View style={themed($container)}>
       {/* Glow effect wrapper */}
-      <View style={[$glowWrapper, { backgroundColor: primaryColor }]}>
-        {/* Inner container */}
-        <View style={[$innerContainer, { backgroundColor: theme.colors.background }]}>
-          {/* SVG-like circular progress using View and clips */}
-          <View style={$circleWrapper}>
-            {/* Background arc */}
-            <View style={[$arcContainer, { borderColor: backgroundColor }]}>
-              <View style={[$arcHalf, { borderColor: backgroundColor }]} />
-            </View>
+      <Pressable onPress={() => setIsDatePickerVisible(true)}>
+        <View style={[$glowWrapper, { backgroundColor: primaryColor }]}>
+          {/* Inner container */}
+          <View style={[$innerContainer, { backgroundColor: theme.colors.background }]}>
+            {/* SVG-like circular progress using View and clips */}
+            <View style={$circleWrapper}>
+              {/* Background arc */}
+              <View style={[$arcContainer, { borderColor: backgroundColor }]}>
+                <View style={[$arcHalf, { borderColor: backgroundColor }]} />
+              </View>
 
-            {/* Progress arc - first half */}
-            <View style={$clipContainer}>
-              <Animated.View
-                style={[
-                  $arcHalf,
-                  {
-                    borderColor: primaryColor,
-                    opacity: animatedProgress.interpolate({
-                      inputRange: [0, 0.5, 1],
-                      outputRange: [0, 1, 1],
-                    }),
-                  },
-                  {
-                    transform: [
-                      {
-                        rotate: animatedProgress.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: ["-90deg", "90deg"],
-                        }),
-                      },
-                    ],
-                  },
-                ]}
-              />
-            </View>
-
-            {/* Progress arc - second half (if > 50%) */}
-            {progressData.progress > 0.5 && (
-              <View style={[$clipContainer, { transform: [{ rotate: "180deg" }] }]}>
+              {/* Progress arc - first half */}
+              <View style={$clipContainer}>
                 <Animated.View
                   style={[
                     $arcHalf,
                     {
                       borderColor: primaryColor,
+                      opacity: animatedProgress.interpolate({
+                        inputRange: [0, 0.5, 1],
+                        outputRange: [0, 1, 1],
+                      }),
+                    },
+                    {
                       transform: [
                         {
                           rotate: animatedProgress.interpolate({
-                            inputRange: [0.5, 1],
+                            inputRange: [0, 1],
                             outputRange: ["-90deg", "90deg"],
                           }),
                         },
@@ -95,38 +77,60 @@ export const NoContactProgressWheel: FC = () => {
                   ]}
                 />
               </View>
-            )}
 
-            {/* Inner circle with contrasting background */}
-            <View
-              style={[
-                $innerCircle,
-                {
-                  backgroundColor: theme.isDark
-                    ? theme.colors.palette.neutral200
-                    : theme.colors.palette.neutral100,
-                },
-              ]}
-            />
-
-            {/* Content */}
-            <View style={$contentContainer}>
-              {progressData.timeDisplay.secondary ? (
-                <>
-                  <Text
-                    preset="heading"
-                    style={$primaryText}
-                    text={progressData.timeDisplay.primary}
+              {/* Progress arc - second half (if > 50%) */}
+              {progressData.progress > 0.5 && (
+                <View style={[$clipContainer, { transform: [{ rotate: "180deg" }] }]}>
+                  <Animated.View
+                    style={[
+                      $arcHalf,
+                      {
+                        borderColor: primaryColor,
+                        transform: [
+                          {
+                            rotate: animatedProgress.interpolate({
+                              inputRange: [0.5, 1],
+                              outputRange: ["-90deg", "90deg"],
+                            }),
+                          },
+                        ],
+                      },
+                    ]}
                   />
-                  <Text style={$secondaryText} text={progressData.timeDisplay.secondary} />
-                </>
-              ) : (
-                <Text style={$primaryText} text={progressData.timeDisplay.primary} />
+                </View>
               )}
+
+              {/* Inner circle with contrasting background */}
+              <View
+                style={[
+                  $innerCircle,
+                  {
+                    backgroundColor: theme.isDark
+                      ? theme.colors.palette.neutral200
+                      : theme.colors.palette.neutral100,
+                  },
+                ]}
+              />
+
+              {/* Content */}
+              <View style={$contentContainer}>
+                {progressData.timeDisplay.secondary ? (
+                  <>
+                    <Text
+                      preset="heading"
+                      style={$primaryText}
+                      text={progressData.timeDisplay.primary}
+                    />
+                    <Text style={$secondaryText} text={progressData.timeDisplay.secondary} />
+                  </>
+                ) : (
+                  <Text style={$primaryText} text={progressData.timeDisplay.primary} />
+                )}
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </Pressable>
 
       {/* Goal info */}
       <View style={themed($goalContainer)}>
@@ -141,6 +145,12 @@ export const NoContactProgressWheel: FC = () => {
           />
         )}
       </View>
+
+      {/* Date Picker Modal */}
+      <DatePickerModal
+        visible={isDatePickerVisible}
+        onClose={() => setIsDatePickerVisible(false)}
+      />
     </View>
   )
 }

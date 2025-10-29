@@ -29,4 +29,3 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
   AppStackParamList,
   T
 >
-

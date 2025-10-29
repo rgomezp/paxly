@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av'
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av"
 
 export function useAudio() {
   const [isAudioSetup, setIsAudioSetup] = useState(false)

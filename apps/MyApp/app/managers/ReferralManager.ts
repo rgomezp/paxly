@@ -221,7 +221,7 @@ export class ReferralManager {
 
     // Get the referral threshold for this feature
     const threshold = getReferralThreshold(feature as string)
-    
+
     // If no threshold is defined, feature cannot be unlocked via referrals
     if (threshold === undefined) {
       return false

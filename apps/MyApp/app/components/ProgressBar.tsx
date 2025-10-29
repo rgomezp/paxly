@@ -10,15 +10,11 @@ type ProgressBarProps = {
   highlightedColor?: string
 }
 
-export default function ProgressBar({
-  data,
-  scrollX,
-  highlightedColor,
-}: ProgressBarProps) {
+export default function ProgressBar({ data, scrollX, highlightedColor }: ProgressBarProps) {
   const { theme } = useAppTheme()
   const { width } = useWindowDimensions()
   const progressWidth = useRef(new Animated.Value(0)).current
-  
+
   // Use theme-aware tint color if no highlightedColor is provided
   const color = highlightedColor || theme.colors.tint
 

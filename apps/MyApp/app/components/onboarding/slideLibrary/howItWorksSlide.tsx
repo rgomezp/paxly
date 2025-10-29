@@ -51,7 +51,12 @@ const HowItWorksComponent: React.FC = () => {
       {/* Steps Section */}
       <View style={themed($stepsContainer)}>
         {steps.map((step, index) => (
-          <IconTextItem key={index} icon={step.icon} title={step.title} description={step.description} />
+          <IconTextItem
+            key={index}
+            icon={step.icon}
+            title={step.title}
+            description={step.description}
+          />
         ))}
       </View>
     </View>
@@ -84,4 +89,3 @@ const $stepsContainer: ThemedStyle<ViewStyle> = () => ({
   gap: 20,
   width: "100%",
 })
-

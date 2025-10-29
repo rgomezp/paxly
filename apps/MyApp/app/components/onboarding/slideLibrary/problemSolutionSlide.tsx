@@ -11,7 +11,9 @@ type ProblemSolutionSlideProps = {
 const problemImage: ImageRequireSource = require("../../../../assets/images/sad-face.png")
 const solutionImage: ImageRequireSource = require("../../../../assets/images/welcome-face.png")
 
-export function problemSolutionSlide({ onSelection: _onSelection }: ProblemSolutionSlideProps): ISlide {
+export function problemSolutionSlide({
+  onSelection: _onSelection,
+}: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
     title: "Tired of spinning your wheels?",
