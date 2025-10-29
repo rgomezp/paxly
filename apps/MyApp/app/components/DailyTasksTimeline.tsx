@@ -42,7 +42,15 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
       ]}
       activeOpacity={0.8}
     >
-      <Text text={label} size="xxs" style={themed({ color: theme.colors.text })} />
+      <View style={$labelRow}>
+        <Text text={label} size="xxs" style={themed({ color: theme.colors.text })} />
+        <Icon
+          icon="caretRight"
+          color={theme.colors.textDim}
+          size={10}
+          containerStyle={$iconRight}
+        />
+      </View>
       {completed && (
         <View style={[$checkBadge, { backgroundColor: theme.colors.tint }]}>
           <Icon icon="check" color={theme.colors.background} size={10} />
@@ -100,6 +108,15 @@ const $circle: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
   position: "relative",
+}
+
+const $labelRow: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+}
+
+const $iconRight: ViewStyle = {
+  marginLeft: 6,
 }
 
 // deprecated placeholder kept for backward compatibility

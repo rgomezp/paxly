@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react"
-import { Animated, View, ViewStyle, TextStyle, Pressable } from "react-native"
+import { Animated, View, ViewStyle, TextStyle, Pressable, Image, ImageStyle } from "react-native"
 import Svg, { Circle } from "react-native-svg"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "@/components"
@@ -118,6 +118,11 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
 
             {/* Content */}
             <View style={$contentContainer}>
+              <Image
+                source={require("../../assets/images/cute-flame.png")}
+                style={$flame}
+                accessibilityIgnoresInvertColors
+              />
               {progressData.timeDisplay.secondary ? (
                 <>
                   <Text
@@ -213,6 +218,13 @@ const $contentContainer: ViewStyle = {
   justifyContent: "center",
   width: 280,
   height: 280,
+}
+
+const $flame: ImageStyle = {
+  width: 48,
+  height: 48,
+  marginBottom: 8,
+  resizeMode: "contain",
 }
 
 const $primaryText: TextStyle = {
