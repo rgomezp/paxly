@@ -6,7 +6,7 @@ import { useStores } from "@/models"
 import MoodManager from "@/managers/MoodManager"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { MoodCategory } from "@/types/MoodCategory"
-import { ACTIVITY_TO_EMOJI } from "@/types/Activities"
+import { ACTIVITY_TO_EMOJI, activityToPhrase } from "@/types/Activities"
 import { MOODS, MOOD_TO_EMOJI, MoodId } from "@/types/Moods"
 import { Text } from "./Text"
 
@@ -35,6 +35,7 @@ const MoodLogList: FC = observer(function MoodLogList() {
         const moodEntry = Object.entries(MOODS).find(([, m]) => m.title === item.mood.title)
         const moodEmoji = moodEntry ? MOOD_TO_EMOJI[moodEntry[0] as MoodId] : "🙂"
         const activityEmoji = ACTIVITY_TO_EMOJI[item.activity]
+        const activityPhrase = activityToPhrase(item.activity)
 
         return (
           <View key={`mood-item-${item.date}-${idx}`}>
@@ -49,7 +50,7 @@ const MoodLogList: FC = observer(function MoodLogList() {
                   while
                 </Text>
                 <Text style={themed([$activityText, { color: theme.colors.text }])}>
-                  {activityEmoji} {item.activity.replace(/_/g, " ")}
+                  {activityEmoji} {activityPhrase}
                 </Text>
                 {!!item.notes && (
                   <Text style={themed([$notesText, { color: theme.colors.text }])}>

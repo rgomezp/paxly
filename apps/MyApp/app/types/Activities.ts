@@ -52,4 +52,56 @@ const ACTIVITY_TO_EMOJI: Record<Activity, string> = {
 
 const ALL_ACTIVITIES: Activity[] = Object.values(Activity) as Activity[]
 
-export { Activity, ACTIVITY_TO_EMOJI, ALL_ACTIVITIES }
+function activityToPhrase(activity: Activity): string {
+  switch (activity) {
+    case Activity.Exercise:
+      return "exercising"
+    case Activity.Meditation:
+      return "meditating"
+    case Activity.Yoga:
+      return "doing yoga"
+    case Activity.Reading:
+      return "reading"
+    case Activity.Writing:
+      return "writing"
+    case Activity.Painting:
+      return "painting"
+    case Activity.Cooking:
+      return "cooking"
+    case Activity.Cleaning:
+      return "cleaning"
+    case Activity.Driving:
+      return "driving"
+    case Activity.Working:
+      return "working"
+    case Activity.Gaming:
+      return "gaming"
+    case Activity.Socializing:
+      return "socializing"
+    case Activity.WatchingTV:
+      return "watching TV"
+    case Activity.Music:
+      return "listening to music"
+    case Activity.Nature:
+      return "spending time in nature"
+    case Activity.Studying:
+      return "studying"
+    case Activity.Shopping:
+      return "shopping"
+    case Activity.Traveling:
+      return "traveling"
+    case Activity.BedRotting:
+      return "bed rotting"
+    case Activity.Eating:
+      return "eating"
+    case Activity.DrinkingCoffee:
+      return "drinking coffee"
+    case Activity.PetTime:
+      return "spending time with pets"
+    case Activity.Other:
+    default:
+      return "something"
+  }
+}
+
+export { Activity, ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, activityToPhrase }
