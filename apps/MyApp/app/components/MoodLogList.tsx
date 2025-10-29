@@ -93,6 +93,8 @@ const $emojiBox: ViewStyle = {
 
 const $emojiText: TextStyle = {
   fontSize: 28,
+  lineHeight: 34,
+  textAlign: "center",
 }
 
 const $rowContent: ViewStyle = {
