@@ -14,18 +14,21 @@ import {
 // import inter, poppins, and roboto
 import {
   Inter_400Regular as interRegular,
+  Inter_400Regular_Italic as interItalic,
   Inter_500Medium as interMedium,
   Inter_600SemiBold as interSemiBold,
   Inter_700Bold as interBold,
 } from "@expo-google-fonts/inter"
 import {
   Poppins_400Regular as poppinsRegular,
+  Poppins_400Regular_Italic as poppinsItalic,
   Poppins_500Medium as poppinsMedium,
   Poppins_600SemiBold as poppinsSemiBold,
   Poppins_700Bold as poppinsBold,
 } from "@expo-google-fonts/poppins"
 import {
   Roboto_400Regular as robotoRegular,
+  Roboto_400Regular_Italic as robotoItalic,
   Roboto_500Medium as robotoMedium,
   Roboto_700Bold as robotoBold,
 } from "@expo-google-fonts/roboto"
@@ -37,14 +40,17 @@ export const customFontsToLoad = {
   spaceGroteskSemiBold,
   spaceGroteskBold,
   interRegular,
+  interItalic,
   interMedium,
   interSemiBold,
   interBold,
   poppinsRegular,
+  poppinsItalic,
   poppinsMedium,
   poppinsSemiBold,
   poppinsBold,
   robotoRegular,
+  robotoItalic,
   robotoMedium,
   robotoBold,
 }
@@ -82,18 +88,21 @@ const fonts = {
   },
   inter: {
     normal: "interRegular",
+    italic: "interItalic",
     medium: "interMedium",
     semiBold: "interSemiBold",
     bold: "interBold",
   },
   poppins: {
     normal: "poppinsRegular",
+    italic: "poppinsItalic",
     medium: "poppinsMedium",
     semiBold: "poppinsSemiBold",
     bold: "poppinsBold",
   },
   roboto: {
     normal: "robotoRegular",
+    italic: "robotoItalic",
     medium: "robotoMedium",
     bold: "robotoBold",
   },

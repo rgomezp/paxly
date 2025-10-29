@@ -70,12 +70,28 @@ export const Text = forwardRef(function Text(props: TextProps, ref: ForwardedRef
   const content = translatedText || children
 
   const preset: Presets = props.preset ?? "default"
-  const $styles: StyleProp<TextStyle> = [
-    themed($presets[preset]),
-    weight && $fontWeightStyles[weight],
-    size && $sizeStyles[size],
-    $styleOverride,
-  ]
+  // Detect italic request in style overrides
+  const isItalicRequested = (() => {
+    if (!$styleOverride) return false
+    const check = (s: TextStyle | any) => !!s && (s as TextStyle).fontStyle === "italic"
+    if (Array.isArray($styleOverride)) return $styleOverride.some(check)
+    return check($styleOverride as TextStyle)
+  })()
+
+  const italicFamily = (typography.primary as any).italic as string | undefined
+
+  const $styles: StyleProp<TextStyle> = [themed($presets[preset])]
+
+  // Apply weight-specific font family first
+  if (weight) $styles.push($fontWeightStyles[weight])
+
+  // If italic is requested and we have an italic font variant, use it
+  if (isItalicRequested && italicFamily) {
+    $styles.push({ fontFamily: italicFamily })
+  }
+
+  if (size) $styles.push($sizeStyles[size])
+  if ($styleOverride) $styles.push($styleOverride)
 
   return (
     <RNText {...rest} style={$styles} ref={ref}>
