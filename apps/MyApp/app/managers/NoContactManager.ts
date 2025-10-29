@@ -56,6 +56,35 @@ export default class NoContactManager {
   }
 
   /**
+   * Find the smallest goal that is larger than the elapsed time
+   */
+  private static findAppropriateGoal(timeElapsed: number): NoContactGoal {
+    const goalOrder = [
+      NoContactGoal.OneDay,
+      NoContactGoal.OneWeek,
+      NoContactGoal.TwoWeeks,
+      NoContactGoal.OneMonth,
+      NoContactGoal.TwoMonths,
+      NoContactGoal.ThreeMonths,
+      NoContactGoal.FourMonths,
+      NoContactGoal.FiveMonths,
+      NoContactGoal.SixMonths,
+      NoContactGoal.OneYear,
+    ]
+
+    // Find the smallest goal that is larger than elapsed time
+    for (const goal of goalOrder) {
+      const goalDuration = this.GOAL_DURATIONS[goal]
+      if (timeElapsed < goalDuration) {
+        return goal
+      }
+    }
+
+    // If elapsed time exceeds all goals, return the largest goal
+    return NoContactGoal.OneYear
+  }
+
+  /**
    * Calculate what should be displayed based on the elapsed time
    */
   static calculateDisplay(): ProgressData | null {
@@ -66,7 +95,16 @@ export default class NoContactManager {
 
     const now = Date.now()
     const timeElapsed = now - data.lastContacted
-    const goalDuration = this.GOAL_DURATIONS[data.currentGoal]
+
+    // Find the appropriate goal based on elapsed time (smallest goal larger than elapsed time)
+    const appropriateGoal = this.findAppropriateGoal(timeElapsed)
+    const goalDuration = this.GOAL_DURATIONS[appropriateGoal]
+
+    // Update the stored goal if it changed
+    if (appropriateGoal !== data.currentGoal) {
+      this.updateGoal(appropriateGoal)
+    }
+
     const progress = Math.min(timeElapsed / goalDuration, 1)
     const timeRemaining = Math.max(goalDuration - timeElapsed, 0)
 
@@ -76,7 +114,7 @@ export default class NoContactManager {
     return {
       progress,
       timeDisplay,
-      currentGoal: data.currentGoal,
+      currentGoal: appropriateGoal,
       goalDuration,
       timeRemaining,
       timeElapsed,
@@ -98,15 +136,18 @@ export default class NoContactManager {
       const minutes = Math.floor((totalHours - hours) * 60)
 
       if (hours === 0) {
+        const minutesLabel = minutes === 1 ? "minute" : "minutes"
         return {
-          primary: `${minutes}m`,
+          primary: `${minutes} ${minutesLabel}`,
           primaryLabel: "minutes",
         }
       }
 
+      const hoursLabel = hours === 1 ? "hour" : "hours"
+      const minutesLabel = minutes === 1 ? "minute" : "minutes"
       return {
-        primary: `${hours}h`,
-        secondary: minutes > 0 ? `${minutes}m` : undefined,
+        primary: `${hours} ${hoursLabel}`,
+        secondary: minutes > 0 ? `${minutes} ${minutesLabel}` : undefined,
         primaryLabel: "hours",
         secondaryLabel: "minutes",
       }
@@ -117,11 +158,14 @@ export default class NoContactManager {
       const wholeDays = Math.floor(days)
       const remainingHours = Math.floor((days - wholeDays) * 24)
 
+      const daysLabel = wholeDays === 1 ? "day" : "days"
+      const hoursLabel = remainingHours === 1 ? "hour" : "hours"
+
       return {
-        primary: `${wholeDays}d`,
-        secondary: remainingHours > 0 ? `${remainingHours}h` : undefined,
-        primaryLabel: wholeDays === 1 ? "day" : "days",
-        secondaryLabel: remainingHours === 1 ? "hour" : "hours",
+        primary: `${wholeDays} ${daysLabel}`,
+        secondary: remainingHours > 0 ? `${remainingHours} ${hoursLabel}` : undefined,
+        primaryLabel: "days",
+        secondaryLabel: "hours",
       }
     }
 
@@ -130,11 +174,14 @@ export default class NoContactManager {
       const wholeWeeks = Math.floor(weeks)
       const remainingDays = Math.floor((weeks - wholeWeeks) * 7)
 
+      const weeksLabel = wholeWeeks === 1 ? "week" : "weeks"
+      const daysLabel = remainingDays === 1 ? "day" : "days"
+
       return {
-        primary: `${wholeWeeks}w`,
-        secondary: remainingDays > 0 ? `${remainingDays}d` : undefined,
-        primaryLabel: wholeWeeks === 1 ? "week" : "weeks",
-        secondaryLabel: remainingDays === 1 ? "day" : "days",
+        primary: `${wholeWeeks} ${weeksLabel}`,
+        secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
+        primaryLabel: "weeks",
+        secondaryLabel: "days",
       }
     }
 
@@ -142,11 +189,14 @@ export default class NoContactManager {
     const wholeMonths = Math.floor(months)
     const remainingDays = Math.floor((months - wholeMonths) * 30)
 
+    const monthsLabel = wholeMonths === 1 ? "month" : "months"
+    const daysLabel = remainingDays === 1 ? "day" : "days"
+
     return {
-      primary: `${wholeMonths}m`,
-      secondary: remainingDays > 0 ? `${remainingDays}d` : undefined,
-      primaryLabel: wholeMonths === 1 ? "month" : "months",
-      secondaryLabel: remainingDays === 1 ? "day" : "days",
+      primary: `${wholeMonths} ${monthsLabel}`,
+      secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
+      primaryLabel: "months",
+      secondaryLabel: "days",
     }
   }
 

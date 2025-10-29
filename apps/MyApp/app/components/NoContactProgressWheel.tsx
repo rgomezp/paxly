@@ -1,14 +1,20 @@
 import { FC, useEffect, useRef, useState } from "react"
 import { Animated, View, ViewStyle, TextStyle, Pressable } from "react-native"
+import Svg, { Circle } from "react-native-svg"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "@/components"
 import NoContactManager from "@/managers/NoContactManager"
 import DatePickerModal from "./modals/DatePickerModal"
 
+const AnimatedCircle = Animated.createAnimatedComponent(Circle)
+
 export const NoContactProgressWheel: FC = () => {
   const { theme, themed } = useAppTheme()
-  const progressData = NoContactManager.calculateDisplay()
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
+
+  // Calculate progress data - refreshTrigger forces recalculation on state change
+  const progressData = NoContactManager.calculateDisplay()
 
   // Animate the progress
   const animatedProgress = useRef(new Animated.Value(0)).current
@@ -18,11 +24,11 @@ export const NoContactProgressWheel: FC = () => {
 
     Animated.spring(animatedProgress, {
       toValue: progressData.progress,
-      useNativeDriver: false,
+      useNativeDriver: true,
       friction: 8,
       tension: 40,
     }).start()
-  }, [animatedProgress, progressData])
+  }, [animatedProgress, progressData, refreshTrigger])
 
   if (!progressData) {
     return null
@@ -38,99 +44,91 @@ export const NoContactProgressWheel: FC = () => {
   const goalDisplayName = NoContactManager.getGoalDisplayName(progressData.currentGoal)
   const timeRemaining = NoContactManager.getTimeRemainingDisplay()
 
+  // Circle dimensions
+  const size = 280
+  const strokeWidth = 12
+  const radius = (size - strokeWidth) / 2
+  const circumference = radius * 2 * Math.PI
+
+  // Calculate stroke dash offset for progress
+  const strokeDashoffset = animatedProgress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [circumference, 0],
+  })
+
   return (
     <View style={themed($container)}>
       {/* Glow effect wrapper */}
-      <Pressable onPress={() => setIsDatePickerVisible(true)}>
-        <View style={[$glowWrapper, { backgroundColor: primaryColor }]}>
-          {/* Inner container */}
-          <View style={[$innerContainer, { backgroundColor: theme.colors.background }]}>
-            {/* SVG-like circular progress using View and clips */}
-            <View style={$circleWrapper}>
-              {/* Background arc */}
-              <View style={[$arcContainer, { borderColor: backgroundColor }]}>
-                <View style={[$arcHalf, { borderColor: backgroundColor }]} />
-              </View>
-
-              {/* Progress arc - first half */}
-              <View style={$clipContainer}>
-                <Animated.View
-                  style={[
-                    $arcHalf,
-                    {
-                      borderColor: primaryColor,
-                      opacity: animatedProgress.interpolate({
-                        inputRange: [0, 0.5, 1],
-                        outputRange: [0, 1, 1],
-                      }),
-                    },
-                    {
-                      transform: [
-                        {
-                          rotate: animatedProgress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: ["-90deg", "90deg"],
-                          }),
-                        },
-                      ],
-                    },
-                  ]}
-                />
-              </View>
-
-              {/* Progress arc - second half (if > 50%) */}
-              {progressData.progress > 0.5 && (
-                <View style={[$clipContainer, { transform: [{ rotate: "180deg" }] }]}>
-                  <Animated.View
-                    style={[
-                      $arcHalf,
-                      {
-                        borderColor: primaryColor,
-                        transform: [
-                          {
-                            rotate: animatedProgress.interpolate({
-                              inputRange: [0.5, 1],
-                              outputRange: ["-90deg", "90deg"],
-                            }),
-                          },
-                        ],
-                      },
-                    ]}
-                  />
-                </View>
-              )}
-
-              {/* Inner circle with contrasting background */}
-              <View
-                style={[
-                  $innerCircle,
-                  {
-                    backgroundColor: theme.isDark
-                      ? theme.colors.palette.neutral200
-                      : theme.colors.palette.neutral100,
-                  },
-                ]}
+      <View style={[$glowWrapper, { backgroundColor: primaryColor }]}>
+        {/* Inner container */}
+        <View style={[$innerContainer, { backgroundColor: theme.colors.background }]}>
+          {/* Pressable container for tap handling */}
+          <Pressable
+            onPress={() => setIsDatePickerVisible(true)}
+            style={$circleWrapper}
+            hitSlop={0}
+          >
+            {/* SVG Circle Progress */}
+            <Svg width={size} height={size} style={$svgStyle}>
+              {/* Background circle */}
+              <Circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                stroke={backgroundColor}
+                strokeWidth={strokeWidth}
+                fill="none"
               />
 
-              {/* Content */}
-              <View style={$contentContainer}>
-                {progressData.timeDisplay.secondary ? (
-                  <>
-                    <Text
-                      preset="heading"
-                      style={$primaryText}
-                      text={progressData.timeDisplay.primary}
-                    />
-                    <Text style={$secondaryText} text={progressData.timeDisplay.secondary} />
-                  </>
-                ) : (
-                  <Text style={$primaryText} text={progressData.timeDisplay.primary} />
-                )}
-              </View>
+              {/* Progress circle */}
+              <AnimatedCircle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                stroke={primaryColor}
+                strokeWidth={strokeWidth}
+                fill="none"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                transform={`rotate(-90 ${size / 2} ${size / 2})`}
+              />
+            </Svg>
+
+            {/* Inner circle with contrasting background */}
+            <View
+              style={[
+                $innerCircle,
+                {
+                  backgroundColor: theme.isDark
+                    ? theme.colors.palette.neutral200
+                    : theme.colors.palette.neutral100,
+                },
+              ]}
+            />
+
+            {/* Content */}
+            <View style={$contentContainer}>
+              {progressData.timeDisplay.secondary ? (
+                <>
+                  <Text
+                    preset="heading"
+                    style={$primaryText}
+                    text={progressData.timeDisplay.primary}
+                  />
+                  <Text style={$secondaryText} text={progressData.timeDisplay.secondary} />
+                </>
+              ) : (
+                <Text
+                  preset="heading"
+                  style={$primaryText}
+                  text={progressData.timeDisplay.primary}
+                />
+              )}
             </View>
-          </View>
+          </Pressable>
         </View>
-      </Pressable>
+      </View>
 
       {/* Goal info */}
       <View style={themed($goalContainer)}>
@@ -149,7 +147,10 @@ export const NoContactProgressWheel: FC = () => {
       {/* Date Picker Modal */}
       <DatePickerModal
         visible={isDatePickerVisible}
-        onClose={() => setIsDatePickerVisible(false)}
+        onClose={() => {
+          setIsDatePickerVisible(false)
+          setRefreshTrigger((prev) => prev + 1)
+        }}
       />
     </View>
   )
@@ -183,31 +184,12 @@ const $circleWrapper: ViewStyle = {
   width: 280,
   height: 280,
   borderRadius: 140,
-  overflow: "hidden",
+  justifyContent: "center",
+  alignItems: "center",
 }
 
-const $arcContainer: ViewStyle = {
+const $svgStyle: ViewStyle = {
   position: "absolute",
-  width: 280,
-  height: 280,
-  borderRadius: 140,
-  borderWidth: 12,
-}
-
-const $clipContainer: ViewStyle = {
-  position: "absolute",
-  width: 140,
-  height: 280,
-  overflow: "hidden",
-}
-
-const $arcHalf: ViewStyle = {
-  width: 280,
-  height: 280,
-  borderRadius: 140,
-  borderWidth: 12,
-  borderBottomWidth: 0,
-  borderRightWidth: 0,
 }
 
 const $innerCircle: ViewStyle = {
@@ -215,8 +197,6 @@ const $innerCircle: ViewStyle = {
   width: 256,
   height: 256,
   borderRadius: 128,
-  top: 12,
-  left: 12,
 }
 
 const $contentContainer: ViewStyle = {
