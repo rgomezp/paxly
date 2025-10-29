@@ -1,8 +1,8 @@
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, ScrollView } from "react-native"
+import { View, ViewStyle, ScrollView } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { MoodGraph, MoodLogList, Quote } from "@/components"
+import { MoodGraph, MoodLogList, Quote, JournalLogList, SegmentedSelector } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
 import { getHomeDrawerSections } from "./HomeDrawerSections"
@@ -15,6 +15,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   const sections = getHomeDrawerSections()
   // Content should not add its own top inset; header already accounts for it
   const contentInsets = useSafeAreaInsetsStyle([])
+  const [selectedTab, setSelectedTab] = useState<"moods" | "journal">("moods")
 
   useEffect(() => {
     NoContactManager.initializeNoContactData()
@@ -36,7 +37,17 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           <ScrollView style={[themed($container), contentInsets]}>
             <Quote />
             <MoodGraph />
-            <MoodLogList />
+            <View style={themed($selectorWrapper)}>
+              <SegmentedSelector
+                options={[
+                  { key: "moods", label: "Moods" },
+                  { key: "journal", label: "Journal Entries" },
+                ]}
+                selectedKey={selectedTab}
+                onSelect={(k) => setSelectedTab(k as "moods" | "journal")}
+              />
+            </View>
+            {selectedTab === "moods" ? <MoodLogList /> : <JournalLogList />}
           </ScrollView>
         )}
       />
@@ -47,3 +58,10 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
 const $container: ViewStyle = {
   flex: 1,
 }
+
+const $selectorWrapper: ViewStyle = {
+  marginTop: 24,
+  paddingHorizontal: 16,
+}
+
+// segmented selector styles moved into SegmentedSelector component

@@ -73,7 +73,6 @@ const MoodLogList: FC = observer(function MoodLogList() {
 export default MoodLogList
 
 const $listWrapper: ViewStyle = {
-  marginTop: 100,
   paddingHorizontal: 16,
 }
 

@@ -15,18 +15,24 @@ interface JournalScreenProps extends AppStackScreenProps<"Journal"> {}
 
 export const JournalScreen: FC<JournalScreenProps> = observer(function JournalScreen({
   navigation,
+  route,
 }) {
   const { themed, theme } = useAppTheme()
   const insets = useSafeAreaInsets()
-  const [text, setText] = useState("")
+  const [text, setText] = useState(route.params?.initialText ?? "")
+  const isEdit = route.params?.mode === "edit" && typeof route.params?.date === "number"
 
   function onSave() {
     if (!text.trim()) {
       navigation.goBack()
       return
     }
-    JournalManager.create(text.trim())
-    DailyTaskManager.markCompleted("journal")
+    if (isEdit) {
+      JournalManager.updateByDate(route.params!.date as number, text.trim())
+    } else {
+      JournalManager.create(text.trim())
+      DailyTaskManager.markCompleted("journal")
+    }
     navigation.goBack()
   }
 
@@ -46,7 +52,11 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
           contentContainerStyle={$contentInsetStyle}
           keyboardShouldPersistTaps="handled"
         >
-          <Text text="Journal" preset="heading" style={themed($title)} />
+          <Text
+            text={isEdit ? "Edit Journal" : "Journal"}
+            preset="heading"
+            style={themed($title)}
+          />
           <TextInput
             placeholder="Write your thoughts..."
             placeholderTextColor={theme.colors.textDim}

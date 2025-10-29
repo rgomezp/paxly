@@ -26,6 +26,15 @@ export default class JournalManager {
     const entries = JournalManager.getEntries().filter((e) => e.date !== timestamp)
     ganon.set("journalEntries", entries)
   }
+
+  static updateByDate(timestamp: number, newText: string) {
+    const entries = JournalManager.getEntries()
+    const index = entries.findIndex((e) => e.date === timestamp)
+    if (index >= 0) {
+      entries[index] = { ...entries[index], text: newText }
+      ganon.set("journalEntries", entries)
+    }
+  }
 }
 
 

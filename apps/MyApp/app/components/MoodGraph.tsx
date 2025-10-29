@@ -87,7 +87,7 @@ export const MoodGraph: FC = observer(function MoodGraph() {
         preset="subheading"
         style={themed([$titleText, { color: theme.colors.text }])}
       />
-      <View style={themed([$container, { height: chartHeight }])}>
+      <View style={themed([$container])}>
         {/* Grid lines and Y-axis labels */}
         {yTicks.map((t) => {
           const y = yMax === 0 ? chartHeight : (1 - t / yMax) * chartHeight
