@@ -2,10 +2,8 @@ import { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { Text, DrawerIconButton } from "@/components"
-import { HomeDrawer } from "../drawers/HomeDrawer"
-import type { Theme } from "@/theme"
-import { getHomeDrawerSections } from "./HomeDrawerSections"
+import { Text } from "@/components"
+import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import UserManager from "@/managers/UserManager"
 import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
@@ -19,10 +17,10 @@ import Log from "@/utils/Log"
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
 export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
-  const sections = getHomeDrawerSections()
   const insets = useSafeAreaInsets()
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
+  const { themed, theme } = useAppTheme()
 
   // Initialize no contact data if needed
   useEffect(() => {
@@ -33,52 +31,30 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
   return (
     <>
-      <HomeDrawer
-        sections={sections}
-        renderContent={({
-          themed,
-          theme,
-          toggleDrawer,
-        }: {
-          themed: any
-          theme: Theme
-          toggleDrawer: () => void
-        }) => (
-          <ScrollView
-            style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}
-          >
-            <View style={themed({ backgroundColor: theme.colors.background })}>
-              {/* Hamburger button at top */}
-              <View style={themed([$hamburgerContainer, { paddingTop: insets.top }])}>
-                <DrawerIconButton onPress={toggleDrawer} />
-              </View>
-
-              {/* Header Section */}
-              <View style={themed($headerSection)}>
-                <Text
-                  text={`${name}, you've been no contact for:`}
-                  preset="heading"
-                  style={themed({ color: theme.colors.text, fontSize: 24, textAlign: "center" })}
-                />
-              </View>
-
-              {/* Progress Wheel */}
-              <NoContactProgressWheel refreshTrigger={refreshTrigger} />
-              <View style={themed($resetButtonContainer)}>
-                <RectangularButton
-                  buttonText="Help"
-                  onClick={() => setIsHelpModalVisible(true)}
-                  icon="exclamation-triangle"
-                />
-              </View>
-              <DailyTasksTimeline
-                onPressMood={() => navigate("MoodLogger")}
-                onPressJournal={() => navigate("Journal")}
-              />
-            </View>
-          </ScrollView>
-        )}
-      />
+      <ScrollView style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
+        <View
+          style={themed({ backgroundColor: theme.colors.background, paddingTop: insets.top })}
+        />
+        <View style={themed($headerSection)}>
+          <Text
+            text={`${name}, you've been no contact for:`}
+            preset="heading"
+            style={themed({ color: theme.colors.text, fontSize: 24, textAlign: "center" })}
+          />
+        </View>
+        <NoContactProgressWheel refreshTrigger={refreshTrigger} />
+        <View style={$resetButtonContainer}>
+          <RectangularButton
+            buttonText="Help"
+            onClick={() => setIsHelpModalVisible(true)}
+            icon="exclamation-triangle"
+          />
+        </View>
+        <DailyTasksTimeline
+          onPressMood={() => navigate("MoodLogger")}
+          onPressJournal={() => navigate("Journal")}
+        />
+      </ScrollView>
       <HelpModal
         visible={isHelpModalVisible}
         onClose={() => setIsHelpModalVisible(false)}
@@ -102,12 +78,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
 const $contentContainer: ViewStyle = {
   flex: 1,
-}
-
-const $hamburgerContainer: ViewStyle = {
-  alignItems: "flex-end",
-  paddingRight: 20,
-  paddingTop: 20,
 }
 
 const $headerSection: ViewStyle = {
