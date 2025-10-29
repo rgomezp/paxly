@@ -1,0 +1,244 @@
+import { FC, useMemo } from "react"
+import { View, ViewStyle, Text as RNText, TextStyle } from "react-native"
+import { Text } from "@/components"
+import { useAppTheme } from "@/utils/useAppTheme"
+import MoodManager from "@/managers/MoodManager"
+import { MoodCategory } from "@/types/MoodCategory"
+
+type DayBucket = {
+  key: string
+  label: string
+  negative: number
+  neutral: number
+  positive: number
+  total: number
+}
+
+export const MoodGraph: FC = () => {
+  const { theme, themed } = useAppTheme()
+
+  const buckets: DayBucket[] = useMemo(() => {
+    // Build last 7 days, oldest -> newest
+    const today = new Date()
+    const start = new Date()
+    start.setDate(today.getDate() - 6)
+
+    const makeKey = (d: Date) => d.toISOString().slice(0, 10)
+    const short = (d: Date) => d.toLocaleDateString(undefined, { weekday: "short" }).toLowerCase()
+
+    const map: Record<string, DayBucket> = {}
+    for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+      const key = makeKey(d)
+      map[key] = {
+        key,
+        label: short(new Date(d)),
+        negative: 0,
+        neutral: 0,
+        positive: 0,
+        total: 0,
+      }
+    }
+
+    for (const item of MoodManager.getHistory()) {
+      const date = new Date(item.date)
+      const key = makeKey(date)
+      const bucket = map[key]
+      if (!bucket) continue
+      if (item.mood.category === MoodCategory.Negative) bucket.negative += 1
+      else if (item.mood.category === MoodCategory.Neutral) bucket.neutral += 1
+      else bucket.positive += 1
+      bucket.total += 1
+    }
+
+    return Object.values(map)
+  }, [])
+
+  const yMax = Math.max(4, ...buckets.map((b) => b.total))
+  const chartHeight = 180
+  const yAxisWidth = 28
+
+  const colors = {
+    negative: theme.colors.palette.primary300,
+    neutral: theme.colors.palette.secondary300,
+    positive: theme.colors.palette.accent200,
+    grid: theme.colors.palette.neutral500,
+  }
+
+  return (
+    <View style={themed($wrapper)}>
+      <Text
+        text="recent moods"
+        preset="subheading"
+        style={themed([$titleText, { color: theme.colors.text }])}
+      />
+      <View style={themed([$container, { height: chartHeight + 40 }])}>
+        {/* Grid lines and Y-axis labels */}
+        {[0, 1, 2, 3, 4].map((t) => {
+          const y = (1 - t / 4) * chartHeight
+          return (
+            <View key={`tick-${t}`} style={[$tickContainer, { top: y }]}>
+              <RNText
+                style={themed([$yAxisLabel, { width: yAxisWidth, color: theme.colors.textDim }])}
+              >
+                {t}
+              </RNText>
+              <View
+                style={themed([
+                  $gridLineBase,
+                  { backgroundColor: colors.grid, marginLeft: yAxisWidth },
+                ])}
+              />
+            </View>
+          )
+        })}
+
+        {/* Bars */}
+        <View style={[$barsRow, { height: chartHeight, marginLeft: yAxisWidth }]}>
+          {buckets.map((b) => {
+            const height = b.total === 0 ? 0 : (b.total / yMax) * chartHeight
+            const hNeg = b.total === 0 ? 0 : (b.negative / yMax) * chartHeight
+            const hNeu = b.total === 0 ? 0 : (b.neutral / yMax) * chartHeight
+            const hPos = b.total === 0 ? 0 : (b.positive / yMax) * chartHeight
+            return (
+              <View key={b.key} style={$barWrapper}>
+                <View style={[$bar, { height }]}>
+                  <View
+                    style={[$barTopSegment, { height: hNeg, backgroundColor: colors.negative }]}
+                  />
+                  <View
+                    style={[$barMiddleSegment, { height: hNeu, backgroundColor: colors.neutral }]}
+                  />
+                  <View
+                    style={[$barBottomSegment, { height: hPos, backgroundColor: colors.positive }]}
+                  />
+                </View>
+                <RNText style={themed([$barLabelText, { color: theme.colors.textDim }])}>
+                  {b.label}
+                </RNText>
+              </View>
+            )
+          })}
+        </View>
+
+        {/* Legend */}
+        <View style={$legendRow}>
+          <LegendDot color={colors.negative} label="negative" textColor={theme.colors.text} />
+          <LegendDot color={colors.neutral} label="neutral" textColor={theme.colors.text} />
+          <LegendDot color={colors.positive} label="positive" textColor={theme.colors.text} />
+        </View>
+      </View>
+    </View>
+  )
+}
+
+function LegendDot({
+  color,
+  label,
+  textColor,
+}: {
+  color: string
+  label: string
+  textColor: string
+}) {
+  return (
+    <View style={$legendItemRow}>
+      <View style={[$legendDot, { backgroundColor: color }]} />
+      <RNText style={[$legendText, { color: textColor }]}>{label}</RNText>
+    </View>
+  )
+}
+
+const $container: ViewStyle = {
+  marginTop: 12,
+  padding: 16,
+}
+
+// Removed unused $gridLine
+
+const $gridLineBase: ViewStyle = {
+  height: 1,
+  opacity: 0.3,
+}
+
+const $tickContainer: ViewStyle = {
+  position: "absolute",
+  left: 0,
+  right: 0,
+}
+
+const $yAxisLabel: TextStyle = {
+  position: "absolute",
+  left: 0,
+  textAlign: "center",
+  fontSize: 12,
+  transform: [{ translateY: -7 }],
+}
+
+const $barsRow: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+  paddingHorizontal: 8,
+}
+
+const $barWrapper: ViewStyle = {
+  alignItems: "center",
+  width: 32,
+}
+
+const $bar: ViewStyle = {
+  width: 24,
+  borderRadius: 6,
+  overflow: "hidden",
+  backgroundColor: "transparent",
+  justifyContent: "flex-end",
+}
+
+const $barTopSegment: ViewStyle = {
+  borderTopLeftRadius: 6,
+  borderTopRightRadius: 6,
+}
+
+const $barMiddleSegment: ViewStyle = {}
+
+const $barBottomSegment: ViewStyle = {
+  borderBottomLeftRadius: 6,
+  borderBottomRightRadius: 6,
+}
+
+const $legendRow: ViewStyle = {
+  marginTop: 12,
+  flexDirection: "row",
+  justifyContent: "space-around",
+}
+
+const $wrapper: ViewStyle = {
+  paddingHorizontal: 8,
+}
+
+const $titleText: TextStyle = {
+  marginLeft: 8,
+}
+
+const $barLabelText: TextStyle = {
+  marginTop: 6,
+  fontSize: 12,
+}
+
+const $legendItemRow: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+}
+
+const $legendDot: ViewStyle = {
+  width: 10,
+  height: 10,
+  borderRadius: 5,
+  marginRight: 6,
+}
+
+const $legendText: TextStyle = {
+  fontSize: 14,
+}
+
+export default MoodGraph

@@ -143,6 +143,7 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
   }, [open])
 
   const $drawerInsets = useSafeAreaInsetsStyle(["top"])
+  const $headerInsets = useSafeAreaInsetsStyle(["top"]) // ensure header is in safe area
 
   return (
     <Drawer
@@ -180,7 +181,10 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
         </View>
       )}
     >
-      <Screen preset="fixed" safeAreaEdges={[]} contentContainerStyle={$styles.flex1}>
+      <Screen preset="scroll" safeAreaEdges={[]} contentContainerStyle={$styles.flex1}>
+        <View style={[themed($headerContainer), $headerInsets]}>
+          <DrawerIconButton onPress={toggleDrawer} accessibilityLabel="Open menu" />
+        </View>
         {renderContent({ themed, theme, toggleDrawer })}
       </Screen>
     </Drawer>
@@ -238,10 +242,7 @@ const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
  * Defines the layout and spacing of the header section.
  */
 const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  position: "absolute",
-  top: 0,
-  right: 0,
-  zIndex: 10,
+  alignSelf: "flex-end",
   paddingTop: spacing.md,
   paddingRight: spacing.md,
 })
