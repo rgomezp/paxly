@@ -3,7 +3,7 @@ import { StyleProp, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { Text, TextProps } from "./Text"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { AppStackParamList } from "@/navigators/AppNavigator"
+import { AppStackParamList } from "@/navigators/navigationTypes"
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList>
 

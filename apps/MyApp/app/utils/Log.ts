@@ -1,8 +1,8 @@
 import { OneSignal } from "react-native-onesignal"
 import Purchases, { LOG_LEVEL } from "react-native-purchases"
-import crashlytics from "@react-native-firebase/crashlytics"
+import { log, getCrashlytics } from "@react-native-firebase/crashlytics"
 
-export declare enum LogLevel {
+export enum LogLevel {
   None = 0,
   Fatal = 1,
   Error = 2,
@@ -40,28 +40,28 @@ export default class Log {
   }
 
   public static error(message: string, ...args: any[]) {
-    crashlytics().log(message)
+    log(getCrashlytics(), message)
     if (this.level >= LogLevel.Error) {
       console.error(message, ...args)
     }
   }
 
   public static warn(message: string, ...args: any[]) {
-    crashlytics().log(message)
+    log(getCrashlytics(), message)
     if (this.level >= LogLevel.Warn) {
       console.warn(message, ...args)
     }
   }
 
   public static info(message: string, ...args: any[]) {
-    crashlytics().log(message)
+    log(getCrashlytics(), message)
     if (this.level >= LogLevel.Info) {
       console.info(message, ...args)
     }
   }
 
   public static debug(message: string, ...args: any[]) {
-    crashlytics().log(message)
+    log(getCrashlytics(), message)
     if (this.level >= LogLevel.Debug) {
       console.debug(message, ...args)
     }

@@ -35,17 +35,18 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     assetBundlePatterns: ["**/*"],
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
-      package: "com.honeywolf.myapp",
+      package: "com.honeywolf.covert",
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
       },
       allowBackup: false,
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     },
     ios: {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
-      bundleIdentifier: "com.honeywolf.myapp",
+      bundleIdentifier: "com.honeywolf.covert",
       config: {
         usesNonExemptEncryption: false,
       },
@@ -67,14 +68,14 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       bundler: "metro",
     },
     plugins: [
-      [
-        "onesignal-expo-plugin",
-        {
-          mode: process.env.APP_VARIANT === "development" ? "development" : "production",
-          smallIcons: ["./assets/images/notifIcons/ic_stat_onesignal_default.png"],
-          largeIcons: ["./assets/images/notifIcons/ic_onesignal_large_icon_default.png"],
-        },
-      ],
+      // [
+      //   "onesignal-expo-plugin",
+      //   {
+      //     mode: process.env.APP_VARIANT === "development" ? "development" : "production",
+      //     smallIcons: ["./assets/images/notifIcons/ic_stat_onesignal_default.png"],
+      //     largeIcons: ["./assets/images/notifIcons/ic_onesignal_large_icon_default.png"],
+      //   },
+      // ],
       "expo-localization",
       "expo-font",
       "@react-native-google-signin/google-signin",

@@ -8,7 +8,8 @@ import {
 import Config from "../config"
 import type { PersistNavigationConfig } from "../config/config.base"
 import { useIsMounted } from "../utils/useIsMounted"
-import type { AppStackParamList, NavigationProps } from "./AppNavigator"
+import type { AppStackParamList } from "./navigationTypes"
+import type { NavigationProps } from "./AppNavigator"
 
 /**
  * Reference to the root App Navigator.

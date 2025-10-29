@@ -1,0 +1,37 @@
+# Common large/local-only artifacts
+**/dist/
+**/coverage/
+**/.expo/
+**/.expo-shared/
+**/.DS_Store
+**/.env*
+**/*.log
+
+# VCS and IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+exerciseLibraryGenerator
+builds
+node_modules
+ios
+android
+__tests__
+__mocks__
+.eslintrc.json
+.github
+.jest
+.vscode
+googleServices
+screenshots
+jest*
+README
+.github
+.vscode
+test_archive
+alignDeps.sh
+package.json
+yarn.lock
+env.sh
+.git

@@ -2,12 +2,13 @@ import { FC } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { Text, Card, Button, Icon, EmptyState } from "@/components"
+import { Text, Card, Button, Icon, EmptyState, DrawerIconButton } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import { getHomeDrawerSections } from "./HomeDrawerSections"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -21,15 +22,29 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   // const navigation = useNavigation()
 
   const sections = getHomeDrawerSections()
+  const insets = useSafeAreaInsets()
 
   return (
     <HomeDrawer
       sections={sections}
-      renderContent={({ themed, theme }: { themed: any; theme: Theme }) => (
+      renderContent={({
+        themed,
+        theme,
+        toggleDrawer,
+      }: {
+        themed: any
+        theme: Theme
+        toggleDrawer: () => void
+      }) => (
         <ScrollView
           style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}
         >
           <View style={themed({ backgroundColor: theme.colors.background })}>
+            {/* Hamburger button at top */}
+            <View style={themed([$hamburgerContainer, { paddingTop: insets.top }])}>
+              <DrawerIconButton onPress={toggleDrawer} />
+            </View>
+
             {/* Header Section */}
             <View style={themed($headerSection)}>
               <Text
@@ -192,15 +207,22 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
 const $contentContainer: ViewStyle = {
   flex: 1,
-  padding: 20,
+}
+
+const $hamburgerContainer: ViewStyle = {
+  alignItems: "flex-end",
+  paddingRight: 20,
+  paddingTop: 20,
 }
 
 const $headerSection: ViewStyle = {
   marginBottom: 24,
+  paddingHorizontal: 20,
 }
 
 const $sectionContainer: ViewStyle = {
   marginBottom: 32,
+  paddingHorizontal: 20,
 }
 
 const $buttonRow: ViewStyle = {
@@ -243,4 +265,6 @@ const $footerContainer: ViewStyle = {
   paddingTop: 16,
   borderTopWidth: 1,
   borderTopColor: "rgba(0, 0, 0, 0.1)",
+  paddingHorizontal: 20,
+  paddingBottom: 20,
 }

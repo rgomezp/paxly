@@ -6,7 +6,7 @@ import { modalRegistry } from "@/modalQueue/ModalRegistry"
 import { IModalQueueState, ModalPriority, IModal } from "@/types/modals/modals"
 import { ganon } from "@/services/ganon/ganon"
 import { AppStackParamList } from "@/navigators"
-import { EventRegister } from "react-native-event-listeners"
+import { EventRegister } from "@/utils/EventEmitter"
 
 // Polling interval for state updates (1 second)
 const STATE_UPDATE_INTERVAL = 1000

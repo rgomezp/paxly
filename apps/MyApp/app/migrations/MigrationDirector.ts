@@ -1,6 +1,6 @@
 import { GLOBAL_EVENTS } from "@/constants/events"
 import Log from "@/utils/Log"
-import { EventRegister } from "react-native-event-listeners"
+import { EventRegister } from "@/utils/EventEmitter"
 import MigrationManager from "./MigrationManager"
 import MIGRATIONS from "./migrations"
 

@@ -18,16 +18,20 @@ if (__DEV__) {
 }
 import "./utils/gestureHandler"
 import "./utils/ignoreWarnings"
-import { useFonts } from "expo-font"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
 import { useInitialRootStore } from "./models"
 import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import { customFontsToLoad } from "./theme"
 import Config from "./config"
 import { KeyboardProvider } from "react-native-keyboard-controller"
+import { useAppInitialization } from "./initialization/useAppInitialization"
+import { OnboardingScreen } from "./screens"
+import { InitializationProvider } from "./initialization/InitializationProvider"
+import { useThemeProvider } from "./utils/useAppTheme"
+import customConfig from "../customConfig"
+import type { ThemeContexts } from "./theme"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -55,9 +59,20 @@ const config = {
  * @param {AppProps} props - The props for the `App` component.
  * @returns {JSX.Element} The rendered `App` component.
  */
-export function App() {
-  const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
+function OnboardingWrapper() {
+  return (
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <ErrorBoundary catchErrors={Config.catchErrors}>
+        <KeyboardProvider>
+          <OnboardingScreen />
+        </KeyboardProvider>
+      </ErrorBoundary>
+    </SafeAreaProvider>
+  )
+}
 
+function AppContent() {
+  const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore(() => {
     // This runs after the root store has been initialized and rehydrated.
 
@@ -72,8 +87,12 @@ export function App() {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rehydrated || (!areFontsLoaded && !fontLoadError)) {
+  if (!rehydrated || !isInitialized) {
     return null
+  }
+
+  if (!isOnboardingComplete) {
+    return <OnboardingWrapper />
   }
 
   const linking = {
@@ -90,5 +109,29 @@ export function App() {
         </KeyboardProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
+  )
+}
+
+export function App() {
+  const config = customConfig()
+  // Convert string theme to ThemeContexts type
+  // "auto" becomes undefined to follow system theme
+  const startingTheme: ThemeContexts =
+    config.startingTheme === "auto"
+      ? undefined
+      : config.startingTheme === "dark"
+        ? "dark"
+        : config.startingTheme === "light"
+          ? "light"
+          : undefined
+
+  const { ThemeProvider, themeScheme, setThemeContextOverride } = useThemeProvider(startingTheme)
+
+  return (
+    <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
+      <InitializationProvider>
+        <AppContent />
+      </InitializationProvider>
+    </ThemeProvider>
   )
 }

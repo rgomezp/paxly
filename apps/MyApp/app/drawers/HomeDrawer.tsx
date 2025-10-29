@@ -28,7 +28,7 @@ interface HomeDrawerProps {
     name: string
     data: ({ themed, theme }: { themed: any; theme: Theme }) => ReactElement[]
   }[]
-  renderContent: (props: { themed: any; theme: Theme }) => ReactElement
+  renderContent: (props: { themed: any; theme: Theme; toggleDrawer: () => void }) => ReactElement
 }
 
 /**
@@ -180,12 +180,8 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
         </View>
       )}
     >
-      <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.flex1}>
-        <View style={themed($headerContainer)}>
-          <View style={$styles.flex1} />
-          <DrawerIconButton onPress={toggleDrawer} />
-        </View>
-        {renderContent({ themed, theme })}
+      <Screen preset="fixed" safeAreaEdges={[]} contentContainerStyle={$styles.flex1}>
+        {renderContent({ themed, theme, toggleDrawer })}
       </Screen>
     </Drawer>
   )
@@ -242,7 +238,10 @@ const $menuContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
  * Defines the layout and spacing of the header section.
  */
 const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.sm,
+  position: "absolute",
+  top: 0,
+  right: 0,
+  zIndex: 10,
+  paddingTop: spacing.md,
+  paddingRight: spacing.md,
 })

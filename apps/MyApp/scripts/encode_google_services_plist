@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Navigate to the directory containing the files
+cd ./googleServices
+
+# Check if GoogleService-Info.plist exists
+if [ ! -f "./GoogleService-Info.plist" ]; then
+    echo "File GoogleService-Info.plist does not exist in the current directory."
+    exit 1
+fi
+
+# Encode the GoogleService-Info.plist file to base64
+GOOGLE_SERVICES_PLIST_BASE64=$(base64 < "./GoogleService-Info.plist")
+
+# Copy the encoded string to the clipboard
+# For macOS, you can use pbcopy directly:
+echo "$GOOGLE_SERVICES_PLIST_BASE64" | pbcopy
+
+# For Linux with xclip installed, use the following instead of pbcopy:
+# echo "$GOOGLE_SERVICES_PLIST_BASE64" | xclip -selection clipboard
+
+# For Linux with xsel installed, use the following instead of pbcopy:
+# echo "$GOOGLE_SERVICES_PLIST_BASE64" | xsel --clipboard --input
+
+echo "Encoded GoogleService-Info.plist has been copied to the clipboard."
