@@ -35,18 +35,18 @@ const MOODS: Record<MoodId, IMood> = {
   [MoodId.Overwhelmed]: { title: "overwhelmed", category: MoodCategory.Negative },
   [MoodId.Disgusted]: { title: "disgusted", category: MoodCategory.Negative },
   [MoodId.Empty]: { title: "empty", category: MoodCategory.Negative },
-  [MoodId.Bored]: { title: "bored", category: MoodCategory.Neutral },
   [MoodId.Content]: { title: "content", category: MoodCategory.Positive },
   [MoodId.Calm]: { title: "calm", category: MoodCategory.Positive },
-  [MoodId.Alert]: { title: "alert", category: MoodCategory.Neutral },
-  [MoodId.Curious]: { title: "curious", category: MoodCategory.Neutral },
-  [MoodId.Reflective]: { title: "reflective", category: MoodCategory.Neutral },
-  [MoodId.Indifferent]: { title: "indifferent", category: MoodCategory.Neutral },
   [MoodId.Balanced]: { title: "balanced", category: MoodCategory.Positive },
   [MoodId.Focused]: { title: "focused", category: MoodCategory.Positive },
   [MoodId.Joyful]: { title: "joyful", category: MoodCategory.Positive },
   [MoodId.Grateful]: { title: "grateful", category: MoodCategory.Positive },
   [MoodId.Peaceful]: { title: "peaceful", category: MoodCategory.Positive },
+  [MoodId.Bored]: { title: "bored", category: MoodCategory.Neutral },
+  [MoodId.Alert]: { title: "alert", category: MoodCategory.Neutral },
+  [MoodId.Curious]: { title: "curious", category: MoodCategory.Neutral },
+  [MoodId.Reflective]: { title: "reflective", category: MoodCategory.Neutral },
+  [MoodId.Indifferent]: { title: "indifferent", category: MoodCategory.Neutral },
 }
 
 const MOOD_TO_EMOJI: Record<MoodId, string> = {

@@ -1,4 +1,5 @@
 import { ganon } from "@/services/ganon/ganon"
+import { rootStoreSingleton } from "@/models"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Activity } from "@/types/Activities"
 import { ALL_MOODS, MOODS, MoodId } from "@/types/Moods"
@@ -25,6 +26,12 @@ export default class MoodManager {
     const history = MoodManager.getHistory()
     history.push(item)
     ganon.set("moodHistory", history)
+    try {
+      // Update MST store so observers react immediately
+      rootStoreSingleton.moodStore.add(item)
+    } catch (_e) {
+      // If store not available for some reason, ignore; persistence is already done
+    }
     return item
   }
 
