@@ -36,7 +36,7 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
     <TouchableOpacity
       onPress={onPress}
       style={[
-        themed([$circle, { backgroundColor: theme.colors.card }]),
+        themed([$button, { backgroundColor: theme.colors.card }]),
         $styles.borderRadius,
         $styles.dropShadow,
       ]}
@@ -74,20 +74,14 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
   return (
     <View style={themed([$container])}>
       {circle("Mood", done.mood, () => {
-        setDone((s) => ({ ...s, mood: true }))
-        DailyTaskManager.markCompleted("mood")
         onPressMood()
       })}
       <Dash />
       {circle("Lesson", done.lesson, () => {
-        setDone((s) => ({ ...s, lesson: true }))
-        DailyTaskManager.markCompleted("lesson")
         onPressLesson?.()
       })}
       <Dash />
       {circle("Journal", done.journal, () => {
-        setDone((s) => ({ ...s, journal: true }))
-        DailyTaskManager.markCompleted("journal")
         onPressJournal?.()
       })}
     </View>
@@ -96,14 +90,12 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
 
 const $container: ViewStyle = {
   flexDirection: "row",
-  alignItems: "center",
   justifyContent: "center",
-  paddingHorizontal: 24,
   marginTop: 16,
 }
 
-const $circle: ViewStyle = {
-  width: 56,
+const $button: ViewStyle = {
+  width: 80,
   height: 56,
   alignItems: "center",
   justifyContent: "center",
@@ -121,7 +113,7 @@ const $iconRight: ViewStyle = {
 
 // deprecated placeholder kept for backward compatibility
 const $dashContainer: ViewStyle = {
-  width: 48,
+  width: 36,
   flexDirection: "row",
   alignItems: "center",
   marginHorizontal: 6,

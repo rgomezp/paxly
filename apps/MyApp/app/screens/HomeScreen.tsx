@@ -15,19 +15,10 @@ import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import { navigate } from "@/navigators/navigationUtilities"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "@/models"
 
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
 export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
-
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
-  // For navigation without typing, import hook inline when wiring button
-
   const sections = getHomeDrawerSections()
   const insets = useSafeAreaInsets()
   const [refreshTrigger, setRefreshTrigger] = useState(0)
