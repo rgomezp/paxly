@@ -77,7 +77,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         scrollEventThrottle={16}
       >
         {/* Step 1 - Mood */}
-        <View style={{ width }}>
+        <ScrollView style={{ width }} contentContainerStyle={{ paddingBottom: 20 }}>
           <Text text="select mood" preset="bold" style={{ color: theme.colors.text, margin: 20 }} />
           <Grid>
             {ALL_MOODS.map((m) => (
@@ -92,10 +92,10 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
               />
             ))}
           </Grid>
-        </View>
+        </ScrollView>
 
         {/* Step 2 - Activity */}
-        <View style={{ width }}>
+        <ScrollView style={{ width }} contentContainerStyle={{ paddingBottom: 20 }}>
           <Text
             text="what were you doing?"
             preset="bold"
@@ -114,7 +114,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
               />
             ))}
           </Grid>
-        </View>
+        </ScrollView>
 
         {/* Step 3 - Notes */}
         <View style={{ width, padding: 20 }}>
