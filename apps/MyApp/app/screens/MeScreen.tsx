@@ -1,8 +1,8 @@
 import { FC, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle } from "react-native"
+import { ViewStyle, ScrollView } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { MoodGraph } from "@/components"
+import { MoodGraph, MoodLogList } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
 import { getHomeDrawerSections } from "./HomeDrawerSections"
@@ -33,9 +33,10 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           theme: Theme
           toggleDrawer: () => void
         }) => (
-          <View style={[themed($container), contentInsets]}>
+          <ScrollView style={[themed($container), contentInsets]}>
             <MoodGraph />
-          </View>
+            <MoodLogList />
+          </ScrollView>
         )}
       />
     </>

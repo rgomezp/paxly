@@ -1,9 +1,13 @@
 import { FC, useMemo } from "react"
+import { observer } from "mobx-react-lite"
 import { View, ViewStyle, Text as RNText, TextStyle } from "react-native"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import MoodManager from "@/managers/MoodManager"
+import { useStores } from "@/models"
 import { MoodCategory } from "@/types/MoodCategory"
+import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
+// MoodLogList renders the list; no longer needed here
 
 type DayBucket = {
   key: string
@@ -14,10 +18,11 @@ type DayBucket = {
   total: number
 }
 
-export const MoodGraph: FC = () => {
+export const MoodGraph: FC = observer(function MoodGraph() {
   const { theme, themed } = useAppTheme()
+  const { moodStore } = useStores()
 
-  const buckets: DayBucket[] = useMemo(() => {
+  const buckets: DayBucket[] = (() => {
     // Build last 7 days, oldest -> newest
     const today = new Date()
     const start = new Date()
@@ -39,7 +44,10 @@ export const MoodGraph: FC = () => {
       }
     }
 
-    for (const item of MoodManager.getHistory()) {
+    const historyList: IMoodHistoryItem[] = moodStore.history.length
+      ? (moodStore.history.slice() as IMoodHistoryItem[])
+      : MoodManager.getHistory()
+    for (const item of historyList) {
       const date = new Date(item.date)
       const key = makeKey(date)
       const bucket = map[key]
@@ -50,7 +58,7 @@ export const MoodGraph: FC = () => {
       bucket.total += 1
     }
     return Object.values(map)
-  }, [])
+  })()
 
   // Determine Y-axis scale dynamically from data.
   const maxTotal = Math.max(0, ...buckets.map((b) => b.total))
@@ -149,9 +157,11 @@ export const MoodGraph: FC = () => {
           <LegendDot color={colors.positive} label="positive" textColor={theme.colors.text} />
         </View>
       </View>
+
+      {/* List removed; rendered by MoodLogList component on the screen */}
     </View>
   )
-}
+})
 
 function LegendDot({
   color,
@@ -273,5 +283,7 @@ const $legendDot: ViewStyle = {
 const $legendText: TextStyle = {
   fontSize: 14,
 }
+
+// List styles and helpers removed
 
 export default MoodGraph
