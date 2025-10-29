@@ -4,7 +4,7 @@ import IUser from "@/types/IUser"
 import Log from "@/utils/Log"
 
 export default class UserManager {
-  static async upsertUser(user: Partial<IUser>) {
+  static upsertUser(user: Partial<IUser>) {
     Log.info(`UserManager: upsertUser: ${JSON.stringify(user)}`)
     if (!user) {
       return
@@ -22,7 +22,7 @@ export default class UserManager {
     ganon.upsert("user", user)
   }
 
-  static async setUser(user: IUser) {
+  static setUser(user: IUser) {
     Log.info(`UserManager: setUser: ${JSON.stringify(user)}`)
     if (!user) {
       return
@@ -40,31 +40,31 @@ export default class UserManager {
     ganon.set("user", user)
   }
 
-  static async getUser(): Promise<IUser | undefined> {
+  static getUser(): IUser | undefined {
     return ganon.get("user")
   }
 
-  static async setFirstName(firstName: string) {
-    const user = await UserManager.getUser()
+  static setFirstName(firstName: string) {
+    const user = UserManager.getUser()
     if (user) {
       user.first = firstName
-      await UserManager.setUser(user)
+      UserManager.setUser(user)
     }
   }
 
-  static async setLastName(lastName: string) {
-    const user = await UserManager.getUser()
+  static setLastName(lastName: string) {
+    const user = UserManager.getUser()
     if (user) {
       user.last = lastName
-      await UserManager.setUser(user)
+      UserManager.setUser(user)
     }
   }
 
-  static async setNickname(nickname: string) {
-    const user = await UserManager.getUser()
+  static setNickname(nickname: string) {
+    const user = UserManager.getUser()
     if (user) {
       user.nickname = nickname
-      await UserManager.setUser(user)
+      UserManager.setUser(user)
     }
   }
 }
