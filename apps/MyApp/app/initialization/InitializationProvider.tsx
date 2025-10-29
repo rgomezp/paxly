@@ -25,7 +25,7 @@ export function InitializationProvider({ children }: { children: React.ReactNode
   /* N O N - B L O C K I N G */
   useRevenueCat()
   useOneSignal()
-  Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Verbose : LogLevel.None)
+  Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.None : LogLevel.None)
 
   /* B L O C K I N G */
   const isInitialized = isAppCheckComplete && areFontsLoaded && isAudioSetup
