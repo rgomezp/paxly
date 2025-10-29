@@ -49,11 +49,20 @@ export const MoodGraph: FC = () => {
       else bucket.positive += 1
       bucket.total += 1
     }
-
+    console.log(map)
     return Object.values(map)
   }, [])
 
-  const yMax = Math.max(4, ...buckets.map((b) => b.total))
+  // Determine Y-axis scale dynamically from data.
+  const maxTotal = Math.max(0, ...buckets.map((b) => b.total))
+  const yStep = maxTotal > 10 ? 2 : 1
+  // If stepping by 2, round the top up to the next even number so the last tick aligns.
+  const yMax = maxTotal > 10 ? maxTotal + (maxTotal % 2) : maxTotal
+  const yTicks = useMemo(() => {
+    const ticks: number[] = []
+    for (let v = 0; v <= yMax; v += yStep) ticks.push(v)
+    return ticks
+  }, [yMax, yStep])
   const chartHeight = 180
   const yAxisWidth = 28
 
@@ -71,10 +80,10 @@ export const MoodGraph: FC = () => {
         preset="subheading"
         style={themed([$titleText, { color: theme.colors.text }])}
       />
-      <View style={themed([$container, { height: chartHeight + 40 }])}>
+      <View style={themed([$container, { height: chartHeight }])}>
         {/* Grid lines and Y-axis labels */}
-        {[0, 1, 2, 3, 4].map((t) => {
-          const y = (1 - t / 4) * chartHeight
+        {yTicks.map((t) => {
+          const y = yMax === 0 ? chartHeight : (1 - t / yMax) * chartHeight
           return (
             <View key={`tick-${t}`} style={[$tickContainer, { top: y }]}>
               <RNText
@@ -95,29 +104,43 @@ export const MoodGraph: FC = () => {
         {/* Bars */}
         <View style={[$barsRow, { height: chartHeight, marginLeft: yAxisWidth }]}>
           {buckets.map((b) => {
-            const height = b.total === 0 ? 0 : (b.total / yMax) * chartHeight
-            const hNeg = b.total === 0 ? 0 : (b.negative / yMax) * chartHeight
-            const hNeu = b.total === 0 ? 0 : (b.neutral / yMax) * chartHeight
-            const hPos = b.total === 0 ? 0 : (b.positive / yMax) * chartHeight
+            const denom = yMax === 0 ? 1 : yMax
+            const height = b.total === 0 ? 0 : (b.total / denom) * chartHeight
+            const hNeg = b.total === 0 ? 0 : (b.negative / denom) * chartHeight
+            const hNeu = b.total === 0 ? 0 : (b.neutral / denom) * chartHeight
+            const hPos = b.total === 0 ? 0 : (b.positive / denom) * chartHeight
             return (
               <View key={b.key} style={$barWrapper}>
-                <View style={[$bar, { height }]}>
-                  <View
-                    style={[$barTopSegment, { height: hNeg, backgroundColor: colors.negative }]}
-                  />
-                  <View
-                    style={[$barMiddleSegment, { height: hNeu, backgroundColor: colors.neutral }]}
-                  />
-                  <View
-                    style={[$barBottomSegment, { height: hPos, backgroundColor: colors.positive }]}
-                  />
+                <View style={[$barBox, { height: chartHeight }]}>
+                  <View style={[$bar, { height }]}>
+                    <View
+                      style={[$barTopSegment, { height: hNeg, backgroundColor: colors.negative }]}
+                    />
+                    <View
+                      style={[$barMiddleSegment, { height: hNeu, backgroundColor: colors.neutral }]}
+                    />
+                    <View
+                      style={[
+                        $barBottomSegment,
+                        { height: hPos, backgroundColor: colors.positive },
+                      ]}
+                    />
+                  </View>
                 </View>
-                <RNText style={themed([$barLabelText, { color: theme.colors.textDim }])}>
-                  {b.label}
-                </RNText>
               </View>
             )
           })}
+        </View>
+
+        {/* Labels */}
+        <View style={[$labelsRow, { marginLeft: yAxisWidth }]}>
+          {buckets.map((b) => (
+            <View key={`label-${b.key}`} style={$barWrapper}>
+              <RNText style={themed([$barLabelText, { color: theme.colors.textDim }])}>
+                {b.label}
+              </RNText>
+            </View>
+          ))}
         </View>
 
         {/* Legend */}
@@ -150,7 +173,7 @@ function LegendDot({
 
 const $container: ViewStyle = {
   marginTop: 12,
-  padding: 16,
+  paddingHorizontal: 16,
 }
 
 // Removed unused $gridLine
@@ -177,7 +200,7 @@ const $yAxisLabel: TextStyle = {
 const $barsRow: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
-  alignItems: "flex-end",
+  alignItems: "flex-start",
   paddingHorizontal: 8,
 }
 
@@ -191,6 +214,10 @@ const $bar: ViewStyle = {
   borderRadius: 6,
   overflow: "hidden",
   backgroundColor: "transparent",
+  justifyContent: "flex-end",
+}
+
+const $barBox: ViewStyle = {
   justifyContent: "flex-end",
 }
 
@@ -223,6 +250,13 @@ const $titleText: TextStyle = {
 const $barLabelText: TextStyle = {
   marginTop: 6,
   fontSize: 12,
+}
+
+const $labelsRow: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  paddingHorizontal: 8,
 }
 
 const $legendItemRow: ViewStyle = {
