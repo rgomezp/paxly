@@ -1,7 +1,7 @@
 export * from "./ErrorScreen/ErrorBoundary"
 // export other screens here
 export * from "./HomeScreen"
-export * from "./MyTabScreen"
+export * from "./MeScreen"
 export * from "./SettingScreen/SettingsScreen"
 export * from "./LoginScreen"
 export * from "./OnboardingScreen/OnboardingScreen"

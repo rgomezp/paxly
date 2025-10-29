@@ -17,7 +17,7 @@ export type AppStackParamList = {
   Welcome: undefined
   // 🔥 Your screens go here
   Home: undefined
-  MyTab: undefined
+  Me: undefined
   Settings: undefined
   TabNavigator: undefined
   Login: undefined

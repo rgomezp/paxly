@@ -19,6 +19,7 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
 import { useContext, useMemo, ComponentProps } from "react"
+import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import Log from "@/utils/Log"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
@@ -45,6 +46,7 @@ const TabNavigator = observer(function TabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -56,14 +58,18 @@ const TabNavigator = observer(function TabNavigator() {
         name="Home"
         component={Screens.HomeScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <ThemedFontAwesome5Icon name="home" color={color} size={size ?? 22} solid />
+          ),
         }}
       />
       <Tab.Screen
-        name="MyTab"
-        component={Screens.MyTabScreen}
+        name="Me"
+        component={Screens.MeScreen}
         options={{
-          tabBarLabel: "My Tab",
+          tabBarIcon: ({ color, size }) => (
+            <ThemedFontAwesome5Icon name="user" color={color} size={size ?? 22} solid />
+          ),
         }}
       />
     </Tab.Navigator>
