@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import UserManager from "@/managers/UserManager"
 import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
 import NoContactManager from "@/managers/NoContactManager"
+import RectangularButton from "@/components/buttons/RectangularButton"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -24,6 +25,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
   const sections = getHomeDrawerSections()
   const insets = useSafeAreaInsets()
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   // Initialize no contact data if needed
   useEffect(() => {
@@ -63,7 +65,16 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
             </View>
 
             {/* Progress Wheel */}
-            <NoContactProgressWheel />
+            <NoContactProgressWheel refreshTrigger={refreshTrigger} />
+            <View style={themed($resetButtonContainer)}>
+              <RectangularButton
+                buttonText="Help"
+                onClick={() => {
+                  NoContactManager.resetStreak()
+                  setRefreshTrigger((prev) => prev + 1)
+                }}
+              />
+            </View>
           </View>
         </ScrollView>
       )}
@@ -84,4 +95,9 @@ const $hamburgerContainer: ViewStyle = {
 const $headerSection: ViewStyle = {
   marginBottom: 24,
   paddingHorizontal: 20,
+}
+
+const $resetButtonContainer: ViewStyle = {
+  marginTop: 24,
+  paddingHorizontal: 40,
 }

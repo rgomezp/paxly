@@ -8,10 +8,19 @@ import DatePickerModal from "./modals/DatePickerModal"
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
-export const NoContactProgressWheel: FC = () => {
+interface NoContactProgressWheelProps {
+  refreshTrigger?: number
+}
+
+export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
+  refreshTrigger: externalRefreshTrigger,
+}) => {
   const { theme, themed } = useAppTheme()
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
-  const [refreshTrigger, setRefreshTrigger] = useState(0)
+  const [internalRefreshTrigger, setInternalRefreshTrigger] = useState(0)
+
+  // Use external trigger if provided, otherwise use internal
+  const refreshTrigger = externalRefreshTrigger ?? internalRefreshTrigger
 
   // Calculate progress data - refreshTrigger forces recalculation on state change
   const progressData = NoContactManager.calculateDisplay()
@@ -149,7 +158,7 @@ export const NoContactProgressWheel: FC = () => {
         visible={isDatePickerVisible}
         onClose={() => {
           setIsDatePickerVisible(false)
-          setRefreshTrigger((prev) => prev + 1)
+          setInternalRefreshTrigger((prev) => prev + 1)
         }}
       />
     </View>
