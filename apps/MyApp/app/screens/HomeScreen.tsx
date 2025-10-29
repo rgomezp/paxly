@@ -11,6 +11,8 @@ import UserManager from "@/managers/UserManager"
 import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
 import NoContactManager from "@/managers/NoContactManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
+import DailyTasksTimeline from "@/components/DailyTasksTimeline"
+import { navigate } from "@/navigators/navigationUtilities"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 // import { useNavigation } from "@react-navigation/native"
@@ -24,6 +26,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
+  // For navigation without typing, import hook inline when wiring button
 
   const sections = getHomeDrawerSections()
   const insets = useSafeAreaInsets()
@@ -70,6 +73,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
 
               {/* Progress Wheel */}
               <NoContactProgressWheel refreshTrigger={refreshTrigger} />
+              <DailyTasksTimeline onPressMood={() => navigate("MoodLogger")} />
               <View style={themed($resetButtonContainer)}>
                 <RectangularButton
                   buttonText="Help"

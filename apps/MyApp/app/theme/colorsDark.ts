@@ -5,7 +5,7 @@ const palette = {
   neutral600: "#B6ACA6",
   neutral500: "#978F8A",
   neutral400: "#564E4A",
-  neutral300: "#3C3836",
+  neutral300: "#252023",
   neutral200: "#191015",
   neutral100: "#000000",
 
@@ -41,6 +41,7 @@ export const colors = {
   text: palette.neutral800,
   textDim: palette.neutral600,
   background: palette.neutral200,
+  card: palette.neutral300,
   border: palette.neutral400,
   tint: palette.primary500,
   tintInactive: palette.neutral300,
