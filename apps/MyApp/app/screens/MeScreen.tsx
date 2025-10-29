@@ -13,7 +13,8 @@ interface MeScreenProps extends AppStackScreenProps<"Me"> {}
 
 export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   const sections = getHomeDrawerSections()
-  const contentInsets = useSafeAreaInsetsStyle(["top"])
+  // Content should not add its own top inset; header already accounts for it
+  const contentInsets = useSafeAreaInsetsStyle([])
 
   useEffect(() => {
     NoContactManager.initializeNoContactData()
