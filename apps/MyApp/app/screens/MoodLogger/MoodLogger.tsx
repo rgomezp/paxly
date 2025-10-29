@@ -12,13 +12,13 @@ import {
 } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
-import ProgressBar from "@/components/ProgressBar"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ISlide } from "@/types/ISlide"
 import { ALL_MOODS, MOOD_TO_EMOJI, MoodId } from "@/types/Moods"
 import { ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
+import { ProgressBar } from "@/components"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
 
@@ -63,7 +63,9 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   }
 
   return (
-    <View style={[$container, { paddingTop: insets.top, backgroundColor: theme.colors.background }]}>
+    <View
+      style={[$container, { paddingTop: insets.top, backgroundColor: theme.colors.background }]}
+    >
       <ProgressBar data={slides} scrollX={scrollX} />
 
       <Animated.ScrollView
@@ -78,7 +80,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
       >
         {/* Step 1 - Mood */}
         <ScrollView style={{ width }} contentContainerStyle={{ paddingBottom: 20 }}>
-          <Text text="select mood" preset="bold" style={{ color: theme.colors.text, margin: 20 }} />
+          <Text text="Select mood" preset="bold" style={{ color: theme.colors.text, margin: 20 }} />
           <Grid>
             {ALL_MOODS.map((m) => (
               <EmojiTile
@@ -118,7 +120,11 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
 
         {/* Step 3 - Notes */}
         <View style={{ width, padding: 20 }}>
-          <Text text="Notes (optional)" preset="bold" style={{ color: theme.colors.text, marginBottom: 12 }} />
+          <Text
+            text="Notes (optional)"
+            preset="bold"
+            style={{ color: theme.colors.text, marginBottom: 12 }}
+          />
           <TextInput
             placeholder="Notes (optional)"
             placeholderTextColor={theme.colors.textDim}
@@ -165,7 +171,7 @@ function EmojiTile(props: {
 }) {
   const { emoji, label, selected, onPress, themeBackground, themeText } = props
   return (
-    <TouchableOpacity onPress={onPress} style={[$tile, { backgroundColor: themeBackground }] }>
+    <TouchableOpacity onPress={onPress} style={[$tile, { backgroundColor: themeBackground }]}>
       <RNText style={{ fontSize: 30, textAlign: "center" }}>{emoji}</RNText>
       <Text text={label} style={{ color: themeText, marginTop: 8, textTransform: "lowercase" }} />
       {selected ? <View /> : null}
@@ -191,5 +197,3 @@ const $tile: ViewStyle = {
   alignItems: "center",
   marginBottom: 16,
 }
-
-
