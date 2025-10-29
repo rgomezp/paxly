@@ -4,6 +4,7 @@ import { ModelSnapshotType } from "mobx-state-tree"
 import { IModalQueueState } from "../../types/modals/modals"
 import { IReferralData } from "@/types/IReferralData"
 import IReviewBackoffData from "@/types/IReviewBackoffData"
+import INoContactData from "@/types/INoContactData"
 interface StorageMapping {
   // v1
   email: string | null
@@ -22,6 +23,7 @@ interface StorageMapping {
   reviewBackoff: IReviewBackoffData
   passedAppCheck: boolean
   finishedOnboarding: boolean
+  noContactData: INoContactData
 }
 
 export default StorageMapping
