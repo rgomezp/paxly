@@ -5,6 +5,7 @@ import { IModalQueueState } from "../../types/modals/modals"
 import { IReferralData } from "@/types/IReferralData"
 import IReviewBackoffData from "@/types/IReviewBackoffData"
 import INoContactData from "@/types/INoContactData"
+import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 interface StorageMapping {
   // v1
   email: string | null
@@ -24,6 +25,7 @@ interface StorageMapping {
   passedAppCheck: boolean
   finishedOnboarding: boolean
   noContactData: INoContactData
+  moodHistory: IMoodHistoryItem[]
 }
 
 export default StorageMapping

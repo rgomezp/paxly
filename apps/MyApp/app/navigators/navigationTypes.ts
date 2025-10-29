@@ -22,6 +22,7 @@ export type AppStackParamList = {
   TabNavigator: undefined
   Login: undefined
   Onboarding: undefined
+  MoodLogger: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

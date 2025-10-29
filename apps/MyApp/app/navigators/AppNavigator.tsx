@@ -107,6 +107,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
       <Stack.Screen name="Login" component={Screens.LoginScreen} />
+      <Stack.Screen name="MoodLogger" component={Screens.MoodLogger} />
     </Stack.Navigator>
   )
 })
