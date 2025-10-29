@@ -71,7 +71,11 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
               {/* Progress Wheel */}
               <NoContactProgressWheel refreshTrigger={refreshTrigger} />
               <View style={themed($resetButtonContainer)}>
-                <RectangularButton buttonText="Help" onClick={() => setIsHelpModalVisible(true)} />
+                <RectangularButton
+                  buttonText="Help"
+                  onClick={() => setIsHelpModalVisible(true)}
+                  icon="exclamation-triangle"
+                />
               </View>
             </View>
           </ScrollView>
