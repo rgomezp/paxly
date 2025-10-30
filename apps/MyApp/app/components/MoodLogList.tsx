@@ -8,6 +8,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { MoodCategory } from "@/types/MoodCategory"
 import { activityToPhrase } from "@/types/Activities"
 import { Text } from "./Text"
+import { EmptyState } from "./EmptyState"
 
 const MoodLogList: FC = observer(function MoodLogList() {
   const { theme, themed } = useAppTheme()
@@ -26,6 +27,12 @@ const MoodLogList: FC = observer(function MoodLogList() {
 
   return (
     <View style={themed($listWrapper)}>
+      {history.length === 0 ? (
+        <EmptyState
+          heading="No mood logs yet"
+          content="Track how you feel to see insights over time."
+        />
+      ) : null}
       {history.map((item, idx) => {
         let moodColor: string = colors.positive as string
         if (item.mood.category === MoodCategory.Negative) moodColor = colors.negative

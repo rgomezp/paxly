@@ -6,6 +6,7 @@ import { Text } from "./Text"
 import { ThemedFontAwesome5Icon } from "./ThemedFontAwesome5Icon"
 import { navigate } from "@/navigators/navigationUtilities"
 import { useStores } from "@/models"
+import { EmptyState } from "./EmptyState"
 
 const PREVIEW_CHAR_LIMIT = 120
 
@@ -16,6 +17,12 @@ const JournalLogList: FC = observer(function JournalLogList() {
 
   return (
     <View style={themed($listWrapper)}>
+      {entries.length === 0 ? (
+        <EmptyState
+          heading="No journal entries yet"
+          content="Your thoughts will appear here. Start your first entry to get going."
+        />
+      ) : null}
       {entries.map((item, idx) => {
         const preview =
           item.text.length > PREVIEW_CHAR_LIMIT
