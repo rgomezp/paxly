@@ -21,9 +21,9 @@ export default function NameInput({ showTitle = true, onSelection }: NameInputPr
 
   // Load existing nickname when component mounts
   useEffect(() => {
-    const loadNickname = async () => {
+    const loadNickname = () => {
       try {
-        const user = await UserManager.getUser()
+        const user = UserManager.getUser()
         if (user?.nickname) {
           setName(user.nickname)
         }
@@ -34,14 +34,15 @@ export default function NameInput({ showTitle = true, onSelection }: NameInputPr
     loadNickname()
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
+    Log.info(`NameInput: handleSubmit: ${name}`)
     if (!name.trim()) {
       return // Don't submit if name is empty
     }
 
     try {
       // Save the nickname to UserManager
-      await UserManager.setNickname(name.trim())
+      UserManager.setNickname(name.trim())
 
       // Call the selection callback to advance to next slide
       onSelection?.()

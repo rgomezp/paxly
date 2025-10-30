@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { StyleProp, useColorScheme } from "react-native"
-import { DarkTheme, DefaultTheme, useTheme as useNavTheme } from "@react-navigation/native"
+import { DarkTheme, DefaultTheme } from "@react-navigation/native"
 import {
   type Theme,
   type ThemeContexts,
@@ -18,6 +18,8 @@ type ThemeContextType = {
   themeScheme: Exclude<ThemeContexts, "auto">
   // Accepts "light" | "dark" | "auto"; "auto" clears override (follows system)
   setThemeContextOverride: (newTheme: ThemeContexts) => void
+  // Navigation theme to be used by NavigationContainer
+  navigationTheme: typeof DefaultTheme
 }
 
 // create a React context and provider for the current theme
@@ -26,6 +28,7 @@ export const ThemeContext = createContext<ThemeContextType>({
   setThemeContextOverride: (_newTheme: ThemeContexts) => {
     console.error("Tried to call setThemeContextOverride before the ThemeProvider was initialized")
   },
+  navigationTheme: DefaultTheme,
 })
 
 const themeContextToTheme = (themeContext: Exclude<ThemeContexts, "auto">): Theme =>
@@ -96,17 +99,16 @@ interface UseAppThemeValue {
  * @throws {Error} If used outside of a ThemeProvider.
  */
 export const useAppTheme = (): UseAppThemeValue => {
-  const navTheme = useNavTheme()
   const context = useContext(ThemeContext)
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider")
   }
 
-  const { themeScheme: resolvedScheme, setThemeContextOverride } = context
+  const { themeScheme: resolvedScheme, setThemeContextOverride, navigationTheme } = context
 
   const themeContext: Exclude<ThemeContexts, "auto"> = useMemo(
-    () => (resolvedScheme || (navTheme.dark ? "dark" : "light")) as Exclude<ThemeContexts, "auto">,
-    [resolvedScheme, navTheme],
+    () => resolvedScheme,
+    [resolvedScheme],
   )
 
   const themeVariant: Theme = useMemo(() => themeContextToTheme(themeContext), [themeContext])
@@ -129,7 +131,7 @@ export const useAppTheme = (): UseAppThemeValue => {
   )
 
   return {
-    navTheme,
+    navTheme: navigationTheme,
     setThemeContextOverride,
     theme: themeVariant,
     themeContext,
