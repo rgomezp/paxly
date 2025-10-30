@@ -8,7 +8,6 @@ interface HelpModalProps {
   visible: boolean
   onClose: () => void
   onThoughtContact: () => void
-  onNeedEmotionalSupport: () => void
   onIContacted: () => void
 }
 
@@ -16,7 +15,6 @@ export default function HelpModal({
   visible,
   onClose,
   onThoughtContact,
-  onNeedEmotionalSupport,
   onIContacted,
 }: HelpModalProps) {
   const { theme, themed } = useAppTheme()
@@ -39,13 +37,6 @@ export default function HelpModal({
           <RectangularButton
             buttonText="I'm thinking about contacting"
             onClick={() => handleOptionPress(onThoughtContact)}
-            width="100%"
-            customStyles={$buttonSpacing}
-          />
-
-          <RectangularButton
-            buttonText="I need emotional support"
-            onClick={() => handleOptionPress(onNeedEmotionalSupport)}
             width="100%"
             customStyles={$buttonSpacing}
           />
