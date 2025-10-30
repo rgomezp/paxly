@@ -10,36 +10,56 @@ import {
   darkTheme,
 } from "@/theme"
 import * as SystemUI from "expo-system-ui"
+import { ganon } from "@/services/ganon/ganon"
+import customConfig from "../../customConfig"
 
 type ThemeContextType = {
-  themeScheme: ThemeContexts
+  // Resolved theme scheme used across the app; always "light" or "dark"
+  themeScheme: Exclude<ThemeContexts, "auto">
+  // Accepts "light" | "dark" | "auto"; "auto" clears override (follows system)
   setThemeContextOverride: (newTheme: ThemeContexts) => void
 }
 
 // create a React context and provider for the current theme
 export const ThemeContext = createContext<ThemeContextType>({
-  themeScheme: undefined, // default to the system theme
+  themeScheme: "light",
   setThemeContextOverride: (_newTheme: ThemeContexts) => {
     console.error("Tried to call setThemeContextOverride before the ThemeProvider was initialized")
   },
 })
 
-const themeContextToTheme = (themeContext: ThemeContexts): Theme =>
+const themeContextToTheme = (themeContext: Exclude<ThemeContexts, "auto">): Theme =>
   themeContext === "dark" ? darkTheme : lightTheme
 
 const setImperativeTheming = (theme: Theme) => {
   SystemUI.setBackgroundColorAsync(theme.colors.background)
 }
 
-export const useThemeProvider = (initialTheme: ThemeContexts = undefined) => {
+export const useThemeProvider = (initialTheme?: ThemeContexts) => {
   const colorScheme = useColorScheme()
-  const [overrideTheme, setTheme] = useState<ThemeContexts>(initialTheme)
+  // Initialize from persisted preference, falling back to provided initialTheme, then config
+  const [overrideTheme, setTheme] = useState<Exclude<ThemeContexts, "auto"> | undefined>(() => {
+    const config = customConfig()
+    const persisted =
+      (ganon.get("theme") as ThemeContexts | undefined) ??
+      initialTheme ??
+      config.startingTheme ??
+      "auto"
+    return persisted === "auto" ? undefined : persisted
+  })
 
   const setThemeContextOverride = useCallback((newTheme: ThemeContexts) => {
-    setTheme(newTheme)
+    // Persist preference
+    ganon.set("theme", newTheme)
+    // Update override state (undefined means follow system)
+    if (newTheme === "auto") {
+      setTheme(undefined)
+    } else {
+      setTheme(newTheme)
+    }
   }, [])
 
-  const themeScheme = overrideTheme || colorScheme || "light"
+  const themeScheme = (overrideTheme ?? colorScheme ?? "light") as Exclude<ThemeContexts, "auto">
   const navigationTheme = themeScheme === "dark" ? DarkTheme : DefaultTheme
 
   useEffect(() => {
@@ -61,8 +81,8 @@ interface UseAppThemeValue {
   setThemeContextOverride: (newTheme: ThemeContexts) => void
   // The current theme object
   theme: Theme
-  // The current theme context "light" | "dark"
-  themeContext: ThemeContexts
+  // The current resolved theme context (never "auto")
+  themeContext: Exclude<ThemeContexts, "auto">
   // A function to apply the theme to a style object.
   // See examples in the components directory or read the docs here:
   // https://docs.infinite.red/ignite-cli/boilerplate/app/utils/
@@ -82,11 +102,11 @@ export const useAppTheme = (): UseAppThemeValue => {
     throw new Error("useTheme must be used within a ThemeProvider")
   }
 
-  const { themeScheme: overrideTheme, setThemeContextOverride } = context
+  const { themeScheme: resolvedScheme, setThemeContextOverride } = context
 
-  const themeContext: ThemeContexts = useMemo(
-    () => overrideTheme || (navTheme.dark ? "dark" : "light"),
-    [overrideTheme, navTheme],
+  const themeContext: Exclude<ThemeContexts, "auto"> = useMemo(
+    () => (resolvedScheme || (navTheme.dark ? "dark" : "light")) as Exclude<ThemeContexts, "auto">,
+    [resolvedScheme, navTheme],
   )
 
   const themeVariant: Theme = useMemo(() => themeContextToTheme(themeContext), [themeContext])

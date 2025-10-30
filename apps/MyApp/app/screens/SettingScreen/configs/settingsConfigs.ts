@@ -7,12 +7,16 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemeContexts } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
+import { ganon } from "@/services/ganon/ganon"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
-  const { themeContext, setThemeContextOverride } = useAppTheme()
+  const { setThemeContextOverride } = useAppTheme()
+  // Read persisted preference directly so we can show "system" when set
+  const persistedPref = (ganon.get("theme") as ThemeContexts | undefined) ?? "auto"
 
   const getThemeDisplayValue = (): string => {
-    switch (themeContext) {
+    // Show based on persisted preference (not resolved scheme)
+    switch (persistedPref) {
       case "light":
         return (LANGUAGE_COPY.words.light as any)[Language.current]
       case "dark":
@@ -23,8 +27,8 @@ export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
   }
 
   const toggleTheme = () => {
-    const themeCycle: ThemeContexts[] = ["light", "dark", undefined]
-    const currentIndex = themeCycle.indexOf(themeContext)
+    const themeCycle: ThemeContexts[] = ["light", "dark", "auto"]
+    const currentIndex = themeCycle.indexOf(persistedPref)
     const nextIndex = (currentIndex + 1) % themeCycle.length
     setThemeContextOverride(themeCycle[nextIndex])
   }

@@ -114,18 +114,7 @@ function AppContent() {
 
 export function App() {
   const config = customConfig()
-  // Convert string theme to ThemeContexts type
-  // "auto" becomes undefined to follow system theme
-  const startingTheme: ThemeContexts =
-    config.startingTheme === "auto"
-      ? undefined
-      : config.startingTheme === "dark"
-        ? "dark"
-        : config.startingTheme === "light"
-          ? "light"
-          : undefined
-
-  const { ThemeProvider, themeScheme, setThemeContextOverride } = useThemeProvider(startingTheme)
+  const { ThemeProvider, themeScheme, setThemeContextOverride } = useThemeProvider(config.startingTheme)
 
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
