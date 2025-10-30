@@ -6,11 +6,11 @@ import { LessonPlayer } from "@/components/lessons/LessonPlayer"
 
 interface SingleLessonScreenProps extends AppStackScreenProps<"SingleLesson"> {}
 
-export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route }) => {
+export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigation }) => {
   const { lessonId } = route.params
   return (
     <Screen>
-      <LessonPlayer lessonId={lessonId} onComplete={() => {}} />
+      <LessonPlayer lessonId={lessonId} onComplete={() => navigation.goBack()} />
     </Screen>
   )
 }

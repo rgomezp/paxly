@@ -19,10 +19,11 @@ export function PracticeLesson({
 }) {
   const { themed, theme } = useAppTheme()
   const [step, setStep] = useState(0)
+  const [showFinish, setShowFinish] = useState(false)
   const s = config.steps[step]
   const next = () => {
     if (step + 1 < config.steps.length) setStep(step + 1)
-    else onComplete?.()
+    else setShowFinish(true)
   }
   return (
     <View style={themed(() => ({ alignItems: "center" }))}>
@@ -42,10 +43,14 @@ export function PracticeLesson({
           </LessonCard>
         )}
       </View>
-      {s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio" && (
+      {(showFinish || (s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio")) && (
         <RectangularButton
-          buttonText={step + 1 < config.steps.length ? "Next" : "Finish"}
-          onClick={next}
+          width="60%"
+          buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
+          onClick={() => {
+            if (showFinish || step + 1 >= config.steps.length) onComplete?.()
+            else next()
+          }}
         />
       )}
     </View>
