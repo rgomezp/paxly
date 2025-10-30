@@ -9,6 +9,8 @@ import { MoodCategory } from "@/types/MoodCategory"
 import { activityToPhrase } from "@/types/Activities"
 import { Text } from "./Text"
 import { EmptyState } from "./EmptyState"
+import type { ThemedStyle } from "@/theme"
+import type { ViewStyle as RNViewStyle } from "react-native"
 
 const MoodLogList: FC = observer(function MoodLogList() {
   const { theme, themed } = useAppTheme()
@@ -29,6 +31,7 @@ const MoodLogList: FC = observer(function MoodLogList() {
     <View style={themed($listWrapper)}>
       {history.length === 0 ? (
         <EmptyState
+          style={themed($emptyStateContainer as any)}
           heading="No mood logs yet"
           content="Track how you feel to see insights over time."
         />
@@ -124,3 +127,7 @@ function formatRelativeTime(timestamp: number): string {
   const weeks = Math.floor(days / 7)
   return weeks === 1 ? "a week ago" : `${weeks} weeks ago`
 }
+
+const $emptyStateContainer: ThemedStyle<RNViewStyle> = () => ({
+  marginBottom: 16,
+})

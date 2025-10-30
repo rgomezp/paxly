@@ -7,6 +7,8 @@ import { ThemedFontAwesome5Icon } from "./ThemedFontAwesome5Icon"
 import { navigate } from "@/navigators/navigationUtilities"
 import { useStores } from "@/models"
 import { EmptyState } from "./EmptyState"
+import type { ThemedStyle } from "@/theme"
+import type { ViewStyle as RNViewStyle } from "react-native"
 
 const PREVIEW_CHAR_LIMIT = 120
 
@@ -19,6 +21,7 @@ const JournalLogList: FC = observer(function JournalLogList() {
     <View style={themed($listWrapper)}>
       {entries.length === 0 ? (
         <EmptyState
+          style={themed($emptyStateContainer as any)}
           heading="No journal entries yet"
           content="Your thoughts will appear here. Start your first entry to get going."
         />
@@ -107,3 +110,7 @@ function formatRelativeTime(timestamp: number): string {
   const weeks = Math.floor(days / 7)
   return weeks === 1 ? "a week ago" : `${weeks} weeks ago`
 }
+
+const $emptyStateContainer: ThemedStyle<RNViewStyle> = () => ({
+  marginBottom: 16,
+})
