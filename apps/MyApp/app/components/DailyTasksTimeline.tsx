@@ -91,7 +91,7 @@ const $header: ViewStyle = {
 
 const $timeline: ViewStyle = {
   flexDirection: "column",
-  gap: 12,
+  gap: 22,
   paddingHorizontal: 20,
 }
 

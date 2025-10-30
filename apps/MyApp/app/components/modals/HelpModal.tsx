@@ -7,14 +7,14 @@ import RectangularButton from "../buttons/RectangularButton"
 interface HelpModalProps {
   visible: boolean
   onClose: () => void
-  onThoughtContact: () => void
+  onLessonActivated: () => void
   onIContacted: () => void
 }
 
 export default function HelpModal({
   visible,
   onClose,
-  onThoughtContact,
+  onLessonActivated,
   onIContacted,
 }: HelpModalProps) {
   const { theme, themed } = useAppTheme()
@@ -35,10 +35,32 @@ export default function HelpModal({
 
         <View style={themed($optionsContainer)}>
           <RectangularButton
-            buttonText="I'm thinking about contacting"
-            onClick={() => handleOptionPress(onThoughtContact)}
+            buttonText="I have the urge to contact"
+            onClick={() => handleOptionPress(onLessonActivated)}
             width="100%"
             customStyles={$buttonSpacing}
+            icon="exclamation-triangle"
+          />
+          <RectangularButton
+            buttonText="I've been sleeping poorly"
+            onClick={() => handleOptionPress(onLessonActivated)}
+            width="100%"
+            customStyles={$buttonSpacing}
+            icon="bed"
+          />
+          <RectangularButton
+            buttonText="I'm feeling down"
+            onClick={() => handleOptionPress(onLessonActivated)}
+            width="100%"
+            customStyles={$buttonSpacing}
+            icon="sad-tear"
+          />
+          <RectangularButton
+            buttonText="I'm ruminating"
+            onClick={() => handleOptionPress(onLessonActivated)}
+            width="100%"
+            customStyles={$buttonSpacing}
+            icon="brain"
           />
 
           <RectangularButton

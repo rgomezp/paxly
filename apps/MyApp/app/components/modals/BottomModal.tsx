@@ -33,6 +33,6 @@ const $view: ViewStyle = {
 const $content: ViewStyle = {
   padding: 20,
   borderRadius: 10,
-  maxHeight: "50%",
+  maxHeight: "60%",
   paddingBottom: 40,
 }

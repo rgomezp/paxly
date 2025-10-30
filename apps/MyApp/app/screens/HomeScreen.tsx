@@ -58,14 +58,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       <HelpModal
         visible={isHelpModalVisible}
         onClose={() => setIsHelpModalVisible(false)}
-        onThoughtContact={() => {
-          Log.info("HomeScreen: User selected 'I'm thinking about contacting'")
-          // TODO: Navigate to resources or show support
-        }}
-        onNeedEmotionalSupport={() => {
-          Log.info("HomeScreen: User selected 'I need emotional support'")
-          // TODO: Navigate to resources or show support
-        }}
+        onLessonActivated={() => {}}
         onIContacted={() => {
           Log.info("HomeScreen: User reset the streak")
           NoContactManager.resetStreak()

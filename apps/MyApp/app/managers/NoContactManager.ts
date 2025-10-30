@@ -129,47 +129,26 @@ export default class NoContactManager {
     const weeks = timeElapsed / (7 * 24 * 60 * 60 * 1000)
     const months = timeElapsed / (30 * 24 * 60 * 60 * 1000)
 
-    // If less than a day, show hours and minutes
+    // Day is the smallest unit: if less than a day, show 0 days
     if (days < 1) {
-      const totalHours = timeElapsed / (60 * 60 * 1000)
-      const hours = Math.floor(totalHours)
-      const minutes = Math.floor((totalHours - hours) * 60)
-
-      if (hours === 0) {
-        const minutesLabel = minutes === 1 ? "minute" : "minutes"
-        return {
-          primary: `${minutes} ${minutesLabel}`,
-          primaryLabel: "minutes",
-        }
-      }
-
-      const hoursLabel = hours === 1 ? "hour" : "hours"
-      const minutesLabel = minutes === 1 ? "minute" : "minutes"
       return {
-        primary: `${hours} ${hoursLabel}`,
-        secondary: minutes > 0 ? `${minutes} ${minutesLabel}` : undefined,
-        primaryLabel: "hours",
-        secondaryLabel: "minutes",
+        primary: "0 days",
+        primaryLabel: "days",
       }
     }
 
-    // If less than a week, show days and hours
+    // If less than a week, show whole days only
     if (days < 7) {
       const wholeDays = Math.floor(days)
-      const remainingHours = Math.floor((days - wholeDays) * 24)
-
       const daysLabel = wholeDays === 1 ? "day" : "days"
-      const hoursLabel = remainingHours === 1 ? "hour" : "hours"
 
       return {
         primary: `${wholeDays} ${daysLabel}`,
-        secondary: remainingHours > 0 ? `${remainingHours} ${hoursLabel}` : undefined,
         primaryLabel: "days",
-        secondaryLabel: "hours",
       }
     }
 
-    // If less than a month, show weeks and days
+    // If less than a month, show weeks and remaining days
     if (weeks < 4) {
       const wholeWeeks = Math.floor(weeks)
       const remainingDays = Math.floor((weeks - wholeWeeks) * 7)
@@ -181,11 +160,11 @@ export default class NoContactManager {
         primary: `${wholeWeeks} ${weeksLabel}`,
         secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
         primaryLabel: "weeks",
-        secondaryLabel: "days",
+        secondaryLabel: remainingDays > 0 ? "days" : undefined,
       }
     }
 
-    // Show months and days
+    // Show months and remaining days
     const wholeMonths = Math.floor(months)
     const remainingDays = Math.floor((months - wholeMonths) * 30)
 
@@ -196,7 +175,7 @@ export default class NoContactManager {
       primary: `${wholeMonths} ${monthsLabel}`,
       secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
       primaryLabel: "months",
-      secondaryLabel: "days",
+      secondaryLabel: remainingDays > 0 ? "days" : undefined,
     }
   }
 
@@ -262,15 +241,15 @@ export default class NoContactManager {
       return null
     }
 
-    const daysRemaining = Math.ceil(progressData.timeRemaining / (24 * 60 * 60 * 1000))
+    const daysRemaining = Math.floor(progressData.timeRemaining / (24 * 60 * 60 * 1000))
 
-    if (daysRemaining <= 1) {
+    if (daysRemaining <= 0) {
       return "less than 1 day"
-    } else if (daysRemaining === 1) {
-      return "1 day"
-    } else {
-      return `${daysRemaining} days`
     }
+    if (daysRemaining === 1) {
+      return "1 day"
+    }
+    return `${daysRemaining} days`
   }
 
   /**
