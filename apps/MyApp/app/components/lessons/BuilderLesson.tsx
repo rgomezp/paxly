@@ -1,7 +1,6 @@
 import { BuilderLessonConfig } from "@/types/lessons/IBuilderLessonConfig"
 import { useState } from "react"
 import { Screen } from "../Screen"
-import { Header } from "../Header"
 import { Text } from "../Text"
 import { ScrollView, TextInput, View } from "react-native"
 import RectangularButton from "../buttons/RectangularButton"
@@ -9,6 +8,7 @@ import { LinkRow } from "./primitives/LinkRow"
 import { CheckRow } from "./primitives/CheckRow"
 import { LessonCard } from "./primitives/LessonCard"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { LessonHeader } from "./LessonHeader"
 
 export function BuilderLesson({
   config,
@@ -22,8 +22,7 @@ export function BuilderLesson({
   const toggle = (key: string) => setChecked((c) => ({ ...c, [key]: !c[key] }))
   return (
     <Screen>
-      <Header title={config.title} />
-      <Text preset="subheading">{config.goal}</Text>
+      <LessonHeader title={config.title} subtitle={config.goal} />
       <ScrollView>
         {config.sections.map((s, idx) => (
           <View key={idx}>

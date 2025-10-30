@@ -7,7 +7,6 @@ import { CardLessonConfig } from "@/types/lessons/ICardLessonConfig"
 import { PracticeLessonConfig } from "@/types/lessons/IPracticeLessonConfig"
 import { JournalLessonConfig } from "@/types/lessons/IJournalLessonConfig"
 import { BuilderLessonConfig } from "@/types/lessons/IBuilderLessonConfig"
-import { Screen } from "../Screen"
 import { Text } from "../Text"
 
 export function LessonPlayer({
@@ -18,12 +17,7 @@ export function LessonPlayer({
   onComplete?: () => void
 }) {
   const cfg = LESSONS[lessonId]
-  if (!cfg)
-    return (
-      <Screen>
-        <Text>Unknown lesson: {lessonId}</Text>
-      </Screen>
-    )
+  if (!cfg) return <Text>Unknown lesson: {lessonId}</Text>
   switch (cfg.format) {
     case "card":
       return <CardLesson config={cfg as CardLessonConfig} onComplete={onComplete} />

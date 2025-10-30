@@ -1,11 +1,14 @@
 import { View } from "react-native"
-import { Card, Header, Screen, Text } from ".."
+import { Text } from ".."
+import { useAppTheme } from "@/utils/useAppTheme"
 import { useState } from "react"
 import { PracticeLessonConfig } from "@/types/lessons/IPracticeLessonConfig"
 import RectangularButton from "../buttons/RectangularButton"
 import { Countdown } from "./primitives/Countdown"
 import { Breath } from "./primitives/Breath"
 import { AudioStep } from "./primitives/AudioStep"
+import { LessonCard } from "./primitives/LessonCard"
+import { LessonHeader } from "./LessonHeader"
 
 export function PracticeLesson({
   config,
@@ -14,6 +17,7 @@ export function PracticeLesson({
   config: PracticeLessonConfig
   onComplete?: () => void
 }) {
+  const { themed, theme } = useAppTheme()
   const [step, setStep] = useState(0)
   const s = config.steps[step]
   const next = () => {
@@ -21,22 +25,21 @@ export function PracticeLesson({
     else onComplete?.()
   }
   return (
-    <Screen>
-      <Header title={config.title} />
-      <Text preset="subheading">{config.goal}</Text>
-      <View>
+    <View style={themed(() => ({ alignItems: "center" }))}>
+      <LessonHeader title={config.title} subtitle={config.goal} />
+      <View style={themed(() => ({ padding: theme.spacing.md, gap: theme.spacing.sm }))}>
         {s?.t === "instruction" && (
-          <Card>
+          <LessonCard>
             <Text>{s.body}</Text>
-          </Card>
+          </LessonCard>
         )}
         {s?.t === "timer" && <Countdown seconds={s.seconds} label={s.label} onDone={next} />}
         {s?.t === "breath" && <Breath pattern={s.pattern} rounds={s.rounds} onDone={next} />}
         {s?.t === "audio" && <AudioStep asset={(s as any).asset} onDone={onComplete} />}
         {s?.t === "check" && (
-          <Card>
+          <LessonCard>
             <Text>{s.prompt}</Text>
-          </Card>
+          </LessonCard>
         )}
       </View>
       {s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio" && (
@@ -45,6 +48,6 @@ export function PracticeLesson({
           onClick={next}
         />
       )}
-    </Screen>
+    </View>
   )
 }

@@ -1,11 +1,12 @@
 import { JournalLessonConfig } from "@/types/lessons/IJournalLessonConfig"
 import { useState } from "react"
-import { Screen, Header, Text } from ".."
+import { Text } from ".."
 import { FlatList, ScrollView, TextInput, View } from "react-native"
 import RectangularButton from "../buttons/RectangularButton"
 import { SliderPseudo } from "./primitives/SliderPseudo"
 import { Chip } from "./primitives/Chip"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { LessonHeader } from "./LessonHeader"
 
 export function JournalLesson({
   config,
@@ -18,9 +19,8 @@ export function JournalLesson({
   const [form, setForm] = useState<Record<string, any>>({})
   const update = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }))
   return (
-    <Screen>
-      <Header title={config.title} />
-      <Text preset="subheading">{config.goal}</Text>
+    <>
+      <LessonHeader title={config.title} subtitle={config.goal} />
       <ScrollView>
         {config.fields.map((f) => (
           <View key={f.name}>
@@ -70,6 +70,6 @@ export function JournalLesson({
         ))}
       </ScrollView>
       <RectangularButton buttonText="Save & Continue" onClick={() => onComplete?.()} />
-    </Screen>
+    </>
   )
 }

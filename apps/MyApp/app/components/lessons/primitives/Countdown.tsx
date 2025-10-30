@@ -22,8 +22,15 @@ export function Countdown({
     if (left === 0) onDone?.()
   }, [left, onDone])
   return (
-    <View style={themed(() => ({ alignItems: "center", gap: 8 }))}>
-      <Text style={themed(() => ({ color: theme.colors.text, fontSize: 64, fontWeight: "800" }))}>
+    <View
+      style={themed(() => ({
+        alignItems: "center",
+        gap: theme.spacing.sm,
+        padding: theme.spacing.md,
+        borderRadius: theme.spacing.md,
+      }))}
+    >
+      <Text preset="heading" size="xxl" weight="bold">
         {left}
       </Text>
       {!!label && <Text style={themed(() => ({ color: theme.colors.textDim }))}>{label}</Text>}
