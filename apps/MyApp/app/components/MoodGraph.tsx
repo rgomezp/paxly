@@ -84,7 +84,7 @@ export const MoodGraph: FC = observer(function MoodGraph() {
   return (
     <View style={themed($wrapper)}>
       <Text
-        text="Recent moods"
+        text="Moods this week"
         preset="subheading"
         style={themed([$titleText, { color: theme.colors.text }])}
       />
