@@ -114,10 +114,12 @@ function AppContent() {
 
 export function App() {
   const config = customConfig()
-  const { ThemeProvider, themeScheme, setThemeContextOverride } = useThemeProvider(config.startingTheme)
+  const { ThemeProvider, themeScheme, setThemeContextOverride, navigationTheme } = useThemeProvider(
+    config.startingTheme,
+  )
 
   return (
-    <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
+    <ThemeProvider value={{ themeScheme, setThemeContextOverride, navigationTheme }}>
       <InitializationProvider>
         <AppContent />
       </InitializationProvider>
