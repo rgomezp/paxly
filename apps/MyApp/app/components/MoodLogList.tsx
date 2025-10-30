@@ -128,6 +128,6 @@ function formatRelativeTime(timestamp: number): string {
   return weeks === 1 ? "a week ago" : `${weeks} weeks ago`
 }
 
-const $emptyStateContainer: ThemedStyle<RNViewStyle> = () => ({
-  marginBottom: 16,
+const $emptyStateContainer: ThemedStyle<RNViewStyle> = ({ spacing }) => ({
+  marginBottom: spacing.md,
 })
