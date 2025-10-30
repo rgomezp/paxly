@@ -1,13 +1,11 @@
-import {
-  IAppSettingsBinaryConfig,
-  IAppSettingsModalConfig,
-  IAppSettingsThemeConfig,
-} from "@/types/IAppSettingsConfig"
+import { IAppSettingsModalConfig, IAppSettingsThemeConfig } from "@/types/IAppSettingsConfig"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemeContexts } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import { ganon } from "@/services/ganon/ganon"
+import LoginManager from "@/managers/LoginManager"
+import DataInitializationManager from "@/managers/DataInitializationManager"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
   const { setThemeContextOverride } = useAppTheme()
@@ -42,24 +40,27 @@ export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
   }
 }
 
-export const useTestSettingConfig = (): IAppSettingsBinaryConfig => {
-  return {
-    title: "Test",
-    iconName: "search",
-    iconType: "font-awesome",
-    getValue: () => "Test Value",
-    toggleBinarySetting: () => {
-      console.log("Test setting toggled")
-    },
-  }
-}
+export const useDeleteAccountSettingConfig = (): IAppSettingsModalConfig => {
+  const getValue = () => (ganon.get("email") as string | undefined) ?? ""
 
-export const useTestModalSettingConfig = (): IAppSettingsModalConfig => {
-  return {
-    title: "Test Modal",
-    iconName: "search",
-    iconType: "font-awesome",
-    getValue: () => "Test Modal",
-    modalContent: null, // Simplified for now
+  const onPress = async () => {
+    const loggedIn = await LoginManager.getInstance().isLoggedIn()
+    if (loggedIn) {
+      await ganon.dangerouslyDelete()
+      await LoginManager.getInstance().logout(false)
+    } else {
+      ganon.clearAllData()
+      await DataInitializationManager.initializeData()
+    }
   }
+
+  return {
+    title: "Delete account",
+    iconName: "trash",
+    iconType: "font-awesome",
+    getValue,
+    modalContent: null,
+    onPress,
+    danger: true,
+  } as IAppSettingsModalConfig & { danger: boolean }
 }

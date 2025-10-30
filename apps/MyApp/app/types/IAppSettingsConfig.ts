@@ -3,6 +3,8 @@ interface IAppSettingsConfigBase {
   iconType: string
   iconName: string
   getValue: () => string
+  // Optional: marks special/dangerous actions (e.g., Delete account)
+  danger?: boolean
 }
 
 export interface IAppSettingsBinaryConfig extends IAppSettingsConfigBase {

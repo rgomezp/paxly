@@ -40,9 +40,11 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
         <ThemedFontAwesome5Icon
           name={config.iconName}
           type={config.iconType}
-          style={themed($icon)}
+          style={themed([$icon, config.danger ? $iconDanger : undefined])}
         />
-        <Text style={themed($title)}>{config.title}</Text>
+        <Text style={themed([$title, config.danger ? $titleDanger : undefined])}>
+          {config.title}
+        </Text>
         <Text style={themed($value)}>{value}</Text>
       </TouchableOpacity>
       {isModalConfig(config) && !config.onPress && (
@@ -71,11 +73,19 @@ const $icon: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.text,
 })
 
+const $iconDanger: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.palette.angry500,
+})
+
 const $title: ThemedStyle<TextStyle> = (theme) => ({
   flex: 1,
   fontSize: 16,
   color: theme.colors.text,
   backgroundColor: "transparent",
+})
+
+const $titleDanger: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.palette.angry500,
 })
 
 const $value: ThemedStyle<TextStyle> = (theme) => ({

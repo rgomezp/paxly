@@ -1,5 +1,4 @@
 export {
   useThemeSettingConfig,
-  useTestSettingConfig,
-  useTestModalSettingConfig,
+  useDeleteAccountSettingConfig,
 } from "./settingsConfigs"

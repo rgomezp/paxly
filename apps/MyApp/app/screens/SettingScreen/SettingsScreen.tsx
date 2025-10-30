@@ -6,7 +6,7 @@ import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import SettingRow from "./components/SettingRow"
-import { useThemeSettingConfig, useTestSettingConfig, useTestModalSettingConfig } from "./configs"
+import { useThemeSettingConfig, useDeleteAccountSettingConfig } from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 
@@ -17,10 +17,9 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Get setting configurations
   const themeSetting = useThemeSettingConfig()
-  const testSetting = useTestSettingConfig()
-  const testModalSetting = useTestModalSettingConfig()
+  const deleteAccountSetting = useDeleteAccountSettingConfig()
 
-  const settings = [themeSetting, testSetting, testModalSetting]
+  const settings = [themeSetting, deleteAccountSetting]
 
   return (
     <Screen style={themed($root)} preset="scroll">
