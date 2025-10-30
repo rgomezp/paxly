@@ -2,23 +2,17 @@ import { FC, useMemo } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, Pressable } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
-import JournalManager from "@/managers/JournalManager"
 import { Text } from "./Text"
 import { ThemedFontAwesome5Icon } from "./ThemedFontAwesome5Icon"
 import { navigate } from "@/navigators/navigationUtilities"
+import { useStores } from "@/models"
 
 const PREVIEW_CHAR_LIMIT = 120
 
 const JournalLogList: FC = observer(function JournalLogList() {
   const { theme, themed } = useAppTheme()
-
-  const entries = useMemo(
-    () =>
-      JournalManager.getEntries()
-        .slice()
-        .sort((a, b) => b.date - a.date),
-    [],
-  )
+  const { journalStore } = useStores()
+  const entries = useMemo(() => journalStore.sortedEntries, [journalStore.sortedEntries])
 
   return (
     <View style={themed($listWrapper)}>

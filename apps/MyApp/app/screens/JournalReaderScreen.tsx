@@ -1,60 +1,96 @@
-import { FC, useMemo, useCallback, useState } from "react"
+import { FC, useMemo } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ScrollView } from "react-native"
+import { View, ScrollView, Alert, Pressable } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import type { TextStyle, ViewStyle } from "react-native"
-import JournalManager from "@/managers/JournalManager"
-import RectangularButton from "@/components/buttons/RectangularButton"
 import { navigate } from "@/navigators/navigationUtilities"
-import { useFocusEffect } from "@react-navigation/native"
+import { useStores } from "@/models"
+import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
+import { isAlive } from "mobx-state-tree"
+import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 
 interface JournalReaderScreenProps extends AppStackScreenProps<"JournalReader"> {}
 
 export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(
-  function JournalReaderScreen({ route }) {
-    const { themed } = useAppTheme()
+  function JournalReaderScreen({ route, navigation }) {
+    const { themed, theme } = useAppTheme()
     const insets = useSafeAreaInsets()
     const date = route.params?.date
-    const [refreshToken, setRefreshToken] = useState(0)
-
-    useFocusEffect(
-      useCallback(() => {
-        // bump token when screen gains focus so dependent memos recompute
-        setRefreshToken((t) => t + 1)
-      }, []),
-    )
+    const { journalStore } = useStores()
 
     const entry = useMemo(() => {
-      void refreshToken // depend on refresh token so we recompute on focus
-      return JournalManager.getEntries().find((e) => e.date === date)
-    }, [date, refreshToken])
+      return journalStore.entries.find((e) => e.date === date)
+    }, [journalStore.entries, date])
+    const isEntryAlive = entry ? isAlive(entry as any) : false
+    const displayedText = isEntryAlive ? entry!.text : ""
+    const formattedDate = useMemo(() => {
+      if (!isEntryAlive || !entry) return ""
+      try {
+        const d = new Date(entry.date)
+        return d.toLocaleString(undefined, {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      } catch {
+        return ""
+      }
+    }, [isEntryAlive, entry])
+
+    const $deleteButtonInsetStyle = useMemo(() => ({ top: insets.top + 8 }), [insets.top])
 
     const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
     const $contentInsetStyle = useMemo(
       () => ({ paddingBottom: insets.bottom + 96 }),
       [insets.bottom],
     )
-    const $editContainerInsetStyle = useMemo(() => ({ bottom: insets.bottom }), [insets.bottom])
 
     return (
       <View style={[themed($container), $containerInsetStyle]}>
+        {isEntryAlive ? (
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => {
+              const dateToDelete = entry!.date
+              Alert.alert("Delete entry", "Are you sure you want to delete this journal entry?", [
+                { text: "Cancel", style: "cancel" },
+                {
+                  text: "Delete",
+                  style: "destructive",
+                  onPress: () => {
+                    journalStore.deleteByDate(dateToDelete)
+                    navigation.goBack()
+                  },
+                },
+              ])
+            }}
+            style={[themed($topRightAction), $deleteButtonInsetStyle]}
+          >
+            <ThemedFontAwesome5Icon name="trash" color={theme.colors.text} size={18} solid />
+          </Pressable>
+        ) : null}
         <ScrollView style={themed($scroll)} contentContainerStyle={$contentInsetStyle}>
           <Text text="Journal Entry" preset="heading" style={themed($title)} />
-          <Text style={themed($body)} text={entry?.text ?? ""} />
+          {formattedDate ? (
+            <Text preset="subheading" style={themed($dateSubheading)} text={formattedDate} />
+          ) : null}
+          <Text style={themed($body)} text={displayedText} />
         </ScrollView>
-        {entry ? (
-          <View style={[themed($editContainer), $editContainerInsetStyle]}>
-            <RectangularButton
-              buttonText="Edit"
-              onClick={() =>
-                navigate("Journal", { mode: "edit", date: entry.date, initialText: entry.text })
-              }
-            />
-          </View>
+        {isEntryAlive ? (
+          <FloatingCenterButton
+            isValid={true}
+            text="Edit"
+            onPress={() => {
+              navigate("Journal", { mode: "edit", date: entry!.date, initialText: entry!.text })
+            }}
+          />
         ) : null}
       </View>
     )
@@ -76,16 +112,22 @@ const $title: ThemedStyle<TextStyle> = (theme) => ({
   marginBottom: 12,
 })
 
+const $dateSubheading: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.textDim,
+  marginBottom: 12,
+})
+
 const $body: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.text,
   fontSize: 16,
   lineHeight: 22,
 })
 
-const $editContainer: ThemedStyle<ViewStyle> = () => ({
+const $topRightAction: ThemedStyle<ViewStyle> = () => ({
   position: "absolute",
-  left: 16,
-  right: 16,
+  right: 12,
+  padding: 8,
+  zIndex: 1,
 })
 
 export default JournalReaderScreen
