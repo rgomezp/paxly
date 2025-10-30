@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState, useCallback } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -13,6 +13,7 @@ import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import { navigate } from "@/navigators/navigationUtilities"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
+import { useFocusEffect } from "@react-navigation/native"
 
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
@@ -28,6 +29,13 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   }, [])
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
+
+  // Refresh dependent UI (e.g., daily tasks) when screen regains focus
+  useFocusEffect(
+    useCallback(() => {
+      setRefreshTrigger((prev) => prev + 1)
+    }, []),
+  )
 
   return (
     <>
@@ -51,6 +59,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
           />
         </View>
         <DailyTasksTimeline
+          refreshToken={refreshTrigger}
           onPressMood={() => navigate("MoodLogger")}
           onPressJournal={() => navigate("Journal")}
         />

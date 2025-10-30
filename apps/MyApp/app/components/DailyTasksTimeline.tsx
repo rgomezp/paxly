@@ -13,12 +13,14 @@ type Props = {
   onPressMood: () => void
   onPressLesson?: () => void
   onPressJournal?: () => void
+  refreshToken?: number
 }
 
 export default observer(function DailyTasksTimeline({
   onPressMood,
   onPressLesson,
   onPressJournal,
+  refreshToken,
 }: Props) {
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
@@ -37,7 +39,7 @@ export default observer(function DailyTasksTimeline({
     const ms = msUntilNextLocalMidnight()
     const id = setTimeout(reset, ms)
     return () => clearTimeout(id)
-  }, [])
+  }, [refreshToken])
 
   const moodDone = useMemo(() => {
     const todayKey = getLocalDateKey()
