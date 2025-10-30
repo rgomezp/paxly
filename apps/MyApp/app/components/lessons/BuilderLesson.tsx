@@ -23,7 +23,7 @@ export function BuilderLesson({
   return (
     <Screen>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      <ScrollView>
+      <ScrollView style={themed(() => ({ padding: theme.spacing.lg }))}>
         {config.sections.map((s, idx) => (
           <View key={idx}>
             <Text
@@ -93,8 +93,8 @@ export function BuilderLesson({
             })}
           </View>
         ))}
+        <RectangularButton buttonText="Done" onClick={() => onComplete?.()} />
       </ScrollView>
-      <RectangularButton buttonText="Done" onClick={() => onComplete?.()} />
     </Screen>
   )
 }

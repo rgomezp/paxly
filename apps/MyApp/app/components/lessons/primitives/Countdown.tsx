@@ -9,6 +9,20 @@ import Animated, {
 import { View } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 
+function formatClock(totalSeconds: number) {
+  const seconds = Math.max(0, Math.floor(totalSeconds))
+  const hrs = Math.floor(seconds / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
+  const secs = seconds % 60
+
+  const two = (n: number) => n.toString().padStart(2, "0")
+
+  if (hrs > 0) {
+    return `${hrs}:${two(mins)}:${two(secs)}`
+  }
+  return `${mins}:${two(secs)}`
+}
+
 export function Countdown({
   seconds,
   label,
@@ -46,7 +60,7 @@ export function Countdown({
       }))}
     >
       <Text preset="heading" size="xxl" weight="bold">
-        {left}
+        {formatClock(left)}
       </Text>
       {!!label && (
         <Animated.View style={animatedLabelStyle}>
