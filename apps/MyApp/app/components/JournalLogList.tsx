@@ -112,5 +112,5 @@ function formatRelativeTime(timestamp: number): string {
 }
 
 const $emptyStateContainer: ThemedStyle<RNViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.md,
+  marginBottom: spacing.xxl,
 })

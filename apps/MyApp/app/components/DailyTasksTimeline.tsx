@@ -92,9 +92,10 @@ export default observer(function DailyTasksTimeline({
         {Row("Log your mood", moodDone, () => {
           onPressMood()
         })}
-        {Row("Daily lesson", done.lesson, () => {
-          onPressLesson?.()
-        })}
+        {false &&
+          Row("Daily lesson", done.lesson, () => {
+            onPressLesson?.()
+          })}
         {Row("Write in your journal", done.journal, () => {
           onPressJournal?.()
         })}
