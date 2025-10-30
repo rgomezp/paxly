@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TouchableOpacity } from "react-native"
 import { Text } from "@/components"
 import { $styles } from "@/theme/styles"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { msUntilNextLocalMidnight } from "@/utils/date"
+import { getLocalDateKey, msUntilNextLocalMidnight } from "@/utils/date"
 import { Icon } from "@/components"
 import DailyTaskManager from "@/managers/DailyTaskManager"
+import { useStores } from "@/models"
 
 type Props = {
   onPressMood: () => void
@@ -13,8 +15,13 @@ type Props = {
   onPressJournal?: () => void
 }
 
-export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPressJournal }: Props) {
+export default observer(function DailyTasksTimeline({
+  onPressMood,
+  onPressLesson,
+  onPressJournal,
+}: Props) {
   const { theme, themed } = useAppTheme()
+  const { moodStore } = useStores()
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
 
   useEffect(() => {
@@ -31,6 +38,17 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
     const id = setTimeout(reset, ms)
     return () => clearTimeout(id)
   }, [])
+
+  const moodDone = useMemo(() => {
+    const todayKey = getLocalDateKey()
+    const history = moodStore.history
+    if (!history.length) return false
+    for (const item of history) {
+      const key = getLocalDateKey(new Date(item.date))
+      if (key === todayKey) return true
+    }
+    return false
+  }, [moodStore.history])
 
   const Row = (label: string, completed: boolean, onPress?: () => void) => (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={themed([$row])}>
@@ -66,7 +84,7 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
         <Text text="Daily Tasks" preset="subheading" style={themed({ color: theme.colors.text })} />
       </View>
       <View style={themed([$timeline])}>
-        {Row("Log your mood", done.mood, () => {
+        {Row("Log your mood", moodDone, () => {
           onPressMood()
         })}
         {Row("Learn with a lesson", done.lesson, () => {
@@ -78,7 +96,7 @@ export default function DailyTasksTimeline({ onPressMood, onPressLesson, onPress
       </View>
     </View>
   )
-}
+})
 
 const $container: ViewStyle = {
   marginVertical: 46,

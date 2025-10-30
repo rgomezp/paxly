@@ -3,6 +3,7 @@ import { rootStoreSingleton } from "@/models"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Activity } from "@/types/Activities"
 import { ALL_MOODS, MOODS, MoodId } from "@/types/Moods"
+import DailyTaskManager from "@/managers/DailyTaskManager"
 
 export default class MoodManager {
   static getHistory(): IMoodHistoryItem[] {
@@ -32,6 +33,10 @@ export default class MoodManager {
     } catch (_e) {
       // If store not available for some reason, ignore; persistence is already done
     }
+    // Mark the daily task as completed for today
+    try {
+      DailyTaskManager.markCompleted("mood")
+    } catch (_e) {}
     return item
   }
 
