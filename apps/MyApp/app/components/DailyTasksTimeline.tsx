@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TouchableOpacity } from "react-native"
 import { Text } from "@/components"
@@ -41,16 +41,19 @@ export default observer(function DailyTasksTimeline({
     return () => clearTimeout(id)
   }, [refreshToken])
 
-  const moodDone = useMemo(() => {
-    const todayKey = getLocalDateKey()
-    const history = moodStore.history
-    if (!history.length) return false
+  // Compute directly in render so MobX can track observable usage; avoid useMemo with observables
+  const todayKey = getLocalDateKey()
+  const history = moodStore.history
+  let moodDone = false
+  if (history.length) {
     for (const item of history) {
       const key = getLocalDateKey(new Date(item.date))
-      if (key === todayKey) return true
+      if (key === todayKey) {
+        moodDone = true
+        break
+      }
     }
-    return false
-  }, [moodStore.history])
+  }
 
   const Row = (label: string, completed: boolean, onPress?: () => void) => (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={themed([$row])}>
