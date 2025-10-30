@@ -75,10 +75,10 @@ export const MoodGraph: FC = observer(function MoodGraph() {
   const yAxisWidth = 28
 
   const colors = {
-    negative: theme.colors.palette.primary300,
-    neutral: theme.colors.palette.secondary300,
-    positive: theme.colors.palette.accent200,
-    grid: theme.colors.palette.neutral500,
+    negative: theme.colors.palette.negative,
+    neutral: theme.colors.palette.neutral,
+    positive: theme.colors.palette.positive,
+    grid: theme.colors.palette.neutral,
   }
 
   return (

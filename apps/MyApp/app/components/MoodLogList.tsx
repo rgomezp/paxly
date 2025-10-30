@@ -19,9 +19,9 @@ const MoodLogList: FC = observer(function MoodLogList() {
   const history: IMoodHistoryItem[] = historySource.slice().sort((a, b) => b.date - a.date)
 
   const colors = {
-    negative: theme.colors.palette.primary300,
-    neutral: theme.colors.palette.secondary300,
-    positive: theme.colors.palette.accent200,
+    negative: theme.colors.palette.negative,
+    neutral: theme.colors.palette.neutral,
+    positive: theme.colors.palette.positive,
   }
 
   return (
@@ -39,7 +39,9 @@ const MoodLogList: FC = observer(function MoodLogList() {
               <View style={$rowContent}>
                 <Text style={themed([$lineOneText, { color: theme.colors.text }])}>
                   You felt{" "}
-                  <Text style={[$highlightText, { color: moodColor }]}>{item.mood.title}</Text>{" "}
+                  <Text weight="bold" style={{ color: moodColor }}>
+                    {item.mood.title}
+                  </Text>{" "}
                   while{" "}
                   <Text style={[$activityText, { color: theme.colors.text }]}>
                     {activityPhrase}
@@ -81,10 +83,6 @@ const $rowContent: ViewStyle = {
 
 const $lineOneText: TextStyle = {
   marginBottom: 2,
-}
-
-const $highlightText: TextStyle = {
-  fontWeight: "700",
 }
 
 const $activityText: TextStyle = {
