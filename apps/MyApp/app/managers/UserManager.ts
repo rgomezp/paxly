@@ -61,10 +61,13 @@ export default class UserManager {
   }
 
   static setNickname(nickname: string) {
-    const user = UserManager.getUser()
-    if (user) {
-      user.nickname = nickname
-      UserManager.setUser(user)
+    const existingUser = UserManager.getUser()
+    if (existingUser) {
+      existingUser.nickname = nickname
+      UserManager.setUser(existingUser)
+      return
     }
+    // If no user exists yet, create or merge a minimal user with the nickname
+    UserManager.upsertUser({ nickname })
   }
 }
