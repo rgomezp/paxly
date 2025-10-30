@@ -45,7 +45,7 @@ export function PracticeLesson({
       </View>
       {(showFinish || (s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio")) && (
         <RectangularButton
-          width="60%"
+          width={200}
           buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
           onClick={() => {
             if (showFinish || step + 1 >= config.steps.length) onComplete?.()
