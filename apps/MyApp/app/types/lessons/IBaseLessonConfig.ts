@@ -11,4 +11,5 @@ export interface BaseLessonConfig {
   gating?: { minHoursBeforeNext?: number; requires?: string[] }
   commitment?: { text: string; duration?: "today" | "week" | "custom" }
   checkIn?: { mood?: boolean; urge?: boolean; sleep?: boolean }
+  nextOnComplete?: string
 }

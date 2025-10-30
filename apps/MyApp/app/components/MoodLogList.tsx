@@ -6,8 +6,7 @@ import { useStores } from "@/models"
 import MoodManager from "@/managers/MoodManager"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { MoodCategory } from "@/types/MoodCategory"
-import { ACTIVITY_TO_EMOJI, activityToPhrase } from "@/types/Activities"
-import { MOODS, MOOD_TO_EMOJI, MoodId } from "@/types/Moods"
+import { activityToPhrase } from "@/types/Activities"
 import { Text } from "./Text"
 
 const MoodLogList: FC = observer(function MoodLogList() {
@@ -32,25 +31,19 @@ const MoodLogList: FC = observer(function MoodLogList() {
         if (item.mood.category === MoodCategory.Negative) moodColor = colors.negative
         else if (item.mood.category === MoodCategory.Neutral) moodColor = colors.neutral
 
-        const moodEntry = Object.entries(MOODS).find(([, m]) => m.title === item.mood.title)
-        const moodEmoji = moodEntry ? MOOD_TO_EMOJI[moodEntry[0] as MoodId] : "🙂"
-        const activityEmoji = ACTIVITY_TO_EMOJI[item.activity]
         const activityPhrase = activityToPhrase(item.activity)
 
         return (
           <View key={`mood-item-${item.date}-${idx}`}>
             <View style={themed($row)}>
-              <View style={[themed($emojiBox), { backgroundColor: theme.colors.card }]}>
-                <Text style={themed([$emojiText, { color: theme.colors.text }])}>{moodEmoji}</Text>
-              </View>
               <View style={$rowContent}>
                 <Text style={themed([$lineOneText, { color: theme.colors.text }])}>
-                  you felt{" "}
+                  You felt{" "}
                   <Text style={[$highlightText, { color: moodColor }]}>{item.mood.title}</Text>{" "}
-                  while
-                </Text>
-                <Text style={themed([$activityText, { color: theme.colors.text }])}>
-                  {activityEmoji} {activityPhrase}
+                  while{" "}
+                  <Text style={[$activityText, { color: theme.colors.text }]}>
+                    {activityPhrase}
+                  </Text>
                 </Text>
                 {!!item.notes && (
                   <Text style={themed([$notesText, { color: theme.colors.text }])}>
@@ -73,28 +66,13 @@ const MoodLogList: FC = observer(function MoodLogList() {
 export default MoodLogList
 
 const $listWrapper: ViewStyle = {
-  paddingHorizontal: 16,
+  paddingHorizontal: 26,
 }
 
 const $row: ViewStyle = {
   flexDirection: "row",
   alignItems: "flex-start",
   paddingVertical: 12,
-}
-
-const $emojiBox: ViewStyle = {
-  width: 48,
-  height: 48,
-  borderRadius: 12,
-  marginRight: 12,
-  alignItems: "center",
-  justifyContent: "center",
-}
-
-const $emojiText: TextStyle = {
-  fontSize: 28,
-  lineHeight: 34,
-  textAlign: "center",
 }
 
 const $rowContent: ViewStyle = {

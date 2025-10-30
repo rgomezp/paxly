@@ -24,7 +24,7 @@ export default function FloatingCenterButton({
   icon,
 }: IProps) {
   return (
-    <FloatingCenterWrapper>
+    <FloatingCenterWrapper position="bottom">
       <TouchableOpacity onPress={onOuterPress} testID="floatingCenterButtonOuter">
         <RectangularButton
           buttonText={text || "Save"}

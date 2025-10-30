@@ -54,7 +54,7 @@ export default function HelpModal({
     },
     {
       id: "sleep_poorly",
-      buttonText: "I've been sleeping poorly",
+      buttonText: "I'm having trouble sleeping",
       icon: "bed",
       onClick: () => {
         handleOptionPress(onLessonActivated)
