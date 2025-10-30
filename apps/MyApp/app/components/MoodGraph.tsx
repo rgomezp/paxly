@@ -2,6 +2,7 @@ import { FC, useMemo } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, Text as RNText, TextStyle } from "react-native"
 import { Text } from "@/components"
+import { getLocalDateKey } from "@/utils/date"
 import { useAppTheme } from "@/utils/useAppTheme"
 import MoodManager from "@/managers/MoodManager"
 import { useStores } from "@/models"
@@ -28,7 +29,7 @@ export const MoodGraph: FC = observer(function MoodGraph() {
     const start = new Date()
     start.setDate(today.getDate() - 6)
 
-    const makeKey = (d: Date) => d.toISOString().slice(0, 10)
+    const makeKey = (d: Date) => getLocalDateKey(d)
     const short = (d: Date) => d.toLocaleDateString(undefined, { weekday: "short" }).toLowerCase()
 
     const map: Record<string, DayBucket> = {}
@@ -83,7 +84,7 @@ export const MoodGraph: FC = observer(function MoodGraph() {
   return (
     <View style={themed($wrapper)}>
       <Text
-        text="recent moods"
+        text="Recent moods"
         preset="subheading"
         style={themed([$titleText, { color: theme.colors.text }])}
       />
