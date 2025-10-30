@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { View, ViewStyle, Pressable, TextStyle } from "react-native"
+import { View, ViewStyle, Pressable } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "./Text"
 
@@ -31,10 +31,8 @@ const SegmentedSelector: FC<SegmentedSelectorProps> = ({ options, selectedKey, o
             ]}
           >
             <Text
-              style={themed([
-                $segmentText,
-                { color: isSelected ? theme.colors.background : theme.colors.text },
-              ])}
+              size="xs"
+              style={themed([{ color: isSelected ? theme.colors.background : theme.colors.text }])}
               text={opt.label}
             />
           </Pressable>
@@ -61,7 +59,3 @@ const $segmentButton: ViewStyle = {
 }
 
 const $segmentSelected: ViewStyle = {}
-
-const $segmentText: TextStyle = {
-  fontWeight: "600",
-}
