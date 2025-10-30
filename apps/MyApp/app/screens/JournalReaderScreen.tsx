@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react"
+import { FC, useMemo, useCallback, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ScrollView } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -10,42 +10,56 @@ import type { TextStyle, ViewStyle } from "react-native"
 import JournalManager from "@/managers/JournalManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import { navigate } from "@/navigators/navigationUtilities"
+import { useFocusEffect } from "@react-navigation/native"
 
 interface JournalReaderScreenProps extends AppStackScreenProps<"JournalReader"> {}
 
-export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(function JournalReaderScreen({
-  route,
-}) {
-  const { themed, theme } = useAppTheme()
-  const insets = useSafeAreaInsets()
-  const date = route.params?.date
+export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(
+  function JournalReaderScreen({ route }) {
+    const { themed } = useAppTheme()
+    const insets = useSafeAreaInsets()
+    const date = route.params?.date
+    const [refreshToken, setRefreshToken] = useState(0)
 
-  const entry = useMemo(
-    () => JournalManager.getEntries().find((e) => e.date === date),
-    [date],
-  )
+    useFocusEffect(
+      useCallback(() => {
+        // bump token when screen gains focus so dependent memos recompute
+        setRefreshToken((t) => t + 1)
+      }, []),
+    )
 
-  const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
-  const $contentInsetStyle = useMemo(() => ({ paddingBottom: insets.bottom + 96 }), [insets.bottom])
-  const $editContainerInsetStyle = useMemo(() => ({ bottom: insets.bottom }), [insets.bottom])
+    const entry = useMemo(() => {
+      void refreshToken // depend on refresh token so we recompute on focus
+      return JournalManager.getEntries().find((e) => e.date === date)
+    }, [date, refreshToken])
 
-  return (
-    <View style={[themed($container), $containerInsetStyle]}>
-      <ScrollView style={themed($scroll)} contentContainerStyle={$contentInsetStyle}>
-        <Text text="Journal Entry" preset="heading" style={themed($title)} />
-        <Text style={themed($body)} text={entry?.text ?? ""} />
-      </ScrollView>
-      {entry ? (
-        <View style={[themed($editContainer), $editContainerInsetStyle]}>
-          <RectangularButton
-            buttonText="Edit"
-            onClick={() => navigate("Journal", { mode: "edit", date: entry.date, initialText: entry.text })}
-          />
-        </View>
-      ) : null}
-    </View>
-  )
-})
+    const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
+    const $contentInsetStyle = useMemo(
+      () => ({ paddingBottom: insets.bottom + 96 }),
+      [insets.bottom],
+    )
+    const $editContainerInsetStyle = useMemo(() => ({ bottom: insets.bottom }), [insets.bottom])
+
+    return (
+      <View style={[themed($container), $containerInsetStyle]}>
+        <ScrollView style={themed($scroll)} contentContainerStyle={$contentInsetStyle}>
+          <Text text="Journal Entry" preset="heading" style={themed($title)} />
+          <Text style={themed($body)} text={entry?.text ?? ""} />
+        </ScrollView>
+        {entry ? (
+          <View style={[themed($editContainer), $editContainerInsetStyle]}>
+            <RectangularButton
+              buttonText="Edit"
+              onClick={() =>
+                navigate("Journal", { mode: "edit", date: entry.date, initialText: entry.text })
+              }
+            />
+          </View>
+        ) : null}
+      </View>
+    )
+  },
+)
 
 const $container: ThemedStyle<ViewStyle> = (theme) => ({
   flex: 1,
@@ -75,5 +89,3 @@ const $editContainer: ThemedStyle<ViewStyle> = () => ({
 })
 
 export default JournalReaderScreen
-
-
