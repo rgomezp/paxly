@@ -5,14 +5,14 @@ import { AppStackScreenProps } from "@/navigators"
 import { MoodGraph, MoodLogList, Quote, JournalLogList, SegmentedSelector } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme } from "@/theme"
-import { getHomeDrawerSections } from "./HomeDrawerSections"
+import { useHomeDrawerSections } from "./HomeDrawerSections"
 import NoContactManager from "@/managers/NoContactManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 
 interface MeScreenProps extends AppStackScreenProps<"Me"> {}
 
 export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
-  const sections = getHomeDrawerSections()
+  const sections = useHomeDrawerSections()
   // Content should not add its own top inset; header already accounts for it
   const contentInsets = useSafeAreaInsetsStyle([])
   const [selectedTab, setSelectedTab] = useState<"moods" | "journal">("moods")
