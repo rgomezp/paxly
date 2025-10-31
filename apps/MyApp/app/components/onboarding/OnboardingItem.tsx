@@ -28,7 +28,9 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
       )}
       {item.component && <View style={styles.component}>{item.component}</View>}
       <View style={styles.textContainer}>
-        <Text preset="subheading">{item.title}</Text>
+        <Text preset="subheading" style={styles.title}>
+          {item.title}
+        </Text>
         {item.description && (
           <AnimatedTextSimulation
             text={item.description}

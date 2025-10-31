@@ -13,8 +13,8 @@ const heroImage: ImageRequireSource = require("../../../../assets/images/planty/
 
 const options: MultipleChoiceOption[] = [
   { id: "no_contact", label: "Stay no contact" },
-  { id: "stop_ruminating", label: "Stop ruminating" },
   { id: "feel_better", label: "Feel better faster" },
+  { id: "track_mood", label: "Track my moods" },
   { id: "journaling", label: "Build a journaling habit" },
 ]
 

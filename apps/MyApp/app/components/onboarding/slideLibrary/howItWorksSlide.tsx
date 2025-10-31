@@ -1,4 +1,4 @@
-import { View, Image, ImageRequireSource } from "react-native"
+import { View, ImageRequireSource } from "react-native"
 import { Image as ExpoImage } from "expo-image"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
@@ -26,7 +26,7 @@ const steps: IconTextData[] = [
   {
     icon: "chart-line",
     title: "Watch Healing Grow",
-    description: "See your streak build and emotions settle",
+    description: "Grow out of your pain one day at a time",
   },
 ]
 
@@ -34,7 +34,7 @@ export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlidePr
   return {
     id: "howItWorks",
     title: "How it helps",
-    description: "Start in under a minute.",
+    description: "Planty grows with you every day",
     component: <HowItWorksComponent />,
   }
 }
