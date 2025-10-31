@@ -45,6 +45,7 @@ interface DrawerMenuItem {
     url?: string
     params?: any
     element?: ReactElement
+    containerStyle?: any
   }[]
 }
 
@@ -73,7 +74,12 @@ const WebMenuItem: FC<{
           return u.element
         } else if (u.url) {
           return (
-            <ExternalLinkItem key={`section${sectionIndex}-${u.key}`} text={u.text} url={u.url} />
+            <ExternalLinkItem
+              key={`section${sectionIndex}-${u.key}`}
+              text={u.text}
+              url={u.url}
+              containerStyle={u.containerStyle}
+            />
           )
         } else {
           return (
@@ -82,6 +88,7 @@ const WebMenuItem: FC<{
               text={u.text}
               route={u.route as any}
               params={u.params}
+              containerStyle={u.containerStyle}
             />
           )
         }
@@ -116,7 +123,12 @@ const NativeMenuItem: FC<{
           return u.element
         } else if (u.url) {
           return (
-            <ExternalLinkItem key={`section${sectionIndex}-${u.key}`} text={u.text} url={u.url} />
+            <ExternalLinkItem
+              key={`section${sectionIndex}-${u.key}`}
+              text={u.text}
+              url={u.url}
+              containerStyle={u.containerStyle}
+            />
           )
         } else {
           return (
@@ -125,6 +137,7 @@ const NativeMenuItem: FC<{
               text={u.text}
               route={u.route as any}
               params={u.params}
+              containerStyle={u.containerStyle}
             />
           )
         }
@@ -193,6 +206,7 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
                   route: u.props.route as string | undefined,
                   url: u.props.url as string | undefined,
                   params: u.props.params,
+                  containerStyle: u.props.containerStyle,
                 }
               }),
             }))}

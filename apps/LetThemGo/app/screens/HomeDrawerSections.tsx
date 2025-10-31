@@ -19,6 +19,7 @@ export const getHomeDrawerSections = () => {
               key="login"
               text={LANGUAGE_COPY.homeScreen.loginCreateAccount[Language.current]}
               style={themed({ color: theme.colors.text })}
+              containerStyle={themed({ marginBottom: theme.spacing.sm })}
               route="Login"
             />,
           )
@@ -30,6 +31,7 @@ export const getHomeDrawerSections = () => {
               key="settings"
               text={LANGUAGE_COPY.words.settings[Language.current]}
               style={themed({ color: theme.colors.text })}
+              containerStyle={themed({ marginBottom: theme.spacing.sm })}
               route="Settings"
             />,
           )
@@ -41,6 +43,7 @@ export const getHomeDrawerSections = () => {
             key="membership"
             text={LANGUAGE_COPY.words.membership[Language.current]}
             style={themed({ color: theme.colors.text })}
+            containerStyle={themed({ marginBottom: theme.spacing.sm })}
           />,
         )
 
@@ -50,6 +53,7 @@ export const getHomeDrawerSections = () => {
             key="leaveReview"
             text={LANGUAGE_COPY.words.leaveReview[Language.current]}
             style={themed({ color: theme.colors.text })}
+            containerStyle={themed({ marginBottom: theme.spacing.sm })}
           />,
         )
 
@@ -64,12 +68,21 @@ export const getHomeDrawerSections = () => {
           text={LANGUAGE_COPY.words.termsOfService[Language.current]}
           url={config.termsOfServiceUrl}
           style={themed({ color: theme.colors.text })}
+          containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
         <ExternalLinkItem
           key="privacy"
           text={LANGUAGE_COPY.words.privacyPolicy[Language.current]}
           url={config.privacyPolicyUrl}
           style={themed({ color: theme.colors.text })}
+          containerStyle={themed({ marginBottom: theme.spacing.sm })}
+        />,
+        <ExternalLinkItem
+          key="support"
+          text={LANGUAGE_COPY.words.support[Language.current]}
+          url="mailto:team@tryletthemgo.com"
+          style={themed({ color: theme.colors.text })}
+          containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
       ],
     },

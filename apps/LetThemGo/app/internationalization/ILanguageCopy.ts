@@ -24,6 +24,7 @@ interface ILanguageCopy {
     system: ITranslation
     termsOfService: ITranslation
     privacyPolicy: ITranslation
+    support: ITranslation
     next: ITranslation
     membership: ITranslation
     leaveReview: ITranslation
