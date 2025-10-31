@@ -68,6 +68,20 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
           onPressMood={() => navigate("MoodLogger")}
           onPressJournal={() => navigate("Journal")}
         />
+        <View style={themed($messageSectionHeader)}>
+          <Text
+            text="Message Into the Void"
+            preset="subheading"
+            style={themed({ color: theme.colors.text })}
+          />
+        </View>
+        <View style={$messageButtonContainer}>
+          <RectangularButton
+            buttonText="Send Message"
+            onClick={() => navigate("MessageIntoTheVoid")}
+            icon="envelope"
+          />
+        </View>
       </ScrollView>
       <HelpModal
         visible={isHelpModalVisible}
@@ -94,5 +108,15 @@ const $headerSection: ViewStyle = {
 
 const $resetButtonContainer: ViewStyle = {
   marginTop: 24,
+  paddingHorizontal: 40,
+}
+
+const $messageSectionHeader: ViewStyle = {
+  marginBottom: 20,
+  marginLeft: 30,
+}
+
+const $messageButtonContainer: ViewStyle = {
+  marginBottom: 40,
   paddingHorizontal: 40,
 }
