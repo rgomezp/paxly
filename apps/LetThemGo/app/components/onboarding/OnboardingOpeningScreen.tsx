@@ -28,7 +28,7 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
             Welcome to
           </Text>
           <Text preset="heading" style={[styles.welcomeText, { color: theme.colors.text }]}>
-            Let Them Go
+            LetThemGo
           </Text>
           <View style={styles.logoContainer}>
             <ExpoImage
