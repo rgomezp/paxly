@@ -9,6 +9,7 @@ import { problemSolutionSlide } from "../slideLibrary/problemSolutionSlide"
 import { referralSourceSlide } from "../slideLibrary/referralSourceSlide"
 import { howItWorksSlide } from "../slideLibrary/howItWorksSlide"
 import { multipleChoiceSlide } from "../slideLibrary/multipleChoiceSlide"
+import { lastContactSlide } from "../slideLibrary/lastContactSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -59,6 +60,7 @@ export const useSlides = (onSelection?: () => void) => {
     () => [
       heroSlide({ onSelection }),
       problemSolutionSlide({ onSelection }),
+      lastContactSlide({ onSelection }),
       howItWorksSlide({ onSelection }),
       multipleChoiceSlide({ onSelection, allowMultipleSelections: true, maxSelections: 3 }),
       referralSourceSlide({ onSelection }),
