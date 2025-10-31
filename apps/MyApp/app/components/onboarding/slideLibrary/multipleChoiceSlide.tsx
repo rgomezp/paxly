@@ -9,13 +9,13 @@ type MultipleChoiceSlideProps = {
   maxSelections?: number
 }
 
-const heroImage: ImageRequireSource = require("../../../../assets/images/logo.png")
+const heroImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
 
 const options: MultipleChoiceOption[] = [
-  { id: "get_stronger", label: "Get stronger" },
-  { id: "build_muscle", label: "Build muscle" },
-  { id: "improve_endurance", label: "Improve endurance" },
-  { id: "lose_fat", label: "Lose fat" },
+  { id: "no_contact", label: "Stay no contact" },
+  { id: "stop_ruminating", label: "Stop ruminating" },
+  { id: "feel_better", label: "Feel better faster" },
+  { id: "journaling", label: "Build a journaling habit" },
 ]
 
 export function multipleChoiceSlide({
@@ -46,9 +46,9 @@ export function multipleChoiceSlide({
   }
 
   return {
-    id: "fitnessGoals",
-    title: "What are your fitness goals?",
-    description: "This will help us personalize your experience",
+    id: "healingGoals",
+    title: "What do you want help with?",
+    description: "Choose what matters most right now",
     component: (
       <MultipleChoiceSelector
         options={options}

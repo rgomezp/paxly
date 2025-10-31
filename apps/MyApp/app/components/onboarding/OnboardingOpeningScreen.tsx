@@ -1,4 +1,5 @@
-import { StyleSheet, Image, View } from "react-native"
+import { StyleSheet, View } from "react-native"
+import { Image as ExpoImage } from "expo-image"
 import { SafeAreaView } from "react-native-safe-area-context"
 import RectangularButton from "../buttons/RectangularButton"
 import { Text } from "../Text"
@@ -20,9 +21,21 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
       <View style={styles.backgroundContainer}>{/* Background image */}</View>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
+          <Text
+            preset="subheading"
+            style={[styles.welcomeTextSubheading, { color: theme.colors.text }]}
+          >
+            Welcome to
+          </Text>
+          <Text preset="heading" style={[styles.welcomeText, { color: theme.colors.text }]}>
+            Let Them Go
+          </Text>
           <View style={styles.logoContainer}>
-            <Text style={styles.welcomeText}>Welcome to Potion Forge</Text>
-            <Image source={require("../../../assets/images/logo.png")} style={styles.logo} />
+            <ExpoImage
+              source={require("../../../assets/images/planty/6m/planty.webp")}
+              style={styles.logo}
+              contentFit="contain"
+            />
           </View>
           <View style={styles.buttonContainer}>
             <RectangularButton
@@ -73,7 +86,9 @@ const styles = StyleSheet.create({
     width: 300,
   },
   logoContainer: {
-    paddingTop: 40,
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
   },
   safeArea: {
     flex: 1,
@@ -82,11 +97,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   welcomeText: {
-    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 50,
-    marginLeft: 20,
-    textAlign: "left",
+    textAlign: "center",
+  },
+  welcomeTextSubheading: {
+    fontWeight: "bold",
+    marginTop: 50,
+    textAlign: "center",
   },
 })
 

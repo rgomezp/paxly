@@ -1,11 +1,12 @@
 import { View, Image, ImageRequireSource } from "react-native"
+import { Image as ExpoImage } from "expo-image"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
 import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 import { IconTextItem, type IconTextData } from "../shared/IconTextItem"
 
-const logoImage: ImageRequireSource = require("../../../../assets/images/logo.png")
+const logoImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
 
 type HowItWorksSlideProps = {
   onSelection?: () => void
@@ -13,27 +14,27 @@ type HowItWorksSlideProps = {
 
 const steps: IconTextData[] = [
   {
-    icon: "check-square",
-    title: "Pick Plan",
-    description: "Choose your training program",
+    icon: "hand-paper",
+    title: "Set No Contact",
+    description: "Decide your intention and start your streak",
   },
   {
-    icon: "dumbbell",
-    title: "Log Sets",
-    description: "Track your workouts",
+    icon: "calendar-check",
+    title: "Check In Daily",
+    description: "Track mood and reflect in a quick journal",
   },
   {
     icon: "chart-line",
-    title: "See Progress",
-    description: "Watch your strength grow",
+    title: "Watch Healing Grow",
+    description: "See your streak build and emotions settle",
   },
 ]
 
 export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlideProps): ISlide {
   return {
     id: "howItWorks",
-    title: "How It Works",
-    description: "Takes ~60 seconds to start.",
+    title: "How it helps",
+    description: "Start in under a minute.",
     component: <HowItWorksComponent />,
   }
 }
@@ -45,7 +46,7 @@ const HowItWorksComponent: React.FC = () => {
     <View style={themed($container)}>
       {/* Image Section */}
       <View style={themed($imageContainer)}>
-        <Image source={logoImage} style={themed($logoImage)} resizeMode="contain" />
+        <ExpoImage source={logoImage} style={themed($logoImage)} contentFit="contain" />
       </View>
 
       {/* Steps Section */}

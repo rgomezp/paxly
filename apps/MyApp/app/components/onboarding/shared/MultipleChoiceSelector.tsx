@@ -1,5 +1,6 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
-import { View, StyleSheet, Image, ImageRequireSource } from "react-native"
+import { View, StyleSheet, ImageRequireSource } from "react-native"
+import { Image as ExpoImage } from "expo-image"
 import { useState } from "react"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "@/components/Text"
@@ -89,7 +90,7 @@ export const MultipleChoiceSelector = ({
     <View style={styles.container}>
       {heroImage && (
         <View style={styles.imageContainer}>
-          <Image source={heroImage} style={styles.heroImage} resizeMode="contain" />
+          <ExpoImage source={heroImage} style={styles.heroImage} contentFit="contain" />
         </View>
       )}
 

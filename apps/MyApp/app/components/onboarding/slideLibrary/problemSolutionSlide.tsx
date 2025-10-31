@@ -1,4 +1,5 @@
 import { View, Image, ImageRequireSource, Text } from "react-native"
+import { Image as ExpoImage } from "expo-image"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
 import type { ViewStyle, TextStyle, ImageStyle } from "react-native"
@@ -8,16 +9,16 @@ type ProblemSolutionSlideProps = {
   onSelection?: () => void
 }
 
-const problemImage: ImageRequireSource = require("../../../../assets/images/sad-face.png")
-const solutionImage: ImageRequireSource = require("../../../../assets/images/welcome-face.png")
+const problemImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
+const solutionImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
 
 export function problemSolutionSlide({
   onSelection: _onSelection,
 }: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
-    title: "Tired of spinning your wheels?",
-    description: "We turn workouts into visible progress.",
+    title: "Can’t stop checking or reaching out?",
+    description: "Create space to heal—then feel the weight lift.",
     component: <ProblemSolutionComponent />,
   }
 }
@@ -31,7 +32,7 @@ const ProblemSolutionComponent: React.FC = () => {
         {/* Before/Problem Section */}
         <View style={themed($beforeSection)}>
           <View style={themed($imageContainer)}>
-            <Image source={problemImage} style={themed($image)} resizeMode="contain" />
+            <ExpoImage source={problemImage} style={themed($image)} contentFit="contain" />
           </View>
           <View style={themed($labelContainer)}>
             <View style={themed($problemLabel)}>
@@ -50,7 +51,7 @@ const ProblemSolutionComponent: React.FC = () => {
         {/* After/Solution Section */}
         <View style={themed($afterSection)}>
           <View style={themed($imageContainer)}>
-            <Image source={solutionImage} style={themed($image)} resizeMode="contain" />
+            <ExpoImage source={solutionImage} style={themed($image)} contentFit="contain" />
           </View>
           <View style={themed($labelContainer)}>
             <View style={themed($solutionLabel)}>

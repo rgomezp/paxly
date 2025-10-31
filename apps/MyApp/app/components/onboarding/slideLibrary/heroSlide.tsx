@@ -1,11 +1,12 @@
 import { View, Image, ImageRequireSource } from "react-native"
+import { Image as ExpoImage } from "expo-image"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
 import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 import { IconTextItem } from "../shared/IconTextItem"
 
-const logoImage: ImageRequireSource = require("../../../../assets/images/logo.png")
+const logoImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
 
 type HeroSlideProps = {
   onSelection?: () => void
@@ -20,27 +21,27 @@ interface Benefit {
 export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide {
   return {
     id: "hero",
-    title: "Transform Your Strength",
-    description: "Stronger in 8 weeks—no guesswork.",
+    title: "Let go. Heal your heart.",
+    description: "Guided no contact, daily check-ins, and journaling to move on.",
     component: <HeroComponent />,
   }
 }
 
 const benefits: Benefit[] = [
   {
-    icon: "check-circle",
-    title: "Proven Results",
-    description: "Science-backed training that delivers",
-  },
-  {
     icon: "route",
-    title: "Clear Path",
-    description: "Simple, straightforward approach",
+    title: "No Contact Tracker",
+    description: "See your streak since last reach-out",
   },
   {
-    icon: "lightbulb",
-    title: "No Guesswork",
-    description: "Know exactly what to do, when",
+    icon: "heart",
+    title: "Mood + Journal",
+    description: "Express, process, and release daily",
+  },
+  {
+    icon: "seedling",
+    title: "Healing Prompts",
+    description: "Grow acceptance one day at a time",
   },
 ]
 
@@ -51,7 +52,7 @@ const HeroComponent: React.FC = () => {
     <View style={themed($container)}>
       {/* Hero Mockup Section */}
       <View style={themed($mockupContainer)}>
-        <Image source={logoImage} style={themed($logoImage)} resizeMode="contain" />
+        <ExpoImage source={logoImage} style={themed($logoImage)} contentFit="contain" />
       </View>
 
       {/* Benefits Section */}

@@ -52,7 +52,7 @@ export default function HelpModal({
         navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["urge_to_contact"] })
       },
     },
-    {
+    /* {
       id: "sleep_poorly",
       buttonText: "I'm having trouble sleeping",
       icon: "bed",
@@ -78,7 +78,7 @@ export default function HelpModal({
         handleOptionPress(onLessonActivated)
         navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["ruminating"] })
       },
-    },
+    }, */
     {
       id: "i_contacted",
       buttonText: "I contacted",
