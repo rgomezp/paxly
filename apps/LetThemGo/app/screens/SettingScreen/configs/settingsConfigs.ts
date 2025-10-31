@@ -46,7 +46,7 @@ export const useDeleteAccountSettingConfig = (): IAppSettingsModalConfig => {
   const getValue = () => (ganon.get("email") as string | undefined) ?? ""
 
   const onPress = async () => {
-    const loggedIn = await LoginManager.getInstance().isLoggedIn()
+    const loggedIn = LoginManager.getInstance().isLoggedIn()
     if (loggedIn) {
       // Ensure onboarding is marked incomplete before clearing
       ganon.set("finishedOnboarding", false)

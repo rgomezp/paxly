@@ -29,6 +29,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller"
 import { useAppInitialization } from "./initialization/useAppInitialization"
 import { OnboardingScreen } from "./screens"
 import { InitializationProvider } from "./initialization/InitializationProvider"
+import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
 import { useEffect } from "react"
@@ -65,7 +66,9 @@ function OnboardingWrapper() {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <KeyboardProvider>
-          <OnboardingScreen />
+          <OnboardingProvider>
+            <OnboardingScreen />
+          </OnboardingProvider>
         </KeyboardProvider>
       </ErrorBoundary>
     </SafeAreaProvider>

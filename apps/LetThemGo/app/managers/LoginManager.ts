@@ -113,7 +113,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
     }
 
     // If user is already logged in, do nothing. `user` being truthy intends to log in the user (again)
-    const loggedIn = await this.isLoggedIn()
+    const loggedIn = this.isLoggedIn()
     if (loggedIn && user && !override) {
       Log.info("LoginManager: onAuthStateChanged: user is already logged in")
       OneSignal.User.removeTag("onboard_no_login")
@@ -361,7 +361,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
     }
   }
 
-  async isLoggedIn(): Promise<boolean> {
+  isLoggedIn(): boolean {
     const email = ganon.get("email")
     Log.info(`LoginManager: isLoggedIn(): email: ${email}, user: ${this.user ? "exists" : "null"}`)
     return this.user != null && email != null

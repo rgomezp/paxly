@@ -22,9 +22,9 @@ export const useHomeDrawerSections = () => {
       setUserInfo(UserManager.getUser())
     }
 
-    const updateLoginStatus = async () => {
+    const updateLoginStatus = () => {
       const loginManager = LoginManager.getInstance()
-      const loggedIn = await loginManager.isLoggedIn()
+      const loggedIn = loginManager.isLoggedIn()
       setIsLoggedIn(loggedIn)
     }
 

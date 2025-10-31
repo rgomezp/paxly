@@ -3,7 +3,7 @@ import CLOUD_BACKUP_CONFIG from "./cloudConfig"
 import StorageMapping from "./StorageMapping"
 import customConfig from "../../../customConfig"
 
-const logLevel = process.env.NODE_ENV === "development" ? LogLevel.VERBOSE : LogLevel.NONE
+const logLevel = process.env.NODE_ENV === "development" ? LogLevel.INFO : LogLevel.NONE
 const config = customConfig()
 
 // Initialize based on localGanon setting
@@ -16,7 +16,7 @@ const ganonInstance = config.localGanon
       identifierKey: "email",
       cloudConfig: CLOUD_BACKUP_CONFIG,
       logLevel,
-      autoStartSync: false,
+      autoStartSync: true,
       // remoteReadonly: true,
     })
 

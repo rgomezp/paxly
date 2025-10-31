@@ -6,14 +6,16 @@ import LoginComponent from "../login/LoginComponent"
 import { useAppTheme } from "@/utils/useAppTheme"
 import customConfig from "../../../customConfig"
 import { useOnboardingState } from "@/onboarding/state/useOnboardingState"
-import LoginManager from "@/managers/LoginManager"
 import Log from "@/utils/Log"
 
 const OnboardingLoginScreen: React.FC = () => {
   const config = customConfig()
   const { theme } = useAppTheme()
-  const { completeOnboarding, step } = useOnboardingState()
+  const { completeOnboarding, step, isLoggedIn } = useOnboardingState()
   const hasCompletedOnboardingRef = useRef(false)
+
+  console.log("OnboardingLoginScreen: isLoggedIn", isLoggedIn)
+  console.log("OnboardingLoginScreen: step", step)
 
   // Automatically complete onboarding when user logs in
   useEffect(() => {
@@ -23,28 +25,14 @@ const OnboardingLoginScreen: React.FC = () => {
       return
     }
 
-    const loginManager = LoginManager.getInstance()
-    const unsubscribe = loginManager.subscribe(async (user) => {
-      if (user && !hasCompletedOnboardingRef.current) {
-        // User successfully logged in
-        Log.info("OnboardingLoginScreen: User logged in, completing onboarding")
-        hasCompletedOnboardingRef.current = true
-        // Use true for emailOptIn since they logged in with an email
+    if (isLoggedIn) {
+      Log.info("OnboardingLoginScreen: User already logged in, completing onboarding")
+      hasCompletedOnboardingRef.current = true
+      ;(async () => {
         await completeOnboarding(true)
-      }
-    })
-
-    // Check initial state in case user is already logged in
-    loginManager.isLoggedIn().then(async (isLoggedIn) => {
-      if (isLoggedIn && !hasCompletedOnboardingRef.current) {
-        Log.info("OnboardingLoginScreen: User already logged in, completing onboarding")
-        hasCompletedOnboardingRef.current = true
-        await completeOnboarding(true)
-      }
-    })
-
-    return unsubscribe
-  }, [step, completeOnboarding])
+      })()
+    }
+  }, [step, completeOnboarding, isLoggedIn])
 
   const openTerms = () => {
     Linking.openURL(config.termsOfServiceUrl)

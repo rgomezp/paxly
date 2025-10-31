@@ -27,7 +27,7 @@ export function useReferralUnlocks(): ReferralHook {
       const LoginManager = require("../managers/LoginManager")
         .default as typeof import("../managers/LoginManager").default
 
-      if (!(await LoginManager.getInstance().isLoggedIn())) {
+      if (!LoginManager.getInstance().isLoggedIn()) {
         return
       }
 
