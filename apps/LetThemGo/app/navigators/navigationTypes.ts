@@ -26,6 +26,7 @@ export type AppStackParamList = {
   Journal: { mode?: "edit"; date?: number; initialText?: string } | undefined
   JournalReader: { date: number }
   SingleLesson: { lessonId: string }
+  Membership: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
