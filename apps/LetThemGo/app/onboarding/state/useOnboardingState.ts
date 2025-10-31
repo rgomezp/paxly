@@ -13,10 +13,15 @@ export const useOnboardingState = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
   useEffect(() => {
-    LoginManager.getInstance().isLoggedIn().then(setIsLoggedIn)
-    const unsubscribe = LoginManager.getInstance().subscribe((user) => {
+    const loginManager = LoginManager.getInstance()
+    loginManager.isLoggedIn().then(setIsLoggedIn)
+    const unsubscribe = loginManager.subscribe(async (user) => {
       if (user) {
-        // user is logged in
+        // Update login status when auth changes
+        const loggedIn = await loginManager.isLoggedIn()
+        setIsLoggedIn(loggedIn)
+      } else {
+        setIsLoggedIn(false)
       }
     })
 
