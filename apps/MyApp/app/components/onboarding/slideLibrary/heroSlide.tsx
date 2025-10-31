@@ -1,4 +1,4 @@
-import { View, Image, ImageRequireSource } from "react-native"
+import { View, ImageRequireSource } from "react-native"
 import { Image as ExpoImage } from "expo-image"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
@@ -6,7 +6,7 @@ import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 import { IconTextItem } from "../shared/IconTextItem"
 
-const logoImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
+const logoImage: ImageRequireSource = require("../../../../assets/images/planty/2m/planty.webp")
 
 type HeroSlideProps = {
   onSelection?: () => void
