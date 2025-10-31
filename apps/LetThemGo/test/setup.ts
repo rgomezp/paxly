@@ -43,6 +43,29 @@ jest.mock("@react-native-firebase/app/lib/internal/RNFBNativeEventEmitter", () =
   }
 })
 
+// Mock the native module registry that Firebase uses
+jest.mock("@react-native-firebase/app/lib/internal/registry/nativeModule", () => ({
+  __esModule: true,
+  default: {
+    get: jest.fn(() => ({
+      addListener: jest.fn(),
+      removeListeners: jest.fn(),
+    })),
+  },
+}))
+
+// Mock the FirebaseApp internal module
+jest.mock("@react-native-firebase/app/lib/FirebaseApp", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+// Mock the internal index that Firebase uses
+jest.mock("@react-native-firebase/app/lib/internal/index", () => ({
+  __esModule: true,
+  default: {},
+}))
+
 jest.mock("@react-native-firebase/app", () => ({
   __esModule: true,
   default: jest.fn(() => ({
@@ -52,6 +75,10 @@ jest.mock("@react-native-firebase/app", () => ({
     utils: jest.fn(),
     app: jest.fn(),
   },
+  getApp: jest.fn(() => ({
+    name: "[DEFAULT]",
+    options: {},
+  })),
 }))
 
 jest.mock("@react-native-firebase/firestore", () => ({
@@ -59,6 +86,12 @@ jest.mock("@react-native-firebase/firestore", () => ({
   default: jest.fn(() => ({
     collection: jest.fn(),
     doc: jest.fn(),
+  })),
+  getFirestore: jest.fn(() => ({
+    collection: jest.fn(),
+    doc: jest.fn(),
+    enableNetwork: jest.fn(() => Promise.resolve()),
+    disableNetwork: jest.fn(() => Promise.resolve()),
   })),
 }))
 
@@ -69,6 +102,15 @@ jest.mock("@react-native-firebase/auth", () => ({
     signInWithEmailAndPassword: jest.fn(),
     signOut: jest.fn(),
   })),
+  getAuth: jest.fn(() => ({
+    currentUser: null,
+    signInWithEmailAndPassword: jest.fn(),
+    signOut: jest.fn(),
+  })),
+  GoogleAuthProvider: jest.fn(),
+  AppleAuthProvider: jest.fn(),
+  signInWithCredential: jest.fn(),
+  onAuthStateChanged: jest.fn(() => jest.fn()),
 }))
 
 jest.mock("@react-native-firebase/storage", () => ({
@@ -97,5 +139,10 @@ jest.mock("@react-native-firebase/app-check", () => ({
   __esModule: true,
   default: jest.fn(() => ({
     activate: jest.fn(),
+    newReactNativeFirebaseAppCheckProvider: jest.fn(() => ({
+      configure: jest.fn(),
+    })),
   })),
+  getToken: jest.fn(() => Promise.resolve({ token: "mock-token" })),
+  initializeAppCheck: jest.fn(() => Promise.resolve()),
 }))
