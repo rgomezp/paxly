@@ -1,4 +1,4 @@
-import { View, Image, ImageRequireSource, Text } from "react-native"
+import { View, ImageRequireSource, Text } from "react-native"
 import { Image as ExpoImage } from "expo-image"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ISlide } from "@/types/ISlide"
