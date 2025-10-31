@@ -8,6 +8,9 @@ import { getLocalDateKey, msUntilNextLocalMidnight } from "@/utils/date"
 import { Icon } from "@/components"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import { useStores } from "@/models"
+import { useEntitlements } from "../entitlements/useEntitlements"
+import { FEATURES } from "../entitlements/constants/features"
+import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
 type Props = {
   onPressMood: () => void
@@ -25,6 +28,7 @@ export default observer(function DailyTasksTimeline({
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
+  const { hasFeatureAccess } = useEntitlements()
 
   useEffect(() => {
     // Initialize from persisted state, ensuring today's dateKey
@@ -55,33 +59,43 @@ export default observer(function DailyTasksTimeline({
     }
   }
 
-  const Row = (label: string, completed: boolean, onPress?: () => void) => (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={themed([$row])}>
-      <View
-        style={[
-          themed([$buttonContainer, { backgroundColor: theme.colors.card }]),
-          $styles.borderRadius,
-          $styles.dropShadow,
-        ]}
-      >
-        <View style={$leftGroup}>
-          <View
-            style={[
-              $checkCircle,
-              {
-                borderColor: theme.colors.tint,
-                ...(completed ? { backgroundColor: theme.colors.tint } : {}),
-              },
-            ]}
-          >
-            {completed && <Icon icon="check" size={12} color={theme.colors.background} />}
+  const Row = (label: string, completed: boolean, onPress?: () => void) => {
+    const innerOnPress = () => {
+      if (hasFeatureAccess(FEATURES.PREMIUM_FEATURES)) {
+        onPress?.()
+      } else {
+        presentPaywallSafely()
+      }
+    }
+
+    return (
+      <TouchableOpacity onPress={innerOnPress} activeOpacity={0.9} style={themed([$row])}>
+        <View
+          style={[
+            themed([$buttonContainer, { backgroundColor: theme.colors.card }]),
+            $styles.borderRadius,
+            $styles.dropShadow,
+          ]}
+        >
+          <View style={$leftGroup}>
+            <View
+              style={[
+                $checkCircle,
+                {
+                  borderColor: theme.colors.tint,
+                  ...(completed ? { backgroundColor: theme.colors.tint } : {}),
+                },
+              ]}
+            >
+              {completed && <Icon icon="check" size={12} color={theme.colors.background} />}
+            </View>
+            <Text text={label} size="xs" style={themed({ color: theme.colors.text })} />
           </View>
-          <Text text={label} size="xs" style={themed({ color: theme.colors.text })} />
+          <Icon icon="caretRight" color={theme.colors.tint} size={12} />
         </View>
-        <Icon icon="caretRight" color={theme.colors.tint} size={12} />
-      </View>
-    </TouchableOpacity>
-  )
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <View style={themed($container)}>
