@@ -25,6 +25,14 @@ interface ILanguageCopy {
     termsOfService: ITranslation
     privacyPolicy: ITranslation
     next: ITranslation
+    membership: ITranslation
+    leaveReview: ITranslation
+    currentPlan: ITranslation
+    expirationDate: ITranslation
+    renewalDate: ITranslation
+    changePlan: ITranslation
+    cancelSubscription: ITranslation
+    noActiveSubscription: ITranslation
   }
   alerts: {
     error: IAlertCopy

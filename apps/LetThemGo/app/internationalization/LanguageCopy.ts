@@ -70,6 +70,54 @@ const LANGUAGE_COPY: ILanguageCopy = {
       de: "Weiter",
       fr: "Suivant",
     },
+    membership: {
+      en: "Membership",
+      es: "Membresía",
+      de: "Mitgliedschaft",
+      fr: "Adhésion",
+    },
+    leaveReview: {
+      en: "Leave a Review",
+      es: "Dejar una Reseña",
+      de: "Eine Bewertung hinterlassen",
+      fr: "Laisser un avis",
+    },
+    currentPlan: {
+      en: "Current Plan",
+      es: "Plan Actual",
+      de: "Aktueller Plan",
+      fr: "Plan actuel",
+    },
+    expirationDate: {
+      en: "Expiration Date",
+      es: "Fecha de Expiración",
+      de: "Ablaufdatum",
+      fr: "Date d'expiration",
+    },
+    renewalDate: {
+      en: "Renewal Date",
+      es: "Fecha de Renovación",
+      de: "Erneuerungsdatum",
+      fr: "Date de renouvellement",
+    },
+    changePlan: {
+      en: "Change Plan",
+      es: "Cambiar Plan",
+      de: "Plan ändern",
+      fr: "Changer de plan",
+    },
+    cancelSubscription: {
+      en: "Cancel Subscription",
+      es: "Cancelar Suscripción",
+      de: "Abonnement kündigen",
+      fr: "Annuler l'abonnement",
+    },
+    noActiveSubscription: {
+      en: "No Active Subscription",
+      es: "Sin Suscripción Activa",
+      de: "Kein aktives Abonnement",
+      fr: "Aucun abonnement actif",
+    },
   },
   alerts: {
     error: {
