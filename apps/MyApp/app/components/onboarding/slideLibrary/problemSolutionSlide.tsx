@@ -9,7 +9,7 @@ type ProblemSolutionSlideProps = {
   onSelection?: () => void
 }
 
-const problemImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
+const problemImage: ImageRequireSource = require("../../../../assets/images/planty/1d/planty.webp")
 const solutionImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
 
 export function problemSolutionSlide({
