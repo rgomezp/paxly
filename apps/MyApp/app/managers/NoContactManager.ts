@@ -288,7 +288,15 @@ export default class NoContactManager {
   static updateLastContactedDate(newDate: Date): void {
     const data = this.getNoContactData()
     if (!data) {
-      this.initializeNoContactData()
+      const defaultData: INoContactData = {
+        lastContacted: newDate.getTime(),
+        timesContacted: 0,
+        currentGoal: NoContactGoal.OneMonth,
+      }
+      ganon.set("noContactData", defaultData)
+      Log.info(
+        `NoContactManager: Initialized and set last contacted date to ${newDate.toISOString()}`,
+      )
       return
     }
 
