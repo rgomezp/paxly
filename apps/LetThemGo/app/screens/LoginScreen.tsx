@@ -8,6 +8,7 @@ import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemedStyle } from "@/theme"
 import { AppleLoginButton, GoogleLoginButton } from "@/components/login"
+import LoginManager from "@/managers/LoginManager"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -15,7 +16,7 @@ interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen() {
   const { themed } = useAppTheme()
-
+  const loginManager = LoginManager.getInstance()
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
@@ -24,8 +25,8 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
   return (
     <Screen style={themed($root)} contentContainerStyle={themed($contentContainer)} preset="scroll">
       <View style={themed($buttons)}>
-        <AppleLoginButton onPress={() => {}} />
-        <GoogleLoginButton onPress={() => {}} />
+        <AppleLoginButton onPress={loginManager.loginApple} />
+        <GoogleLoginButton onPress={loginManager.loginGoogle} />
       </View>
       <View style={themed($titleContainer)}>
         <Text
