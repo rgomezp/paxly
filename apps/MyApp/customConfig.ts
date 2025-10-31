@@ -24,6 +24,10 @@ interface CustomConfig {
    * The primary font family to use throughout the app
    */
   primaryFont?: "poppins" | "inter" | "roboto" | "spaceGrotesk"
+  /**
+   * The OneSignal app ID
+   */
+  oneSignalAppId?: string
 }
 
 export default function customConfig(): CustomConfig {
@@ -35,5 +39,6 @@ export default function customConfig(): CustomConfig {
     localGanon: true,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
+    oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
   }
 }

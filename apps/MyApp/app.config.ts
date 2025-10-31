@@ -19,11 +19,11 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
   const existingPlugins = config.plugins ?? []
 
   return {
-    name: "MyApp",
-    slug: "MyApp",
+    name: "LetThemGo",
+    slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
-    version: "1.0.0",
+    version: "0.1.0",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -59,7 +59,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     },
     extra: {
       eas: {
-        projectId: "bc2c5c21-b7da-4a11-8072-32564adf1d10",
+        projectId: "3bd038bc-12a4-4fa0-9928-431e77c2b743",
       },
       ...customConfig(),
     },
