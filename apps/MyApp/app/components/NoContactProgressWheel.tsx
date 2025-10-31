@@ -1,10 +1,22 @@
 import { FC, useEffect, useRef, useState } from "react"
-import { Animated, View, ViewStyle, TextStyle, Pressable, Image, ImageStyle } from "react-native"
+import {
+  Animated,
+  View,
+  ViewStyle,
+  TextStyle,
+  Pressable,
+  ImageStyle,
+  TouchableOpacity,
+} from "react-native"
 import Svg, { Circle } from "react-native-svg"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "@/components"
 import NoContactManager from "@/managers/NoContactManager"
 import DatePickerModal from "./modals/DatePickerModal"
+import Planty from "@/components/Planty"
+import PlantyManager from "@/managers/PlantyManager"
+import DailyTaskManager from "@/managers/DailyTaskManager"
+import { useStores } from "@/models"
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
@@ -18,6 +30,8 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
   const { theme, themed } = useAppTheme()
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
   const [internalRefreshTrigger, setInternalRefreshTrigger] = useState(0)
+  const { moodStore } = useStores()
+  const [isWatering, setIsWatering] = useState(false)
 
   // Use external trigger if provided, otherwise use internal
   const refreshTrigger = externalRefreshTrigger ?? internalRefreshTrigger
@@ -64,6 +78,30 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
     inputRange: [0, 1],
     outputRange: [circumference, 0],
   })
+
+  // Daily task completion detection to show water droplet
+  const dailyTasks = DailyTaskManager.getState()
+  const hasJournal = dailyTasks.journal
+  // Mirror DailyTasksTimeline logic for mood done (based on history)
+  let hasMood = false
+  try {
+    const history = moodStore.history
+    if (history?.length) {
+      const { getLocalDateKey } = require("@/utils/date")
+      const todayKey = getLocalDateKey()
+      for (const item of history) {
+        const key = getLocalDateKey(new Date(item.date))
+        if (key === todayKey) {
+          hasMood = true
+          break
+        }
+      }
+    }
+  } catch {}
+
+  const allDailyTasksCompleted = hasMood && hasJournal // lesson currently disabled
+  const wateredToday = PlantyManager.hasWateredToday()
+  const showDroplet = allDailyTasksCompleted && !wateredToday
 
   return (
     <View style={themed($container)}>
@@ -118,10 +156,29 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
 
             {/* Content */}
             <View style={$contentContainer}>
-              <Image
-                source={require("../../assets/images/cute-flame.png")}
-                style={$flame}
-                accessibilityIgnoresInvertColors
+              {showDroplet && (
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  onPress={() => {
+                    // Begin watering: mark state and play one-shot animation
+                    PlantyManager.markWateredToday()
+                    setIsWatering(true)
+                    setInternalRefreshTrigger((prev) => prev + 1)
+                  }}
+                  style={[$dropletBtn, { backgroundColor: theme.colors.tint }]}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Text text="💧" style={$dropletEmoji} />
+                </TouchableOpacity>
+              )}
+              <Planty
+                goal={progressData.currentGoal}
+                wateredToday={wateredToday}
+                isWatering={isWatering}
+                style={$planty}
+                onDrinkFinished={() => {
+                  setIsWatering(false)
+                }}
               />
               {progressData.timeDisplay.secondary ? (
                 <>
@@ -220,11 +277,12 @@ const $contentContainer: ViewStyle = {
   height: 280,
 }
 
-const $flame: ImageStyle = {
-  width: 48,
-  height: 48,
+const $planty: ImageStyle = {
+  width: 94,
+  height: 104,
   marginBottom: 8,
   resizeMode: "contain",
+  marginTop: -16,
 }
 
 const $primaryText: TextStyle = {
@@ -253,4 +311,20 @@ const $timeRemainingText: TextStyle = {
   fontWeight: "600",
   textAlign: "center",
   marginTop: 4,
+}
+
+const $dropletBtn: ViewStyle = {
+  position: "absolute",
+  top: -10,
+  alignSelf: "center",
+  width: 32,
+  height: 32,
+  borderRadius: 16,
+  alignItems: "center",
+  justifyContent: "center",
+}
+
+const $dropletEmoji: TextStyle = {
+  fontSize: 16,
+  textAlign: "center",
 }
