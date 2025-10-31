@@ -22,16 +22,20 @@ export default function useOnboardingFlow() {
 
     fetchValueFromDb()
 
-    // Set up event listener for onboarding completion
-    const handleOnboardingComplete = () => {
-      setIsOnboardingComplete(true)
+    // Set up event listeners
+    const handleOnboardingComplete = () => setIsOnboardingComplete(true)
+    const handleUpdateAll = () => {
+      const finished = ganon.get("finishedOnboarding") ?? false
+      setIsOnboardingComplete(finished)
     }
 
     EventRegister.on(GLOBAL_EVENTS.ONBOARDING_COMPLETE, handleOnboardingComplete)
+    EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdateAll)
 
-    // Cleanup listener on unmount
+    // Cleanup listeners on unmount
     return () => {
       EventRegister.off(GLOBAL_EVENTS.ONBOARDING_COMPLETE, handleOnboardingComplete)
+      EventRegister.off(GLOBAL_EVENTS.UPDATE_ALL, handleUpdateAll)
     }
   }, [])
   // Return undefined while loading to prevent premature rendering

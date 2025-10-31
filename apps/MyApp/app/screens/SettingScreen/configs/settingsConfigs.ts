@@ -6,6 +6,8 @@ import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import { ganon } from "@/services/ganon/ganon"
 import LoginManager from "@/managers/LoginManager"
 import DataInitializationManager from "@/managers/DataInitializationManager"
+import EventRegister from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
   const { setThemeContextOverride } = useAppTheme()
@@ -46,11 +48,16 @@ export const useDeleteAccountSettingConfig = (): IAppSettingsModalConfig => {
   const onPress = async () => {
     const loggedIn = await LoginManager.getInstance().isLoggedIn()
     if (loggedIn) {
+      // Ensure onboarding is marked incomplete before clearing
+      ganon.set("finishedOnboarding", false)
       await ganon.dangerouslyDelete()
       await LoginManager.getInstance().logout(false)
     } else {
+      ganon.set("finishedOnboarding", false)
       ganon.clearAllData()
       await DataInitializationManager.initializeData()
+      // Notify app to refresh derived state
+      EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
     }
   }
 
