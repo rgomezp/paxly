@@ -83,7 +83,7 @@ const $contentContainer: ViewStyle = {
 }
 
 const $headerSection: ViewStyle = {
-  marginBottom: 24,
+  marginVertical: 24,
   paddingHorizontal: 20,
 }
 
