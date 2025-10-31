@@ -58,11 +58,11 @@ jobs:
           fi
 
       - name: 📂 Setup Google Services Files
-        working-directory: apps/app
+        working-directory: apps/LetThemGo
         run: ./scripts/eas_pre_install
 
       - name: Check Google Services Files
-        working-directory: apps/app  # Ensure this runs in the correct directory
+        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
         run: |
           echo "Searching for Google Services files..."
           GOOGLE_SERVICES_JSON_PATH=$(find . -type f -name "google-services.json" | head -n 1)
@@ -91,7 +91,7 @@ jobs:
           fi
 
       - name: Compute source hash
-        working-directory: apps/app
+        working-directory: apps/LetThemGo
         id: compute_hash
         run: |
           find . -type f \
@@ -147,7 +147,7 @@ jobs:
         run: yarn build
 
       - name: Prebuild
-        working-directory: apps/app
+        working-directory: apps/LetThemGo
         run: echo 'current dir:' && pwd && ls -la && npx expo prebuild
 
       - name: 📋 Test project
@@ -162,12 +162,12 @@ jobs:
 
       - name: 🔄 Update Android Version Code
         if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'android' }}
-        working-directory: apps/app  # Ensure this runs in the correct directory
+        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
         run: ./scripts/update_android_version_code
 
       - name: 🔄 Update iOS Build Number
         if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'ios' }}
-        working-directory: apps/app  # Ensure this runs in the correct directory
+        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
         run: ./scripts/update_ios_build_number
 
       - name: ♻️ Cache Expo CLI
@@ -196,11 +196,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-${{ steps.compute_hash.outputs.code_hash }}-${{ github.event.inputs.platform }}-${{ github.event.inputs.profile }}
-          path: apps/app  # Ensure artifacts are downloaded to the correct directory
+          path: apps/LetThemGo  # Ensure artifacts are downloaded to the correct directory
         continue-on-error: true  # Don't fail if not found
 
       - name: Check if artifact was downloaded
-        working-directory: apps/app  # Ensure this runs in the correct directory
+        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
         id: check_app_build
         run: |
           if [ "${{ github.event.inputs.platform }}" = "android" ]; then
@@ -224,7 +224,7 @@ jobs:
       # Build steps (skip if we already have an artifact):
       - name: 👷 Build app
         if: steps.check_app_build.outputs.found == 'false'
-        working-directory: apps/app
+        working-directory: apps/LetThemGo
         run: |
           OUTPUT_PATH=app-build.${{ github.event.inputs.platform == 'android' && 'aab' || 'ipa' }}
           eas build \
@@ -240,12 +240,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ steps.compute_hash.outputs.code_hash }}-${{ github.event.inputs.platform }}-${{ github.event.inputs.profile }}
-          path: apps/app/app-build.*  # Ensure the correct files are uploaded
+          path: apps/LetThemGo/app-build.*  # Ensure the correct files are uploaded
           retention-days: 7  # Optional: Set artifact retention period
 
       - name: 🚢 Submit
         if: ${{ github.event.inputs.should_submit }} == "true"
-        working-directory: apps/app
+        working-directory: apps/LetThemGo
         run: |
           if [ "${{ github.event.inputs.platform }}" = "android" ]; then
             npx eas submit -p android --profile ${{ github.event.inputs.profile }} --path app-build.aab
@@ -259,7 +259,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: 📝 Commit changes
-        working-directory: apps/app
+        working-directory: apps/LetThemGo
         run: |
           git status
           git add app.config.js
