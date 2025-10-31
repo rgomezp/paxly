@@ -68,14 +68,14 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       bundler: "metro",
     },
     plugins: [
-      // [
-      //   "onesignal-expo-plugin",
-      //   {
-      //     mode: process.env.APP_VARIANT === "development" ? "development" : "production",
-      //     smallIcons: ["./assets/images/notifIcons/ic_stat_onesignal_default.png"],
-      //     largeIcons: ["./assets/images/notifIcons/ic_onesignal_large_icon_default.png"],
-      //   },
-      // ],
+      [
+        "onesignal-expo-plugin",
+        {
+          mode: process.env.APP_VARIANT === "development" ? "development" : "production",
+          smallIcons: ["./assets/notifIcons/ic_stat_onesignal_default.png"],
+          largeIcons: ["./assets/notifIcons/ic_onesignal_large_icon_default.png"],
+        },
+      ],
       "expo-localization",
       "expo-font",
       "@react-native-google-signin/google-signin",
