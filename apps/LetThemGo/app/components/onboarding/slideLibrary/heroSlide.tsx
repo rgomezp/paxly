@@ -30,18 +30,18 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
 const benefits: Benefit[] = [
   {
     icon: "route",
-    title: "No Contact Tracker",
+    title: "Finally let them go",
     description: "See your streak since last reach-out",
   },
   {
     icon: "heart",
-    title: "Mood + Journal",
+    title: "Track your progress",
     description: "Express, process, and release daily",
   },
   {
     icon: "seedling",
-    title: "Healing Prompts",
-    description: "Grow acceptance one day at a time",
+    title: "Grow acceptance",
+    description: "Acceptance is the key to healing",
   },
 ]
 
