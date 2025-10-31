@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react"
 import Log from "../utils/Log"
 import { FEATURES } from "./constants/features"
 import { getReferralUnlockableFeatures } from "./constants/featureDefinitions"
+import Constants from "expo-constants"
 
 type ReferralHook = {
   referralUnlockedFeatures: Set<keyof typeof FEATURES>
@@ -14,6 +15,13 @@ export function useReferralUnlocks(): ReferralHook {
   >(new Set())
 
   const checkReferralUnlocks = useCallback(async () => {
+    // Early return if referrals are disabled
+    if (!Constants?.expoConfig?.extra?.useReferrals) {
+      Log.info("useReferralUnlocks: Referrals are disabled - skipping unlock checks")
+      setReferralUnlockedFeatures(new Set())
+      return
+    }
+
     try {
       // Lazy require to avoid require cycle at module eval time
       const LoginManager = require("../managers/LoginManager")
