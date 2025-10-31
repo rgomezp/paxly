@@ -1,1 +1,1 @@
-export type OnboardingStep = "welcome" | "main" | "login" | "complete"
+export type OnboardingStep = "welcome" | "main" | "paywall" | "login" | "complete"
