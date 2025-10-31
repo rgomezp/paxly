@@ -34,7 +34,7 @@ export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlidePr
   return {
     id: "howItWorks",
     title: "How it helps",
-    description: "Planty grows with you every day",
+    description: "Water your plant every day",
     component: <HowItWorksComponent />,
   }
 }
