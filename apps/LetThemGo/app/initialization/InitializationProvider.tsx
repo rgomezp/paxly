@@ -3,10 +3,11 @@ import { useFonts } from "expo-font"
 import { customFontsToLoad } from "@/theme"
 import useOnboardingFlow from "@/hooks/useOnboardingFlow"
 import useRevenueCat from "@/thirdParty/useRevenueCat"
-import { createContext } from "react"
+import { createContext, useEffect } from "react"
 import useOneSignal from "@/thirdParty/useOneSignal"
 import { useAudio } from "@/hooks/useAudio"
 import Log, { LogLevel } from "@/utils/Log"
+import LoginManager from "@/managers/LoginManager"
 
 interface InitializationState {
   isInitialized?: boolean
@@ -25,7 +26,19 @@ export function InitializationProvider({ children }: { children: React.ReactNode
   /* N O N - B L O C K I N G */
   useRevenueCat()
   useOneSignal()
-  Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Info : LogLevel.None)
+
+  // Setup auth listener once on mount
+  useEffect(() => {
+    const unsubscribe = LoginManager.getInstance().setupAuthListener()
+    return () => {
+      unsubscribe()
+    }
+  }, [])
+
+  // Set log level once on mount
+  useEffect(() => {
+    Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Info : LogLevel.None)
+  }, [])
 
   /* B L O C K I N G */
   const isInitialized = isAppCheckComplete && areFontsLoaded && isAudioSetup

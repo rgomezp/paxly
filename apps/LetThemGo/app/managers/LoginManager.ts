@@ -362,8 +362,8 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
   }
 
   async isLoggedIn(): Promise<boolean> {
-    Log.info("LoginManager: isLoggedIn()")
     const email = ganon.get("email")
+    Log.info(`LoginManager: isLoggedIn(): email: ${email}, user: ${this.user ? "exists" : "null"}`)
     return this.user != null && email != null
   }
 
