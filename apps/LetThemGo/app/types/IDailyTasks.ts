@@ -14,5 +14,3 @@ export const DEFAULT_DAILY_TASKS: IDailyTasks = {
   lesson: false,
   journal: false,
 }
-
-
