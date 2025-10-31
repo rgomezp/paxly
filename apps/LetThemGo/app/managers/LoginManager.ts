@@ -26,6 +26,7 @@ import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
 export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | null> {
   private static instance: LoginManager | null = null
   private user: FirebaseAuthTypes.User | null = getAuth().currentUser
+  private wasLoggedIn: boolean = false // Track previous login state to detect new logins
 
   private constructor() {
     super()
@@ -76,6 +77,8 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
   /* F I R E B A S E */
   setupAuthListener(): () => void {
     Log.info("LoginManager: setting up onAuthStateChanged")
+    // Initialize wasLoggedIn based on current state
+    this.wasLoggedIn = this.isLoggedIn()
     this._setupAuthStateChangedListenerForTesting(this.onAuthStateChanged)
     return onAuthStateChanged(getAuth(), this.onAuthStateChanged)
   }
@@ -86,7 +89,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
    * @param override - whether to override the current user
    * @returns
    */
-  onAuthStateChanged = async (user: FirebaseAuthTypes.User | null, override?: boolean) => {
+  onAuthStateChanged = async (user: FirebaseAuthTypes.User | null, _override?: boolean) => {
     Log.info(`LoginManager: onAuthStateChanged: ${JSON.stringify(user)}`)
     // Wait for migrations to complete
     if (MigrationManager.getInstance().isRunningMigrations()) {
@@ -112,31 +115,42 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
       }
     }
 
-    // If user is already logged in, do nothing. `user` being truthy intends to log in the user (again)
-    const loggedIn = this.isLoggedIn()
-    if (loggedIn && user && !override) {
-      Log.info("LoginManager: onAuthStateChanged: user is already logged in")
-      OneSignal.User.removeTag("onboard_no_login")
-      this.broadcast(user) // Always broadcast the user state
-      return
-    }
-
-    // save email to async storage
+    // save email to async storage and restore data
     if (user?.email) {
       ganon.set("email", user.email)
+      const previouslyLoggedIn = this.wasLoggedIn
       this.user = user
-      await ganon.restore()
-      await DataInitializationManager.initializeData()
-      EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
 
-      // Logged in
+      // Only restore from cloud on new login (transition from logged out to logged in)
+      // On app startup when already logged in, hydrate handles loading from local storage
+      const isNewLogin = !previouslyLoggedIn
+
+      if (isNewLogin) {
+        Log.info("LoginManager: onAuthStateChanged: new login detected, restoring data from cloud")
+        await ganon.restore()
+        await DataInitializationManager.initializeData()
+        EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+        Log.info("LoginManager: onAuthStateChanged: restore completed")
+      } else {
+        Log.info(
+          "LoginManager: onAuthStateChanged: user already logged in, skipping restore (hydrate handles app startup)",
+        )
+        // Still emit UPDATE_ALL in case components need to refresh
+        EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+      }
+
+      this.wasLoggedIn = true
       Log.info("LoginManager: onAuthStateChanged: user is logged in")
+
+      EventRegister.emit(GLOBAL_EVENTS.AUTH_STATE_CHANGED_FINISHED)
     } else {
       Log.info("LoginManager: onAuthStateChanged: user.email is null")
       this.user = user
+      this.wasLoggedIn = false
+      // If user is null, emit the event anyway so listeners know the state has changed
+      EventRegister.emit(GLOBAL_EVENTS.AUTH_STATE_CHANGED_FINISHED)
     }
 
-    EventRegister.emit(GLOBAL_EVENTS.AUTH_STATE_CHANGED_FINISHED)
     this.broadcast(user)
   }
 
