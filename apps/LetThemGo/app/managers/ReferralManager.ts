@@ -7,6 +7,8 @@ import TokenManager from "./TokenManager"
 import { FEATURES } from "@/entitlements/constants/features"
 import { SERVER_URL } from "@/constants/endpoints"
 import { getReferralThreshold } from "@/entitlements/constants/featureDefinitions"
+import Constants from "expo-constants"
+
 export interface ReferralData {
   message: string
   referringEmail: string
@@ -33,7 +35,15 @@ export class ReferralManager {
     }
   }, 1000)
 
+  private static isReferralsEnabled(): boolean {
+    return Constants?.expoConfig?.extra?.useReferrals === true
+  }
+
   static async getReferralId(): Promise<string> {
+    if (!this.isReferralsEnabled()) {
+      Log.info("ReferralManager: Referrals are disabled - returning empty string")
+      return ""
+    }
     const referralData = ganon.get("referralData")
     const referralId = referralData?.referralId
     if (referralId) {
@@ -82,6 +92,11 @@ export class ReferralManager {
   }
 
   static async getReferralCount(referralId: string): Promise<number> {
+    if (!this.isReferralsEnabled()) {
+      Log.info("ReferralManager: Referrals are disabled - returning 0")
+      return 0
+    }
+
     Log.info(`ReferralManager: Getting referral count for ${referralId}`)
     try {
       // Check cache first
@@ -125,6 +140,11 @@ export class ReferralManager {
   }
 
   static async generateReferralId(): Promise<string> {
+    if (!this.isReferralsEnabled()) {
+      Log.info("ReferralManager: Referrals are disabled - returning empty string")
+      return ""
+    }
+
     try {
       const headers = await this.getAuthHeaders()
       const response = await fetch(`${SERVER_URL}/referral/generate`, {
@@ -151,6 +171,14 @@ export class ReferralManager {
   }
 
   static async processReferral(referralId: string): Promise<ReferralData> {
+    if (!this.isReferralsEnabled()) {
+      Log.info("ReferralManager: Referrals are disabled - returning empty referral data")
+      return {
+        message: "",
+        referringEmail: "",
+      }
+    }
+
     try {
       const headers = await this.getAuthHeaders()
       const response = await fetch(`${SERVER_URL}/referral/refer?id=${referralId}`, {
@@ -177,6 +205,11 @@ export class ReferralManager {
   }
 
   static async isFeatureUnlocked(feature: keyof typeof FEATURES): Promise<boolean> {
+    if (!this.isReferralsEnabled()) {
+      Log.info("ReferralManager: Referrals are disabled - returning false for feature unlock check")
+      return false
+    }
+
     Log.info(`ReferralManager: Checking if feature ${String(feature)} is unlocked`)
 
     // First check if we have a cached count for the current referral ID
@@ -237,6 +270,13 @@ export class ReferralManager {
   }
 
   static async validateReferralCode(referralCode: string): Promise<{ success: boolean }> {
+    if (!this.isReferralsEnabled()) {
+      Log.info(
+        "ReferralManager: Referrals are disabled - returning false for referral code validation",
+      )
+      return { success: false }
+    }
+
     Log.info(`ReferralManager: Validating referral code: ${referralCode}`)
     try {
       const response = await fetch(`${SERVER_URL}/referral/refer?id=${referralCode}`, {
