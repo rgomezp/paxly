@@ -35,7 +35,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     assetBundlePatterns: ["**/*"],
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
-      package: "com.honeywolf.covert",
+      package: "com.honeywolf.letthemgo",
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
@@ -46,7 +46,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     ios: {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
-      bundleIdentifier: "com.honeywolf.covert",
+      bundleIdentifier: "com.honeywolf.letthemgo",
       config: {
         usesNonExemptEncryption: false,
       },
