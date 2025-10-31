@@ -47,7 +47,12 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
           <Text
             text={`${name}, you've been no contact for:`}
             preset="heading"
-            style={themed({ color: theme.colors.text, fontSize: 24, paddingHorizontal: 20, textAlign: "center" })}
+            style={themed({
+              color: theme.colors.text,
+              fontSize: 24,
+              paddingHorizontal: 20,
+              textAlign: "center",
+            })}
           />
         </View>
         <NoContactProgressWheel refreshTrigger={refreshTrigger} />
