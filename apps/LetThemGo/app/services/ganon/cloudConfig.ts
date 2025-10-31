@@ -4,7 +4,14 @@ import StorageMapping from "./StorageMapping"
 const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   // v1
   user: {
-    docKeys: ["user", "entitlementId", "dailyTasks", "noContactData", "messageIntoTheVoidDraft"],
+    docKeys: [
+      "user",
+      "entitlementId",
+      "dailyTasks",
+      "noContactData",
+      "messageIntoTheVoidDraft",
+      "finishedOnboarding",
+    ],
     subcollectionKeys: ["moodHistory", "journalEntries"],
   },
   settings: {
