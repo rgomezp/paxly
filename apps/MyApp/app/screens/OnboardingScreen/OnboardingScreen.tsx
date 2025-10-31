@@ -5,6 +5,7 @@ import { useOnboardingState } from "@/onboarding/state/useOnboardingState"
 import OnboardingOpeningScreen from "@/components/onboarding/OnboardingOpeningScreen"
 import OnboardingLoginScreen from "@/components/onboarding/OnboardingLoginScreen"
 import OnboardingHardPaywall from "./OnboardingHardPaywall"
+import OnboardingFallbackPaywall from "./OnboardingFallbackPaywall"
 
 export const OnboardingScreen = () => {
   const { step, setStep } = useOnboardingState()
@@ -29,9 +30,11 @@ export const OnboardingScreen = () => {
       return (
         <OnboardingHardPaywall
           onComplete={() => setStep("login")}
-          onCancel={() => {}}
+          onCancel={() => setStep("paywall_fallback")}
         />
       )
+    case "paywall_fallback":
+      return <OnboardingFallbackPaywall onFinished={() => setStep("login")} />
     case "login":
       return <OnboardingLoginScreen />
     case "complete":
