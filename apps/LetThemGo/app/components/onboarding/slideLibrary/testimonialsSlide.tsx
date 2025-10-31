@@ -14,7 +14,7 @@ export function testimonialsSlide({ onSelection: _onSelection }: TestimonialsSli
   return {
     id: "testimonials",
     title: "What others are saying",
-    description: "Join thousands of happy users",
+    description: "Join other happy users",
     component: <TestimonialComponent />,
   }
 }
@@ -60,12 +60,12 @@ const TestimonialComponent: React.FC = () => {
 
   const testimonials: Testimonial[] = [
     {
-      name: "Cora McKenzie",
-      text: "I love this app! It has helped me learn so much about the world.",
+      name: "Sarah K.",
+      text: "I love this app. It has helped me so much to process my grief and move on.",
     },
     {
-      name: "Joel Worth",
-      text: "I love this app! It has helped me learn so much about the world.",
+      name: "Meghan L.",
+      text: "I'm so grateful for this app. It's a daily reminder of how far I've come.",
     },
   ]
 
@@ -110,7 +110,7 @@ const $container: ThemedStyle<ViewStyle> = () => ({
   paddingVertical: 10,
 })
 
-const $star: ThemedStyle<ViewStyle> = () => ({
+const $star: ThemedStyle<TextStyle> = () => ({
   marginLeft: 2,
 })
 
