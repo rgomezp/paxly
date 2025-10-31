@@ -17,6 +17,7 @@ type ButtonProps = {
   id: string
   buttonText: string
   onClick: () => void
+  isPaidFeature?: boolean
   icon?: string
 }
 
@@ -47,6 +48,7 @@ export default function HelpModal({
       id: "urge_to_contact",
       buttonText: "I have the urge to contact",
       icon: "exclamation-triangle",
+      isPaidFeature: true,
       onClick: () => {
         handleOptionPress(onLessonActivated)
         navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["urge_to_contact"] })
@@ -108,6 +110,7 @@ export default function HelpModal({
               customStyles={$buttonSpacing}
               icon={b.icon}
               isSelected={b.id === "i_contacted"}
+              isPaidFeature={b.isPaidFeature}
             />
           ))}
         </View>
