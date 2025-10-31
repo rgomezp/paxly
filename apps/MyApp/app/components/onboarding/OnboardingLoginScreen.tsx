@@ -1,4 +1,5 @@
-import { StyleSheet, View, Image, Linking, Text, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Linking, Text, TouchableOpacity } from "react-native"
+import { Image } from "expo-image"
 import { SafeAreaView } from "react-native-safe-area-context"
 import LoginComponent from "../login/LoginComponent"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -29,9 +30,9 @@ const OnboardingLoginScreen: React.FC = () => {
           {/* Image container - takes up 1/2 of the screen */}
           <View style={styles.imageContainer}>
             <Image
-              source={require("../../../assets/images/logo.png")}
+              source={require("../../../assets/images/planty/6m/planty.webp")}
               style={styles.logo}
-              resizeMode="contain"
+              contentFit="contain"
             />
           </View>
 

@@ -34,6 +34,6 @@ export default function customConfig(): CustomConfig {
     includeSettingsScreen: true,
     localGanon: true,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
-    primaryFont: "poppins", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
+    primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
   }
 }
