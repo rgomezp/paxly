@@ -9,6 +9,8 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemedStyle } from "@/theme"
 import { AppleLoginButton, GoogleLoginButton } from "@/components/login"
 import LoginManager from "@/managers/LoginManager"
+import Log from "@/utils/Log"
+import LoginError, { LoginErrors } from "@/utils/errors/LoginErrors"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 
@@ -22,11 +24,38 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
+
+  const handleGoogleLogin = async () => {
+    try {
+      await loginManager.loginGoogle()
+    } catch (error: any) {
+      if (error instanceof LoginError && error.message === LoginErrors.LoginCancelled) {
+        // User cancelled, no action needed
+        Log.info("LoginScreen: Google login cancelled by user")
+      } else {
+        Log.error(`LoginScreen: Google login error: ${error}`)
+      }
+    }
+  }
+
+  const handleAppleLogin = async () => {
+    try {
+      await loginManager.loginApple()
+    } catch (error: any) {
+      if (error instanceof LoginError && error.message === LoginErrors.LoginCancelled) {
+        // User cancelled, no action needed
+        Log.info("LoginScreen: Apple login cancelled by user")
+      } else {
+        Log.error(`LoginScreen: Apple login error: ${error}`)
+      }
+    }
+  }
+
   return (
     <Screen style={themed($root)} contentContainerStyle={themed($contentContainer)} preset="scroll">
       <View style={themed($buttons)}>
-        <AppleLoginButton onPress={loginManager.loginApple} />
-        <GoogleLoginButton onPress={loginManager.loginGoogle} />
+        <AppleLoginButton onPress={handleAppleLogin} />
+        <GoogleLoginButton onPress={handleGoogleLogin} />
       </View>
       <View style={themed($titleContainer)}>
         <Text

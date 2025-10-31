@@ -2,7 +2,7 @@ import { useState } from "react"
 import { StyleSheet, View, Platform } from "react-native"
 import Log from "@/utils/Log"
 import LoginManager from "@/managers/LoginManager"
-import { LoginErrors } from "@/utils/errors/LoginErrors"
+import LoginError, { LoginErrors } from "@/utils/errors/LoginErrors"
 import { GoogleLoginButton } from "@/components/login/GoogleLoginButton"
 import { AppleLoginButton } from "@/components/login/AppleLoginButton"
 import LoadingModal from "../modals/LoadingModal"
@@ -18,11 +18,12 @@ export default function LoginComponent() {
       await loginManager.loginGoogle()
       setLoggingIn(false)
     } catch (error: any) {
-      if (error.message === LoginErrors.LoginCancelled) {
-        setLoggingIn(false)
+      setLoggingIn(false)
+      if (error instanceof LoginError && error.message === LoginErrors.LoginCancelled) {
+        // User cancelled, no action needed
+        Log.info("LoginComponent: Google login cancelled by user")
       } else {
         Log.error(`LoginComponent: Google login error: ${error}`)
-        setLoggingIn(false)
       }
     }
   }
@@ -33,11 +34,12 @@ export default function LoginComponent() {
       await loginManager.loginApple()
       setLoggingIn(false)
     } catch (error: any) {
-      if (error.message === LoginErrors.LoginCancelled) {
-        setLoggingIn(false)
+      setLoggingIn(false)
+      if (error instanceof LoginError && error.message === LoginErrors.LoginCancelled) {
+        // User cancelled, no action needed
+        Log.info("LoginComponent: Apple login cancelled by user")
       } else {
         Log.error(`LoginComponent: Apple login error: ${error}`)
-        setLoggingIn(false)
       }
     }
   }

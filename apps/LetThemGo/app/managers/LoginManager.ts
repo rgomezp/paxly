@@ -32,10 +32,9 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
 
     // Configure Google Sign in
     const iosClientId = process.env.EXPO_PUBLIC_IOS_CLIENT_ID
-    const webClientId =
-      Platform.OS === "ios"
-        ? process.env.EXPO_PUBLIC_IOS_CLIENT_ID
-        : process.env.EXPO_PUBLIC_FIREBASE_WEB_CLIENT_ID
+    // webClientId should ALWAYS be the Firebase Web client ID for Firebase Auth
+    // On iOS, iosClientId is used for the iOS OAuth client, but webClientId is still needed for Firebase
+    const webClientId = process.env.EXPO_PUBLIC_FIREBASE_WEB_CLIENT_ID
 
     const missingVars = []
     if (Platform.OS === "ios" && !iosClientId) {
@@ -48,12 +47,19 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
     if (missingVars.length > 0) {
       const errorMessage = `LoginManager: Missing required environment variables: ${missingVars.join(", ")}`
       Log.error(errorMessage)
+      // Don't configure if critical vars are missing
+      return
     }
 
-    GoogleSignin.configure({
-      iosClientId,
-      webClientId,
-    })
+    try {
+      GoogleSignin.configure({
+        iosClientId: Platform.OS === "ios" ? iosClientId : undefined,
+        webClientId,
+      })
+      Log.info("LoginManager: GoogleSignin configured successfully")
+    } catch (error) {
+      Log.error(`LoginManager: Failed to configure GoogleSignin: ${error}`)
+    }
   }
 
   static getInstance(): LoginManager {
@@ -139,14 +145,41 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
   async loginGoogle() {
     Log.info("LoginManager: loginGoogle()")
     try {
-      // Check if your device supports Google Play
-      Log.info("LoginManager: Checking Play Services...")
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
-      Log.info("LoginManager: Play Services check passed")
+      // Check if your device supports Google Play (Android only)
+      if (Platform.OS === "android") {
+        Log.info("LoginManager: Checking Play Services...")
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+        Log.info("LoginManager: Play Services check passed")
+      }
 
-      // Get the users ID token
+      // Ensure we're signed out first (sometimes helps with hanging issues)
+      try {
+        const currentUser = await GoogleSignin.getCurrentUser()
+        if (currentUser) {
+          Log.info("LoginManager: Already signed in to Google, signing out first")
+          await GoogleSignin.signOut()
+        }
+      } catch {
+        // Ignore errors from getCurrentUser/signOut - might not be signed in
+        Log.info("LoginManager: No existing Google session")
+      }
+
+      // Get the users ID token with timeout protection
       Log.info("LoginManager: Initiating Google Sign In...")
-      const { type, data } = await GoogleSignin.signIn()
+      const signInPromise = GoogleSignin.signIn()
+
+      // Add a timeout wrapper (15 seconds)
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(
+            new Error(
+              "Google Sign-In timeout: The sign-in process took too long. Please check your configuration.",
+            ),
+          )
+        }, 15000)
+      })
+
+      const { type, data } = await Promise.race([signInPromise, timeoutPromise])
       Log.info("LoginManager: Google Sign In completed")
       Log.info(`LoginManager: User info received: ${JSON.stringify({ type, data })}`)
 
@@ -194,35 +227,86 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
 
   async loginApple(): Promise<void> {
     Log.info("LoginManager: loginApple()")
+
     try {
+      // Apple Sign-In is iOS only
+      if (Platform.OS !== "ios") {
+        const error = "Apple Sign-In is only available on iOS"
+        Log.error(`LoginManager: ${error}`)
+        throw new Error(error)
+      }
+      // Check if Apple Sign-In is available on this device
+      Log.info("LoginManager: Checking Apple Sign-In availability...")
+      const isAvailable = await AppleAuthentication.isAvailableAsync()
+      if (!isAvailable) {
+        const error = "Apple Sign-In is not available on this device"
+        Log.error(`LoginManager: ${error}`)
+        Alert.alert("Apple Sign-In not available", "Apple Sign-In is not available on this device.")
+        throw new Error(error)
+      }
+      Log.info("LoginManager: Apple Sign-In is available")
+
       // no user info is returned as plaintext here. need to use authStateChanged which parses JWT data
-      const {
-        identityToken: jwtToken,
-        state,
-        fullName,
-      } = await this.appleSignInAsync({
+      Log.info("LoginManager: Initiating Apple Sign In...")
+      const signInPromise = AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       })
 
+      // Add a timeout wrapper (15 seconds)
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(
+            new Error(
+              "Apple Sign-In timeout: The sign-in process took too long. Please check your configuration.",
+            ),
+          )
+        }, 15000)
+      })
+
+      const {
+        identityToken: jwtToken,
+        state,
+        fullName,
+      } = await Promise.race([signInPromise, timeoutPromise])
+
+      Log.info("LoginManager: Apple Sign In completed")
+      Log.info(
+        `LoginManager: loginApple(): jwtToken: ${jwtToken ? "present" : "missing"}, state: ${state || "none"}`,
+      )
+
+      if (!jwtToken) {
+        const error = "No identity token received from Apple Sign-In"
+        Log.error(`LoginManager: ${error}`)
+        Alert.alert("Apple Sign-In failed", "No identity token received.")
+        throw new Error(error)
+      }
+
       // store user info in async storage
       if (fullName) {
+        Log.info("LoginManager: Saving user info...")
         UserManager.setUser({
           first: fullName.givenName,
           last: fullName.familyName,
         })
+        Log.info("LoginManager: User info saved")
       }
 
-      Log.info(`LoginManager: loginApple(): jwtToken: ${jwtToken}, state: ${state}`)
+      Log.info("LoginManager: Creating Firebase credential...")
       const credential = AppleAuthProvider.credential(jwtToken, state || "")
 
+      Log.info("LoginManager: Signing in with Firebase credential...")
       await signInWithCredential(getAuth(), credential)
+      Log.info("LoginManager: Firebase sign in complete")
     } catch (e: any) {
       if (e.code === "ERR_REQUEST_CANCELED") {
+        Log.info("LoginManager: Apple Sign In was cancelled by user")
         throw new LoginError(LoginErrors.LoginCancelled)
       }
+      Log.error(`LoginManager: Apple Sign-In error: ${e.message || e}`)
+      throw e
     }
   }
 
