@@ -15,11 +15,13 @@ function LastContactComponent({ onSelection }: LastContactSlideProps) {
   const [isPickerVisible, setIsPickerVisible] = useState(false)
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}
-      testID="lastContactSlide">
+    <View
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+      testID="lastContactSlide"
+    >
       <View style={styles.heroContainer}>
         <ExpoImage
-          source={require("../../../../assets/images/planty/1d/planty.webp")}
+          source={require("../../../../assets/images/planty/1d/planty_serious.webp")}
           style={styles.hero}
           contentFit="contain"
         />
@@ -56,15 +58,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
+  hero: {
+    height: 140,
+    width: 300,
+  },
   heroContainer: {
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 16,
   },
-  hero: {
-    height: 140,
-    width: 300,
-  },
 })
-
-
