@@ -23,7 +23,7 @@ export function BuilderLesson({
   return (
     <Screen>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      <ScrollView style={themed(() => ({ padding: theme.spacing.lg }))}>
+      <ScrollView style={themed(() => ({ flex: 1, padding: theme.spacing.lg }))}>
         {config.sections.map((s, idx) => (
           <View key={idx} style={themed(() => ({ marginBottom: theme.spacing.lg }))}>
             <Text

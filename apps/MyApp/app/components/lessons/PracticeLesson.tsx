@@ -28,7 +28,7 @@ export function PracticeLesson({
   return (
     <View style={themed(() => ({ alignItems: "center" }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      <View style={themed(() => ({ padding: theme.spacing.md, gap: theme.spacing.sm }))}>
+      <View style={themed(() => ({ flex: 1, padding: theme.spacing.md, gap: theme.spacing.sm }))}>
         {s?.t === "instruction" && (
           <LessonCard>
             <Text>{s.body}</Text>

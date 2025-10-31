@@ -17,7 +17,7 @@ export function CardLesson({
   return (
     <>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      <ScrollView style={themed(() => ({ padding: theme.spacing.md }))}>
+      <ScrollView style={themed(() => ({ flex: 1, padding: theme.spacing.md }))}>
         {config.cards.map((c, i) => (
           <LessonCard key={i} tone={c.type === "tip" ? "tip" : "default"}>
             <Text>{"body" in c ? c.body : (c as any).caption}</Text>
