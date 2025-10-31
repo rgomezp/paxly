@@ -164,7 +164,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
       // save user info
       if (data.user) {
         Log.info("LoginManager: Saving user info...")
-        await UserManager.setUser({
+        UserManager.setUser({
           first: data.user.givenName,
           last: data.user.familyName,
           photoUrl: data.user.photo,
@@ -209,7 +209,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
 
       // store user info in async storage
       if (fullName) {
-        await UserManager.setUser({
+        UserManager.setUser({
           first: fullName.givenName,
           last: fullName.familyName,
         })

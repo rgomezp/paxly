@@ -15,6 +15,7 @@ export default function useAppCheck() {
   // check debug tokens are available
   if (
     process.env.NODE_ENV === "development" &&
+    Platform.OS === "android" &&
     !process.env.EXPO_PUBLIC_APP_CHECK_PLAY_INTEGRITY_DEBUG_TOKEN
   ) {
     Log.error("process.env.EXPO_PUBLIC_APP_CHECK_PLAY_INTEGRITY_DEBUG_TOKEN is not set")
@@ -22,6 +23,7 @@ export default function useAppCheck() {
 
   if (
     process.env.NODE_ENV === "development" &&
+    Platform.OS === "ios" &&
     !process.env.EXPO_PUBLIC_APP_CHECK_APP_ATTEST_DEBUG_TOKEN
   ) {
     Log.error("process.env.EXPO_PUBLIC_APP_CHECK_APP_ATTEST_DEBUG_TOKEN is not set")
