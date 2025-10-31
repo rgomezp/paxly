@@ -104,11 +104,11 @@ export default function Planty({
     if (shouldPlayDrinkNow) {
       setPlayingDrink(true)
       PlantyManager.markDrinkAnimationPlayedToday()
-      // WebP duration is unknown to RN; use a conservative 1500ms one-shot
+      // WebP duration is unknown to RN; use a more conservative 2500ms one-shot
       drinkTimeoutRef.current = setTimeout(() => {
         setPlayingDrink(false)
         onDrinkFinished?.()
-      }, 1500)
+      }, 2500)
     }
     return () => {
       if (drinkTimeoutRef.current) {
