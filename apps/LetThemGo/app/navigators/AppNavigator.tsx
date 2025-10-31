@@ -118,6 +118,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="JournalReader" component={Screens.JournalReaderScreen} />
       <Stack.Screen name="SingleLesson" component={Screens.SingleLessonScreen} />
       <Stack.Screen name="Membership" component={Screens.MembershipScreen} />
+      <Stack.Screen name="MessageIntoTheVoid" component={Screens.MessageIntoTheVoidScreen} />
     </Stack.Navigator>
   )
 })
