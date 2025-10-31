@@ -48,12 +48,12 @@ export default function customConfig(): CustomConfig {
     privacyPolicyUrl: "https://www.google.com",
     includeLoginScreen: true,
     includeSettingsScreen: true,
-    localGanon: true,
+    localGanon: false,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
     oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
-    iosAppStoreUrl: "https://apps.apple.com/app/idYOUR_APP_ID", // Placeholder - replace with actual App Store URL
-    androidAppStoreUrl: "https://play.google.com/store/apps/details?id=com.honeywolf.letthemgo", // Placeholder - replace with actual Play Store URL
+    iosAppStoreUrl: "https://apps.apple.com/us/app/no-contact-tracker-letthemgo/id6754750980",
+    androidAppStoreUrl: "https://play.google.com/store/apps/details?id=com.honeywolf.letthemgo",
     useReferrals: false,
   }
 }
