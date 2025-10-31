@@ -11,21 +11,24 @@ const useRevenueCat = (): boolean => {
 
     const configureRevenueCat = () => {
       try {
+        const testKey = process.env.EXPO_PUBLIC_REVENUE_CAT_TEST_STORE
+        let apiKey: string | undefined
+
         if (Platform.OS === "ios") {
-          if (!process.env.EXPO_PUBLIC_REVENUE_CAT_IOS) {
-            Log.error("EXPO_PUBLIC_REVENUE_CAT_IOS is not set")
-            setIsRevenueCatSetup(false)
-            return
-          }
-          Purchases.configure({ apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_IOS })
+          apiKey = process.env.EXPO_PUBLIC_REVENUE_CAT_IOS || testKey
         } else if (Platform.OS === "android") {
-          if (!process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID) {
-            Log.error("EXPO_PUBLIC_REVENUE_CAT_ANDROID is not set")
-            setIsRevenueCatSetup(false)
-            return
-          }
-          Purchases.configure({ apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID })
+          apiKey = process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID || testKey
         }
+
+        if (!apiKey) {
+          Log.error(
+            "RevenueCat API key is not set. Expected EXPO_PUBLIC_REVENUE_CAT_IOS/ANDROID or EXPO_PUBLIC_REVENUE_CAT_TEST_STORE",
+          )
+          setIsRevenueCatSetup(false)
+          return
+        }
+
+        Purchases.configure({ apiKey })
 
         // Verify that RevenueCat is configured
         if (Purchases.isConfigured && !Purchases.isConfigured()) {
