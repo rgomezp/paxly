@@ -20,6 +20,7 @@ import { MoodCategory } from "@/types/MoodCategory"
 import { ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
 import { ProgressBar } from "@/components"
+import { $styles } from "@/theme"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
 
@@ -185,6 +186,7 @@ function EmojiTile(props: {
     <TouchableOpacity onPress={onPress} style={[$tile, { backgroundColor: themeBackground }]}>
       <RNText style={{ fontSize: 30, textAlign: "center" }}>{emoji}</RNText>
       <Text
+        weight="bold"
         text={label}
         numberOfLines={1}
         adjustsFontSizeToFit
@@ -213,4 +215,5 @@ const $tile: ViewStyle = {
   borderRadius: 16,
   alignItems: "center",
   marginBottom: 16,
+  ...$styles.dropShadow,
 }
