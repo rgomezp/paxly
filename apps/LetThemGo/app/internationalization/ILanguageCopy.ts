@@ -15,6 +15,7 @@ interface ILanguageCopy {
     welcome: ITranslation
     selectOption: ITranslation
     loginCreateAccount: ITranslation
+    logout: ITranslation
   }
   words: {
     settings: ITranslation

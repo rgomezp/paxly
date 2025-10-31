@@ -20,6 +20,12 @@ const LANGUAGE_COPY: ILanguageCopy = {
       de: "Anmelden / Konto erstellen",
       fr: "Se connecter / Créer un compte",
     },
+    logout: {
+      en: "Logout",
+      es: "Cerrar sesión",
+      de: "Abmelden",
+      fr: "Se déconnecter",
+    },
   },
   words: {
     settings: {
