@@ -30,6 +30,7 @@ interface StorageMapping {
   moodHistory: IMoodHistoryItem[]
   dailyTasks: IDailyTasks
   journalEntries: IJournalEntry[]
+  messageIntoTheVoidDraft: string | null
 }
 
 export default StorageMapping
