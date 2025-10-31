@@ -38,7 +38,14 @@ interface HomeDrawerProps {
  */
 interface DrawerMenuItem {
   name: string
-  useCases: { text: string; key: string; route?: string; url?: string; params?: any }[]
+  useCases: {
+    text: string
+    key: string
+    route?: string
+    url?: string
+    params?: any
+    element?: ReactElement
+  }[]
 }
 
 /**
@@ -61,7 +68,10 @@ const WebMenuItem: FC<{
         {item.name}
       </Text>
       {item.useCases.map((u) => {
-        if (u.url) {
+        if (u.element) {
+          // Render custom component directly
+          return u.element
+        } else if (u.url) {
           return (
             <ExternalLinkItem key={`section${sectionIndex}-${u.key}`} text={u.text} url={u.url} />
           )
@@ -101,7 +111,10 @@ const NativeMenuItem: FC<{
         {item.name}
       </Text>
       {item.useCases.map((u) => {
-        if (u.url) {
+        if (u.element) {
+          // Render custom component directly
+          return u.element
+        } else if (u.url) {
           return (
             <ExternalLinkItem key={`section${sectionIndex}-${u.key}`} text={u.text} url={u.url} />
           )
@@ -165,13 +178,23 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
             estimatedItemSize={250}
             data={sections.map((d) => ({
               name: d.name,
-              useCases: d.data({ theme, themed }).map((u) => ({
-                text: u.props.text as string,
-                key: u.key as string,
-                route: u.props.route as string | undefined,
-                url: u.props.url as string | undefined,
-                params: u.props.params,
-              })),
+              useCases: d.data({ theme, themed }).map((u) => {
+                // If the element doesn't have route or url, it's a custom component - store the element directly
+                if (!u.props.route && !u.props.url) {
+                  return {
+                    text: u.props.text as string,
+                    key: u.key as string,
+                    element: u, // Store the original React element
+                  }
+                }
+                return {
+                  text: u.props.text as string,
+                  key: u.key as string,
+                  route: u.props.route as string | undefined,
+                  url: u.props.url as string | undefined,
+                  params: u.props.params,
+                }
+              }),
             }))}
             keyExtractor={(item) => item.name}
             renderItem={({ item, index: sectionIndex }) => (

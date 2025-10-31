@@ -1,4 +1,4 @@
-import { MenuItem, ExternalLinkItem } from "@/components"
+import { MenuItem, ExternalLinkItem, MembershipDrawerItem, LeaveReviewDrawerItem } from "@/components"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
@@ -34,6 +34,24 @@ export const getHomeDrawerSections = () => {
             />,
           )
         }
+
+        // Add Membership button
+        items.push(
+          <MembershipDrawerItem
+            key="membership"
+            text={LANGUAGE_COPY.words.membership[Language.current]}
+            style={themed({ color: theme.colors.text })}
+          />,
+        )
+
+        // Add Leave a Review button
+        items.push(
+          <LeaveReviewDrawerItem
+            key="leaveReview"
+            text={LANGUAGE_COPY.words.leaveReview[Language.current]}
+            style={themed({ color: theme.colors.text })}
+          />,
+        )
 
         return items
       },
