@@ -176,7 +176,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
               "Google Sign-In timeout: The sign-in process took too long. Please check your configuration.",
             ),
           )
-        }, 15000)
+        }, 30000)
       })
 
       const { type, data } = await Promise.race([signInPromise, timeoutPromise])
@@ -263,7 +263,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
               "Apple Sign-In timeout: The sign-in process took too long. Please check your configuration.",
             ),
           )
-        }, 15000)
+        }, 30000)
       })
 
       const {
