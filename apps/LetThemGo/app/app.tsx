@@ -31,7 +31,8 @@ import { OnboardingScreen } from "./screens"
 import { InitializationProvider } from "./initialization/InitializationProvider"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
-import type { ThemeContexts } from "./theme"
+import { useEffect } from "react"
+import LoginManager from "./managers/LoginManager"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -117,6 +118,13 @@ export function App() {
   const { ThemeProvider, themeScheme, setThemeContextOverride, navigationTheme } = useThemeProvider(
     config.startingTheme,
   )
+  // Setup auth listener once on mount
+  useEffect(() => {
+    const unsubscribe = LoginManager.getInstance().setupAuthListener()
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride, navigationTheme }}>
