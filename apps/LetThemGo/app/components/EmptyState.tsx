@@ -5,7 +5,7 @@ import { Text, TextProps } from "./Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 
-const sadFace = require("../../assets/images/sad-face.png")
+const sadFace = require("../../assets/images/empty_state.png")
 
 interface EmptyStateProps {
   /**
@@ -20,6 +20,11 @@ interface EmptyStateProps {
    * An Image source to be displayed above the heading.
    */
   imageSource?: ImageProps["source"]
+  /**
+   * Size preset for the image. Controls the width and height of the image.
+   * @default "md"
+   */
+  imageSize?: "sm" | "md" | "lg" | "xl"
   /**
    * Style overrides for image.
    */
@@ -80,7 +85,7 @@ interface EmptyStateProps {
  * @param {EmptyStateProps} props - The props for the `EmptyState` component.
  * @returns {JSX.Element} The rendered `EmptyState` component.
  */
-export function EmptyState(props: EmptyStateProps) {
+export function EmptyState(props: EmptyStateProps): JSX.Element {
   const {
     theme,
     themed,
@@ -93,6 +98,7 @@ export function EmptyState(props: EmptyStateProps) {
     content,
     heading,
     imageSource,
+    imageSize = "md",
     style: $containerStyleOverride,
     buttonStyle: $buttonStyleOverride,
     buttonTextStyle: $buttonTextStyleOverride,
@@ -113,6 +119,7 @@ export function EmptyState(props: EmptyStateProps) {
   const $containerStyles = [$containerStyleOverride]
   const $imageStyles = [
     $image,
+    $imageSizes[imageSize],
     (isHeadingPresent || isContentPresent || isButtonPresent) && { marginBottom: spacing.xxxs },
     $imageStyleOverride,
     ImageProps?.style,
@@ -142,6 +149,7 @@ export function EmptyState(props: EmptyStateProps) {
       {(isImagePresent || heading || content || button) && (
         <Image
           source={imageSource || sadFace}
+          resizeMode="contain"
           {...ImageProps}
           style={$imageStyles}
           tintColor={theme.isDark ? theme.colors.palette.neutral900 : undefined}
@@ -169,6 +177,14 @@ export function EmptyState(props: EmptyStateProps) {
 }
 
 const $image: ImageStyle = { alignSelf: "center" }
+
+const $imageSizes: Record<"sm" | "md" | "lg" | "xl", ImageStyle> = {
+  sm: { width: 80, height: 80 },
+  md: { width: 120, height: 120 },
+  lg: { width: 180, height: 180 },
+  xl: { width: 240, height: 240 },
+}
+
 const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
   textAlign: "center",
   paddingHorizontal: spacing.lg,
