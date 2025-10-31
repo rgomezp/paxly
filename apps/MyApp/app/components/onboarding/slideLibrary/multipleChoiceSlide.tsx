@@ -9,7 +9,7 @@ type MultipleChoiceSlideProps = {
   maxSelections?: number
 }
 
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/6m/planty.webp")
+const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
 
 const options: MultipleChoiceOption[] = [
   { id: "no_contact", label: "Stay no contact" },
