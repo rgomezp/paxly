@@ -95,3 +95,5 @@ app/ios/
 app/android/
 
 googleServices/
+
+.expo/
