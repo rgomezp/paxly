@@ -12,6 +12,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "messageIntoTheVoidDraft",
       "finishedOnboarding",
       "lastWateredData",
+      "goals",
     ],
     subcollectionKeys: ["moodHistory", "journalEntries"],
   },

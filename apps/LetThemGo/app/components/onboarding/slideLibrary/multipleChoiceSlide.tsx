@@ -2,6 +2,8 @@ import { ImageRequireSource } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
+import { GoalChoices } from "@/types/GoalChoice"
+import { ganon } from "@/services/ganon/ganon"
 
 type MultipleChoiceSlideProps = {
   onSelection?: () => void
@@ -11,18 +13,11 @@ type MultipleChoiceSlideProps = {
 
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
 
-enum Choices {
-  NO_CONTACT = "no_contact",
-  FEEL_BETTER = "feel_better",
-  TRACK_MOOD = "track_mood",
-  JOURNALING = "journaling",
-}
-
-const options: MultipleChoiceOption<Choices>[] = [
-  { id: Choices.NO_CONTACT, label: "Stay no contact" },
-  { id: Choices.FEEL_BETTER, label: "Feel better faster" },
-  { id: Choices.TRACK_MOOD, label: "Track my moods" },
-  { id: Choices.JOURNALING, label: "Build a journaling habit" },
+const options: MultipleChoiceOption<GoalChoices>[] = [
+  { id: GoalChoices.NO_CONTACT, label: "Stay no contact" },
+  { id: GoalChoices.FEEL_BETTER, label: "Feel better faster" },
+  { id: GoalChoices.TRACK_MOOD, label: "Track my moods" },
+  { id: GoalChoices.JOURNALING, label: "Build a journaling habit" },
 ]
 
 export function multipleChoiceSlide({
@@ -33,17 +28,29 @@ export function multipleChoiceSlide({
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`MultipleChoiceSlide: buttonPressed: ${optionId}`)
 
-    switch (optionId) {
-      case Choices.NO_CONTACT:
-        break
-      case Choices.FEEL_BETTER:
-        break
-      case Choices.TRACK_MOOD:
-        break
-      case Choices.JOURNALING:
-        break
-      default:
-        break
+    // Get current goals array from ganon
+    const currentGoals = (ganon.get("goals") ?? []) as GoalChoices[]
+
+    // Check if the goal is already in the array
+    const goalIndex = currentGoals.indexOf(optionId as GoalChoices)
+
+    let updatedGoals: GoalChoices[]
+    if (goalIndex >= 0) {
+      // Goal exists, remove it (toggle off)
+      updatedGoals = currentGoals.filter((goal) => goal !== optionId)
+      Log.info(`MultipleChoiceSlide: Removed goal ${optionId}`)
+    } else {
+      // Goal doesn't exist, add it (toggle on)
+      updatedGoals = [...currentGoals, optionId as GoalChoices]
+      Log.info(`MultipleChoiceSlide: Added goal ${optionId}`)
+    }
+
+    // Save updated goals array to ganon
+    try {
+      ganon.set("goals", updatedGoals)
+      Log.info(`MultipleChoiceSlide: Updated goals: ${JSON.stringify(updatedGoals)}`)
+    } catch (e) {
+      Log.error(`MultipleChoiceSlide: Error saving goals: ${e}`)
     }
 
     // Auto-advance when shouldAutoAdvance is true
