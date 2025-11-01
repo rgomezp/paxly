@@ -33,7 +33,7 @@
     "production": {
       "autoIncrement": false,
       "ios": {
-        "image": "macos-sequoia-15.1-xcode-16.1"
+        "image": "macos-sequoia-15.5-xcode-16.4"
       }
     },
     "preview:device": {
