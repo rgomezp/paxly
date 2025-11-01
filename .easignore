@@ -31,7 +31,5 @@ README
 .vscode
 test_archive
 alignDeps.sh
-package.json
-yarn.lock
 env.sh
 .git
