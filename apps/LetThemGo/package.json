@@ -32,6 +32,7 @@
     "updateGoogleServicesPlist": "eas secret:create --scope project --name GOOGLE_SERVICES_PLIST --type file --value googleServices/GoogleService-Info.plist",
     "encodeGoogleServicesJson": "./scripts/encode_google_services_json",
     "encodeGoogleServicesPlist": "./scripts/encode_google_services_plist",
+    "encodeGooglePlaySubmitter": "./scripts/encode_google_play_submitter",
     "test-archive-ios": "rm -rf ../test_archive && eas build:inspect --platform ios --stage archive --output ../test_archive --profile production",
     "test-archive-android": "rm -rf ../test_archive && eas build:inspect --platform android --stage archive --output ../test_archive --profile production"
   },
