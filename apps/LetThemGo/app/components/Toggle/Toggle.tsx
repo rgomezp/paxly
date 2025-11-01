@@ -56,7 +56,7 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
    * Optional detail style override.
    * See Checkbox, Radio, and Switch for more details
    */
-  inputDetailStyle?: ViewStyle
+  inputDetailStyle?: Omit<ViewStyle & ImageStyle, "overflow">
   /**
    * The position of the label relative to the action component.
    * Default: right

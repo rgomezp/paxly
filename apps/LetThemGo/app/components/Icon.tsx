@@ -13,7 +13,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 
 export type IconTypes = keyof typeof iconRegistry
 
-interface IconProps extends TouchableOpacityProps {
+interface IconProps extends Omit<TouchableOpacityProps, "style"> {
   /**
    * The name of the icon
    */

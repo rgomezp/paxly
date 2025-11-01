@@ -55,6 +55,7 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> =
         }, 500)
         return () => clearTimeout(timeoutId)
       }
+      return undefined
     }, [text, isEditing])
 
     const handleStartEditing = () => {

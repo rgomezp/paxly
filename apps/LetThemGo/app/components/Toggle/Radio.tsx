@@ -4,11 +4,11 @@ import { $styles } from "../../theme"
 import { $inputOuterBase, BaseToggleInputProps, ToggleProps, Toggle } from "./Toggle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-export interface RadioToggleProps extends Omit<ToggleProps<RadioInputProps>, "ToggleInput"> {
+export interface RadioToggleProps extends Omit<ToggleProps<RadioInputProps>, "ToggleInput" | "inputDetailStyle"> {
   /**
    * Optional style prop that affects the dot View.
    */
-  inputDetailStyle?: ViewStyle
+  inputDetailStyle?: Omit<ViewStyle, "position"> & { position?: "static" | "absolute" | "relative" }
 }
 
 interface RadioInputProps extends BaseToggleInputProps<RadioToggleProps> {}

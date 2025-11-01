@@ -22,7 +22,7 @@ export async function setupRootStore(rootStore: RootStore) {
 
   try {
     // load the last known state from AsyncStorage
-    restoredState = ganon.get("rootState")
+    restoredState = ganon.get("rootState") as RootStoreSnapshot | null | undefined
 
     if (restoredState) {
       applySnapshot(rootStore, restoredState)

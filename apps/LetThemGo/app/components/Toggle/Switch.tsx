@@ -16,7 +16,7 @@ import { $inputOuterBase, BaseToggleInputProps, Toggle, ToggleProps } from "./To
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 
-export interface SwitchToggleProps extends Omit<ToggleProps<SwitchInputProps>, "ToggleInput"> {
+export interface SwitchToggleProps extends Omit<ToggleProps<SwitchInputProps>, "ToggleInput" | "inputDetailStyle"> {
   /**
    * Switch-only prop that adds a text/icon label for on/off states.
    */
@@ -25,7 +25,7 @@ export interface SwitchToggleProps extends Omit<ToggleProps<SwitchInputProps>, "
    * Optional style prop that affects the knob View.
    * Note: `width` and `height` rules should be points (numbers), not percentages.
    */
-  inputDetailStyle?: Omit<ViewStyle, "width" | "height"> & { width?: number; height?: number }
+  inputDetailStyle?: Omit<ViewStyle, "width" | "height" | "position"> & { width?: number; height?: number; position?: "static" | "absolute" | "relative" }
 }
 
 interface SwitchInputProps extends BaseToggleInputProps<SwitchToggleProps> {
@@ -243,7 +243,7 @@ const $switchDetail: SwitchToggleProps["inputDetailStyle"] = {
   height: 24,
 }
 
-const $switchAccessibility: TextStyle = {
+const $switchAccessibility: ViewStyle = {
   width: "40%",
   justifyContent: "center",
   alignItems: "center",
