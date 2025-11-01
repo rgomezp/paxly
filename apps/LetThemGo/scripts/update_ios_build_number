@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File name
-FILE="./app.config.js"
+FILE="./app.config.ts"
 
 # Check if the file exists
 if [ ! -f "$FILE" ]; then
@@ -57,7 +57,7 @@ if [ "$update_version" == "yes" ]; then
     fi
 fi
 
-# Update buildNumber and optionally version in app.config.js using awk
+# Update buildNumber and optionally version in app.config.ts using awk
 awk -v new_build="$buildNumber" -v new_ver="$new_version" 'BEGIN {FS=OFS="\""} /buildNumber:/ {$2=new_build} /version:/ && !seen {seen=1; $2=new_ver} 1' "$FILE" > "${FILE}.tmp"
 
 # Check if the awk command succeeded
