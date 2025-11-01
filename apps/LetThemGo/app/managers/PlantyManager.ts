@@ -1,29 +1,54 @@
 import { ganon } from "@/services/ganon/ganon"
 import { getLocalDateKey } from "@/utils/date"
+import { ILastWateredData } from "@/types/ILastWateredData"
 
 export default class PlantyManager {
-	private static readonly LAST_WATERED_KEY = "planty.lastWateredDateKey"
-	private static readonly LAST_DRINK_PLAY_KEY = "planty.lastDrinkPlayedDateKey"
+  private static getLastWateredData(): ILastWateredData {
+    const data = ganon.get("lastWateredData") as ILastWateredData | undefined
+    if (!data) {
+      const defaultData: ILastWateredData = {
+        lastWatered: 0,
+        lastDrinkPlayed: 0,
+      }
+      ganon.set("lastWateredData", defaultData)
+      return defaultData
+    }
+    return data
+  }
 
-	static hasWateredToday(): boolean {
-		const today = getLocalDateKey()
-		const last = ganon.get(PlantyManager.LAST_WATERED_KEY) as string | undefined
-		return last === today
-	}
+  static hasWateredToday(): boolean {
+    const today = getLocalDateKey()
+    const data = this.getLastWateredData()
+    if (!data.lastWatered) return false
+    const lastWateredDate = getLocalDateKey(new Date(data.lastWatered))
+    return lastWateredDate === today
+  }
 
-	static markWateredToday(): void {
-		const today = getLocalDateKey()
-		ganon.set(PlantyManager.LAST_WATERED_KEY, today)
-	}
+  static markWateredToday(): void {
+    const today = new Date()
+    const data = this.getLastWateredData()
+    const updatedData: ILastWateredData = {
+      ...data,
+      lastWatered: today.getTime(),
+    }
+    ganon.set("lastWateredData", updatedData)
+  }
 
-	static hasPlayedDrinkAnimationToday(): boolean {
-		const today = getLocalDateKey()
-		const last = ganon.get(PlantyManager.LAST_DRINK_PLAY_KEY) as string | undefined
-		return last === today
-	}
+  static hasPlayedDrinkAnimationToday(): boolean {
+    const today = getLocalDateKey()
+    const data = this.getLastWateredData()
+    if (!data.lastDrinkPlayed) return false
+    const lastDrinkPlayedDate = getLocalDateKey(new Date(data.lastDrinkPlayed))
+    return lastDrinkPlayedDate === today
+  }
 
-	static markDrinkAnimationPlayedToday(): void {
-		const today = getLocalDateKey()
-		ganon.set(PlantyManager.LAST_DRINK_PLAY_KEY, today)
-	}
+  static markDrinkAnimationPlayedToday(): void {
+    const today = new Date()
+    const data = this.getLastWateredData()
+    const updatedData: ILastWateredData = {
+      ...data,
+      lastDrinkPlayed: today.getTime(),
+    }
+    ganon.set("lastWateredData", updatedData)
+  }
 }

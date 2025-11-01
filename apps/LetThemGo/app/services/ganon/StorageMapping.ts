@@ -8,6 +8,7 @@ import INoContactData from "@/types/INoContactData"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
 import IJournalEntry from "@/types/IJournalEntry"
+import { ILastWateredData } from "@/types/ILastWateredData"
 interface StorageMapping {
   // v1
   email: string | null
@@ -31,6 +32,7 @@ interface StorageMapping {
   dailyTasks: IDailyTasks
   journalEntries: IJournalEntry[]
   messageIntoTheVoidDraft: string | null
+  lastWateredData: ILastWateredData
 }
 
 export default StorageMapping
