@@ -11,11 +11,18 @@ type MultipleChoiceSlideProps = {
 
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
 
-const options: MultipleChoiceOption[] = [
-  { id: "no_contact", label: "Stay no contact" },
-  { id: "feel_better", label: "Feel better faster" },
-  { id: "track_mood", label: "Track my moods" },
-  { id: "journaling", label: "Build a journaling habit" },
+enum Choices {
+  NO_CONTACT = "no_contact",
+  FEEL_BETTER = "feel_better",
+  TRACK_MOOD = "track_mood",
+  JOURNALING = "journaling",
+}
+
+const options: MultipleChoiceOption<Choices>[] = [
+  { id: Choices.NO_CONTACT, label: "Stay no contact" },
+  { id: Choices.FEEL_BETTER, label: "Feel better faster" },
+  { id: Choices.TRACK_MOOD, label: "Track my moods" },
+  { id: Choices.JOURNALING, label: "Build a journaling habit" },
 ]
 
 export function multipleChoiceSlide({
@@ -27,13 +34,13 @@ export function multipleChoiceSlide({
     Log.info(`MultipleChoiceSlide: buttonPressed: ${optionId}`)
 
     switch (optionId) {
-      case "get_stronger":
+      case Choices.NO_CONTACT:
         break
-      case "build_muscle":
+      case Choices.FEEL_BETTER:
         break
-      case "improve_endurance":
+      case Choices.TRACK_MOOD:
         break
-      case "lose_fat":
+      case Choices.JOURNALING:
         break
       default:
         break

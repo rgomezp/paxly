@@ -1,26 +1,27 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
-import { View, StyleSheet, ImageRequireSource } from "react-native"
+import { View, StyleSheet, ImageRequireSource, TextStyle } from "react-native"
 import { Image as ExpoImage } from "expo-image"
 import { useState } from "react"
-import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "@/components/Text"
+import { useAppTheme } from "@/utils/useAppTheme"
+import type { ThemedStyle } from "@/theme"
 
-export interface MultipleChoiceOption {
-  id: string
+export interface MultipleChoiceOption<T extends string = string> {
+  id: T
   label: string
 }
 
-interface MultipleChoiceSelectorProps {
-  options: MultipleChoiceOption[]
+interface MultipleChoiceSelectorProps<T extends string = string> {
+  options: MultipleChoiceOption<T>[]
   heroImage?: ImageRequireSource
   maxOptions?: number
-  onSelection?: (optionId: string, shouldAutoAdvance?: boolean) => void
+  onSelection?: (optionId: T, shouldAutoAdvance?: boolean) => void
   allowMultiple?: boolean
   maxSelections?: number
   onAutoAdvance?: () => void
 }
 
-export const MultipleChoiceSelector = ({
+export function MultipleChoiceSelector<T extends string = string>({
   options,
   heroImage,
   maxOptions = 4,
@@ -28,9 +29,9 @@ export const MultipleChoiceSelector = ({
   allowMultiple = false,
   maxSelections,
   onAutoAdvance,
-}: MultipleChoiceSelectorProps) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
-  const { theme } = useAppTheme()
+}: MultipleChoiceSelectorProps<T>) {
+  const [selectedOptions, setSelectedOptions] = useState<T[]>([])
+  const { themed } = useAppTheme()
 
   // Limit options to maxOptions
   const displayOptions = options.slice(0, maxOptions)
@@ -39,7 +40,7 @@ export const MultipleChoiceSelector = ({
   const isMaxSelectionsReached =
     allowMultiple && maxSelections && selectedOptions.length >= maxSelections
 
-  const handleOptionSelect = (optionId: string) => {
+  const handleOptionSelect = (optionId: T) => {
     let shouldAutoAdvance = false
 
     if (allowMultiple) {
@@ -117,9 +118,14 @@ export const MultipleChoiceSelector = ({
 
       {isMaxSelectionsReached && maxSelections && (
         <View style={styles.limitContainer}>
-          <Text style={styles.limitText}>
+          <Text style={themed($limitText)}>
             Maximum {maxSelections} selection{maxSelections > 1 ? "s" : ""} allowed
           </Text>
+        </View>
+      )}
+      {!isMaxSelectionsReached && maxSelections && (
+        <View style={styles.limitContainer}>
+          <Text style={themed($limitText)}>Select up to {maxSelections} options</Text>
         </View>
       )}
     </View>
@@ -158,15 +164,16 @@ const styles = StyleSheet.create({
     marginTop: -40,
     paddingBottom: 10,
   },
-  limitText: {
-    color: "#9E9E9E",
-    fontSize: 12,
-    textAlign: "center",
-  },
   optionsContainer: {
     alignItems: "center",
     gap: 12,
     marginBottom: 60,
     width: "100%",
   },
+})
+
+const $limitText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.palette.neutral500,
+  fontSize: 12,
+  textAlign: "center",
 })
