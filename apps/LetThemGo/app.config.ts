@@ -47,7 +47,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "1",
+      buildNumber: "2",
       config: {
         usesNonExemptEncryption: false,
       },
