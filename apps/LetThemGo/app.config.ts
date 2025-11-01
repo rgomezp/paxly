@@ -36,6 +36,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.letthemgo",
+      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
@@ -47,7 +48,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "0",
+      buildNumber: "1",
       config: {
         usesNonExemptEncryption: false,
       },

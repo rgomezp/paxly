@@ -10,7 +10,7 @@ if [ ! -f "$FILE" ]; then
 fi
 
 # Read the current versionCode
-versionCode=$(grep 'versionCode' "$FILE" | awk '{ print $2 }' | tr -d ',')
+versionCode=$(grep 'versionCode' "$FILE" | awk -F': ' '{ print $2 }' | awk '{ print $1 }' | tr -d ',')
 
 # Check if the versionCode was successfully read
 if [ -z "$versionCode" ]; then
