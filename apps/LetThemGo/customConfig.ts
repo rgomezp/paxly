@@ -40,6 +40,10 @@ interface CustomConfig {
    * Whether to use referrals
    */
   useReferrals?: boolean
+  /**
+   * The support email address
+   */
+  supportEmail?: string
 }
 
 export default function customConfig(): CustomConfig {
@@ -55,5 +59,6 @@ export default function customConfig(): CustomConfig {
     iosAppStoreUrl: "https://apps.apple.com/us/app/no-contact-tracker-letthemgo/id6754750980",
     androidAppStoreUrl: "https://play.google.com/store/apps/details?id=com.honeywolf.letthemgo",
     useReferrals: false,
+    supportEmail: "team@tryletthemgo.com",
   }
 }
