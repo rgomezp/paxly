@@ -35,6 +35,21 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "track": "production",
+        "serviceAccountKeyPath": "./googleServices/google-play-submitter.json"
+      },
+      "ios": {
+        "appleId": "rogomezpalacio@protonmail.com",
+        "ascAppId": "6754750980"
+      }
+    },
+    "preview": {
+      "android": {
+        "track": "internal",
+        "serviceAccountKeyPath": "./googleServices/google-play-submitter.json"
+      }
+    }
   }
 }
