@@ -7,7 +7,8 @@
       "extends": "production",
       "distribution": "internal",
       "android": {
-        "gradleCommand": ":app:assembleDebug"
+        "gradleCommand": ":app:assembleDebug",
+        "buildType": "apk"
       },
       "ios": {
         "buildConfiguration": "Debug",
@@ -23,16 +24,22 @@
       }
     },
     "preview": {
-      "extends": "production",
+      "developmentClient": false,
       "distribution": "internal",
-      "ios": { "simulator": true },
-      "android": { "buildType": "apk" }
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "production": {
+      "autoIncrement": false,
+      "ios": {
+        "image": "latest"
+      }
     },
     "preview:device": {
       "extends": "preview",
       "ios": { "simulator": false }
-    },
-    "production": {}
+    }
   },
   "submit": {
     "production": {
