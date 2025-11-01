@@ -54,7 +54,7 @@ export const useDeleteAccountSettingConfig = (): IAppSettingsModalConfig => {
       await LoginManager.getInstance().logout(false)
     } else {
       ganon.set("finishedOnboarding", false)
-      ganon.clearAllData()
+      ganon.dangerouslyDelete()
       await DataInitializationManager.initializeData()
       // Notify app to refresh derived state
       EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
