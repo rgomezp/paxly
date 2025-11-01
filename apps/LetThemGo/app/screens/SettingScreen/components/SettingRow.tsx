@@ -42,10 +42,16 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
           type={config.iconType}
           style={themed([$icon, config.danger ? $iconDanger : undefined])}
         />
-        <Text style={themed([$title, config.danger ? $titleDanger : undefined])}>
+        <Text
+          style={themed([$title, config.danger ? $titleDanger : undefined])}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {config.title}
         </Text>
-        <Text style={themed($value)}>{value}</Text>
+        <Text style={themed($value)} numberOfLines={1} ellipsizeMode="tail">
+          {value}
+        </Text>
       </TouchableOpacity>
       {isModalConfig(config) && !config.onPress && (
         <BottomModal visible={isModalVisible} onClose={() => setModalVisible(false)}>
@@ -79,9 +85,11 @@ const $iconDanger: ThemedStyle<TextStyle> = (theme) => ({
 
 const $title: ThemedStyle<TextStyle> = (theme) => ({
   flex: 1,
+  flexShrink: 1,
   fontSize: 16,
   color: theme.colors.text,
   backgroundColor: "transparent",
+  marginRight: 12,
 })
 
 const $titleDanger: ThemedStyle<TextStyle> = (theme) => ({
@@ -91,4 +99,6 @@ const $titleDanger: ThemedStyle<TextStyle> = (theme) => ({
 const $value: ThemedStyle<TextStyle> = (theme) => ({
   fontSize: 16,
   color: theme.colors.textDim,
+  flexShrink: 0,
+  maxWidth: "40%",
 })
