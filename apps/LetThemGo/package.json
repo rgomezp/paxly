@@ -15,6 +15,7 @@
     "postinstall": "patch-package",
     "start": "source env.sh && yarn test && export APP_VARIANT='development' && expo start --dev-client",
     "start:skip": "source env.sh && export APP_VARIANT='development' && expo start --dev-client",
+    "build": "tsc",
     "build:android-dev": "yarn test && ./scripts/check_build_size android && source env.sh && export NODE_ENV='development' && eas build --profile development --platform android --local",
     "build:android-preview": "yarn test && ./scripts/check_build_size android && ./scripts/updateAndroidVersionCode && eas build --profile preview --platform android",
     "build:android-production": "yarn test && ./scripts/check_build_size android && ./scripts/updateAndroidVersionCode && eas build --profile production --platform android",

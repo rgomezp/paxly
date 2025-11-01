@@ -8,7 +8,8 @@
     ]
   },
   "scripts": {
-    "clean": "yarn workspaces run clean"
+    "clean": "yarn workspaces run clean",
+    "build": "tsc --build"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
