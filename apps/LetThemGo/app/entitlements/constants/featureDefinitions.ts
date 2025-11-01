@@ -6,9 +6,8 @@ export interface IFeatureDefinition {
 }
 
 export const FEATURE_DEFINITIONS = {
-  [FEATURES.EXAMPLE_FEATURE]: {
-    referralThreshold: 1,
-    entitlements: ["exampleEntitlement"],
+  [FEATURES.PREMIUM_FEATURES]: {
+    entitlements: ["pro", "elite"],
   },
 } as Record<string, IFeatureDefinition>
 
