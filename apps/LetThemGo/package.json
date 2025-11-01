@@ -20,7 +20,7 @@
     "build:android-production": "yarn test && ./scripts/check_build_size android && ./scripts/updateAndroidVersionCode && eas build --profile production --platform android",
     "build:ios-dev": "source env.sh && yarn test && ./scripts/check_build_size ios && export APP_VARIANT='development' && eas build --profile development-simulator --platform ios --local",
     "build:ios-preview": "yarn test && ./scripts/check_build_size ios && eas build --profile preview --platform ios",
-    "build:ios-production": "source env.sh && yarn test && ./scripts/check_build_size ios && ./scripts/updateIosBuildNumber && eas build --profile production --platform ios",
+    "build:ios-production": "source env.sh && yarn test && ./scripts/check_build_size ios && ./scripts/update_ios_build_number && eas build --profile production --platform ios",
     "alignDependencies": "./alignDeps.sh",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -132,5 +132,6 @@
   },
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
-  }
+  },
+  "referenceBuildSize": 17
 }
