@@ -139,10 +139,6 @@ jobs:
 
       - name: 📦 Install EAS CLI
         run: npm -g i eas-cli
-
-      - name: Build shared-types
-        run: yarn workspace @rgomezp/fw-shared-types run build
-
       - name: 📦 Build project
         run: yarn build
 
