@@ -1,7 +1,8 @@
 import { FC, ReactElement, useCallback, useRef, useState } from "react"
-import { Image, ImageStyle, Platform, View, ViewStyle } from "react-native"
+import { Image, ImageStyle, Platform, Pressable, TextStyle, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
+import * as Application from "expo-application"
 import {
   ListView,
   ListViewRef,
@@ -15,6 +16,8 @@ import type { Theme, ThemedStyle } from "@/theme"
 import { $styles } from "@/theme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { ganon } from "@/services/ganon/ganon"
+import Log from "@/utils/Log"
 
 /**
  * Props interface for the HomeDrawer component.
@@ -161,6 +164,7 @@ const PlatformMenuItem = Platform.select({
 
 export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent }) => {
   const [open, setOpen] = useState(false)
+  const [versionPressCount, setVersionPressCount] = useState(0)
   const menuRef = useRef<ListViewRef<DrawerMenuItem>>(null)
   const { themed, theme } = useAppTheme()
 
@@ -168,8 +172,23 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
     setOpen(!open)
   }, [open])
 
+  const handleVersionPress = useCallback(() => {
+    const newCount = versionPressCount + 1
+    setVersionPressCount(newCount)
+
+    if (newCount >= 20) {
+      // Toggle premiumOverride
+      const currentValue = ganon.get("premiumOverride") || false
+      ganon.set("premiumOverride", !currentValue)
+      Log.info(`Premium override toggled to: ${!currentValue}`)
+      // Reset counter
+      setVersionPressCount(0)
+    }
+  }, [versionPressCount])
+
   const $drawerInsets = useSafeAreaInsetsStyle(["top"])
   const $headerInsets = useSafeAreaInsetsStyle(["top"]) // ensure header is in safe area
+  const $bottomInsets = useSafeAreaInsetsStyle(["bottom"])
 
   return (
     <Drawer
@@ -215,6 +234,15 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
               <PlatformMenuItem {...{ item, sectionIndex, themed }} />
             )}
           />
+          <Pressable
+            onPress={handleVersionPress}
+            style={themed([$versionButton, $bottomInsets])}
+            accessibilityLabel="App version"
+          >
+            <Text style={themed($versionText)}>
+              {Application.nativeApplicationVersion || "0.0.0"}
+            </Text>
+          </Pressable>
         </View>
       )}
     >
@@ -282,4 +310,26 @@ const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   alignSelf: "flex-end",
   paddingTop: spacing.md,
   paddingRight: spacing.md,
+})
+
+/**
+ * Styled object for the version button container.
+ * Positions the version button in the bottom right corner.
+ */
+const $versionButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  position: "absolute",
+  bottom: 0,
+  right: 0,
+  paddingRight: spacing.md,
+  paddingBottom: spacing.sm,
+})
+
+/**
+ * Styled object for the version text.
+ * Styles the version number display.
+ */
+const $versionText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 10,
+  color: colors.textDim,
+  opacity: 0.6,
 })
