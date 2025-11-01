@@ -149,7 +149,7 @@ export const useHomeDrawerSections = () => {
         <ExternalLinkItem
           key="support"
           text={LANGUAGE_COPY.words.support[Language.current]}
-          url="mailto:team@tryletthemgo.com"
+          url={`mailto:${config.supportEmail}`}
           style={themed({ color: theme.colors.text })}
           containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
