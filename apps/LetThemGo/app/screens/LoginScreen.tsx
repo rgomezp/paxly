@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, TextStyle, View } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -11,19 +11,23 @@ import { AppleLoginButton, GoogleLoginButton } from "@/components/login"
 import LoginManager from "@/managers/LoginManager"
 import Log from "@/utils/Log"
 import LoginError, { LoginErrors } from "@/utils/errors/LoginErrors"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "@/models"
+import { useNavigation } from "@react-navigation/native"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen() {
   const { themed } = useAppTheme()
   const loginManager = LoginManager.getInstance()
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
 
   // Pull in navigation via hook
-  // const navigation = useNavigation()
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const unsubscribe = loginManager.subscribe(() => {
+      navigation.goBack()
+    })
+    return () => unsubscribe()
+  }, [navigation, loginManager])
 
   const handleGoogleLogin = async () => {
     try {
