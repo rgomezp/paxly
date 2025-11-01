@@ -1,6 +1,7 @@
 import { ganon } from "@/services/ganon/ganon"
 import { DEFAULT_DAILY_TASKS, DailyTaskKey, IDailyTasks } from "@/types/IDailyTasks"
 import { getLocalDateKey } from "@/utils/date"
+import StoreReviewManager from "./StoreReviewManager"
 
 export default class DailyTaskManager {
   private static ensureToday(): IDailyTasks {
@@ -29,8 +30,7 @@ export default class DailyTaskManager {
     const state = this.ensureToday()
     const updated: IDailyTasks = { ...state, [task]: true }
     ganon.set("dailyTasks", updated)
+    StoreReviewManager.requestReview()
     return updated
   }
 }
-
-
