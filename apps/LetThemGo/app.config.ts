@@ -48,7 +48,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "3",
+      buildNumber: "4",
       config: {
         usesNonExemptEncryption: false,
       },
@@ -99,6 +99,18 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         {
           ios: {
             useFrameworks: "static",
+          },
+          android: {
+            targetSdkVersion: 35,
+            compileSdkVersion: 35,
+            minSdkVersion: 24,
+            ndkVersion: "28.1.10169557",
+            extraMavenDependencies: [
+              "androidx.appcompat:appcompat:1.7.1",
+              "androidx.lifecycle:lifecycle-runtime-ktx:2.8.7",
+              "androidx.fragment:fragment-ktx:1.8.6",
+            ],
+            javaVersion: "17",
           },
         },
       ],
