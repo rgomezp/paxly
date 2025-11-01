@@ -9,7 +9,7 @@
   },
   "scripts": {
     "clean": "yarn workspaces run clean",
-    "build": "tsc --build"
+    "build": "yarn workspaces run build"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
