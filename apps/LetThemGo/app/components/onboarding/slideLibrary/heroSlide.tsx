@@ -29,7 +29,7 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
 
 const benefits: Benefit[] = [
   {
-    icon: "route",
+    icon: "user-slash",
     title: "Finally let them go",
     description: "See your streak since last reach-out",
   },
