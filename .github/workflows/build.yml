@@ -103,7 +103,7 @@ jobs:
             -not -path '*/tests/*' \
             -not -path '*.test.*' \
             -not -path '*.spec.*' \
-            -not -path 'app.config.js' \
+            -not -path 'app.config.ts' \
             -print0 \
           | sort -z \
           | xargs -0 sha256sum \
@@ -258,7 +258,7 @@ jobs:
         working-directory: apps/LetThemGo
         run: |
           git status
-          git add app.config.js
+          git add app.config.ts
           git diff --staged --quiet || git commit -m "Update version numbers"
 
       - name: ⬆️ Push changes

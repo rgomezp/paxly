@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File name
-FILE="./app.config.js"
+FILE="./app.config.ts"
 
 # Check if the file exists
 if [ ! -f "$FILE" ]; then
@@ -27,7 +27,7 @@ fi
 # Increment the versionCode
 let "versionCode++"
 
-# Update versionCode in app.config.js using awk
+# Update versionCode in app.config.ts using awk
 awk -v new_vc="$versionCode" '/versionCode:/ {sub(/[0-9]+/, new_vc)}1' "$FILE" > "${FILE}.tmp"
 
 # Check if the awk command succeeded
