@@ -1,4 +1,10 @@
-import { MenuItem, ExternalLinkItem, MembershipDrawerItem, LeaveReviewDrawerItem, LogoutDrawerItem } from "@/components"
+import {
+  MenuItem,
+  ExternalLinkItem,
+  MembershipDrawerItem,
+  LeaveReviewDrawerItem,
+  LogoutDrawerItem,
+} from "@/components"
 import type { Theme } from "@/theme"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
@@ -6,7 +12,6 @@ import customConfig from "../../customConfig"
 import { useEffect, useState } from "react"
 import LoginManager from "@/managers/LoginManager"
 import UserManager from "@/managers/UserManager"
-import type { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import type IUser from "@/types/IUser"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { EventRegister } from "@/utils/EventEmitter"
@@ -14,7 +19,6 @@ import { EventRegister } from "@/utils/EventEmitter"
 export const useHomeDrawerSections = () => {
   const config = customConfig()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
   const [userInfo, setUserInfo] = useState<IUser | undefined>(undefined)
 
   useEffect(() => {
@@ -30,8 +34,7 @@ export const useHomeDrawerSections = () => {
 
     // Subscribe to auth changes
     const loginManager = LoginManager.getInstance()
-    const unsubscribeAuth = loginManager.subscribe((authUser) => {
-      setUser(authUser)
+    const unsubscribeAuth = loginManager.subscribe(() => {
       updateLoginStatus()
       updateUserInfo()
     })
