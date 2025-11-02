@@ -124,7 +124,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         },
       ],
       ...existingPlugins,
-      require("./plugins/withSplashScreen").withSplashScreen,
+      // require("./plugins/withSplashScreen").withSplashScreen,
     ],
     experiments: {
       tsconfigPaths: true,
