@@ -2,6 +2,7 @@ import { FC, useMemo, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   Animated,
+  ImageStyle,
   ScrollView,
   Text as RNText,
   TextInput,
@@ -9,6 +10,7 @@ import {
   useWindowDimensions,
   View,
   ViewStyle,
+  TextStyle,
 } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
@@ -81,14 +83,14 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         scrollEventThrottle={16}
       >
         {/* Step 1 - Mood */}
-        <ScrollView style={{ width }} contentContainerStyle={{ paddingBottom: 20 }}>
-          <View style={{ margin: 20, flexDirection: "row", alignItems: "flex-end" }}>
+        <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$slideContent}>
+          <View style={$moodHeader}>
             {/* Image of planty here */}
-            <PlantyFromCurrentGoal style={{ width: 48, height: 68, marginRight: 12 }} />
+            <PlantyFromCurrentGoal style={$plantyImage} />
             <Text
               text="How are you feeling?"
               preset="bold"
-              style={{ color: theme.colors.text, paddingBottom: 10 }}
+              style={[$moodHeaderText, { color: theme.colors.text }]}
             />
           </View>
           <Grid>
@@ -117,11 +119,11 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         </ScrollView>
 
         {/* Step 2 - Activity */}
-        <ScrollView style={{ width }} contentContainerStyle={{ paddingBottom: 20 }}>
+        <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$slideContent}>
           <Text
             text="what were you doing?"
             preset="bold"
-            style={{ color: theme.colors.text, margin: 20 }}
+            style={[$activityHeaderText, { color: theme.colors.text }]}
           />
           <Grid>
             {ALL_ACTIVITIES.map((a) => (
@@ -139,11 +141,11 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         </ScrollView>
 
         {/* Step 3 - Notes */}
-        <View style={{ width, padding: 20 }}>
+        <View style={[$notesContainer, { width }]}>
           <Text
             text="Notes (optional)"
             preset="bold"
-            style={{ color: theme.colors.text, marginBottom: 12 }}
+            style={[$notesHeaderText, { color: theme.colors.text }]}
           />
           <TextInput
             placeholder="Notes (optional)"
@@ -151,25 +153,17 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
             value={notes}
             onChangeText={setNotes}
             multiline
-            style={{
-              minHeight: 120,
-              borderRadius: 12,
-              padding: 12,
-              color: theme.colors.text,
-              backgroundColor: theme.colors.card,
-            }}
+            style={[$textInput, { color: theme.colors.text, backgroundColor: theme.colors.card }]}
           />
           <TouchableOpacity
             onPress={onSave}
-            style={{
-              marginTop: 20,
-              borderRadius: 12,
-              paddingVertical: 14,
-              alignItems: "center",
-              backgroundColor: theme.colors.tint,
-            }}
+            style={[$saveButton, { backgroundColor: theme.colors.tint }]}
           >
-            <Text text="Save" preset="bold" style={{ color: theme.colors.background }} />
+            <Text
+              text="Save"
+              preset="bold"
+              style={[$saveButtonText, { color: theme.colors.background }]}
+            />
           </TouchableOpacity>
         </View>
       </Animated.ScrollView>
@@ -192,14 +186,14 @@ function EmojiTile(props: {
   const { emoji, label, selected, onPress, themeBackground, themeText } = props
   return (
     <TouchableOpacity onPress={onPress} style={[$tile, { backgroundColor: themeBackground }]}>
-      <RNText style={{ fontSize: 30, textAlign: "center" }}>{emoji}</RNText>
+      <RNText style={$emojiText}>{emoji}</RNText>
       <Text
         weight="bold"
         text={label}
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.75}
-        style={{ color: themeText, marginTop: 8, textTransform: "lowercase" }}
+        style={[$emojiLabel, { color: themeText }]}
       />
       {selected ? <View /> : null}
     </TouchableOpacity>
@@ -224,4 +218,68 @@ const $tile: ViewStyle = {
   alignItems: "center",
   marginBottom: 16,
   ...$styles.dropShadow,
+}
+
+const $slideContainer: ViewStyle = {
+  // width will be set dynamically
+}
+
+const $slideContent: ViewStyle = {
+  paddingBottom: 20,
+}
+
+const $moodHeader: ViewStyle = {
+  margin: 20,
+  flexDirection: "row",
+  alignItems: "flex-end",
+}
+
+const $plantyImage: ImageStyle = {
+  width: 48,
+  height: 68,
+  marginRight: 12,
+}
+
+const $moodHeaderText: TextStyle = {
+  paddingBottom: 10,
+}
+
+const $activityHeaderText: TextStyle = {
+  margin: 20,
+}
+
+const $notesContainer: ViewStyle = {
+  padding: 20,
+  // width will be set dynamically
+}
+
+const $notesHeaderText: TextStyle = {
+  marginBottom: 12,
+}
+
+const $textInput: TextStyle = {
+  minHeight: 120,
+  borderRadius: 12,
+  padding: 12,
+}
+
+const $saveButton: ViewStyle = {
+  marginTop: 20,
+  borderRadius: 12,
+  paddingVertical: 14,
+  alignItems: "center",
+}
+
+const $saveButtonText: TextStyle = {
+  // color will be set dynamically
+}
+
+const $emojiText: TextStyle = {
+  fontSize: 30,
+  textAlign: "center",
+}
+
+const $emojiLabel: TextStyle = {
+  marginTop: 8,
+  textTransform: "lowercase",
 }
