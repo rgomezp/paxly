@@ -1,7 +1,7 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
-import { View, StyleSheet, ImageRequireSource, TextStyle } from "react-native"
+import { View, StyleSheet, ImageRequireSource, TextStyle, ScrollView } from "react-native"
 import { Image as ExpoImage } from "expo-image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -19,6 +19,7 @@ interface MultipleChoiceSelectorProps<T extends string = string> {
   allowMultiple?: boolean
   maxSelections?: number
   onAutoAdvance?: () => void
+  initialSelectedOptions?: T[]
 }
 
 export function MultipleChoiceSelector<T extends string = string>({
@@ -29,12 +30,19 @@ export function MultipleChoiceSelector<T extends string = string>({
   allowMultiple = false,
   maxSelections,
   onAutoAdvance,
+  initialSelectedOptions = [],
 }: MultipleChoiceSelectorProps<T>) {
-  const [selectedOptions, setSelectedOptions] = useState<T[]>([])
-  const { themed } = useAppTheme()
+  const [selectedOptions, setSelectedOptions] = useState<T[]>(initialSelectedOptions)
+  const { themed, theme, themeContext } = useAppTheme()
 
-  // Limit options to maxOptions
-  const displayOptions = options.slice(0, maxOptions)
+  // Update selected options when initialSelectedOptions changes
+  useEffect(() => {
+    setSelectedOptions(initialSelectedOptions)
+  }, [initialSelectedOptions])
+
+  // Use all options if maxOptions is not set or is large enough, otherwise limit
+  const shouldShowScroll = !maxOptions || options.length > maxOptions
+  const displayOptions = shouldShowScroll ? options : options.slice(0, maxOptions)
 
   // Check if max selections limit is reached
   const isMaxSelectionsReached =
@@ -87,6 +95,29 @@ export function MultipleChoiceSelector<T extends string = string>({
     onSelection?.(optionId, shouldAutoAdvance)
   }
 
+  const renderOptions = () => (
+    <View style={styles.optionsContainer}>
+      {displayOptions.map((option) => {
+        const isSelected = selectedOptions.includes(option.id)
+        const isDisabled = Boolean(!isSelected && isMaxSelectionsReached)
+
+        return (
+          <RectangularButton
+            key={option.id}
+            buttonText={option.label}
+            onClick={() => handleOptionSelect(option.id)}
+            width={280}
+            textStyle={styles.buttonText}
+            customStyles={styles.buttonCustom}
+            testID={`choice-${option.id}`}
+            isSelected={isSelected}
+            isDisabled={isDisabled}
+          />
+        )
+      })}
+    </View>
+  )
+
   return (
     <View style={styles.container}>
       {heroImage && (
@@ -95,38 +126,35 @@ export function MultipleChoiceSelector<T extends string = string>({
         </View>
       )}
 
-      <View style={styles.optionsContainer}>
-        {displayOptions.map((option) => {
-          const isSelected = selectedOptions.includes(option.id)
-          const isDisabled = Boolean(!isSelected && isMaxSelectionsReached)
-
-          return (
-            <RectangularButton
-              key={option.id}
-              buttonText={option.label}
-              onClick={() => handleOptionSelect(option.id)}
-              width={"70%"}
-              textStyle={styles.buttonText}
-              customStyles={styles.buttonCustom}
-              testID={`choice-${option.id}`}
-              isSelected={allowMultiple && isSelected}
-              isDisabled={isDisabled}
-            />
-          )
-        })}
-      </View>
-
       {isMaxSelectionsReached && maxSelections && (
-        <View style={styles.limitContainer}>
+        <View style={styles.limitContainerTop}>
           <Text style={themed($limitText)}>
             Maximum {maxSelections} selection{maxSelections > 1 ? "s" : ""} allowed
           </Text>
         </View>
       )}
       {!isMaxSelectionsReached && maxSelections && (
-        <View style={styles.limitContainer}>
+        <View style={styles.limitContainerTop}>
           <Text style={themed($limitText)}>Select up to {maxSelections} options</Text>
         </View>
+      )}
+
+      {shouldShowScroll ? (
+        <View style={styles.scrollWrapper}>
+          <ScrollView
+            style={styles.scrollContainer}
+            showsVerticalScrollIndicator={true}
+            contentContainerStyle={styles.scrollContent}
+            indicatorStyle={themeContext === "dark" ? "white" : "black"}
+          >
+            {renderOptions()}
+          </ScrollView>
+          <View style={[styles.scrollHint, { backgroundColor: theme.colors.background }]}>
+            <Text style={themed($scrollHintText)}>Scroll for more options</Text>
+          </View>
+        </View>
+      ) : (
+        renderOptions()
       )}
     </View>
   )
@@ -164,10 +192,37 @@ const styles = StyleSheet.create({
     marginTop: -40,
     paddingBottom: 10,
   },
+  limitContainerTop: {
+    alignItems: "center",
+    marginBottom: 8,
+    paddingBottom: 4,
+  },
   optionsContainer: {
     alignItems: "center",
     gap: 12,
     marginBottom: 60,
+    width: "100%",
+  },
+  scrollContainer: {
+    flex: 1,
+    width: "100%",
+  },
+  scrollContent: {
+    paddingBottom: 40, // Extra space for the hint
+  },
+  scrollHint: {
+    alignItems: "center",
+    borderTopColor: "#ddd",
+    borderTopWidth: 1,
+    bottom: 0,
+    left: -20,
+    paddingVertical: 8,
+    position: "absolute",
+    right: -20,
+  },
+  scrollWrapper: {
+    flex: 1,
+    position: "relative",
     width: "100%",
   },
 })
@@ -175,5 +230,12 @@ const styles = StyleSheet.create({
 const $limitText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.palette.neutral500,
   fontSize: 12,
+  textAlign: "center",
+})
+
+const $scrollHintText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.palette.neutral500,
+  fontSize: 12,
+  fontStyle: "italic",
   textAlign: "center",
 })
