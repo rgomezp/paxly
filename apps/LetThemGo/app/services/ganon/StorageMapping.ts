@@ -14,6 +14,7 @@ import { Genders } from "@/types/Gender"
 import { AgeRanges } from "@/types/AgeRange"
 import { RelationshipDurations } from "@/types/RelationshipDuration"
 import { WhoEndedItChoices } from "@/types/WhoEndedIt"
+import { MascotNames } from "@/types/MascotName"
 interface StorageMapping {
   // v1
   email: string | null
@@ -43,6 +44,7 @@ interface StorageMapping {
   ageRange: AgeRanges | null
   relationshipDuration: RelationshipDurations | null
   whoEndedIt: WhoEndedItChoices | null
+  mascotName: MascotNames | null
 }
 
 export default StorageMapping

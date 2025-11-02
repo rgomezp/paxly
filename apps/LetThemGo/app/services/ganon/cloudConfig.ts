@@ -17,6 +17,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "ageRange",
       "relationshipDuration",
       "whoEndedIt",
+      "mascotName",
     ],
     subcollectionKeys: ["moodHistory", "journalEntries"],
   },
