@@ -48,8 +48,8 @@ interface CustomConfig {
 
 export default function customConfig(): CustomConfig {
   return {
-    termsOfServiceUrl: "https://www.google.com",
-    privacyPolicyUrl: "https://www.google.com",
+    termsOfServiceUrl: "https://terms-and-conditions-letthemgo.carrd.co/",
+    privacyPolicyUrl: "https://letthemgo-privacy.carrd.co",
     includeLoginScreen: true,
     includeSettingsScreen: true,
     localGanon: false,
