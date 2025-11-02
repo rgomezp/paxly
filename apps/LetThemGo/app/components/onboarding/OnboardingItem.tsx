@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react"
+import { memo, useCallback, cloneElement, isValidElement } from "react"
 import { View, StyleSheet, Image, useWindowDimensions, ViewStyle } from "react-native"
 import { ISlide, TextPlacement, TextAlignment } from "@/types/ISlide"
 import { AnimatedTextSimulation } from "../AnimatedTextSimulation"
@@ -48,7 +48,14 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
     const imageComponent = item.image && (
       <Image source={item.image} style={[styles.image, { width }]} resizeMode="contain" />
     )
-    const componentView = item.component && <View style={styles.component}>{item.component}</View>
+    // Clone component and pass isActive prop if it's a valid React element
+    const componentView = item.component && (
+      <View style={styles.component}>
+        {isValidElement(item.component)
+          ? cloneElement(item.component, { isActive: shouldStartAnimation } as any)
+          : item.component}
+      </View>
+    )
     const contentBlock = (
       <>
         {imageComponent}
@@ -66,7 +73,7 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
     ]
 
     // Title component
-    const titleElement = (
+    const titleElement = item.title && (
       <View style={titleContainerStyle}>
         <Text preset="subheading" style={titleStyle}>
           {item.title}
