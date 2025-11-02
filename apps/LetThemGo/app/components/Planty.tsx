@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Image, ImageStyle, StyleProp } from "react-native"
-import PlantyManager from "@/managers/PlantyManager"
 import { NoContactGoal } from "@/types/INoContactData"
 
 export type PlantyState = "happy" | "serious" | "drinking"
@@ -94,21 +93,16 @@ export default function Planty({
   const loopIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const [refreshNonce, setRefreshNonce] = useState(0)
 
-  const shouldPlayDrinkNow = useMemo(() => {
-    if (!isWatering) return false
-    if (PlantyManager.hasPlayedDrinkAnimationToday()) return false
-    return true
-  }, [isWatering])
-
   useEffect(() => {
-    if (shouldPlayDrinkNow) {
+    if (isWatering) {
       setPlayingDrink(true)
-      PlantyManager.markDrinkAnimationPlayedToday()
       // WebP duration is unknown to RN; use a more conservative 2500ms one-shot
       drinkTimeoutRef.current = setTimeout(() => {
         setPlayingDrink(false)
         onDrinkFinished?.()
       }, 2500)
+    } else {
+      setPlayingDrink(false)
     }
     return () => {
       if (drinkTimeoutRef.current) {
@@ -116,7 +110,7 @@ export default function Planty({
         drinkTimeoutRef.current = null
       }
     }
-  }, [shouldPlayDrinkNow, onDrinkFinished])
+  }, [isWatering, onDrinkFinished])
 
   // Force loop for happy/serious by remounting only when expo-image is NOT available
   // expo-image handles animated WebP looping internally; remounting causes flicker

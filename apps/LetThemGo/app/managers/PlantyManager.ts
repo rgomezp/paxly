@@ -8,7 +8,6 @@ export default class PlantyManager {
     if (!data) {
       const defaultData: ILastWateredData = {
         lastWatered: 0,
-        lastDrinkPlayed: 0,
       }
       ganon.set("lastWateredData", defaultData)
       return defaultData
@@ -30,24 +29,6 @@ export default class PlantyManager {
     const updatedData: ILastWateredData = {
       ...data,
       lastWatered: today.getTime(),
-    }
-    ganon.set("lastWateredData", updatedData)
-  }
-
-  static hasPlayedDrinkAnimationToday(): boolean {
-    const today = getLocalDateKey()
-    const data = this.getLastWateredData()
-    if (!data.lastDrinkPlayed) return false
-    const lastDrinkPlayedDate = getLocalDateKey(new Date(data.lastDrinkPlayed))
-    return lastDrinkPlayedDate === today
-  }
-
-  static markDrinkAnimationPlayedToday(): void {
-    const today = new Date()
-    const data = this.getLastWateredData()
-    const updatedData: ILastWateredData = {
-      ...data,
-      lastDrinkPlayed: today.getTime(),
     }
     ganon.set("lastWateredData", updatedData)
   }
