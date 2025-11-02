@@ -14,6 +14,8 @@ import { genderSlide } from "../slideLibrary/genderSlide"
 import { ageSlide } from "../slideLibrary/ageSlide"
 import { relationshipDurationSlide } from "../slideLibrary/relationshipDurationSlide"
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
+import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
+import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -66,6 +68,8 @@ export const useSlides = (onSelection?: () => void) => {
       problemSolutionSlide({ onSelection }),
       howItWorksSlide({ onSelection }),
       nicknameSlide({ onSelection, refreshNickname }),
+      mascotNameSlide({ onSelection }),
+      mascotIntroSlide({ onSelection }),
       lastContactSlide({ onSelection }),
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
