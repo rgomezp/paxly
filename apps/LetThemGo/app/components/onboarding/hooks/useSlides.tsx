@@ -16,6 +16,7 @@ import { relationshipDurationSlide } from "../slideLibrary/relationshipDurationS
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
+import { loadingSlide } from "../slideLibrary/loadingSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -78,6 +79,7 @@ export const useSlides = (onSelection?: () => void) => {
       multipleChoiceSlide({ onSelection, allowMultipleSelections: true, maxSelections: 3 }),
       testimonialsSlide({ onSelection }),
       referralSourceSlide({ onSelection }),
+      loadingSlide({ onSelection }),
     ],
     [onSelection],
   )
