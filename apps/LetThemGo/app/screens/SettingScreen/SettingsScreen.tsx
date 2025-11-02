@@ -37,7 +37,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
               onPress: async () => {
                 try {
                   setIsDeleting(true)
-                  await deleteAccountSetting.onPress?.()
+                  deleteAccountSetting.onPress?.()
                 } finally {
                   // Keep modal until app switches navigators (Onboarding)
                   // As a fallback, dismiss after a short delay
