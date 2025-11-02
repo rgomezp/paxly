@@ -1,4 +1,3 @@
-import { ImageRequireSource } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
@@ -11,13 +10,19 @@ type MultipleChoiceSlideProps = {
   maxSelections?: number
 }
 
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
-
 const options: MultipleChoiceOption<GoalChoices>[] = [
   { id: GoalChoices.NO_CONTACT, label: "Stay no contact" },
   { id: GoalChoices.FEEL_BETTER, label: "Feel better faster" },
   { id: GoalChoices.TRACK_MOOD, label: "Track my moods" },
   { id: GoalChoices.JOURNALING, label: "Build a journaling habit" },
+  { id: GoalChoices.BUILD_SELF_ESTEEM, label: "Build self-esteem" },
+  { id: GoalChoices.PROCESS_EMOTIONS, label: "Process my emotions" },
+  { id: GoalChoices.FIND_CLOSURE, label: "Find closure" },
+  { id: GoalChoices.REDUCE_ANXIETY, label: "Reduce anxiety" },
+  { id: GoalChoices.IMPROVE_SLEEP, label: "Improve sleep" },
+  { id: GoalChoices.BUILD_CONFIDENCE, label: "Build confidence" },
+  { id: GoalChoices.HEAL_HEARTBREAK, label: "Heal from heartbreak" },
+  { id: GoalChoices.FOCUS_ON_MYSELF, label: "Focus on myself" },
 ]
 
 export function multipleChoiceSlide({
@@ -25,6 +30,10 @@ export function multipleChoiceSlide({
   allowMultipleSelections = false,
   maxSelections,
 }: MultipleChoiceSlideProps): ISlide {
+  // Read saved goals from ganon
+  const savedGoals = (ganon.get("goals") ?? []) as GoalChoices[]
+  const initialSelected = savedGoals
+
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`MultipleChoiceSlide: buttonPressed: ${optionId}`)
 
@@ -66,10 +75,10 @@ export function multipleChoiceSlide({
     component: (
       <MultipleChoiceSelector
         options={options}
-        heroImage={heroImage}
         onSelection={buttonPressed}
         allowMultiple={allowMultipleSelections}
         maxSelections={maxSelections}
+        initialSelectedOptions={initialSelected}
         onAutoAdvance={onSelection}
       />
     ),
