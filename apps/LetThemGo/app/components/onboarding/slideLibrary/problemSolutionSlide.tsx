@@ -27,6 +27,8 @@ export function problemSolutionSlide({
     title: "Can’t stop checking or reaching out?",
     description: "Create space to heal—then feel the weight lift.",
     component: <ProblemSolutionComponent />,
+    textPlacement: "sandwich",
+    textAlignment: "center",
   }
 }
 

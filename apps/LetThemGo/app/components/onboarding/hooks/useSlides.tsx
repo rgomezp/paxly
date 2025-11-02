@@ -60,8 +60,8 @@ export const useSlides = (onSelection?: () => void) => {
     () => [
       heroSlide({ onSelection }),
       problemSolutionSlide({ onSelection }),
-      lastContactSlide({ onSelection }),
       howItWorksSlide({ onSelection }),
+      lastContactSlide({ onSelection }),
       multipleChoiceSlide({ onSelection, allowMultipleSelections: true, maxSelections: 3 }),
       referralSourceSlide({ onSelection }),
       nicknameSlide({ onSelection, refreshNickname }),

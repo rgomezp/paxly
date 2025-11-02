@@ -21,9 +21,10 @@ interface Benefit {
 export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide {
   return {
     id: "hero",
-    title: "Let go. Heal your heart.",
-    description: "Guided no contact, daily check-ins, and journaling to move on.",
+    title: "Breakups are tough. Let’s make them easier.",
+    description: "It takes about 3 months on average to get over a breakup 💔",
     component: <HeroComponent />,
+    textPlacement: "bottom",
   }
 }
 
@@ -31,12 +32,7 @@ const benefits: Benefit[] = [
   {
     icon: "user-slash",
     title: "Finally let them go",
-    description: "See your streak since last reach-out",
-  },
-  {
-    icon: "heart",
-    title: "Track your progress",
-    description: "Express, process, and release daily",
+    description: "Moving on can be tough, but we're here to help!",
   },
   {
     icon: "seedling",
