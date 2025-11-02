@@ -10,7 +10,7 @@ type AgeSlideProps = {
   onSelection?: () => void
 }
 
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
+const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1m/planty.webp")
 
 const options: MultipleChoiceOption<AgeRanges>[] = [
   { id: AgeRanges.SEVENTEEN_OR_UNDER, label: "17 or under" },

@@ -9,7 +9,7 @@ type RelationshipDurationSlideProps = {
   onSelection?: () => void
 }
 
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
+const heroImage: ImageRequireSource = require("../../../../assets/images/planty/2m/planty.webp")
 
 const options: MultipleChoiceOption<RelationshipDurations>[] = [
   { id: RelationshipDurations.ZERO_TO_SIX_MONTHS, label: "0-6 months" },
@@ -18,9 +18,7 @@ const options: MultipleChoiceOption<RelationshipDurations>[] = [
   { id: RelationshipDurations.OVER_THREE_YEARS, label: "Over 3 years" },
 ]
 
-export function relationshipDurationSlide({
-  onSelection,
-}: RelationshipDurationSlideProps): ISlide {
+export function relationshipDurationSlide({ onSelection }: RelationshipDurationSlideProps): ISlide {
   // Read saved relationshipDuration from ganon
   const savedDuration = ganon.get("relationshipDuration") as RelationshipDurations | null
   const initialSelected = savedDuration ? [savedDuration] : []
@@ -60,4 +58,3 @@ export function relationshipDurationSlide({
     ),
   }
 }
-

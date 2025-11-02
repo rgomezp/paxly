@@ -10,7 +10,7 @@ type GenderSlideProps = {
   onSelection?: () => void
 }
 
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
+const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1w/planty.webp")
 
 const options: MultipleChoiceOption<Genders>[] = [
   { id: Genders.FEMALE, label: "Female" },
