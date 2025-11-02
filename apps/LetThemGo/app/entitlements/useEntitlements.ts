@@ -105,6 +105,10 @@ export function useEntitlements(): EntitlementsHook {
   }
 
   const hasFeatureAccess = (feature: keyof typeof FEATURES): boolean => {
+    if (process.env.NODE_ENV === "development") {
+      return true
+    }
+
     // Check if feature is unlocked via referrals first
     if (referralUnlockedFeatures.has(feature)) {
       return true
