@@ -10,6 +10,10 @@ import { IDailyTasks } from "@/types/IDailyTasks"
 import IJournalEntry from "@/types/IJournalEntry"
 import { ILastWateredData } from "@/types/ILastWateredData"
 import { GoalChoices } from "@/types/GoalChoice"
+import { Genders } from "@/types/Gender"
+import { AgeRanges } from "@/types/AgeRange"
+import { RelationshipDurations } from "@/types/RelationshipDuration"
+import { WhoEndedItChoices } from "@/types/WhoEndedIt"
 interface StorageMapping {
   // v1
   email: string | null
@@ -35,6 +39,10 @@ interface StorageMapping {
   messageIntoTheVoidDraft: string | null
   lastWateredData: ILastWateredData
   goals: GoalChoices[]
+  gender: Genders | null
+  ageRange: AgeRanges | null
+  relationshipDuration: RelationshipDurations | null
+  whoEndedIt: WhoEndedItChoices | null
 }
 
 export default StorageMapping
