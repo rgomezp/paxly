@@ -33,6 +33,8 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
 
   // Animate the progress
   const animatedProgress = useRef(new Animated.Value(0)).current
+  // Animate fade-in
+  const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     if (!progressData) return
@@ -44,6 +46,17 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
       tension: 40,
     }).start()
   }, [animatedProgress, progressData, refreshTrigger])
+
+  // Fade in animation
+  useEffect(() => {
+    if (!progressData) return
+
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start()
+  }, [fadeAnim, progressData])
 
   if (!progressData) {
     return null
@@ -96,7 +109,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
   const showDroplet = allDailyTasksCompleted && !wateredToday
 
   return (
-    <View style={themed($container)}>
+    <Animated.View style={[themed($container), { opacity: fadeAnim }]}>
       {/* Glow effect wrapper */}
       <View style={[$glowWrapper, { backgroundColor: primaryColor }]}>
         {/* Inner container */}
@@ -207,7 +220,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
           setInternalRefreshTrigger((prev) => prev + 1)
         }}
       />
-    </View>
+    </Animated.View>
   )
 }
 
