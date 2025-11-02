@@ -77,7 +77,7 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> =
       // Play send sound effect
       try {
         const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/sounds/send.mp3"),
+          require("../../assets/sounds/transition.m4a"),
           {
             shouldPlay: true,
             volume: 1.0,
