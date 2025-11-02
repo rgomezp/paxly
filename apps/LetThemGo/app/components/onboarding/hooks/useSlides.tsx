@@ -76,8 +76,8 @@ export const useSlides = (onSelection?: () => void) => {
       relationshipDurationSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
       multipleChoiceSlide({ onSelection, allowMultipleSelections: true, maxSelections: 3 }),
-      referralSourceSlide({ onSelection }),
       testimonialsSlide({ onSelection }),
+      referralSourceSlide({ onSelection }),
     ],
     [onSelection],
   )
