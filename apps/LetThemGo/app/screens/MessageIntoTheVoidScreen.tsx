@@ -19,6 +19,8 @@ import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import MessageIntoTheVoidManager from "@/managers/MessageIntoTheVoidManager"
 import SendMessageConfirmationModal from "@/components/modals/SendMessageConfirmationModal"
+import { Audio } from "expo-av"
+import Log from "@/utils/Log"
 
 // Conditionally import expo-image for animated WebP support
 let ExpoImage: any = null
@@ -71,7 +73,45 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> =
       setIsSendModalVisible(true)
     }
 
-    const handleConfirmSend = () => {
+    const handleConfirmSend = async () => {
+      // Play send sound effect
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require("../../assets/sounds/send.mp3"),
+          {
+            shouldPlay: true,
+            volume: 1.0,
+          },
+        )
+
+        // Set up status listener for auto-cleanup
+        sound.setOnPlaybackStatusUpdate((status) => {
+          if (status.isLoaded && status.didJustFinish) {
+            sound.unloadAsync().catch(() => {
+              // Ignore cleanup errors
+            })
+          }
+        })
+
+        // Auto-cleanup after playback completes
+        setTimeout(() => {
+          sound
+            .getStatusAsync()
+            .then((status) => {
+              if (status.isLoaded) {
+                sound.unloadAsync().catch(() => {
+                  // Ignore cleanup errors
+                })
+              }
+            })
+            .catch(() => {
+              // Sound already unloaded, ignore
+            })
+        }, 3000) // 3 second buffer for cleanup
+      } catch (error) {
+        Log.error("MessageIntoTheVoidScreen: Failed to play send sound:", error)
+      }
+
       MessageIntoTheVoidManager.sendMessage(text.trim())
       setIsSendModalVisible(false)
       navigation.goBack()
