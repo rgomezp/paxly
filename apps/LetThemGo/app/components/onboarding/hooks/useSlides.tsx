@@ -10,6 +10,10 @@ import { referralSourceSlide } from "../slideLibrary/referralSourceSlide"
 import { howItWorksSlide } from "../slideLibrary/howItWorksSlide"
 import { multipleChoiceSlide } from "../slideLibrary/multipleChoiceSlide"
 import { lastContactSlide } from "../slideLibrary/lastContactSlide"
+import { genderSlide } from "../slideLibrary/genderSlide"
+import { ageSlide } from "../slideLibrary/ageSlide"
+import { relationshipDurationSlide } from "../slideLibrary/relationshipDurationSlide"
+import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -61,10 +65,14 @@ export const useSlides = (onSelection?: () => void) => {
       heroSlide({ onSelection }),
       problemSolutionSlide({ onSelection }),
       howItWorksSlide({ onSelection }),
+      nicknameSlide({ onSelection, refreshNickname }),
       lastContactSlide({ onSelection }),
+      genderSlide({ onSelection }),
+      ageSlide({ onSelection }),
+      relationshipDurationSlide({ onSelection }),
+      whoEndedItSlide({ onSelection }),
       multipleChoiceSlide({ onSelection, allowMultipleSelections: true, maxSelections: 3 }),
       referralSourceSlide({ onSelection }),
-      nicknameSlide({ onSelection, refreshNickname }),
       testimonialsSlide({ onSelection }),
     ],
     [onSelection],
