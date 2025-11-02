@@ -3,11 +3,17 @@ import Log from "../utils/Log"
 import { FEATURES } from "./constants/features"
 import { getReferralUnlockableFeatures } from "./constants/featureDefinitions"
 import Constants from "expo-constants"
+import { debounce } from "lodash"
 
 type ReferralHook = {
   referralUnlockedFeatures: Set<keyof typeof FEATURES>
   checkReferralUnlocks: () => Promise<void>
 }
+
+// Debounced log function to reduce log spam - created at module level to persist across renders
+const debouncedLog = debounce((message: string) => {
+  Log.info(message)
+}, 5000)
 
 export function useReferralUnlocks(): ReferralHook {
   const [referralUnlockedFeatures, setReferralUnlockedFeatures] = useState<
@@ -17,7 +23,7 @@ export function useReferralUnlocks(): ReferralHook {
   const checkReferralUnlocks = useCallback(async () => {
     // Early return if referrals are disabled
     if (!Constants?.expoConfig?.extra?.useReferrals) {
-      Log.info("useReferralUnlocks: Referrals are disabled - skipping unlock checks")
+      debouncedLog("useReferralUnlocks: Referrals are disabled - skipping unlock checks")
       setReferralUnlockedFeatures(new Set())
       return
     }
