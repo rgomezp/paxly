@@ -46,19 +46,14 @@ export const useDeleteAccountSettingConfig = (): IAppSettingsModalConfig => {
   const getValue = () => (ganon.get("email") as string | undefined) ?? ""
 
   const onPress = async () => {
+    ganon.clearAllData()
     const loggedIn = LoginManager.getInstance().isLoggedIn()
     if (loggedIn) {
-      // Ensure onboarding is marked incomplete before clearing
-      ganon.set("finishedOnboarding", false)
       await ganon.dangerouslyDelete()
       await LoginManager.getInstance().logout(false)
-    } else {
-      ganon.set("finishedOnboarding", false)
-      ganon.dangerouslyDelete()
-      await DataInitializationManager.initializeData()
-      // Notify app to refresh derived state
-      EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
     }
+    await DataInitializationManager.initializeData()
+    EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
   }
 
   return {
