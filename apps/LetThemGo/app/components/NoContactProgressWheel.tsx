@@ -10,10 +10,9 @@ import {
 } from "react-native"
 import Svg, { Circle } from "react-native-svg"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { Text } from "@/components"
+import { Text, PlantyFromCurrentGoal } from "@/components"
 import NoContactManager from "@/managers/NoContactManager"
 import DatePickerModal from "./modals/DatePickerModal"
-import Planty from "@/components/Planty"
 import PlantyManager from "@/managers/PlantyManager"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import { useStores } from "@/models"
@@ -171,9 +170,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
                   <Text text="💧" style={$dropletEmoji} />
                 </TouchableOpacity>
               )}
-              <Planty
-                goal={progressData.currentGoal}
-                wateredToday={wateredToday}
+              <PlantyFromCurrentGoal
                 isWatering={isWatering}
                 style={$planty}
                 onDrinkFinished={() => {

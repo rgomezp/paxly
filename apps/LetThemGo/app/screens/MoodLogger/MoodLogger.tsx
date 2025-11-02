@@ -19,7 +19,7 @@ import { ALL_MOODS, MOOD_TO_EMOJI, MoodId, MOODS } from "@/types/Moods"
 import { MoodCategory } from "@/types/MoodCategory"
 import { ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
-import { ProgressBar } from "@/components"
+import { ProgressBar, PlantyFromCurrentGoal } from "@/components"
 import { $styles } from "@/theme"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
@@ -82,7 +82,15 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
       >
         {/* Step 1 - Mood */}
         <ScrollView style={{ width }} contentContainerStyle={{ paddingBottom: 20 }}>
-          <Text text="Select mood" preset="bold" style={{ color: theme.colors.text, margin: 20 }} />
+          <View style={{ margin: 20, flexDirection: "row", alignItems: "flex-end" }}>
+            {/* Image of planty here */}
+            <PlantyFromCurrentGoal style={{ width: 48, height: 68, marginRight: 12 }} />
+            <Text
+              text="How are you feeling?"
+              preset="bold"
+              style={{ color: theme.colors.text, paddingBottom: 10 }}
+            />
+          </View>
           <Grid>
             {ALL_MOODS.map((m) => {
               const category = MOODS[m].category
@@ -90,8 +98,8 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
                 category === MoodCategory.Positive
                   ? theme.colors.palette.positive
                   : category === MoodCategory.Negative
-                  ? theme.colors.palette.negative
-                  : theme.colors.palette.neutral
+                    ? theme.colors.palette.negative
+                    : theme.colors.palette.neutral
 
               return (
                 <EmojiTile
