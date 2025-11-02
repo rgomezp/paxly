@@ -1,13 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react"
-import {
-  Animated,
-  View,
-  ViewStyle,
-  TextStyle,
-  Pressable,
-  ImageStyle,
-  TouchableOpacity,
-} from "react-native"
+import { Animated, View, ViewStyle, TextStyle, Pressable, ImageStyle } from "react-native"
 import Svg, { Circle } from "react-native-svg"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text, PlantyFromCurrentGoal } from "@/components"
@@ -16,6 +8,7 @@ import DatePickerModal from "./modals/DatePickerModal"
 import PlantyManager from "@/managers/PlantyManager"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import { useStores } from "@/models"
+import { WaterDropletButton } from "./WaterDropletButton"
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
@@ -156,19 +149,13 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
             {/* Content */}
             <View style={$contentContainer}>
               {showDroplet && (
-                <TouchableOpacity
-                  accessibilityRole="button"
+                <WaterDropletButton
                   onPress={() => {
-                    // Begin watering: mark state and play one-shot animation
-                    PlantyManager.markWateredToday()
+                    // Begin watering: play one-shot animation
                     setIsWatering(true)
                     setInternalRefreshTrigger((prev) => prev + 1)
                   }}
-                  style={[$dropletBtn, { backgroundColor: theme.colors.tint }]}
-                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                >
-                  <Text text="💧" style={$dropletEmoji} />
-                </TouchableOpacity>
+                />
               )}
               <PlantyFromCurrentGoal
                 isWatering={isWatering}
@@ -308,20 +295,4 @@ const $timeRemainingText: TextStyle = {
   fontWeight: "600",
   textAlign: "center",
   marginTop: 4,
-}
-
-const $dropletBtn: ViewStyle = {
-  position: "absolute",
-  top: -10,
-  alignSelf: "center",
-  width: 32,
-  height: 32,
-  borderRadius: 16,
-  alignItems: "center",
-  justifyContent: "center",
-}
-
-const $dropletEmoji: TextStyle = {
-  fontSize: 16,
-  textAlign: "center",
 }
