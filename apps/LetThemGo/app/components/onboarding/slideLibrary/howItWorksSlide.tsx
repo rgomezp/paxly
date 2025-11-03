@@ -14,17 +14,17 @@ type HowItWorksSlideProps = {
 
 const steps: IconTextData[] = [
   {
-    icon: "hand-paper",
+    icon: "sad-tear",
     title: "Set No Contact",
     description: "Decide your intention and start your streak",
   },
   {
-    icon: "calendar-check",
+    icon: "heart",
     title: "Check In Daily",
     description: "Track mood and reflect in a quick journal",
   },
   {
-    icon: "chart-line",
+    icon: "smile",
     title: "Watch Healing Grow",
     description: "Grow out of your pain one day at a time",
   },
@@ -33,8 +33,8 @@ const steps: IconTextData[] = [
 export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlideProps): ISlide {
   return {
     id: "howItWorks",
-    title: "How it works",
-    description: "We will build you a new habit that will help you move on.",
+    title: "Start your journey today",
+    description: "In only 60 days, you'll be on your way to healing and moving on.",
     component: <HowItWorksComponent />,
   }
 }
