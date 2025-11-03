@@ -2,36 +2,11 @@ import { useState, useEffect } from "react"
 import { View, StyleSheet } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { useAppTheme } from "@/utils/useAppTheme"
-import UserManager from "@/managers/UserManager"
-import { ganon } from "@/services/ganon/ganon"
-import { MascotNames } from "@/types/MascotName"
 import { PlantyFromCurrentGoal } from "@/components/PlantyFromCurrentGoal"
 import { WaterDropletButton } from "@/components/WaterDropletButton"
 
 type MascotIntroSlideProps = {
   onSelection?: () => void
-}
-
-// Helper function to get mascot display name
-const getMascotDisplayName = (name: MascotNames): string => {
-  switch (name) {
-    case MascotNames.PLANTY:
-      return "Planty"
-    case MascotNames.WILLOW:
-      return "Willow"
-    case MascotNames.CHLOE:
-      return "Chloe"
-    case MascotNames.OLIVE:
-      return "Olive"
-    case MascotNames.FLORA:
-      return "Flora"
-    case MascotNames.PENNY:
-      return "Penny"
-    case MascotNames.SPROUT:
-      return "Sprout"
-    default:
-      return "Planty"
-  }
 }
 
 function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
@@ -73,18 +48,11 @@ function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
 }
 
 export function mascotIntroSlide({ onSelection }: MascotIntroSlideProps): ISlide {
-  // Get nickname and mascot name for dynamic text
-  const user = UserManager.getUser()
-  const nickname = user?.nickname || null
-  const mascotName = (ganon.get("mascotName") as MascotNames | null) || MascotNames.PLANTY
-
-  const mascotDisplayName = getMascotDisplayName(mascotName)
-  const title = nickname ? `Hi, ${nickname}!` : "Hi!"
+  // Get mascot name for dynamic text
 
   return {
     id: "mascotIntro",
-    title,
-    description: `I'm ${mascotDisplayName}. When you complete tasks, you earn water which I need to grow! Can you give me some water now?`,
+    description: `> When you complete your daily tasks, you will earn water which I need to grow! Can you give me some water now?`,
     component: <MascotIntroComponent onSelection={onSelection} />,
     textPlacement: "sandwich",
     textAlignment: "center",
