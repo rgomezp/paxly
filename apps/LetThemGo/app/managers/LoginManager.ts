@@ -16,6 +16,7 @@ import { OneSignal } from "react-native-onesignal"
 import Purchases from "react-native-purchases"
 import Subscribable from "@/scaffolding/Subscribable"
 import { ganon } from "@/services/ganon/ganon"
+import { Ganon } from "@potionforge/ganon"
 import MigrationManager from "@/migrations/MigrationManager"
 import UserManager from "./UserManager"
 import { EventRegister } from "@/utils/EventEmitter"
@@ -117,26 +118,63 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
 
     // save email to async storage and restore data
     if (user?.email) {
-      ganon.set("email", user.email)
-      const previouslyLoggedIn = this.wasLoggedIn
       this.user = user
 
-      // Only restore from cloud on new login (transition from logged out to logged in)
-      // On app startup when already logged in, hydrate handles loading from local storage
-      const isNewLogin = !previouslyLoggedIn
+      // Use Ganon's login lifecycle method if available (Ganon instance)
+      // Otherwise fall back to manual approach (LocalGanon)
+      if (ganon instanceof Ganon && typeof ganon.login === "function") {
+        try {
+          const action = await ganon.login(user.email)
+          Log.info(`LoginManager: onAuthStateChanged: Ganon login action: ${action}`)
 
-      if (isNewLogin) {
-        Log.info("LoginManager: onAuthStateChanged: new login detected, restoring data from cloud")
-        await ganon.restore()
-        await DataInitializationManager.initializeData()
-        EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
-        Log.info("LoginManager: onAuthStateChanged: restore completed")
+          // Handle different login actions
+          if (action === "restore") {
+            Log.info("LoginManager: onAuthStateChanged: restored data from cloud")
+            await DataInitializationManager.initializeData()
+            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          } else if (action === "backup") {
+            Log.info("LoginManager: onAuthStateChanged: backed up local guest state")
+            await DataInitializationManager.initializeData()
+            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          } else {
+            // "noop" - same user already logged in (app reopen scenario)
+            Log.info("LoginManager: onAuthStateChanged: same user already logged in")
+            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          }
+        } catch (error) {
+          Log.error(`LoginManager: onAuthStateChanged: Ganon login failed: ${error}`)
+          // Fall back to manual approach on error
+          ganon.set("email", user.email)
+          const previouslyLoggedIn = this.wasLoggedIn
+          const isNewLogin = !previouslyLoggedIn
+
+          if (isNewLogin) {
+            Log.info(
+              "LoginManager: onAuthStateChanged: fallback - new login detected, restoring data from cloud",
+            )
+            await ganon.restore()
+            await DataInitializationManager.initializeData()
+            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          } else {
+            Log.info("LoginManager: onAuthStateChanged: fallback - user already logged in")
+            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          }
+        }
       } else {
-        Log.info(
-          "LoginManager: onAuthStateChanged: user already logged in, skipping restore (hydrate handles app startup)",
-        )
-        // Still emit UPDATE_ALL in case components need to refresh
-        EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+        // LocalGanon - use manual approach
+        Log.info("LoginManager: onAuthStateChanged: using LocalGanon, manual approach")
+        ganon.set("email", user.email)
+        const previouslyLoggedIn = this.wasLoggedIn
+        const isNewLogin = !previouslyLoggedIn
+
+        if (isNewLogin) {
+          Log.info("LoginManager: onAuthStateChanged: new login detected")
+          await DataInitializationManager.initializeData()
+          EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+        } else {
+          Log.info("LoginManager: onAuthStateChanged: user already logged in")
+          EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+        }
       }
 
       this.wasLoggedIn = true
@@ -341,9 +379,6 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
   async logout(backup: boolean = true, retryWithoutGoogleSignin: number = 0) {
     Log.info("LoginManager: logout()")
     try {
-      if (backup) {
-        await ganon.backup()
-      }
       // No current way of knowing which provider we have, so we sign out of Google just in case
       // Check if the user is signed in to Google
       const currentUser = GoogleSignin.getCurrentUser()
@@ -355,7 +390,30 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
       }
       await signOut(getAuth())
       OneSignal.logout()
-      ganon.clearAllData()
+
+      // Use Ganon's logout lifecycle method if available (Ganon instance)
+      // Otherwise fall back to manual approach (LocalGanon)
+      if (ganon instanceof Ganon && typeof ganon.logout === "function") {
+        try {
+          await ganon.logout({ backup })
+          Log.info("LoginManager: logout: Ganon logout completed")
+        } catch (error) {
+          Log.error(`LoginManager: logout: Ganon logout failed: ${error}`)
+          // Fall back to manual approach on error
+          if (backup) {
+            await ganon.backup()
+          }
+          ganon.clearAllData()
+        }
+      } else {
+        // LocalGanon - use manual approach
+        Log.info("LoginManager: logout: using LocalGanon, manual approach")
+        if (backup) {
+          await ganon.backup()
+        }
+        ganon.clearAllData()
+      }
+
       await DataInitializationManager.initializeData()
       EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
     } catch (error) {
