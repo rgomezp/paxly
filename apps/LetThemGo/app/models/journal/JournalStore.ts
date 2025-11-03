@@ -1,4 +1,6 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { ganon } from "@/services/ganon/ganon"
+import IJournalEntry from "@/types/IJournalEntry"
 
 const JournalEntryModel = types
   .model("JournalEntry", {
@@ -16,21 +18,44 @@ export const JournalStoreModel = types
     },
   }))
   .actions((self) => ({
+    loadFromGanon() {
+      const items = (ganon.get("journalEntries") ?? []) as IJournalEntry[]
+      self.entries.replace(items)
+    },
     clearAll() {
       self.entries.replace([])
+      ganon.set("journalEntries", [])
     },
     create(text: string) {
       const entry = { text, date: Date.now() }
       self.entries.push(entry)
+      // Persist to ganon
+      try {
+        ganon.set("journalEntries", self.entries.slice())
+      } catch (e) {
+        // noop; persistence errors shouldn't break UI updates
+      }
       return entry
     },
     deleteByDate(timestamp: number) {
-      const idx = self.entries.findIndex((e) => e.date === timestamp)
-      if (idx >= 0) self.entries.splice(idx, 1)
+      const next = self.entries.slice().filter((e) => e.date !== timestamp)
+      self.entries.replace(next)
+      ganon.set("journalEntries", next)
     },
     updateByDate(timestamp: number, newText: string) {
       const idx = self.entries.findIndex((e) => e.date === timestamp)
-      if (idx >= 0) self.entries[idx].text = newText
+      if (idx >= 0) {
+        self.entries[idx].text = newText
+        // Persist to ganon
+        try {
+          ganon.set("journalEntries", self.entries.slice())
+        } catch (e) {
+          // noop; persistence errors shouldn't break UI updates
+        }
+      }
+    },
+    afterCreate() {
+      this.loadFromGanon()
     },
   }))
 
