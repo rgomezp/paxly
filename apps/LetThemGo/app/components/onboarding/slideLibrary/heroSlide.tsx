@@ -24,7 +24,7 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
     title: "Breakups are tough. Let’s make them easier.",
     description: "It takes about 3 months on average to get over a breakup 💔",
     component: <HeroComponent />,
-    textPlacement: "bottom",
+    textPlacement: "top",
   }
 }
 
