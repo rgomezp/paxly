@@ -77,13 +77,19 @@ function OnboardingWrapper() {
 
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
-  const { rehydrated } = useInitialRootStore(() => {
-    // This runs after the root store has been initialized and rehydrated.
+  const { rehydrated } = useInitialRootStore()
 
-    // If your initialization scripts run very fast, it's good to show the splash screen for just a bit longer to prevent flicker.
-    // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed,
-    setTimeout(SplashScreen.hideAsync, 500)
-  })
+  // Hide splash screen when both rehydration and initialization are complete
+  useEffect(() => {
+    if (rehydrated && isInitialized) {
+      // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed
+      setTimeout(() => {
+        SplashScreen.hideAsync().catch(() => {
+          // Ignore errors if splash screen is already hidden
+        })
+      }, 500)
+    }
+  }, [rehydrated, isInitialized])
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
@@ -121,6 +127,12 @@ export function App() {
   const { ThemeProvider, themeScheme, setThemeContextOverride, navigationTheme } = useThemeProvider(
     config.startingTheme,
   )
+  
+  // Prevent the splash screen from auto-hiding until we're ready
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync()
+  }, [])
+  
   // Setup auth listener once on mount
   useEffect(() => {
     const unsubscribe = LoginManager.getInstance().setupAuthListener()

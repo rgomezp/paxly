@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, TextStyle, View } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -12,27 +12,41 @@ import LoginManager from "@/managers/LoginManager"
 import Log from "@/utils/Log"
 import LoginError, { LoginErrors } from "@/utils/errors/LoginErrors"
 import { useNavigation } from "@react-navigation/native"
+import LoadingModal from "@/components/modals/LoadingModal"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen() {
   const { themed } = useAppTheme()
   const loginManager = LoginManager.getInstance()
+  const [loggingIn, setLoggingIn] = useState(false)
+  const loggingInRef = useRef(false)
 
   // Pull in navigation via hook
   const navigation = useNavigation()
 
   useEffect(() => {
     const unsubscribe = loginManager.subscribe(() => {
-      navigation.goBack()
+      // Only navigate back if we're in a login flow
+      if (loggingInRef.current) {
+        setLoggingIn(false)
+        loggingInRef.current = false
+        navigation.goBack()
+      }
     })
     return () => unsubscribe()
   }, [navigation, loginManager])
 
   const handleGoogleLogin = async () => {
     try {
+      setLoggingIn(true)
+      loggingInRef.current = true
       await loginManager.loginGoogle()
+      // Note: The loading modal will be dismissed and navigation will happen
+      // when the subscription callback fires (after login is complete)
     } catch (error: any) {
+      setLoggingIn(false)
+      loggingInRef.current = false
       if (error instanceof LoginError && error.message === LoginErrors.LoginCancelled) {
         // User cancelled, no action needed
         Log.info("LoginScreen: Google login cancelled by user")
@@ -44,8 +58,14 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
 
   const handleAppleLogin = async () => {
     try {
+      setLoggingIn(true)
+      loggingInRef.current = true
       await loginManager.loginApple()
+      // Note: The loading modal will be dismissed and navigation will happen
+      // when the subscription callback fires (after login is complete)
     } catch (error: any) {
+      setLoggingIn(false)
+      loggingInRef.current = false
       if (error instanceof LoginError && error.message === LoginErrors.LoginCancelled) {
         // User cancelled, no action needed
         Log.info("LoginScreen: Apple login cancelled by user")
@@ -57,6 +77,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
 
   return (
     <Screen style={themed($root)} contentContainerStyle={themed($contentContainer)} preset="scroll">
+      <LoadingModal visible={loggingIn} text="Logging in..." />
       <View style={themed($buttons)}>
         <AppleLoginButton onPress={handleAppleLogin} />
         <GoogleLoginButton onPress={handleGoogleLogin} />
