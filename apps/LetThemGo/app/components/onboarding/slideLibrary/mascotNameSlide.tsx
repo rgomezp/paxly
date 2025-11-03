@@ -1,9 +1,11 @@
-import { ImageRequireSource } from "react-native"
+import { ImageRequireSource, StyleSheet } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
 import { MascotNames } from "@/types/MascotName"
 import { ganon } from "@/services/ganon/ganon"
+import { Image as ExpoImage } from "expo-image"
+import UserManager from "@/managers/UserManager"
 
 type MascotNameSlideProps = {
   onSelection?: () => void
@@ -21,10 +23,23 @@ const options: MultipleChoiceOption<MascotNames>[] = [
   { id: MascotNames.SPROUT, label: "Sprout" },
 ]
 
+const styles = StyleSheet.create({
+  heroImage: {
+    height: 140,
+    marginTop: -40,
+    width: 140,
+  },
+})
+
 export function mascotNameSlide({ onSelection }: MascotNameSlideProps): ISlide {
   // Read saved mascotName from ganon
   const savedMascotName = ganon.get("mascotName") as MascotNames | null
   const initialSelected = savedMascotName ? [savedMascotName] : []
+
+  // Read nickname from UserManager
+  const user = UserManager.getUser()
+  const nickname = user?.nickname || ""
+  const greeting = nickname ? `Hi, ${nickname}!` : "Hi!"
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`MascotNameSlide: buttonPressed: ${optionId}`)
@@ -48,17 +63,18 @@ export function mascotNameSlide({ onSelection }: MascotNameSlideProps): ISlide {
   return {
     id: "mascotName",
     title: "Meet your new friend!",
-    description: "Hi! It's nice to meet you. What will you name me?",
+    description: `> ${greeting} It's nice to meet you. What will you name me?`,
     component: (
-      <MultipleChoiceSelector
-        options={options}
-        heroImage={heroImage}
-        onSelection={buttonPressed}
-        allowMultiple={false}
-        initialSelectedOptions={initialSelected}
-        onAutoAdvance={onSelection}
-      />
+      <>
+        <ExpoImage source={heroImage} style={styles.heroImage} contentFit="contain" />
+        <MultipleChoiceSelector
+          options={options}
+          onSelection={buttonPressed}
+          allowMultiple={false}
+          initialSelectedOptions={initialSelected}
+          onAutoAdvance={onSelection}
+        />
+      </>
     ),
   }
 }
-
