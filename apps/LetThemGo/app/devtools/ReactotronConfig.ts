@@ -14,6 +14,7 @@ import { goBack, resetRoot, navigate } from "@/navigators/navigationUtilities"
 import { Reactotron } from "./ReactotronClient"
 import { ReactotronReactNative } from "reactotron-react-native"
 import { MMKV } from "react-native-mmkv"
+import MoodManager from "@/managers/MoodManager"
 
 const reactotron = Reactotron.configure({
   name: require("../../package.json").name,
@@ -105,6 +106,23 @@ reactotron.onCustomCommand({
   handler: () => {
     Reactotron.log("Going back")
     goBack()
+  },
+})
+
+reactotron.onCustomCommand({
+  title: "Populate Dummy Mood Data",
+  description: "Populates mood history with dummy data for the past week",
+  command: "populateMoodData",
+  handler: () => {
+    Reactotron.log("Populating dummy mood data for past week...")
+    const count = MoodManager.populateDummyData()
+    Reactotron.log(`Successfully created ${count} mood entries`)
+    Reactotron.display({
+      name: "MOOD DATA POPULATED",
+      preview: `${count} entries created`,
+      value: `Added ${count} mood entries for the past 7 days`,
+      important: true,
+    })
   },
 })
 
