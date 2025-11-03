@@ -18,6 +18,22 @@ const { default: customConfig } = require("./customConfig")
 export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
   const existingPlugins = config.plugins ?? []
 
+  // Derive iOS URL scheme from iOS client ID if available
+  // Format: if client ID is "1234567890-abcdefg.apps.googleusercontent.com"
+  // then URL scheme is "com.googleusercontent.apps.1234567890-abcdefg"
+  const iosClientId = process.env.EXPO_PUBLIC_IOS_CLIENT_ID
+  let iosUrlScheme: string | undefined
+  if (iosClientId) {
+    // Remove the .apps.googleusercontent.com suffix if present
+    const clientIdPrefix = iosClientId.replace(/\.apps\.googleusercontent\.com$/, "")
+    iosUrlScheme = `com.googleusercontent.apps.${clientIdPrefix}`
+  }
+
+  // Build Google Sign-In plugin configuration
+  const googleSignInPluginConfig: [string, { iosUrlScheme: string }] | string = iosUrlScheme
+    ? ["@react-native-google-signin/google-signin", { iosUrlScheme }]
+    : "@react-native-google-signin/google-signin"
+
   return {
     name: "LetThemGo",
     slug: "let-them-go",
@@ -57,7 +73,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "5",
+      buildNumber: "6",
       config: {
         usesNonExemptEncryption: false,
       },
@@ -89,7 +105,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       ],
       "expo-localization",
       "expo-font",
-      "@react-native-google-signin/google-signin",
+      googleSignInPluginConfig,
       "@react-native-firebase/app",
       "@react-native-firebase/app-check",
       "@react-native-firebase/crashlytics",
