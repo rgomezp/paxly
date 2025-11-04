@@ -5,6 +5,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "../buttons/RectangularButton"
 import { useNavigation } from "@react-navigation/native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
+import { URGE_LESSONS } from "@/data/LessonRegistry"
 
 interface HelpModalProps {
   visible: boolean
@@ -22,11 +23,16 @@ type ButtonProps = {
 }
 
 const BUTTON_TO_LESSON_MAP: Record<string, string> = {
-  urge_to_contact: "mini_wait_90",
   sleep_poorly: "mini_sleep_rescue",
   feeling_down: "w6_move_body",
   ruminating: "d9_rumination_cap",
   i_contacted: "mini_repair_relapse",
+}
+
+// Helper function to randomly select an urge lesson
+const getRandomUrgeLesson = (): string => {
+  const randomIndex = Math.floor(Math.random() * URGE_LESSONS.length)
+  return URGE_LESSONS[randomIndex]
 }
 
 export default function HelpModal({
@@ -51,7 +57,8 @@ export default function HelpModal({
       isPaidFeature: true,
       onClick: () => {
         handleOptionPress(onLessonActivated)
-        navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["urge_to_contact"] })
+        const randomLessonId = getRandomUrgeLesson()
+        navigation.navigate("SingleLesson", { lessonId: randomLessonId })
       },
     },
     /* {
