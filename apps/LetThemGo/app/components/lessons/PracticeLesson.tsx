@@ -7,7 +7,6 @@ import RectangularButton from "../buttons/RectangularButton"
 import { Countdown } from "./primitives/Countdown"
 import { Breath } from "./primitives/Breath"
 import { AudioStep } from "./primitives/AudioStep"
-import { LessonCard } from "./primitives/LessonCard"
 import { LessonHeader } from "./LessonHeader"
 import { CheckRow } from "./primitives/CheckRow"
 import { TextInputStep } from "./primitives/TextInputStep"
@@ -48,10 +47,8 @@ export function PracticeLesson({
         }))}
       >
         {s?.t === "instruction" && (
-          <View style={themed(() => ({ marginBottom: -theme.spacing.sm }))}>
-            <LessonCard>
-              <Text>{s.body}</Text>
-            </LessonCard>
+          <View style={themed(() => ({ paddingHorizontal: theme.spacing.md }))}>
+            <Text style={themed(() => ({ textAlign: "center" }))}>{s.body}</Text>
           </View>
         )}
         {s?.t === "timer" && <Countdown seconds={s.seconds} label={s.label} onDone={next} />}
