@@ -15,6 +15,10 @@ import { AgeRanges } from "@/types/AgeRange"
 import { RelationshipDurations } from "@/types/RelationshipDuration"
 import { WhoEndedItChoices } from "@/types/WhoEndedIt"
 import { MascotNames } from "@/types/MascotName"
+import { YesNoChoices } from "@/types/YesNo"
+import { NoContactReasonChoices } from "@/types/NoContactReason"
+import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
+import { AppMainGoalChoices } from "@/types/AppMainGoal"
 interface StorageMapping {
   // v1
   email: string | null
@@ -45,6 +49,11 @@ interface StorageMapping {
   relationshipDuration: RelationshipDurations | null
   whoEndedIt: WhoEndedItChoices | null
   mascotName: MascotNames | null
+  isFirstBreakup: YesNoChoices | null
+  noContactReason: NoContactReasonChoices | null
+  checkSocialMedia: YesNoChoices | null
+  contactTemptationSituation: ContactTemptationSituationsChoices | null
+  appMainGoal: AppMainGoalChoices | null
 }
 
 export default StorageMapping
