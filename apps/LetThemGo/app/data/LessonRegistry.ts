@@ -198,7 +198,8 @@ export const LESSONS: Record<string, ILessonConfig> = {
       { t: "instruction", body: "Pick ONE thing to do right now:" },
       {
         t: "instruction",
-        body: "• Text a friend • Do 10 push-ups • Organize one drawer • Write in your journal",
+        body: `• Text a friend\n• Do 10 push-ups\n• Organize one drawer\n• Write in your journal\n• Take a walk outside\n• Do some gentle yoga\n
+        Do this for 3 minutes.`,
       },
       { t: "timer", seconds: 180, label: "Do something else" },
       { t: "instruction", body: "Check in: How does the urge feel now?" },
