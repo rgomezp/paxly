@@ -21,6 +21,9 @@ export function CheckRow({
         flexDirection: "row",
         alignItems: "center",
         paddingVertical: 10,
+        paddingHorizontal: theme.spacing.md,
+        maxWidth: "90%",
+        alignSelf: "center",
       }))}
     >
       <View
@@ -28,15 +31,18 @@ export function CheckRow({
           width: 22,
           height: 22,
           borderRadius: 6,
-          marginRight: 10,
+          marginRight: theme.spacing.lg,
           backgroundColor: value ? theme.colors.tint : theme.colors.card,
           justifyContent: "center",
           alignItems: "center",
+          flexShrink: 0,
         }))}
       >
         {value && <Text style={themed(() => ({ color: theme.colors.background }))}>✓</Text>}
       </View>
-      <Text style={themed(() => ({ color: theme.colors.text }))}>{label}</Text>
+      <View style={themed(() => ({ flex: 1, flexShrink: 1 }))}>
+        <Text style={themed(() => ({ color: theme.colors.text }))}>{label}</Text>
+      </View>
     </Pressable>
   )
 }
