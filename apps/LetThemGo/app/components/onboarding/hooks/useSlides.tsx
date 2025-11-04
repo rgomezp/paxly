@@ -8,11 +8,15 @@ import { heroSlide } from "../slideLibrary/heroSlide"
 import { problemSolutionSlide } from "../slideLibrary/problemSolutionSlide"
 import { referralSourceSlide } from "../slideLibrary/referralSourceSlide"
 import { howItWorksSlide } from "../slideLibrary/howItWorksSlide"
-import { multipleChoiceSlide } from "../slideLibrary/multipleChoiceSlide"
 import { lastContactSlide } from "../slideLibrary/lastContactSlide"
 import { genderSlide } from "../slideLibrary/genderSlide"
 import { ageSlide } from "../slideLibrary/ageSlide"
 import { relationshipDurationSlide } from "../slideLibrary/relationshipDurationSlide"
+import { isFirstBreakupSlide } from "../slideLibrary/isFirstBreakupSlide"
+import { noContactReasonSlide } from "../slideLibrary/noContactReasonSlide"
+import { checkSocialMediaSlide } from "../slideLibrary/checkSocialMediaSlide"
+import { contactTemptationSituationsSlide } from "../slideLibrary/contactTemptationSituationsSlide"
+import { appMainGoalSlide } from "../slideLibrary/appMainGoalSlide"
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
@@ -75,8 +79,12 @@ export const useSlides = (onSelection?: () => void) => {
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
       relationshipDurationSlide({ onSelection }),
+      isFirstBreakupSlide({ onSelection }),
+      noContactReasonSlide({ onSelection }),
+      checkSocialMediaSlide({ onSelection }),
+      contactTemptationSituationsSlide({ onSelection }),
+      appMainGoalSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
-      multipleChoiceSlide({ onSelection, allowMultipleSelections: true, maxSelections: 3 }),
       testimonialsSlide({ onSelection }),
       referralSourceSlide({ onSelection }),
       loadingSlide({ onSelection }),
