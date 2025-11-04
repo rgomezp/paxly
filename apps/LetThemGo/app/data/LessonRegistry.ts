@@ -133,7 +133,10 @@ export const LESSONS: Record<string, ILessonConfig> = {
       { t: "timer", seconds: 20, label: "Notice 2 things" },
       { t: "instruction", body: "Name 1 thing you can taste or one thing you're grateful for." },
       { t: "timer", seconds: 20, label: "Notice 1 thing" },
-      { t: "instruction", body: "Notice how the urge feels now. It's still there, but you're present with it." },
+      {
+        t: "instruction",
+        body: "Notice how the urge feels now. It's still there, but you're present with it.",
+      },
     ],
     commitment: { text: "Use this when urge >5/10" },
   },
@@ -146,7 +149,10 @@ export const LESSONS: Record<string, ILessonConfig> = {
     format: "practice",
     steps: [
       { t: "instruction", body: "Box breathing helps regulate your body's stress response." },
-      { t: "instruction", body: "Breathe in for 4 counts, hold for 4, out for 4, hold for 4. Repeat." },
+      {
+        t: "instruction",
+        body: "Breathe in for 4 counts, hold for 4, out for 4, hold for 4. Repeat.",
+      },
       { t: "breath", pattern: "box", rounds: 4 },
       { t: "instruction", body: "Notice any shift in the urge. It may feel less urgent." },
       { t: "instruction", body: "Remember: this feeling will pass. You've got this." },
@@ -190,11 +196,14 @@ export const LESSONS: Record<string, ILessonConfig> = {
     steps: [
       { t: "instruction", body: "That energy wanting to contact them? Let's redirect it." },
       { t: "instruction", body: "Pick ONE thing to do right now:" },
-      { t: "instruction", body: "• Text a friend • Do 10 push-ups • Organize one drawer • Write in your journal" },
+      {
+        t: "instruction",
+        body: "• Text a friend • Do 10 push-ups • Organize one drawer • Write in your journal",
+      },
       { t: "timer", seconds: 180, label: "Do something else" },
       { t: "instruction", body: "Check in: How does the urge feel now?" },
       {
-        t: "check",
+        t: "textInput",
         prompt: "Name one way you feel different after redirecting.",
       },
     ],
@@ -211,7 +220,10 @@ export const LESSONS: Record<string, ILessonConfig> = {
       { t: "instruction", body: "Close your eyes. Notice where you feel the urge in your body." },
       { t: "instruction", body: "Is it in your chest? Your stomach? Your hands?" },
       { t: "timer", seconds: 30, label: "Scan your body" },
-      { t: "instruction", body: "Describe the sensation without judgment. Is it tight? Hot? Restless?" },
+      {
+        t: "instruction",
+        body: "Describe the sensation without judgment. Is it tight? Hot? Restless?",
+      },
       { t: "timer", seconds: 30, label: "Describe it" },
       { t: "instruction", body: "Breathe into that space. Notice how it shifts, even slightly." },
       { t: "breath", pattern: "physiological", rounds: 3 },
@@ -274,12 +286,18 @@ export const LESSONS: Record<string, ILessonConfig> = {
     steps: [
       { t: "instruction", body: "Take a deep breath. Remember why you chose no contact." },
       { t: "breath", pattern: "physiological", rounds: 1 },
-      { t: "instruction", body: "You made this choice for yourself. For your healing. For your future." },
+      {
+        t: "instruction",
+        body: "You made this choice for yourself. For your healing. For your future.",
+      },
       {
         t: "check",
         prompt: "Say to yourself: 'I choose me. I choose my healing.'",
       },
-      { t: "instruction", body: "This urge doesn't change your commitment. It's just a wave that will pass." },
+      {
+        t: "instruction",
+        body: "This urge doesn't change your commitment. It's just a wave that will pass.",
+      },
       { t: "timer", seconds: 60, label: "Breathe and commit" },
     ],
     commitment: { text: "Renew daily" },
