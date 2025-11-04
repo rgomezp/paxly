@@ -22,8 +22,9 @@ export function BuilderLesson({
   const toggle = (key: string) => setChecked((c) => ({ ...c, [key]: !c[key] }))
   return (
     <Screen>
-      <LessonHeader title={config.title} subtitle={config.goal} />
-      <ScrollView style={themed(() => ({ flex: 1, padding: theme.spacing.lg }))}>
+      <View style={themed(() => ({ flex: 1 }))}>
+        <LessonHeader title={config.title} subtitle={config.goal} />
+        <ScrollView style={themed(() => ({ flex: 1, padding: theme.spacing.lg }))}>
         {config.sections.map((s, idx) => (
           <View key={idx} style={themed(() => ({ marginBottom: theme.spacing.lg }))}>
             <Text
@@ -93,8 +94,20 @@ export function BuilderLesson({
             })}
           </View>
         ))}
-        <RectangularButton buttonText="Done" onClick={() => onComplete?.()} />
-      </ScrollView>
+        </ScrollView>
+        <View
+          style={themed(() => ({
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            paddingBottom: theme.spacing.lg,
+            alignItems: "center",
+          }))}
+        >
+          <RectangularButton buttonText="Done" onClick={() => onComplete?.()} />
+        </View>
+      </View>
     </Screen>
   )
 }

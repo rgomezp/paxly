@@ -1,6 +1,6 @@
 import { CardLessonConfig } from "@/types/lessons/ICardLessonConfig"
 import { Text } from ".."
-import { ScrollView } from "react-native"
+import { ScrollView, View } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { CommitBar } from "./primitives/CommitBar"
 import { LessonCard } from "./primitives/LessonCard"
@@ -15,7 +15,7 @@ export function CardLesson({
 }) {
   const { themed, theme } = useAppTheme()
   return (
-    <>
+    <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
       <ScrollView style={themed(() => ({ flex: 1, padding: theme.spacing.md }))}>
         {config.cards.map((c, i) => (
@@ -24,7 +24,16 @@ export function CardLesson({
           </LessonCard>
         ))}
       </ScrollView>
-      <CommitBar text={config.commitment?.text} onDone={onComplete} />
-    </>
+      <View
+        style={themed(() => ({
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }))}
+      >
+        <CommitBar text={config.commitment?.text} onDone={onComplete} />
+      </View>
+    </View>
   )
 }

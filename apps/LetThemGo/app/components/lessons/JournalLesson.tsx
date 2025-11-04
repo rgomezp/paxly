@@ -19,9 +19,9 @@ export function JournalLesson({
   const [form, setForm] = useState<Record<string, any>>({})
   const update = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }))
   return (
-    <>
+    <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      <ScrollView>
+      <ScrollView style={themed(() => ({ flex: 1, padding: theme.spacing.md }))}>
         {config.fields.map((f) => (
           <View key={f.name}>
             <Text>{(f as any).label}</Text>
@@ -69,7 +69,18 @@ export function JournalLesson({
           </View>
         ))}
       </ScrollView>
-      <RectangularButton buttonText="Save & Continue" onClick={() => onComplete?.()} />
-    </>
+      <View
+        style={themed(() => ({
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          paddingBottom: theme.spacing.lg,
+          alignItems: "center",
+        }))}
+      >
+        <RectangularButton buttonText="Save & Continue" onClick={() => onComplete?.()} />
+      </View>
+    </View>
   )
 }
