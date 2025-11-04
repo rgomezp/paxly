@@ -113,8 +113,8 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       [
         "expo-splash-screen",
         {
-          image: "./assets/images/app-icon-android-adaptive-foreground.png",
-          imageWidth: 300,
+          image: "./assets/images/splash-icon.png",
+          imageWidth: 150,
           resizeMode: "contain",
           backgroundColor: "#191015",
         },
