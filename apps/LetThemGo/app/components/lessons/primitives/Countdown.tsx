@@ -55,8 +55,6 @@ export function Countdown({
       style={themed(() => ({
         alignItems: "center",
         gap: theme.spacing.sm,
-        padding: theme.spacing.md,
-        borderRadius: theme.spacing.md,
       }))}
     >
       <Text preset="heading" size="xxl" weight="bold">
