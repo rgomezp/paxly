@@ -9,7 +9,7 @@ interface SingleLessonScreenProps extends AppStackScreenProps<"SingleLesson"> {}
 export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigation }) => {
   const { lessonId } = route.params
   return (
-    <Screen preset="scroll">
+    <Screen preset="fixed" contentContainerStyle={{ flex: 1 }}>
       <LessonPlayer lessonId={lessonId} onComplete={() => navigation.goBack()} />
     </Screen>
   )
