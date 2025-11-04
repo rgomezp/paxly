@@ -13,10 +13,6 @@ interface CustomConfig {
    */
   includeSettingsScreen?: boolean
   /**
-   * Whether to use local Ganon
-   */
-  localGanon?: boolean
-  /**
    * The starting theme
    */
   startingTheme?: "light" | "dark" | "auto"
@@ -52,7 +48,6 @@ export default function customConfig(): CustomConfig {
     privacyPolicyUrl: "https://letthemgo-privacy.carrd.co",
     includeLoginScreen: true,
     includeSettingsScreen: true,
-    localGanon: false,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
     oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
