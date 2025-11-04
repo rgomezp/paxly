@@ -16,7 +16,6 @@ import { OneSignal } from "react-native-onesignal"
 import Purchases from "react-native-purchases"
 import Subscribable from "@/scaffolding/Subscribable"
 import { ganon } from "@/services/ganon/ganon"
-import { Ganon } from "@potionforge/ganon"
 import MigrationManager from "@/migrations/MigrationManager"
 import UserManager from "./UserManager"
 import { EventRegister } from "@/utils/EventEmitter"
@@ -120,59 +119,41 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
     if (user?.email) {
       this.user = user
 
-      // Use Ganon's login lifecycle method if available (Ganon instance)
-      // Otherwise fall back to manual approach (LocalGanon)
-      if (ganon instanceof Ganon && typeof ganon.login === "function") {
-        try {
-          const action = await ganon.login(user.email)
-          Log.info(`LoginManager: onAuthStateChanged: Ganon login action: ${action}`)
+      // Use Ganon's login lifecycle method
+      try {
+        const action = await ganon.login(user.email)
+        Log.info(`LoginManager: onAuthStateChanged: Ganon login action: ${action}`)
 
-          // Handle different login actions
-          if (action === "restore") {
-            Log.info("LoginManager: onAuthStateChanged: restored data from cloud")
-            await DataInitializationManager.initializeData()
-            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
-          } else if (action === "backup") {
-            Log.info("LoginManager: onAuthStateChanged: backed up local guest state")
-            await DataInitializationManager.initializeData()
-            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
-          } else {
-            // "noop" - same user already logged in (app reopen scenario)
-            Log.info("LoginManager: onAuthStateChanged: same user already logged in")
-            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
-          }
-        } catch (error) {
-          Log.error(`LoginManager: onAuthStateChanged: Ganon login failed: ${error}`)
-          // Fall back to manual approach on error
-          ganon.set("email", user.email)
-          const previouslyLoggedIn = this.wasLoggedIn
-          const isNewLogin = !previouslyLoggedIn
-
-          if (isNewLogin) {
-            Log.info(
-              "LoginManager: onAuthStateChanged: fallback - new login detected, restoring data from cloud",
-            )
-            await ganon.restore()
-            await DataInitializationManager.initializeData()
-            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
-          } else {
-            Log.info("LoginManager: onAuthStateChanged: fallback - user already logged in")
-            EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
-          }
+        // Handle different login actions
+        if (action === "restore") {
+          Log.info("LoginManager: onAuthStateChanged: restored data from cloud")
+          await DataInitializationManager.initializeData()
+          EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+        } else if (action === "backup") {
+          Log.info("LoginManager: onAuthStateChanged: backed up local guest state")
+          await DataInitializationManager.initializeData()
+          EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+        } else {
+          // "noop" - same user already logged in (app reopen scenario)
+          Log.info("LoginManager: onAuthStateChanged: same user already logged in")
+          EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
         }
-      } else {
-        // LocalGanon - use manual approach
-        Log.info("LoginManager: onAuthStateChanged: using LocalGanon, manual approach")
+      } catch (error) {
+        Log.error(`LoginManager: onAuthStateChanged: Ganon login failed: ${error}`)
+        // Fall back to manual approach on error
         ganon.set("email", user.email)
         const previouslyLoggedIn = this.wasLoggedIn
         const isNewLogin = !previouslyLoggedIn
 
         if (isNewLogin) {
-          Log.info("LoginManager: onAuthStateChanged: new login detected")
+          Log.info(
+            "LoginManager: onAuthStateChanged: fallback - new login detected, restoring data from cloud",
+          )
+          await ganon.restore()
           await DataInitializationManager.initializeData()
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
         } else {
-          Log.info("LoginManager: onAuthStateChanged: user already logged in")
+          Log.info("LoginManager: onAuthStateChanged: fallback - user already logged in")
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
         }
       }
@@ -391,28 +372,22 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
       await signOut(getAuth())
       OneSignal.logout()
 
-      // Use Ganon's logout lifecycle method if available (Ganon instance)
-      // Otherwise fall back to manual approach (LocalGanon)
-      if (ganon instanceof Ganon && typeof ganon.logout === "function") {
-        try {
-          await ganon.logout({ backup })
-          Log.info("LoginManager: logout: Ganon logout completed")
-        } catch (error) {
-          Log.error(`LoginManager: logout: Ganon logout failed: ${error}`)
-          // Fall back to manual approach on error
-          if (backup) {
-            await ganon.backup()
-          }
-          ganon.clearAllData()
-        }
-      } else {
-        // LocalGanon - use manual approach
-        Log.info("LoginManager: logout: using LocalGanon, manual approach")
+      // Use Ganon's logout lifecycle method
+      try {
+        await ganon.logout({ backup })
+        Log.info("LoginManager: logout: Ganon logout completed")
+      } catch (error) {
+        Log.error(`LoginManager: logout: Ganon logout failed: ${error}`)
+        // Fall back to manual approach on error
         if (backup) {
           await ganon.backup()
         }
         ganon.clearAllData()
       }
+
+      // Explicitly clear finishedOnboarding to ensure onboarding screen shows again
+      ganon.set("finishedOnboarding", false)
+      Log.info("LoginManager: logout: cleared finishedOnboarding")
 
       await DataInitializationManager.initializeData()
       EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
