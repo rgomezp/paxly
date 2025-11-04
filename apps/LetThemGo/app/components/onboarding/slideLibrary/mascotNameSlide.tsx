@@ -63,7 +63,7 @@ export function mascotNameSlide({ onSelection }: MascotNameSlideProps): ISlide {
   return {
     id: "mascotName",
     title: "Meet your new friend!",
-    description: `> ${greeting} It's nice to meet you. What will you name me?`,
+    description: `> ${greeting} What will you name me?`,
     component: (
       <>
         <ExpoImage source={heroImage} style={styles.heroImage} contentFit="contain" />
