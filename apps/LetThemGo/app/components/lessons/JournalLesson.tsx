@@ -79,7 +79,7 @@ export function JournalLesson({
           alignItems: "center",
         }))}
       >
-        <RectangularButton buttonText="Save & Continue" onClick={() => onComplete?.()} />
+        <RectangularButton buttonText="Finish" onClick={() => onComplete?.()} />
       </View>
     </View>
   )

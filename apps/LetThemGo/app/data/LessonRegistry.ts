@@ -262,7 +262,7 @@ export const LESSONS: Record<string, ILessonConfig> = {
   urge_unsent_letter: {
     id: "urge_unsent_letter",
     moduleId: "mini_interventions",
-    title: "Write an Unsent Letter",
+    title: "Write an Unsent Text",
     goal: "Express without sending",
     estMinutes: 5,
     format: "journal",
@@ -293,7 +293,7 @@ export const LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "check",
-        prompt: "Say to yourself: 'I choose me. I choose my healing.'",
+        prompt: `Say to yourself: "I choose me. I choose my healing."`,
       },
       {
         t: "instruction",
