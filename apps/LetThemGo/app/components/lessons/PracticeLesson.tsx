@@ -34,14 +34,25 @@ export function PracticeLesson({
   const handleTextInputDone = () => {
     next()
   }
+  const showButton = showFinish || (s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio")
   return (
-    <View style={themed(() => ({ alignItems: "center" }))}>
+    <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      <View style={themed(() => ({ flex: 1, padding: theme.spacing.md, gap: theme.spacing.sm }))}>
+      <View
+        style={themed(() => ({
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: theme.spacing.md,
+          paddingBottom: 100, // Always reserve space for button
+        }))}
+      >
         {s?.t === "instruction" && (
-          <LessonCard>
-            <Text>{s.body}</Text>
-          </LessonCard>
+          <View style={themed(() => ({ marginBottom: -theme.spacing.sm }))}>
+            <LessonCard>
+              <Text>{s.body}</Text>
+            </LessonCard>
+          </View>
         )}
         {s?.t === "timer" && <Countdown seconds={s.seconds} label={s.label} onDone={next} />}
         {s?.t === "breath" && <Breath pattern={s.pattern} rounds={s.rounds} onDone={next} />}
@@ -61,16 +72,27 @@ export function PracticeLesson({
           />
         )}
       </View>
-      {(showFinish || (s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio")) && (
-        <RectangularButton
-          width={200}
-          buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
-          onClick={() => {
-            if (showFinish || step + 1 >= config.steps.length) onComplete?.()
-            else next()
-          }}
-        />
-      )}
+      <View
+        style={themed(() => ({
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          paddingBottom: theme.spacing.lg,
+          alignItems: "center",
+        }))}
+      >
+        {showButton && (
+          <RectangularButton
+            width={200}
+            buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
+            onClick={() => {
+              if (showFinish || step + 1 >= config.steps.length) onComplete?.()
+              else next()
+            }}
+          />
+        )}
+      </View>
     </View>
   )
 }
