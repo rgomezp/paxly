@@ -2819,10 +2819,10 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.2.4.tgz"
   integrity sha512-ROFF39F6ZrnzSUEmQQZUar0Jt4xVoP9WnDRdWwF4NNcXs3xBTLgBUDoOwW141y1jP+S8nahIbdxbFC7IShw9Iw==
 
-"@potionforge/ganon@^1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@potionforge/ganon/-/ganon-1.0.0-beta.2.tgz#30514d06c0d7ba8d9a115544153a8ce8a46ee9ef"
-  integrity sha512-jBi1FBW1wwNXx6hS+5JRTQHx7hxLzOZ4ZCSEvnFykdukqoqcCitoATvHOmQZjTYdomTvRIg2EXYIAmbwOHlZBg==
+"@potionforge/ganon@^1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@potionforge/ganon/-/ganon-1.0.0-beta.3.tgz#93e50fe418e0ca4dce0b393b9ae8666412b71d26"
+  integrity sha512-FwN+WJNKeMuch3M53sGHFeUdXJ4zNmESz35H1JXbo9BQvHyaqc0dTF1Ao0REVnj+WARmF1gHuFA91c64PfWsAQ==
   dependencies:
     "@types/crypto-js" "^4.2.2"
     "@types/json-schema" "^7.0.15"

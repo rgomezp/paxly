@@ -46,7 +46,7 @@
     "@expo-google-fonts/space-grotesk": "^0.2.2",
     "@expo/metro-runtime": "~4.0.1",
     "@expo/vector-icons": "~14.0.4",
-    "@potionforge/ganon": "^1.0.0-beta.2",
+    "@potionforge/ganon": "^1.0.0-beta.3",
     "@react-native-firebase/analytics": "23.4.1",
     "@react-native-firebase/app": "23.4.1",
     "@react-native-firebase/app-check": "23.4.1",
