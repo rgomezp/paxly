@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
-    version: "0.1.1",
+    version: "0.1.2",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -73,7 +73,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "8",
+      buildNumber: "9",
       config: {
         usesNonExemptEncryption: false,
       },
@@ -113,7 +113,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       [
         "expo-splash-screen",
         {
-          image: "./assets/images/splash-icon.png",
+          image: "./assets/images/splash_icon.png",
           imageWidth: 150,
           resizeMode: "contain",
           backgroundColor: "#191015",
