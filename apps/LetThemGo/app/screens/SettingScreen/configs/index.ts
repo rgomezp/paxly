@@ -1,1 +1,1 @@
-export { useThemeSettingConfig, useDeleteAccountSettingConfig } from "./settingsConfigs"
+export { useThemeSettingConfig, useDeleteAccountSettingConfig, useMoodReminderFrequencySettingConfig } from "./settingsConfigs"

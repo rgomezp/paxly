@@ -1,4 +1,4 @@
-import { ViewStyle, View } from "react-native"
+import { ViewStyle, View, ScrollView } from "react-native"
 import Modal from "react-native-modal"
 import { useAppTheme } from "@/utils/useAppTheme"
 
@@ -20,7 +20,11 @@ export default function BottomModal({ children, visible, onClose }: BottomModalP
       swipeDirection={["down"]}
       style={$view}
     >
-      <View style={[$content, { backgroundColor: theme.colors.background }]}>{children}</View>
+      <View style={[$content, { backgroundColor: theme.colors.background }]}>
+        <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={$scrollContent}>
+          {children}
+        </ScrollView>
+      </View>
     </Modal>
   )
 }
@@ -31,8 +35,12 @@ const $view: ViewStyle = {
 }
 
 const $content: ViewStyle = {
-  padding: 20,
   borderRadius: 10,
   maxHeight: "60%",
+  overflow: "hidden",
+}
+
+const $scrollContent: ViewStyle = {
+  padding: 20,
   paddingBottom: 40,
 }

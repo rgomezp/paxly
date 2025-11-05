@@ -19,6 +19,7 @@ import { YesNoChoices } from "@/types/YesNo"
 import { NoContactReasonChoices } from "@/types/NoContactReason"
 import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
 import { AppMainGoalChoices } from "@/types/AppMainGoal"
+import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
 interface StorageMapping {
   // v1
   email: string | null
@@ -54,6 +55,7 @@ interface StorageMapping {
   checkSocialMedia: YesNoChoices | null
   contactTemptationSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
+  moodReminderFrequency: MoodReminderFrequency | null
 }
 
 export default StorageMapping

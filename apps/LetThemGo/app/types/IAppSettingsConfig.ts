@@ -12,7 +12,7 @@ export interface IAppSettingsBinaryConfig extends IAppSettingsConfigBase {
 }
 
 export interface IAppSettingsModalConfig extends IAppSettingsConfigBase {
-  modalContent: JSX.Element | null
+  modalContent: JSX.Element | ((onClose: () => void) => JSX.Element) | null
   onPress?: () => void
 }
 
