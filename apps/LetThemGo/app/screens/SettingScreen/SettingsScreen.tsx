@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react"
+import { FC, useMemo, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, TextStyle, Alert } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -6,19 +6,36 @@ import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import SettingRow from "./components/SettingRow"
-import { useThemeSettingConfig, useDeleteAccountSettingConfig } from "./configs"
+import { useThemeSettingConfig, useDeleteAccountSettingConfig, useMoodReminderFrequencySettingConfig } from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import LoadingModal from "@/components/modals/LoadingModal"
+import EventRegister from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
 
 interface SettingsScreenProps extends AppStackScreenProps<"Settings"> {}
 
 export const SettingsScreen: FC<SettingsScreenProps> = observer(function SettingsScreen() {
   const { themed } = useAppTheme()
   const [isDeleting, setIsDeleting] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  // Listen for UPDATE_ALL event to refresh settings
+  useEffect(() => {
+    const handleUpdateAll = () => {
+      setRefreshKey((prev) => prev + 1)
+    }
+
+    EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdateAll)
+
+    return () => {
+      EventRegister.off(GLOBAL_EVENTS.UPDATE_ALL, handleUpdateAll)
+    }
+  }, [])
 
   // Get setting configurations
   const themeSetting = useThemeSettingConfig()
+  const moodReminderFrequencySetting = useMoodReminderFrequencySettingConfig()
   const deleteAccountSetting = useDeleteAccountSettingConfig()
 
   // Wrap delete onPress with confirm + loading modal
@@ -51,7 +68,11 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
     }
   }, [deleteAccountSetting])
 
-  const settings = [themeSetting, deleteSettingWithConfirm]
+  // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
+  const settings = useMemo(
+    () => [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm],
+    [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm, refreshKey],
+  )
 
   return (
     <Screen style={themed($root)} preset="scroll">

@@ -21,6 +21,7 @@ import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
 import { loadingSlide } from "../slideLibrary/loadingSlide"
+import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -85,6 +86,7 @@ export const useSlides = (onSelection?: () => void) => {
       contactTemptationSituationsSlide({ onSelection }),
       appMainGoalSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
+      moodReminderFrequencySlide({ onSelection }),
       testimonialsSlide({ onSelection }),
       referralSourceSlide({ onSelection }),
       loadingSlide({ onSelection }),

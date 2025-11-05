@@ -30,7 +30,7 @@ function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.contentContainer}>
         <View style={styles.plantyContainer}>
-          {!hasAnimated && <WaterDropletButton onPress={handleWaterPress} />}
+          {!hasAnimated && <WaterDropletButton onPress={handleWaterPress} isDemo={true} />}
           <PlantyFromCurrentGoal
             isWatering={isWatering}
             style={styles.planty}
@@ -54,7 +54,7 @@ export function mascotIntroSlide({ onSelection }: MascotIntroSlideProps): ISlide
   const mascotName = ganon.get("mascotName") as MascotNames | null
   const capitalizedMascotName = mascotName
     ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
-    : mascotName
+    : "Planty" // Default fallback if user skipped naming
 
   return {
     id: "mascotIntro",

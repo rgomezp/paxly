@@ -8,6 +8,9 @@ import LoginManager from "@/managers/LoginManager"
 import DataInitializationManager from "@/managers/DataInitializationManager"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
+import { MoodReminderFrequency, MoodReminderFrequencyLabels, MoodReminderFrequencyShorthand } from "@/types/MoodReminderFrequency"
+import { MoodReminderFrequencyModal } from "@/components/settings/MoodReminderFrequencyModal"
+import React from "react"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
   const { setThemeContextOverride } = useAppTheme()
@@ -39,6 +42,24 @@ export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
     iconType: "font-awesome",
     getValue: getThemeDisplayValue,
     toggleTheme,
+  }
+}
+
+export const useMoodReminderFrequencySettingConfig = (): IAppSettingsModalConfig => {
+  const getValue = () => {
+    const frequency = ganon.get("moodReminderFrequency") as MoodReminderFrequency | null
+    if (!frequency) {
+      return "Not set"
+    }
+    return MoodReminderFrequencyShorthand[frequency] || "Not set"
+  }
+
+  return {
+    title: "Mood reminders",
+    iconName: "bell",
+    iconType: "font-awesome",
+    getValue,
+    modalContent: (onClose: () => void) => React.createElement(MoodReminderFrequencyModal, { onClose }),
   }
 }
 

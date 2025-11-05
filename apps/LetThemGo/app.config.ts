@@ -35,7 +35,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     : "@react-native-google-signin/google-signin"
 
   return {
-    name: "LetThemGo",
+    name: "Let Them Go",
     slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
@@ -52,7 +52,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.letthemgo",
-      versionCode: 9,
+      versionCode: 11,
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
@@ -65,6 +65,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         "android.permission.SYSTEM_ALERT_WINDOW",
         "com.oppo.launcher.permission.WRITE_SETTINGS",
         "com.huawei.android.launcher.permission.WRITE_SETTINGS",
+        "com.google.android.gms.permission.AD_ID",
       ],
       allowBackup: false,
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
@@ -73,7 +74,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "10",
+      buildNumber: "11",
       config: {
         usesNonExemptEncryption: false,
       },
