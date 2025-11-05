@@ -35,7 +35,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     : "@react-native-google-signin/google-signin"
 
   return {
-    name: "LetThemGo",
+    name: "Let Them Go",
     slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
