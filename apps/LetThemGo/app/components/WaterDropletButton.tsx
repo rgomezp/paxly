@@ -6,13 +6,18 @@ import { Audio } from "expo-av"
 
 interface WaterDropletButtonProps {
   onPress?: () => void
+  /** If true, don't mark as watered (for demo/onboarding purposes) */
+  isDemo?: boolean
 }
 
-export function WaterDropletButton({ onPress }: WaterDropletButtonProps) {
+export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButtonProps) {
   const { theme } = useAppTheme()
 
   const handlePress = async () => {
-    PlantyManager.markWateredToday()
+    // Only mark as watered if it's not a demo
+    if (!isDemo) {
+      PlantyManager.markWateredToday()
+    }
 
     // Call onPress first, before playing sound, so component unmount doesn't interrupt
     onPress?.()
