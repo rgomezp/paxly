@@ -65,6 +65,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         "android.permission.SYSTEM_ALERT_WINDOW",
         "com.oppo.launcher.permission.WRITE_SETTINGS",
         "com.huawei.android.launcher.permission.WRITE_SETTINGS",
+        "com.google.android.gms.permission.AD_ID",
       ],
       allowBackup: false,
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
