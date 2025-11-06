@@ -48,7 +48,7 @@ export default function customConfig(): CustomConfig {
     privacyPolicyUrl: "https://letthemgo-privacy.carrd.co",
     includeLoginScreen: true,
     includeSettingsScreen: true,
-    startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
+    startingTheme: "auto", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
     oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
     iosAppStoreUrl: "https://apps.apple.com/us/app/no-contact-tracker-letthemgo/id6754750980",
