@@ -8,27 +8,30 @@ import Purchases from "react-native-purchases"
  * Ensures RevenueCat is properly configured before proceeding
  */
 export const ensureRevenueCatConfigured = async (): Promise<void> => {
-  if (Purchases.isConfigured && !Purchases.isConfigured()) {
-    Log.error("RevenueCat is not configured. Attempting to configure...")
-    // Try to configure RevenueCat if it's not configured
-    if (Platform.OS === "ios") {
-      if (process.env.EXPO_PUBLIC_REVENUE_CAT_IOS) {
-        Purchases.configure({ apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_IOS })
-      } else {
-        throw new Error("EXPO_PUBLIC_REVENUE_CAT_IOS is not set")
-      }
-    } else if (Platform.OS === "android") {
-      if (process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID) {
-        Purchases.configure({ apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID })
-      } else {
-        throw new Error("EXPO_PUBLIC_REVENUE_CAT_ANDROID is not set")
-      }
-    }
+  // Check if RevenueCat is already configured
+  if (await Purchases.isConfigured()) {
+    return
+  }
 
-    // Verify configuration was successful
-    if (Purchases.isConfigured && !Purchases.isConfigured()) {
-      throw new Error("RevenueCat configuration failed")
+  Log.error("RevenueCat is not configured. Attempting to configure...")
+  // Try to configure RevenueCat if it's not configured
+  if (Platform.OS === "ios") {
+    if (process.env.EXPO_PUBLIC_REVENUE_CAT_IOS) {
+      Purchases.configure({ apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_IOS })
+    } else {
+      throw new Error("EXPO_PUBLIC_REVENUE_CAT_IOS is not set")
     }
+  } else if (Platform.OS === "android") {
+    if (process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID) {
+      Purchases.configure({ apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_ANDROID })
+    } else {
+      throw new Error("EXPO_PUBLIC_REVENUE_CAT_ANDROID is not set")
+    }
+  }
+
+  // Verify configuration was successful
+  if (!(await Purchases.isConfigured())) {
+    throw new Error("RevenueCat configuration failed")
   }
 }
 

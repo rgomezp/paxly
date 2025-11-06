@@ -9,8 +9,15 @@ const useRevenueCat = (): boolean => {
   useEffect(() => {
     Log.info("Setting up RevenueCat")
 
-    const configureRevenueCat = () => {
+    const configureRevenueCat = async () => {
       try {
+        // Check if RevenueCat is already configured
+        if (await Purchases.isConfigured()) {
+          Log.info("RevenueCat is already configured")
+          setIsRevenueCatSetup(true)
+          return
+        }
+
         const testKey = process.env.EXPO_PUBLIC_REVENUE_CAT_TEST_STORE
         let apiKey: string | undefined
 
@@ -31,7 +38,7 @@ const useRevenueCat = (): boolean => {
         Purchases.configure({ apiKey })
 
         // Verify that RevenueCat is configured
-        if (Purchases.isConfigured && !Purchases.isConfigured()) {
+        if (!(await Purchases.isConfigured())) {
           throw new Error("RevenueCat configuration failed")
         }
 
