@@ -1,3 +1,4 @@
+import type { ReactElement } from "react"
 import { Image, ImageProps, ImageStyle, StyleProp, TextStyle, View, ViewStyle } from "react-native"
 
 import { Button, ButtonProps } from "./Button"
@@ -83,9 +84,9 @@ interface EmptyStateProps {
  * A component to use when there is no data to display. It can be utilized to direct the user what to do next.
  * @see [Documentation and Examples]{@link https://docs.infinite.red/ignite-cli/boilerplate/app/components/EmptyState/}
  * @param {EmptyStateProps} props - The props for the `EmptyState` component.
- * @returns {JSX.Element} The rendered `EmptyState` component.
+ * @returns {ReactElement} The rendered `EmptyState` component.
  */
-export function EmptyState(props: EmptyStateProps): JSX.Element {
+export function EmptyState(props: EmptyStateProps): ReactElement {
   const {
     theme,
     themed,

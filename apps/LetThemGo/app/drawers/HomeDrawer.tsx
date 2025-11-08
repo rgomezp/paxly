@@ -1,4 +1,4 @@
-import { FC, ReactElement, useCallback, useRef, useState } from "react"
+import { FC, ReactElement, RefObject, useCallback, useRef, useState } from "react"
 import { Image, ImageStyle, Platform, Pressable, TextStyle, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
 import { type ContentStyle } from "@shopify/flash-list"
@@ -165,7 +165,7 @@ const PlatformMenuItem = Platform.select({
 export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent }) => {
   const [open, setOpen] = useState(false)
   const [versionPressCount, setVersionPressCount] = useState(0)
-  const menuRef = useRef<ListViewRef<DrawerMenuItem>>(null)
+  const menuRef = useRef<ListViewRef<DrawerMenuItem> | null>(null)
   const { themed, theme } = useAppTheme()
 
   const toggleDrawer = useCallback(() => {
@@ -205,27 +205,28 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
             </View>
           )}
           <ListView<DrawerMenuItem>
-            ref={menuRef}
+            ref={menuRef as RefObject<ListViewRef<DrawerMenuItem>>}
             contentContainerStyle={themed($listContentContainer)}
             estimatedItemSize={250}
             data={sections.map((d) => ({
               name: d.name,
-              useCases: d.data({ theme, themed }).map((u) => {
+              useCases: d.data({ theme, themed }).map((u: ReactElement) => {
+                const props = u.props as any
                 // If the element doesn't have route or url, it's a custom component - store the element directly
-                if (!u.props.route && !u.props.url) {
+                if (!props.route && !props.url) {
                   return {
-                    text: u.props.text as string,
+                    text: props.text as string,
                     key: u.key as string,
                     element: u, // Store the original React element
                   }
                 }
                 return {
-                  text: u.props.text as string,
+                  text: props.text as string,
                   key: u.key as string,
-                  route: u.props.route as string | undefined,
-                  url: u.props.url as string | undefined,
-                  params: u.props.params,
-                  containerStyle: u.props.containerStyle,
+                  route: props.route as string | undefined,
+                  url: props.url as string | undefined,
+                  params: props.params,
+                  containerStyle: props.containerStyle,
                 }
               }),
             }))}

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react"
+
 interface IAppSettingsConfigBase {
   title: string
   iconType: string
@@ -12,7 +14,7 @@ export interface IAppSettingsBinaryConfig extends IAppSettingsConfigBase {
 }
 
 export interface IAppSettingsModalConfig extends IAppSettingsConfigBase {
-  modalContent: JSX.Element | ((onClose: () => void) => JSX.Element) | null
+  modalContent: ReactElement | ((onClose: () => void) => ReactElement) | null
   onPress?: () => void
 }
 
