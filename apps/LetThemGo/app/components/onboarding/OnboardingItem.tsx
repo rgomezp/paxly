@@ -1,4 +1,4 @@
-import { memo, useCallback, cloneElement, isValidElement } from "react"
+import { memo, useCallback, cloneElement, isValidElement, Fragment } from "react"
 import { View, StyleSheet, Image, useWindowDimensions, ViewStyle } from "react-native"
 import { ISlide, TextPlacement, TextAlignment } from "@/types/ISlide"
 import { AnimatedTextSimulation } from "../AnimatedTextSimulation"
@@ -49,9 +49,14 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
       <Image source={item.image} style={[styles.image, { width }]} resizeMode="contain" />
     )
     // Clone component and pass isActive prop if it's a valid React element
+    // Note: React 19 doesn't allow passing props to Fragments, so we check for that
+    const isFragment = isValidElement(item.component) && 
+      (item.component.type === Fragment || 
+       (typeof item.component.type === "symbol"))
+    
     const componentView = item.component && (
       <View style={styles.component}>
-        {isValidElement(item.component)
+        {isValidElement(item.component) && !isFragment
           ? cloneElement(item.component, { isActive: shouldStartAnimation } as any)
           : item.component}
       </View>
