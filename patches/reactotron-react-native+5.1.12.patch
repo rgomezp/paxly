@@ -1,0 +1,52 @@
+# This patch fixes compatibility with React Native 0.79+
+# 
+# React Native 0.79 removed the XHRInterceptor module from react-native/Libraries/Network/XHRInterceptor.
+# This causes reactotron-react-native to fail when trying to import it, resulting in bundling errors.
+# 
+# The fix:
+# - Replaces the direct import with a try-catch that gracefully handles the missing module
+# - Adds a conditional check before using XHRInterceptor to prevent runtime errors
+# - Network request tracking will be disabled when XHRInterceptor is unavailable, but Reactotron
+#   will continue to work for other features (logging, state inspection, etc.)
+#
+# Note: This patch only covers the source file. The dist files (index.esm.js and index.js) also
+# need to be patched manually since Metro uses the compiled files directly. See the dist files
+# for the equivalent changes.
+
+diff --git a/node_modules/reactotron-react-native/src/plugins/networking.ts b/node_modules/reactotron-react-native/src/plugins/networking.ts
+index ea10490..7fffddf 100644
+--- a/node_modules/reactotron-react-native/src/plugins/networking.ts
++++ b/node_modules/reactotron-react-native/src/plugins/networking.ts
+@@ -1,6 +1,14 @@
+-import XHRInterceptor from "react-native/Libraries/Network/XHRInterceptor"
+ import type { ReactotronCore, Plugin } from "reactotron-core-client"
+ 
++// XHRInterceptor was removed in React Native 0.79+, so we need to handle it gracefully
++let XHRInterceptor: any = null
++try {
++  XHRInterceptor = require("react-native/Libraries/Network/XHRInterceptor")
++} catch (e) {
++  // XHRInterceptor is not available in React Native 0.79+
++  XHRInterceptor = null
++}
++
+ /**
+  * Don't include the response bodies for images by default.
+  */
+@@ -149,10 +157,12 @@ const networking =
+ 
+     return {
+       onConnect: () => {
+-        // register our monkey-patch
+-        XHRInterceptor.setSendCallback(onSend)
+-        XHRInterceptor.setResponseCallback(onResponse)
+-        XHRInterceptor.enableInterception()
++        // register our monkey-patch only if XHRInterceptor is available
++        if (XHRInterceptor) {
++          XHRInterceptor.setSendCallback(onSend)
++          XHRInterceptor.setResponseCallback(onResponse)
++          XHRInterceptor.enableInterception()
++        }
+       },
+     } satisfies Plugin<ReactotronCore>
+   }

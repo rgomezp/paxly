@@ -129,7 +129,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
           android: {
             targetSdkVersion: 35,
             compileSdkVersion: 35,
-            minSdkVersion: 24,
+            minSdkVersion: 26,
             ndkVersion: "28.1.10169557",
             extraMavenDependencies: [
               "androidx.appcompat:appcompat:1.7.1",
