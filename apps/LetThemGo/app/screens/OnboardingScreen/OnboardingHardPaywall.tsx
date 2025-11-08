@@ -102,13 +102,6 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     onComplete()
   }
 
-  const handleDismiss = () => {
-    // For a hard paywall, dismiss should just log the event
-    // Specific purchase outcomes are handled by dedicated listeners
-    Log.info("OnboardingHardPaywall: Paywall dismissed")
-    AnalyticsManager.getInstance().logEvent("onboarding_paywall_dismissed")
-  }
-
   // Set up a listener for purchase state changes
   useEffect(() => {
     const checkPurchaseStatus = async () => {
@@ -170,10 +163,9 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
           <RevenueCatUI.Paywall
             options={{
               offering: offering, // Use the specific placement offering for A/B testing
-              displayCloseButton: false, // Remove close button to prevent bypass
             }}
             onRestoreCompleted={handleRestoreCompleted}
-            onDismiss={handleDismiss}
+            onDismiss={onCancel}
             onPurchaseCancelled={onCancel}
             onPurchaseCompleted={onComplete}
           />
