@@ -34,6 +34,7 @@ import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
 import { useEffect } from "react"
 import LoginManager from "./managers/LoginManager"
+import { FlagProvider } from "./hooks/useFlags"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -64,13 +65,15 @@ const config = {
 function OnboardingWrapper() {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <ErrorBoundary catchErrors={Config.catchErrors}>
-        <KeyboardProvider>
-          <OnboardingProvider>
-            <OnboardingScreen />
-          </OnboardingProvider>
-        </KeyboardProvider>
-      </ErrorBoundary>
+      <FlagProvider>
+        <ErrorBoundary catchErrors={Config.catchErrors}>
+          <KeyboardProvider>
+            <OnboardingProvider>
+              <OnboardingScreen />
+            </OnboardingProvider>
+          </KeyboardProvider>
+        </ErrorBoundary>
+      </FlagProvider>
     </SafeAreaProvider>
   )
 }
@@ -113,11 +116,13 @@ function AppContent() {
   // otherwise, we're ready to render the app
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <ErrorBoundary catchErrors={Config.catchErrors}>
-        <KeyboardProvider>
-          <AppNavigator linking={linking} />
-        </KeyboardProvider>
-      </ErrorBoundary>
+      <FlagProvider>
+        <ErrorBoundary catchErrors={Config.catchErrors}>
+          <KeyboardProvider>
+            <AppNavigator linking={linking} />
+          </KeyboardProvider>
+        </ErrorBoundary>
+      </FlagProvider>
     </SafeAreaProvider>
   )
 }
@@ -127,12 +132,12 @@ export function App() {
   const { ThemeProvider, themeScheme, setThemeContextOverride, navigationTheme } = useThemeProvider(
     config.startingTheme,
   )
-  
+
   // Prevent the splash screen from auto-hiding until we're ready
   useEffect(() => {
     SplashScreen.preventAutoHideAsync()
   }, [])
-  
+
   // Setup auth listener once on mount
   useEffect(() => {
     const unsubscribe = LoginManager.getInstance().setupAuthListener()
