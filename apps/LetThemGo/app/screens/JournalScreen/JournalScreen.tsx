@@ -13,7 +13,6 @@ import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import { useEntitlements } from "@/entitlements/useEntitlements"
 import { FEATURES } from "@/entitlements/constants/features"
-import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { getRandomPrompt } from "./prompts"
 
 interface JournalScreenProps extends AppStackScreenProps<"Journal"> {}
@@ -38,25 +37,16 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     ? trimmedText.length > 0 && trimmedText !== initialTrimmed
     : trimmedText.length > 0
 
-  async function onSave() {
+  function onSave() {
     if (!text.trim()) {
       navigation.goBack()
       return
     }
 
-    // For new entries (not edits), check free user limit
+    // For new entries (not edits), increment count for free users when they save
     if (!isEdit) {
-      // Check if user has premium access
       const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
-
-      // If not premium, check free user limit
       if (!hasPremium) {
-        if (FreeUserUsageManager.hasReachedJournalLogLimit()) {
-          // Show paywall instead of saving
-          await presentPaywallSafely()
-          return
-        }
-        // Increment count for free users
         FreeUserUsageManager.incrementJournalLogCount()
       }
     }

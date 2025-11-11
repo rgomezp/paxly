@@ -26,7 +26,6 @@ import { ProgressBar, PlantyFromCurrentGoal } from "@/components"
 import { $styles } from "@/theme"
 import { useEntitlements } from "@/entitlements/useEntitlements"
 import { FEATURES } from "@/entitlements/constants/features"
-import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
 
@@ -65,20 +64,12 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
     goTo(2)
   }
 
-  async function onSave() {
+  function onSave() {
     if (!selectedMood || !selectedActivity) return
 
-    // Check if user has premium access
+    // Increment count for free users when they save
     const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
-
-    // If not premium, check free user limit
     if (!hasPremium) {
-      if (FreeUserUsageManager.hasReachedMoodLogLimit()) {
-        // Show paywall instead of saving
-        await presentPaywallSafely()
-        return
-      }
-      // Increment count for free users
       FreeUserUsageManager.incrementMoodLogCount()
     }
 
