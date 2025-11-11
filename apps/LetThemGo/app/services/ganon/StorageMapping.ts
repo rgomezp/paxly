@@ -20,6 +20,7 @@ import { NoContactReasonChoices } from "@/types/NoContactReason"
 import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
 import { AppMainGoalChoices } from "@/types/AppMainGoal"
 import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
+import { IFlags } from "@/types/IFlags"
 interface StorageMapping {
   // v1
   email: string | null
@@ -56,6 +57,7 @@ interface StorageMapping {
   contactTemptationSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
+  flagOverrides: Partial<IFlags>;
 }
 
 export default StorageMapping
