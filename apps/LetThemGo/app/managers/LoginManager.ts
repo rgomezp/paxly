@@ -22,6 +22,7 @@ import { EventRegister } from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS, TEST_EVENTS } from "@/constants/events"
 import DataInitializationManager from "./DataInitializationManager"
 import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
+import { clearAllStores, reloadAllStores } from "@/models/helpers/useStores"
 
 export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | null> {
   private static instance: LoginManager | null = null
@@ -138,6 +139,9 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
             this.restoreTimeoutId = null
           }
           await DataInitializationManager.initializeData()
+          // Reload stores from ganon after restore completes
+          Log.info("LoginManager: onAuthStateChanged: reloading stores from ganon")
+          reloadAllStores()
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
           // Emit restore completed event so onboarding can wait for it
           Log.info("LoginManager: onAuthStateChanged: emitting RESTORE_COMPLETED (restore)")
@@ -200,6 +204,9 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
           )
           await ganon.restore()
           await DataInitializationManager.initializeData()
+          // Reload stores from ganon after restore completes
+          Log.info("LoginManager: onAuthStateChanged: fallback - reloading stores from ganon")
+          reloadAllStores()
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
           EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
         } else {
@@ -439,6 +446,10 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
       // Explicitly clear finishedOnboarding to ensure onboarding screen shows again
       ganon.set("finishedOnboarding", false)
       Log.info("LoginManager: logout: cleared finishedOnboarding")
+
+      // Clear stores so components don't show stale data
+      Log.info("LoginManager: logout: clearing stores")
+      clearAllStores()
 
       await DataInitializationManager.initializeData()
       EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)

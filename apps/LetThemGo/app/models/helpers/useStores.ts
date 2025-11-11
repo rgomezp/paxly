@@ -84,3 +84,21 @@ export const useInitialRootStore = (callback?: () => void | Promise<void>) => {
 
   return { rootStore, rehydrated }
 }
+
+/**
+ * Clear all stores. Useful for logout scenarios.
+ * When new stores are added, they should be cleared here.
+ */
+export const clearAllStores = () => {
+  rootStoreSingleton.moodStore.clear()
+  rootStoreSingleton.journalStore.clearAll()
+}
+
+/**
+ * Reload all stores from ganon. Useful after restore completes.
+ * When new stores are added, they should be reloaded here.
+ */
+export const reloadAllStores = () => {
+  rootStoreSingleton.moodStore.loadFromGanon()
+  rootStoreSingleton.journalStore.loadFromGanon()
+}
