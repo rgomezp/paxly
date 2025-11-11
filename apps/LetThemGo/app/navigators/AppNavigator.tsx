@@ -18,7 +18,7 @@ import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
-import { useContext, useMemo, ComponentProps } from "react"
+import { useContext, useMemo, ComponentProps, useRef } from "react"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import Log from "@/utils/Log"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
@@ -83,18 +83,44 @@ const AppStack = observer(function AppStack() {
     [context?.themeScheme],
   )
   const navigation = useNavigation()
+  const lastPlacementRef = useRef<{ value: string; ts: number }>({ value: "", ts: 0 })
 
   OneSignal.Notifications.addEventListener("click", (event) => {
     if (isOneSignalAdditionalData(event.notification.additionalData)) {
-      const route = event?.notification?.additionalData?.route
-      Log.info(`OneSignal: Clicked notification with route: ${route}`)
+      const data = event.notification.additionalData
+      const route = data?.route as string | undefined
+      const rcOfferingId = data?.rc_offering_id as string | undefined
+
+      // Check for conflicting parameters
+      if (route && rcOfferingId && route !== "Home") {
+        Log.error(
+          `OneSignal: Both route (${route}) and rc_offering_id provided. Overriding to Home.`,
+        )
+      }
+
       try {
+        if (rcOfferingId) {
+          // Throttle identical offering navigations within 2s window
+          const now = Date.now()
+          if (
+            lastPlacementRef.current.value === rcOfferingId &&
+            now - lastPlacementRef.current.ts < 2000
+          ) {
+            return
+          }
+          lastPlacementRef.current = { value: rcOfferingId, ts: now }
+          Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${rcOfferingId}`)
+          // @ts-ignore
+          navigation.navigate("Home", { rc_offering_id: rcOfferingId })
+          return
+        }
         if (route) {
+          Log.info(`OneSignal: Clicked notification with route: ${route}`)
           // @ts-ignore
           navigation.navigate(route)
         }
       } catch (error) {
-        Log.error(`OneSignal: Error navigating to route: ${route}`, error)
+        Log.error(`OneSignal: Error navigating: ${error}`)
       }
     }
   })

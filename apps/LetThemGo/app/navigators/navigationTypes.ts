@@ -16,7 +16,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 export type AppStackParamList = {
   Welcome: undefined
   // 🔥 Your screens go here
-  Home: undefined
+  Home: { rc_offering_id?: string } | undefined
   Me: undefined
   Settings: undefined
   TabNavigator: undefined

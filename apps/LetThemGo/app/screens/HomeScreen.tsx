@@ -17,15 +17,17 @@ import { useFocusEffect } from "@react-navigation/native"
 import { Audio } from "expo-av"
 import { MessageIntoTheVoidSection } from "@/components/MessageIntoTheVoidSection"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
+import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
-export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
+export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ route }) {
   const insets = useSafeAreaInsets()
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
   const { themed, theme } = useAppTheme()
   const hasPlayedChimeRef = useRef(false)
+  const hasShownPaywallRef = useRef<string | null>(null)
 
   // Initialize no contact data if needed
   useEffect(() => {
@@ -80,6 +82,18 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       Log.error("HomeScreen: Failed to play melancholy chime:", error)
     }
   }, [])
+
+  // Show paywall if rc_offering_id is provided in route params
+  useEffect(() => {
+    const rcOfferingId = route.params?.rc_offering_id
+    if (rcOfferingId && hasShownPaywallRef.current !== rcOfferingId) {
+      hasShownPaywallRef.current = rcOfferingId
+      Log.info(`HomeScreen: Showing paywall with rc_offering_id: ${rcOfferingId}`)
+      presentPaywallSafely(rcOfferingId).catch((error) => {
+        Log.error(`HomeScreen: Error presenting paywall: ${error}`)
+      })
+    }
+  }, [route.params?.rc_offering_id])
 
   // Refresh dependent UI (e.g., daily tasks) when screen regains focus
   useFocusEffect(
