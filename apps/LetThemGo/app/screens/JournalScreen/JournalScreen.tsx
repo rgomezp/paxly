@@ -1,6 +1,6 @@
 import { FC, useMemo, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { View, TextInput, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { View, TextInput, KeyboardAvoidingView, Platform, ScrollView, Pressable } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -11,6 +11,7 @@ import { useStores } from "@/models"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
+import FloatingCenterWrapper from "@/components/FloatingCenterWrapper"
 import { useEntitlements } from "@/entitlements/useEntitlements"
 import { FEATURES } from "@/entitlements/constants/features"
 import { getRandomPrompt } from "./prompts"
@@ -76,7 +77,15 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     [insets.bottom],
   )
 
-  const placeholderText = useMemo(() => getRandomPrompt(), [])
+  const [showPromptButton, setShowPromptButton] = useState(true)
+  const [promptText, setPromptText] = useState<string>("What's on your heart today?")
+
+  const handleShowPrompt = () => {
+    setPromptText(getRandomPrompt())
+    setShowPromptButton(false)
+    // Focus the input to make the placeholder visible
+    inputRef.current?.focus()
+  }
 
   return (
     <KeyboardAvoidingView
@@ -101,7 +110,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
           <View style={themed($inputWrapper)}>
             <TextInput
               ref={inputRef}
-              placeholder={placeholderText}
+              placeholder={promptText}
               placeholderTextColor={theme.colors.textDim}
               value={text}
               onChangeText={setText}
@@ -119,6 +128,13 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
           </View>
         </ScrollView>
       </View>
+      {showPromptButton && (
+        <FloatingCenterWrapper position="bottom" margin={90}>
+          <Pressable onPress={handleShowPrompt} style={themed($promptButton)}>
+            <Text style={themed($promptButtonText)}>Get a prompt</Text>
+          </Pressable>
+        </FloatingCenterWrapper>
+      )}
       <FloatingCenterButton isValid={isValid} text="Save" onPress={onSave} />
     </KeyboardAvoidingView>
   )
@@ -155,4 +171,17 @@ const $input: ThemedStyle<TextStyle> = (theme) => ({
   backgroundColor: theme.colors.card,
   fontSize: 16,
   lineHeight: 24,
+})
+
+const $promptButton: ThemedStyle<ViewStyle> = () => ({
+  paddingVertical: 8,
+  paddingHorizontal: 12,
+  alignItems: "center",
+  justifyContent: "center",
+})
+
+const $promptButtonText: ThemedStyle<TextStyle> = (theme) => ({
+  fontSize: 14,
+  color: theme.colors.tint,
+  fontStyle: "italic",
 })
