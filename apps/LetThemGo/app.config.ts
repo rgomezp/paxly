@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
-    version: "0.1.3",
+    version: "1.0.0",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
