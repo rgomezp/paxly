@@ -14,6 +14,7 @@ import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import { useEntitlements } from "@/entitlements/useEntitlements"
 import { FEATURES } from "@/entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
+import { getRandomPrompt } from "./prompts"
 
 interface JournalScreenProps extends AppStackScreenProps<"Journal"> {}
 
@@ -85,6 +86,8 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     [insets.bottom],
   )
 
+  const placeholderText = useMemo(() => getRandomPrompt(), [])
+
   return (
     <KeyboardAvoidingView
       style={themed($container)}
@@ -108,7 +111,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
           <View style={themed($inputWrapper)}>
             <TextInput
               ref={inputRef}
-              placeholder="Write your thoughts..."
+              placeholder={placeholderText}
               placeholderTextColor={theme.colors.textDim}
               value={text}
               onChangeText={setText}
