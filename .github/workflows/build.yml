@@ -121,6 +121,7 @@ jobs:
         with:
           node-version: 20
           cache: yarn
+          cache-dependency-path: apps/LetThemGo/yarn.lock
 
       - name: ♻️ Cache Yarn dependencies
         uses: actions/cache@v3
@@ -135,11 +136,13 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: 📦 Install dependencies
+        working-directory: apps/LetThemGo
         run: yarn install
 
       - name: 📦 Install EAS CLI
         run: npm -g i eas-cli
       - name: 📦 Build project
+        working-directory: apps/LetThemGo
         run: yarn build
 
       - name: Prebuild
@@ -147,7 +150,8 @@ jobs:
         run: echo 'current dir:' && pwd && ls -la && npx expo prebuild
 
       - name: 📋 Test project
-        run: yarn workspace letthemgo test
+        working-directory: apps/LetThemGo
+        run: yarn test
 
       - name: Set up JDK 17
         if: github.event.inputs.platform == 'android'
