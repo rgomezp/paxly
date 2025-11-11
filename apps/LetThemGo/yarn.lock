@@ -8082,14 +8082,14 @@ react-native-onesignal@^5.2.9:
   dependencies:
     invariant "^2.2.2"
 
-react-native-purchases-ui@^9.1.0:
+react-native-purchases-ui@^9.6.4:
   version "9.6.4"
   resolved "https://registry.yarnpkg.com/react-native-purchases-ui/-/react-native-purchases-ui-9.6.4.tgz#2564bd98bf1695512babb88daca7da8320fee17d"
   integrity sha512-0HbP6DFV8yeVtsnMIqgE+LqazmBSVBcZFwfxe/7esrFxeIZ0mZ+hy6mEpPADIwclsDnhvCqTtjQQ2FaMf6/DOg==
   dependencies:
     "@revenuecat/purchases-typescript-internal" "17.16.1"
 
-react-native-purchases@^9.1.0:
+react-native-purchases@^9.6.4:
   version "9.6.4"
   resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-9.6.4.tgz#7567684ef537cbc6063ce2e3a4d1720d6c77c88c"
   integrity sha512-fYB4+bMCEL+7FmVu8CHGGJpSCL6RV8rcPkx8944uDHOaefWTB0kuy3C3lP5d+FnWvx78SsfMApLqPyZnKorrPA==
