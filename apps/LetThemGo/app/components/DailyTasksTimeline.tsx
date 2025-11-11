@@ -7,10 +7,12 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { getLocalDateKey, msUntilNextLocalMidnight } from "@/utils/date"
 import { Icon } from "@/components"
 import DailyTaskManager from "@/managers/DailyTaskManager"
+import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import { useStores } from "@/models"
 import { useEntitlements } from "../entitlements/useEntitlements"
 import { FEATURES } from "../entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
+import { useFeatureFlags } from "@/hooks/useFlags"
 
 type Props = {
   onPressMood: () => void
@@ -29,6 +31,10 @@ export default observer(function DailyTasksTimeline({
   const { moodStore } = useStores()
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
   const { hasFeatureAccess } = useEntitlements()
+  const flags = useFeatureFlags()
+  
+  // Get the task limit from feature flags, fallback to default if not available
+  const taskLimit = flags.task_limit_free_users ?? FreeUserUsageManager.getDefaultFreeLimit()
 
   useEffect(() => {
     // Initialize from persisted state, ensuring today's dateKey
@@ -59,13 +65,29 @@ export default observer(function DailyTasksTimeline({
     }
   }
 
-  const Row = (label: string, completed: boolean, onPress?: () => void) => {
-    const innerOnPress = () => {
-      if (hasFeatureAccess(FEATURES.PREMIUM_FEATURES)) {
-        onPress?.()
-      } else {
-        presentPaywallSafely()
+  const Row = (
+    label: string,
+    completed: boolean,
+    onPress?: () => void,
+    taskType?: "mood" | "journal",
+  ) => {
+    const innerOnPress = async () => {
+      const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
+
+      // If not premium, check free user limits for specific tasks using feature flag limit
+      if (!hasPremium && taskType) {
+        if (taskType === "mood" && FreeUserUsageManager.hasReachedMoodLogLimit(taskLimit)) {
+          await presentPaywallSafely()
+          return
+        }
+        if (taskType === "journal" && FreeUserUsageManager.hasReachedJournalLogLimit(taskLimit)) {
+          await presentPaywallSafely()
+          return
+        }
       }
+
+      // If premium or under limit, proceed
+      onPress?.()
     }
 
     return (
@@ -105,14 +127,14 @@ export default observer(function DailyTasksTimeline({
       <View style={themed([$timeline])}>
         {Row("Log your mood", moodDone, () => {
           onPressMood()
-        })}
+        }, "mood")}
         {false &&
           Row("Daily lesson", done.lesson, () => {
             onPressLesson?.()
           })}
         {Row("Write in your journal", done.journal, () => {
           onPressJournal?.()
-        })}
+        }, "journal")}
       </View>
     </View>
   )
