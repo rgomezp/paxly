@@ -17,29 +17,24 @@ const OnboardingLoginScreen: React.FC = () => {
   const hasCompletedOnboardingRef = useRef(false)
   const [restoreFinished, setRestoreFinished] = useState(false)
 
-  console.log("OnboardingLoginScreen: isLoggedIn", isLoggedIn)
-  console.log("OnboardingLoginScreen: step", step)
-
   // Listen for restore completion
   useEffect(() => {
-    const handleAuthStateChangedFinished = () => {
-      Log.info("OnboardingLoginScreen: Auth state changed finished (restore completed)")
+    const handleRestoreCompleted = () => {
+      Log.info("OnboardingLoginScreen: Restore completed")
       setRestoreFinished(true)
     }
 
-    EventRegister.on(GLOBAL_EVENTS.AUTH_STATE_CHANGED_FINISHED, handleAuthStateChangedFinished)
+    EventRegister.on(GLOBAL_EVENTS.RESTORE_COMPLETED, handleRestoreCompleted)
 
-    // If user is already logged in when component mounts, restore should have already finished
-    // during app initialization, so we can mark it as finished
-    if (isLoggedIn && step === "login") {
-      Log.info("OnboardingLoginScreen: User already logged in on mount, assuming restore completed")
-      setRestoreFinished(true)
-    }
+    // If user is already logged in when component mounts, we need to wait for restore
+    // to complete. The restore will happen during onAuthStateChanged, and RESTORE_COMPLETED will be emitted.
+    // Note: If the user just logged in, onAuthStateChanged will be called and ganon.login() will
+    // handle restore. We must wait for RESTORE_COMPLETED before completing onboarding.
 
     return () => {
-      EventRegister.off(GLOBAL_EVENTS.AUTH_STATE_CHANGED_FINISHED, handleAuthStateChangedFinished)
+      EventRegister.off(GLOBAL_EVENTS.RESTORE_COMPLETED, handleRestoreCompleted)
     }
-  }, [isLoggedIn, step])
+  }, [step])
 
   // Automatically complete onboarding when user logs in AND restore is complete
   useEffect(() => {

@@ -27,6 +27,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
   private static instance: LoginManager | null = null
   private user: FirebaseAuthTypes.User | null = getAuth().currentUser
   private wasLoggedIn: boolean = false // Track previous login state to detect new logins
+  private restoreTimeoutId: NodeJS.Timeout | null = null // Timeout for noop fallback
 
   private constructor() {
     super()
@@ -119,6 +120,10 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
     if (user?.email) {
       this.user = user
 
+      // Check if this is a new login BEFORE calling ganon.login()
+      // This helps us determine if "noop" is truly safe or if we should wait for restore
+      const previouslyLoggedIn = this.wasLoggedIn
+
       // Use Ganon's login lifecycle method
       try {
         const action = await ganon.login(user.email)
@@ -127,19 +132,63 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
         // Handle different login actions
         if (action === "restore") {
           Log.info("LoginManager: onAuthStateChanged: restored data from cloud")
+          // Clear any pending timeout since restore is happening
+          if (this.restoreTimeoutId) {
+            clearTimeout(this.restoreTimeoutId)
+            this.restoreTimeoutId = null
+          }
           await DataInitializationManager.initializeData()
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          // Emit restore completed event so onboarding can wait for it
+          Log.info("LoginManager: onAuthStateChanged: emitting RESTORE_COMPLETED (restore)")
+          EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
         } else if (action === "backup") {
           Log.info("LoginManager: onAuthStateChanged: backed up local guest state")
+          // Clear any pending timeout since backup is happening
+          if (this.restoreTimeoutId) {
+            clearTimeout(this.restoreTimeoutId)
+            this.restoreTimeoutId = null
+          }
           await DataInitializationManager.initializeData()
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          // Backup doesn't need restore, but emit so onboarding knows data is ready
+          EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
         } else {
           // "noop" - same user already logged in (app reopen scenario)
           Log.info("LoginManager: onAuthStateChanged: same user already logged in")
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          // For noop, only emit RESTORE_COMPLETED if user was already logged in before this call
+          // If this is a new login but ganon returned noop (e.g., due to timing), 
+          // we should wait to see if a restore happens in a subsequent call
+          if (previouslyLoggedIn) {
+            // User was already logged in, this is truly a noop - safe to proceed
+            EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
+          } else {
+            // This might be a new login that ganon thinks is noop due to timing
+            // Don't emit RESTORE_COMPLETED yet - wait to see if restore happens
+            // But set a timeout fallback in case no restore happens
+            Log.info("LoginManager: onAuthStateChanged: noop on new login - waiting to see if restore happens")
+            
+            // Clear any existing timeout
+            if (this.restoreTimeoutId) {
+              clearTimeout(this.restoreTimeoutId)
+            }
+            
+            // Set a timeout: if no restore happens within 2 seconds, assume it's safe to proceed
+            this.restoreTimeoutId = setTimeout(() => {
+              Log.info("LoginManager: onAuthStateChanged: no restore happened after noop - emitting RESTORE_COMPLETED")
+              EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
+              this.restoreTimeoutId = null
+            }, 2000)
+          }
         }
       } catch (error) {
         Log.error(`LoginManager: onAuthStateChanged: Ganon login failed: ${error}`)
+        // Clear any pending timeout since we're handling the error
+        if (this.restoreTimeoutId) {
+          clearTimeout(this.restoreTimeoutId)
+          this.restoreTimeoutId = null
+        }
         // Fall back to manual approach on error
         ganon.set("email", user.email)
         const previouslyLoggedIn = this.wasLoggedIn
@@ -152,9 +201,11 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
           await ganon.restore()
           await DataInitializationManager.initializeData()
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
         } else {
           Log.info("LoginManager: onAuthStateChanged: fallback - user already logged in")
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+          EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
         }
       }
 
