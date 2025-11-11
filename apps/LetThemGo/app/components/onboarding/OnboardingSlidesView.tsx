@@ -40,7 +40,7 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
     const newIndex = Math.round(offsetX / width)
     if (newIndex !== currentIndex) {
       setCurrentIndex(newIndex)
-      // setHasShownReviewOnCurrentSlide(false) // Reset review state on slide change
+      setHasShownReviewOnCurrentSlide(false) // Reset review state on slide change
     }
     scrollX.setValue(offsetX)
   }

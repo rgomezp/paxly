@@ -21,7 +21,7 @@ function LastContactComponent({ onSelection }: LastContactSlideProps) {
     >
       <View style={styles.heroContainer}>
         <ExpoImage
-          source={require("../../../../assets/images/planty/1d/planty_serious.webp")}
+          source={require("../../../../assets/images/planty/1w/planty_serious.webp")}
           style={styles.hero}
           contentFit="contain"
         />

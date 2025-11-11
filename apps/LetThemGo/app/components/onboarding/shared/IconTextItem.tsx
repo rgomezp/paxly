@@ -26,7 +26,7 @@ export const IconTextItem: React.FC<IconTextItemProps> = ({ icon, title, descrip
         <ThemedFontAwesome5Icon
           name={icon}
           size={28}
-          color={theme.colors.palette.accent500}
+          color={theme.colors.tint}
           solid
         />
       </View>
