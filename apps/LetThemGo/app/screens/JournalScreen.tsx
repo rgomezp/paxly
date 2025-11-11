@@ -9,7 +9,11 @@ import type { ThemedStyle } from "@/theme"
 import type { TextStyle, ViewStyle } from "react-native"
 import { useStores } from "@/models"
 import DailyTaskManager from "@/managers/DailyTaskManager"
+import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
+import { useEntitlements } from "@/entitlements/useEntitlements"
+import { FEATURES } from "@/entitlements/constants/features"
+import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
 interface JournalScreenProps extends AppStackScreenProps<"Journal"> {}
 
@@ -23,6 +27,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
   const scrollViewRef = useRef<ScrollView>(null)
   const inputRef = useRef<TextInput>(null)
   const { journalStore } = useStores()
+  const { hasFeatureAccess } = useEntitlements()
 
   const isEdit = route.params?.mode === "edit" && typeof route.params?.date === "number"
 
@@ -32,11 +37,29 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     ? trimmedText.length > 0 && trimmedText !== initialTrimmed
     : trimmedText.length > 0
 
-  function onSave() {
+  async function onSave() {
     if (!text.trim()) {
       navigation.goBack()
       return
     }
+
+    // For new entries (not edits), check free user limit
+    if (!isEdit) {
+      // Check if user has premium access
+      const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
+
+      // If not premium, check free user limit
+      if (!hasPremium) {
+        if (FreeUserUsageManager.hasReachedJournalLogLimit()) {
+          // Show paywall instead of saving
+          await presentPaywallSafely()
+          return
+        }
+        // Increment count for free users
+        FreeUserUsageManager.incrementJournalLogCount()
+      }
+    }
+
     if (isEdit) {
       journalStore.updateByDate(route.params!.date as number, text.trim())
     } else {
