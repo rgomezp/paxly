@@ -19,11 +19,23 @@ type DayBucket = {
   total: number
 }
 
-export const MoodGraph: FC = observer(function MoodGraph() {
+type MoodGraphProps = {
+  demoData?: DayBucket[]
+  showTitle?: boolean
+  chartHeight?: number
+  containerStyle?: ViewStyle
+}
+
+export const MoodGraph: FC<MoodGraphProps> = observer(function MoodGraph({
+  demoData,
+  showTitle = true,
+  chartHeight: propChartHeight,
+  containerStyle,
+}) {
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
 
-  const buckets: DayBucket[] = (() => {
+  const buckets: DayBucket[] = demoData || (() => {
     // Build last 7 days, oldest -> newest
     const today = new Date()
     const start = new Date()
@@ -61,6 +73,8 @@ export const MoodGraph: FC = observer(function MoodGraph() {
     return Object.values(map)
   })()
 
+  const chartHeight = propChartHeight || 180
+
   // Determine Y-axis scale dynamically from data.
   const maxTotal = Math.max(0, ...buckets.map((b) => b.total))
   const yStep = maxTotal > 10 ? 2 : 1
@@ -71,7 +85,6 @@ export const MoodGraph: FC = observer(function MoodGraph() {
     for (let v = 0; v <= yMax; v += yStep) ticks.push(v)
     return ticks
   }, [yMax, yStep])
-  const chartHeight = 180
   const yAxisWidth = 28
 
   const colors = {
@@ -82,12 +95,14 @@ export const MoodGraph: FC = observer(function MoodGraph() {
   }
 
   return (
-    <View style={themed($wrapper)}>
-      <Text
-        text="Moods this week"
-        preset="subheading"
-        style={themed([$titleText, { color: theme.colors.text }])}
-      />
+    <View style={[themed($wrapper), containerStyle]}>
+      {showTitle && (
+        <Text
+          text="Moods this week"
+          preset="subheading"
+          style={themed([$titleText, { color: theme.colors.text }])}
+        />
+      )}
       <View style={themed([$container])}>
         {/* Grid lines and Y-axis labels */}
         {yTicks.map((t) => {
