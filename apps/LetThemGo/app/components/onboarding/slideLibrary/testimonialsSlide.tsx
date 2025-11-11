@@ -1,10 +1,13 @@
-import { View, Dimensions } from "react-native"
+import { View, Dimensions, ImageRequireSource } from "react-native"
+import { Image as ExpoImage } from "expo-image"
 import { Text } from "@/components/Text"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import type { ViewStyle, TextStyle } from "react-native"
+import type { ViewStyle, TextStyle, ImageStyle } from "react-native"
 import type { ISlide } from "@/types/ISlide"
+
+const testimonialCirclesImage: ImageRequireSource = require("../../../../assets/images/testimonial_circles.png")
 
 type TestimonialsSlideProps = {
   onSelection?: () => void
@@ -13,9 +16,10 @@ type TestimonialsSlideProps = {
 export function testimonialsSlide({ onSelection: _onSelection }: TestimonialsSlideProps): ISlide {
   return {
     id: "testimonials",
-    title: "What others are saying",
-    description: "Join other happy users",
+    title: "Leave us a rating",
+    description: "Help us reach more people who need us!",
     component: <TestimonialComponent />,
+    showStoreReview: true,
   }
 }
 
@@ -29,7 +33,7 @@ interface TestimonialCardProps {
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
-  const { themed, theme } = useAppTheme()
+  const { themed } = useAppTheme()
 
   return (
     <View style={themed($card)}>
@@ -41,7 +45,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
               key={star}
               name="star"
               size={16}
-              color={theme.colors.palette.accent500}
+              color="#FFBB50"
               style={themed($star)}
               solid
             />
@@ -74,6 +78,13 @@ const TestimonialComponent: React.FC = () => {
 
   return (
     <View style={themed($container)}>
+      {/* testimonials circles graphic */}
+      <View style={themed($imageContainer)}>
+        <ExpoImage source={testimonialCirclesImage} style={themed($testimonialImage)} contentFit="contain" />
+      </View>
+      <Text style={themed($ratingHelpText)}>
+        Giving us a rating helps us mend more people's hearts just like yours
+      </Text>
       {displayTestimonials.map((testimonial, index) => (
         <TestimonialCard key={index} testimonial={testimonial} />
       ))}
@@ -108,6 +119,25 @@ const $cardHeader: ThemedStyle<ViewStyle> = () => ({
 const $container: ThemedStyle<ViewStyle> = () => ({
   paddingHorizontal: 20,
   paddingVertical: 10,
+})
+
+const $imageContainer: ThemedStyle<ViewStyle> = () => ({
+  alignItems: "center",
+  marginBottom: 12,
+})
+
+const $ratingHelpText: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.textDim,
+  fontSize: 12,
+  textAlign: "center",
+  marginBottom: 24,
+  paddingHorizontal: 10,
+  lineHeight: 16,
+})
+
+const $testimonialImage: ThemedStyle<ImageStyle> = () => ({
+  height: 120,
+  width: "100%",
 })
 
 const $star: ThemedStyle<TextStyle> = () => ({
