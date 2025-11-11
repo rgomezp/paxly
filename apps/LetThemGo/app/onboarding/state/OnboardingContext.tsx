@@ -48,31 +48,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
     ganon.set("finishedOnboarding", true)
 
-    // Only trigger backup for truly new users (first-time login)
-    // Existing users should have their data restored from server, not backed up
-    if (isNewUser && isLoggedIn) {
-      const lastBackup = ganon.get("lastBackup")
-
-      // Only backup if lastBackup doesn't exist (first backup)
-      if (!lastBackup) {
-        Log.info("useOnboardingState: completeOnboarding: triggering sync for new users")
-        try {
-          await ganon.backup()
-          Log.info("useOnboardingState: completeOnboarding: sync completed")
-        } catch (error) {
-          Log.error("useOnboardingState: completeOnboarding: error triggering sync", error)
-        }
-      } else {
-        Log.info(
-          "useOnboardingState: completeOnboarding: skipping backup - already backed up before",
-        )
-      }
-    } else if (existingFinishedOnboarding && isLoggedIn) {
-      Log.info(
-        "useOnboardingState: completeOnboarding: skipping backup - existing user, data should be restored from server",
-      )
-    }
-
     AnalyticsManager.getInstance().logEvent("onboard_complete", { emailOptIn })
     EventRegister.emit(GLOBAL_EVENTS.ONBOARDING_COMPLETE)
     setStep("complete")
