@@ -2,7 +2,7 @@ import { ganon } from "@/services/ganon/ganon"
 
 const FREE_USER_MOOD_LOG_COUNT_KEY = "freeUserMoodLogCount"
 const FREE_USER_JOURNAL_LOG_COUNT_KEY = "freeUserJournalLogCount"
-const FREE_LIMIT = 2
+const DEFAULT_FREE_LIMIT = 2 // Fallback if feature flag is not available
 
 export default class FreeUserUsageManager {
   /**
@@ -41,16 +41,18 @@ export default class FreeUserUsageManager {
 
   /**
    * Checks if free user has reached the mood log limit
+   * @param limit - The limit to check against (from feature flags). Defaults to DEFAULT_FREE_LIMIT if not provided.
    */
-  static hasReachedMoodLogLimit(): boolean {
-    return this.getMoodLogCount() >= FREE_LIMIT
+  static hasReachedMoodLogLimit(limit: number = DEFAULT_FREE_LIMIT): boolean {
+    return this.getMoodLogCount() >= limit
   }
 
   /**
    * Checks if free user has reached the journal log limit
+   * @param limit - The limit to check against (from feature flags). Defaults to DEFAULT_FREE_LIMIT if not provided.
    */
-  static hasReachedJournalLogLimit(): boolean {
-    return this.getJournalLogCount() >= FREE_LIMIT
+  static hasReachedJournalLogLimit(limit: number = DEFAULT_FREE_LIMIT): boolean {
+    return this.getJournalLogCount() >= limit
   }
 
   /**
@@ -62,10 +64,10 @@ export default class FreeUserUsageManager {
   }
 
   /**
-   * Gets the free limit constant
+   * Gets the default free limit constant (fallback value)
    */
-  static getFreeLimit(): number {
-    return FREE_LIMIT
+  static getDefaultFreeLimit(): number {
+    return DEFAULT_FREE_LIMIT
   }
 }
 
