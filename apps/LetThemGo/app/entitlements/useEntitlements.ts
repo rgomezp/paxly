@@ -22,6 +22,11 @@ type EntitlementsHook = {
 
 const MAX_RETRIES = 3
 const RETRY_DELAY = 1000 // 1 second
+const ERROR_LOG_INTERVAL_MS = 30000 // Only log errors every 30 seconds
+
+// Memory cache for error logging
+let lastErrorLogTime = 0
+let lastErrorMessage = ""
 
 export function useEntitlements(): EntitlementsHook {
   const [entitlements, setEntitlements] = useState<Entitlements | null>(null)
@@ -66,8 +71,22 @@ export function useEntitlements(): EntitlementsHook {
         setEntitlements(allEntitlements)
         setActiveEntitlements(active)
         setError(null)
+        // Reset error logging on success
+        lastErrorLogTime = 0
+        lastErrorMessage = ""
       } catch (err) {
-        Log.error(`Error fetching entitlements: ${err}`)
+        const errorMessage = String(err)
+        const now = Date.now()
+
+        // Only log if it's a different error or enough time has passed
+        const shouldLog =
+          errorMessage !== lastErrorMessage || now - lastErrorLogTime >= ERROR_LOG_INTERVAL_MS
+
+        if (shouldLog) {
+          Log.error(`Error fetching entitlements: ${err}`)
+          lastErrorLogTime = now
+          lastErrorMessage = errorMessage
+        }
 
         // Retry logic for network-related errors
         if (retryCount < MAX_RETRIES) {
