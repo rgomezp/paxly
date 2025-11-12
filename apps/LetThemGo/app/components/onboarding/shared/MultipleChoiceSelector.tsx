@@ -1,5 +1,12 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
-import { View, StyleSheet, ImageRequireSource, TextStyle, ScrollView } from "react-native"
+import {
+  View,
+  StyleSheet,
+  ImageRequireSource,
+  TextStyle,
+  ScrollView,
+  ViewStyle,
+} from "react-native"
 import { Image as ExpoImage } from "expo-image"
 import { useState, useEffect } from "react"
 import { Text } from "@/components/Text"
