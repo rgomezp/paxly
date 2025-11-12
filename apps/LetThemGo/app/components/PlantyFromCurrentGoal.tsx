@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { ImageStyle, StyleProp, View, TextStyle } from "react-native"
+import { ImageStyle, StyleProp, View, TextStyle, ViewStyle } from "react-native"
 import Planty from "@/components/Planty"
 import PlantyManager from "@/managers/PlantyManager"
 import NoContactManager from "@/managers/NoContactManager"
