@@ -30,6 +30,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
   const [offering, setOffering] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const noOfferingHandledRef = useRef(false)
+  const paywallDisplayedRef = useRef(false)
 
   // Fetch the specific placement offering for A/B testing
   useEffect(() => {
@@ -102,6 +103,15 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     onComplete()
   }
 
+  const handleCancel = (reason: "dismiss" | "purchase_cancelled") => {
+    Log.info(`OnboardingHardPaywall: Purchase flow cancelled - ${reason}`)
+    AnalyticsManager.getInstance().logEvent("onboarding_paywall_cancelled", {
+      reason,
+      offering_id: offering?.identifier,
+    })
+    onCancel()
+  }
+
   // Set up a listener for purchase state changes
   useEffect(() => {
     const checkPurchaseStatus = async () => {
@@ -143,6 +153,18 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     }
   }, [isLoading, offering, onComplete])
 
+  // Log when the paywall is displayed
+  useEffect(() => {
+    if (!isLoading && offering && !paywallDisplayedRef.current) {
+      paywallDisplayedRef.current = true
+      Log.info("OnboardingHardPaywall: Paywall displayed")
+      AnalyticsManager.getInstance().logEvent("onboarding_paywall_displayed", {
+        offering_id: offering.identifier,
+        placement: "onboarding_placement",
+      })
+    }
+  }, [isLoading, offering])
+
   // Show loading state while fetching offering
   if (isLoading) {
     return (
@@ -165,8 +187,8 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
               offering: offering, // Use the specific placement offering for A/B testing
             }}
             onRestoreCompleted={handleRestoreCompleted}
-            onDismiss={onCancel}
-            onPurchaseCancelled={onCancel}
+            onDismiss={() => handleCancel("dismiss")}
+            onPurchaseCancelled={() => handleCancel("purchase_cancelled")}
             onPurchaseCompleted={onComplete}
           />
         </SafeAreaView>
