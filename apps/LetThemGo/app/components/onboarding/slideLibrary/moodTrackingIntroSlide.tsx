@@ -38,8 +38,7 @@ function MoodTrackingIntroComponent({ onSelection: _onSelection }: MoodTrackingI
       {/* Explanation text */}
       <View style={themed($explanationContainer)}>
         <RNText style={themed([$explanationText])}>
-          Track your mood daily to see your progress over time. We'll send you gentle reminders to
-          help you stay consistent.
+          We'll send you gentle reminders to help you stay consistent.
         </RNText>
       </View>
     </View>

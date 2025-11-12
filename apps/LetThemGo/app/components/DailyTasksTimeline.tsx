@@ -32,7 +32,7 @@ export default observer(function DailyTasksTimeline({
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
   const { hasFeatureAccess } = useEntitlements()
   const flags = useFeatureFlags()
-  
+
   // Get the task limit from feature flags, fallback to default if not available
   const taskLimit = flags.task_limit_free_users ?? FreeUserUsageManager.getDefaultFreeLimit()
 
