@@ -113,7 +113,12 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
               placeholder={promptText}
               placeholderTextColor={theme.colors.textDim}
               value={text}
-              onChangeText={setText}
+              onChangeText={(newText) => {
+                setText(newText)
+                if (newText.length > 0) {
+                  setShowPromptButton(false)
+                }
+              }}
               multiline
               style={themed($input)}
               scrollEnabled={false} // Important: disable TextInput's internal scrolling
