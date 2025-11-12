@@ -9,11 +9,8 @@ import type { ThemedStyle } from "@/theme"
 import type { TextStyle, ViewStyle } from "react-native"
 import { useStores } from "@/models"
 import DailyTaskManager from "@/managers/DailyTaskManager"
-import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import FloatingCenterWrapper from "@/components/FloatingCenterWrapper"
-import { useEntitlements } from "@/entitlements/useEntitlements"
-import { FEATURES } from "@/entitlements/constants/features"
 import { getRandomPrompt } from "./prompts"
 
 interface JournalScreenProps extends AppStackScreenProps<"Journal"> {}
@@ -28,7 +25,6 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
   const scrollViewRef = useRef<ScrollView>(null)
   const inputRef = useRef<TextInput>(null)
   const { journalStore } = useStores()
-  const { hasFeatureAccess } = useEntitlements()
 
   const isEdit = route.params?.mode === "edit" && typeof route.params?.date === "number"
 
@@ -44,13 +40,6 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
       return
     }
 
-    // For new entries (not edits), increment count for free users when they save
-    if (!isEdit) {
-      const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
-      if (!hasPremium) {
-        FreeUserUsageManager.incrementJournalLogCount()
-      }
-    }
 
     if (isEdit) {
       journalStore.updateByDate(route.params!.date as number, text.trim())

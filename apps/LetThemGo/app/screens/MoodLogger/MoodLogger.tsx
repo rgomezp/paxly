@@ -21,11 +21,8 @@ import { ALL_MOODS, MOOD_TO_EMOJI, MoodId, MOODS } from "@/types/Moods"
 import { MoodCategory } from "@/types/MoodCategory"
 import { ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
-import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import { ProgressBar, PlantyFromCurrentGoal } from "@/components"
 import { $styles } from "@/theme"
-import { useEntitlements } from "@/entitlements/useEntitlements"
-import { FEATURES } from "@/entitlements/constants/features"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
 
@@ -35,7 +32,6 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   const { theme } = useAppTheme()
   const scrollX = useRef(new Animated.Value(0)).current
   const pagerRef = useRef<ScrollView>(null)
-  const { hasFeatureAccess } = useEntitlements()
 
   const [selectedMood, setSelectedMood] = useState<MoodId | null>(null)
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
@@ -67,11 +63,6 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   function onSave() {
     if (!selectedMood || !selectedActivity) return
 
-    // Increment count for free users when they save
-    const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
-    if (!hasPremium) {
-      FreeUserUsageManager.incrementMoodLogCount()
-    }
 
     MoodManager.create({ moodId: selectedMood, activity: selectedActivity, notes })
     navigation.goBack()

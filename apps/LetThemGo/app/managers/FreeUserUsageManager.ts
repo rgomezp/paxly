@@ -1,42 +1,24 @@
 import { ganon } from "@/services/ganon/ganon"
+import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
+import IJournalEntry from "@/types/IJournalEntry"
 
-const FREE_USER_MOOD_LOG_COUNT_KEY = "freeUserMoodLogCount"
-const FREE_USER_JOURNAL_LOG_COUNT_KEY = "freeUserJournalLogCount"
 const DEFAULT_FREE_LIMIT = 2 // Fallback if feature flag is not available
 
 export default class FreeUserUsageManager {
   /**
-   * Gets the current mood log count for free users
+   * Gets the current mood log count for free users by reading from moodHistory array
    */
   static getMoodLogCount(): number {
-    return ganon.get(FREE_USER_MOOD_LOG_COUNT_KEY) ?? 0
+    const moodHistory = (ganon.get("moodHistory") ?? []) as IMoodHistoryItem[]
+    return moodHistory.length
   }
 
   /**
-   * Gets the current journal log count for free users
+   * Gets the current journal log count for free users by reading from journalEntries array
    */
   static getJournalLogCount(): number {
-    return ganon.get(FREE_USER_JOURNAL_LOG_COUNT_KEY) ?? 0
-  }
-
-  /**
-   * Increments the mood log count for free users
-   */
-  static incrementMoodLogCount(): number {
-    const current = this.getMoodLogCount()
-    const newCount = current + 1
-    ganon.set(FREE_USER_MOOD_LOG_COUNT_KEY, newCount)
-    return newCount
-  }
-
-  /**
-   * Increments the journal log count for free users
-   */
-  static incrementJournalLogCount(): number {
-    const current = this.getJournalLogCount()
-    const newCount = current + 1
-    ganon.set(FREE_USER_JOURNAL_LOG_COUNT_KEY, newCount)
-    return newCount
+    const journalEntries = (ganon.get("journalEntries") ?? []) as IJournalEntry[]
+    return journalEntries.length
   }
 
   /**
@@ -53,14 +35,6 @@ export default class FreeUserUsageManager {
    */
   static hasReachedJournalLogLimit(limit: number = DEFAULT_FREE_LIMIT): boolean {
     return this.getJournalLogCount() >= limit
-  }
-
-  /**
-   * Resets both counts (useful for testing or if user upgrades)
-   */
-  static resetCounts(): void {
-    ganon.set(FREE_USER_MOOD_LOG_COUNT_KEY, 0)
-    ganon.set(FREE_USER_JOURNAL_LOG_COUNT_KEY, 0)
   }
 
   /**
