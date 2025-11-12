@@ -58,6 +58,7 @@ interface StorageMapping {
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   flagOverrides: Partial<IFlags>
+  isPlayingNatureSounds: boolean
 }
 
 export default StorageMapping

@@ -5,11 +5,39 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import Log from "@/utils/Log"
+import { ganon } from "@/services/ganon/ganon"
 
 export const NatureSoundsSection: FC = function NatureSoundsSection() {
   const { themed, theme } = useAppTheme()
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(ganon.get("isPlayingNatureSounds") ?? false)
   const soundRef = useRef<Audio.Sound | null>(null)
+
+  // Load and play sound if it should be playing on mount
+  useEffect(() => {
+    const loadAndPlaySound = async () => {
+      const shouldPlay = ganon.get("isPlayingNatureSounds") ?? false
+      if (shouldPlay && !soundRef.current) {
+        try {
+          const { sound } = await Audio.Sound.createAsync(
+            require("../../assets/sounds/birds.mp3"),
+            {
+              shouldPlay: true,
+              isLooping: true,
+              volume: 1.0,
+            },
+          )
+          soundRef.current = sound
+          setIsPlaying(true)
+        } catch (error) {
+          Log.error("NatureSoundsSection: Failed to load sound on mount:", error)
+          setIsPlaying(false)
+          ganon.set("isPlayingNatureSounds", false)
+        }
+      }
+    }
+
+    loadAndPlaySound()
+  }, [])
 
   // Cleanup sound on unmount
   useEffect(() => {
@@ -30,6 +58,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
         if (soundRef.current) {
           await soundRef.current.pauseAsync()
           setIsPlaying(false)
+          ganon.set("isPlayingNatureSounds", false)
         }
       } else {
         // Play the sound
@@ -50,6 +79,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
           await soundRef.current.playAsync()
           setIsPlaying(true)
         }
+        ganon.set("isPlayingNatureSounds", true)
       }
     } catch (error) {
       Log.error("NatureSoundsSection: Failed to toggle play:", error)
@@ -86,4 +116,3 @@ const $messageButtonContainer: ViewStyle = {
   marginBottom: 40,
   paddingHorizontal: 40,
 }
-
