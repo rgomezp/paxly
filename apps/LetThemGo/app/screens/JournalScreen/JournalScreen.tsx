@@ -1,6 +1,13 @@
 import { FC, useMemo, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { View, TextInput, KeyboardAvoidingView, Platform, ScrollView, Pressable } from "react-native"
+import {
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Pressable,
+} from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -40,7 +47,6 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
       return
     }
 
-
     if (isEdit) {
       journalStore.updateByDate(route.params!.date as number, text.trim())
     } else {
@@ -66,14 +72,10 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     [insets.bottom],
   )
 
-  const [showPromptButton, setShowPromptButton] = useState(true)
   const [promptText, setPromptText] = useState<string>("What's on your heart today?")
 
   const handleShowPrompt = () => {
     setPromptText(getRandomPrompt())
-    setShowPromptButton(false)
-    // Focus the input to make the placeholder visible
-    inputRef.current?.focus()
   }
 
   return (
@@ -96,18 +98,14 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
             preset="heading"
             style={themed($title)}
           />
+          <Text text={promptText} style={themed($promptText)} />
           <View style={themed($inputWrapper)}>
             <TextInput
               ref={inputRef}
-              placeholder={promptText}
+              placeholder="Start writing..."
               placeholderTextColor={theme.colors.textDim}
               value={text}
-              onChangeText={(newText) => {
-                setText(newText)
-                if (newText.length > 0) {
-                  setShowPromptButton(false)
-                }
-              }}
+              onChangeText={setText}
               multiline
               style={themed($input)}
               scrollEnabled={false} // Important: disable TextInput's internal scrolling
@@ -122,13 +120,11 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
           </View>
         </ScrollView>
       </View>
-      {showPromptButton && (
-        <FloatingCenterWrapper position="bottom" margin={90}>
-          <Pressable onPress={handleShowPrompt} style={themed($promptButton)}>
-            <Text style={themed($promptButtonText)}>Get a prompt</Text>
-          </Pressable>
-        </FloatingCenterWrapper>
-      )}
+      <FloatingCenterWrapper position="bottom" margin={90}>
+        <Pressable onPress={handleShowPrompt} style={themed($promptButton)}>
+          <Text style={themed($promptButtonText)}>Get a prompt</Text>
+        </Pressable>
+      </FloatingCenterWrapper>
       <FloatingCenterButton isValid={isValid} text="Save" onPress={onSave} />
     </KeyboardAvoidingView>
   )
@@ -150,6 +146,13 @@ const $scroll: ThemedStyle<ViewStyle> = () => ({
 const $title: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.text,
   marginBottom: 12,
+})
+
+const $promptText: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.text,
+  fontSize: 16,
+  marginBottom: 12,
+  fontStyle: "italic",
 })
 
 const $inputWrapper: ThemedStyle<ViewStyle> = () => ({
