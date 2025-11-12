@@ -19,6 +19,9 @@ import { MessageIntoTheVoidSection } from "@/components/MessageIntoTheVoidSectio
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
+// Module-level variable to track if chime has been played (persists across component remounts)
+let hasPlayedChime = false
+
 interface HomeScreenProps extends AppStackScreenProps<"Home"> {}
 
 export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ route }) {
@@ -26,7 +29,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
   const { themed, theme } = useAppTheme()
-  const hasPlayedChimeRef = useRef(false)
   const hasShownPaywallRef = useRef<string | null>(null)
 
   // Initialize no contact data if needed
@@ -36,51 +38,54 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
 
-  // Play melancholy chime when navigating to Home (only once per session)
-  const playMelancholyChime = useCallback(async () => {
-    // Only play on first navigation (app startup or after onboarding)
-    if (hasPlayedChimeRef.current) {
+  // Play melancholy chime only once per session
+  useEffect(() => {
+    if (hasPlayedChime) {
       return
     }
 
-    hasPlayedChimeRef.current = true
+    hasPlayedChime = true
 
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/sounds/melancholy-chime.mp3"),
-        {
-          shouldPlay: true,
-          volume: 1.0,
-        },
-      )
+    const playChime = async () => {
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require("../../assets/sounds/melancholy-chime.mp3"),
+          {
+            shouldPlay: true,
+            volume: 1.0,
+          },
+        )
 
-      // Set up status listener for auto-cleanup
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded && status.didJustFinish) {
-          sound.unloadAsync().catch(() => {
-            // Ignore cleanup errors
-          })
-        }
-      })
+        // Set up status listener for auto-cleanup
+        sound.setOnPlaybackStatusUpdate((status) => {
+          if (status.isLoaded && status.didJustFinish) {
+            sound.unloadAsync().catch(() => {
+              // Ignore cleanup errors
+            })
+          }
+        })
 
-      // Auto-cleanup after playback completes
-      setTimeout(() => {
-        sound
-          .getStatusAsync()
-          .then((status) => {
-            if (status.isLoaded) {
-              sound.unloadAsync().catch(() => {
-                // Ignore cleanup errors
-              })
-            }
-          })
-          .catch(() => {
-            // Sound already unloaded, ignore
-          })
-      }, 3000) // 3 second buffer for cleanup
-    } catch (error) {
-      Log.error("HomeScreen: Failed to play melancholy chime:", error)
+        // Auto-cleanup after playback completes
+        setTimeout(() => {
+          sound
+            .getStatusAsync()
+            .then((status) => {
+              if (status.isLoaded) {
+                sound.unloadAsync().catch(() => {
+                  // Ignore cleanup errors
+                })
+              }
+            })
+            .catch(() => {
+              // Sound already unloaded, ignore
+            })
+        }, 3000) // 3 second buffer for cleanup
+      } catch (error) {
+        Log.error("HomeScreen: Failed to play melancholy chime:", error)
+      }
     }
+
+    playChime()
   }, [])
 
   // Show paywall if rc_offering_id is provided in route params
@@ -99,8 +104,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   useFocusEffect(
     useCallback(() => {
       setRefreshTrigger((prev) => prev + 1)
-      playMelancholyChime()
-    }, [playMelancholyChime]),
+    }, []),
   )
 
   return (
