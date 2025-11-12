@@ -25,7 +25,7 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
   showName = false,
 }) => {
   const { theme } = useAppTheme()
-  
+
   // Get current goal to determine which planty image to show
   const progressData = NoContactManager.calculateDisplay()
   const goal = progressData?.currentGoal ?? NoContactGoal.OneDay
@@ -38,7 +38,7 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
     : "Planty" // Default fallback if user skipped naming
 
   return (
-    <View style={{ alignItems: "center" }}>
+    <View style={$container}>
       <Planty
         goal={goal}
         wateredToday={watered}
@@ -55,6 +55,10 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
       )}
     </View>
   )
+}
+
+const $container: ViewStyle = {
+  alignItems: "center",
 }
 
 const $mascotNameText: TextStyle = {

@@ -6,4 +6,3 @@ enum NoContactReason {
 }
 
 export { NoContactReason as NoContactReasonChoices }
-

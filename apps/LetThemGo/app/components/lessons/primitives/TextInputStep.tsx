@@ -1,5 +1,5 @@
 import { Text } from "@/components/Text"
-import { TextInput, View } from "react-native"
+import { TextInput } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useState } from "react"
 import { LessonCard } from "./LessonCard"
@@ -40,4 +40,3 @@ export function TextInputStep({
     </LessonCard>
   )
 }
-

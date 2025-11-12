@@ -41,7 +41,7 @@ export const LogoutDrawerItem: FC<LogoutDrawerItemProps> = ({
           },
         },
       ],
-      { cancelable: true }
+      { cancelable: true },
     )
   }
 
@@ -51,4 +51,3 @@ export const LogoutDrawerItem: FC<LogoutDrawerItemProps> = ({
     </TouchableOpacity>
   )
 }
-

@@ -5,4 +5,3 @@ enum Gender {
 }
 
 export { Gender as Genders }
-

@@ -58,4 +58,3 @@ export function appMainGoalSlide({ onSelection }: AppMainGoalSlideProps): ISlide
     ),
   }
 }
-

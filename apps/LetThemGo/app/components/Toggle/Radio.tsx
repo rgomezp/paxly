@@ -4,7 +4,8 @@ import { $styles } from "../../theme"
 import { $inputOuterBase, BaseToggleInputProps, ToggleProps, Toggle } from "./Toggle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-export interface RadioToggleProps extends Omit<ToggleProps<RadioInputProps>, "ToggleInput" | "inputDetailStyle"> {
+export interface RadioToggleProps
+  extends Omit<ToggleProps<RadioInputProps>, "ToggleInput" | "inputDetailStyle"> {
   /**
    * Optional style prop that affects the dot View.
    */

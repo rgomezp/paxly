@@ -6,4 +6,3 @@ enum AppMainGoal {
 }
 
 export { AppMainGoal as AppMainGoalChoices }
-

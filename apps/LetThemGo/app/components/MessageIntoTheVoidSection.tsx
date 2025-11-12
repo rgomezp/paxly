@@ -37,4 +37,3 @@ const $messageButtonContainer: ViewStyle = {
   marginBottom: 40,
   paddingHorizontal: 40,
 }
-

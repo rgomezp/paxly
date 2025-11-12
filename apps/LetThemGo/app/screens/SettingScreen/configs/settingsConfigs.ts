@@ -8,9 +8,12 @@ import LoginManager from "@/managers/LoginManager"
 import DataInitializationManager from "@/managers/DataInitializationManager"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
-import { MoodReminderFrequency, MoodReminderFrequencyLabels, MoodReminderFrequencyShorthand } from "@/types/MoodReminderFrequency"
+import {
+  MoodReminderFrequency,
+  MoodReminderFrequencyShorthand,
+} from "@/types/MoodReminderFrequency"
 import { MoodReminderFrequencyModal } from "@/components/settings/MoodReminderFrequencyModal"
-import React from "react"
+import { createElement } from "react"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
   const { setThemeContextOverride } = useAppTheme()
@@ -59,7 +62,7 @@ export const useMoodReminderFrequencySettingConfig = (): IAppSettingsModalConfig
     iconName: "bell",
     iconType: "font-awesome",
     getValue,
-    modalContent: (onClose: () => void) => React.createElement(MoodReminderFrequencyModal, { onClose }),
+    modalContent: (onClose: () => void) => createElement(MoodReminderFrequencyModal, { onClose }),
   }
 }
 

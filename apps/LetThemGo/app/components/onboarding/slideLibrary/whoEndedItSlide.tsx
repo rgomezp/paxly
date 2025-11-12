@@ -57,4 +57,3 @@ export function whoEndedItSlide({ onSelection }: WhoEndedItSlideProps): ISlide {
     ),
   }
 }
-

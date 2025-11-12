@@ -23,12 +23,7 @@ export const IconTextItem: React.FC<IconTextItemProps> = ({ icon, title, descrip
   return (
     <View style={themed($row)}>
       <View style={themed($iconContainer)}>
-        <ThemedFontAwesome5Icon
-          name={icon}
-          size={28}
-          color={theme.colors.tint}
-          solid
-        />
+        <ThemedFontAwesome5Icon name={icon} size={28} color={theme.colors.tint} solid />
       </View>
       <View style={themed($textContainer)}>
         <Text style={themed($title)}>{title}</Text>

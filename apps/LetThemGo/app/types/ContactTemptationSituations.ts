@@ -7,4 +7,3 @@ enum ContactTemptationSituations {
 }
 
 export { ContactTemptationSituations as ContactTemptationSituationsChoices }
-

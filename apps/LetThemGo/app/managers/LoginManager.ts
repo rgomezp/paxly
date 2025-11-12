@@ -162,7 +162,7 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
           Log.info("LoginManager: onAuthStateChanged: same user already logged in")
           EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
           // For noop, only emit RESTORE_COMPLETED if user was already logged in before this call
-          // If this is a new login but ganon returned noop (e.g., due to timing), 
+          // If this is a new login but ganon returned noop (e.g., due to timing),
           // we should wait to see if a restore happens in a subsequent call
           if (previouslyLoggedIn) {
             // User was already logged in, this is truly a noop - safe to proceed
@@ -171,16 +171,20 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
             // This might be a new login that ganon thinks is noop due to timing
             // Don't emit RESTORE_COMPLETED yet - wait to see if restore happens
             // But set a timeout fallback in case no restore happens
-            Log.info("LoginManager: onAuthStateChanged: noop on new login - waiting to see if restore happens")
-            
+            Log.info(
+              "LoginManager: onAuthStateChanged: noop on new login - waiting to see if restore happens",
+            )
+
             // Clear any existing timeout
             if (this.restoreTimeoutId) {
               clearTimeout(this.restoreTimeoutId)
             }
-            
+
             // Set a timeout: if no restore happens within 2 seconds, assume it's safe to proceed
             this.restoreTimeoutId = setTimeout(() => {
-              Log.info("LoginManager: onAuthStateChanged: no restore happened after noop - emitting RESTORE_COMPLETED")
+              Log.info(
+                "LoginManager: onAuthStateChanged: no restore happened after noop - emitting RESTORE_COMPLETED",
+              )
               EventRegister.emit(GLOBAL_EVENTS.RESTORE_COMPLETED)
               this.restoreTimeoutId = null
             }, 2000)

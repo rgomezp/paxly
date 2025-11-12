@@ -1,22 +1,22 @@
 /**
  * CardLesson Component
- * 
+ *
  * Displays informational/reflective content in a step-by-step carousel format.
- * 
+ *
  * When to use Card Lessons vs Practice Lessons:
- * 
+ *
  * **Card Lessons** (`format: "card"`):
  * - Best for: Reading/reflecting on concepts, reminders, cognitive reframing
  * - Content: Static text cards with tips or informational messages
  * - Interaction: User reads through cards sequentially by tapping "Next"
  * - Example: "Reframe the Urge", "Why No Contact Matters"
- * 
+ *
  * **Practice Lessons** (`format: "practice"`):
  * - Best for: Guided exercises, interventions, interactive activities
  * - Content: Steps can include timers, breathing exercises, audio, checkboxes, text input
  * - Interaction: User actively participates in exercises (breathing, waiting, etc.)
  * - Example: "Wait 90 Seconds", "Box Breathing for Urges", "5-4-3-2-1 Grounding"
- * 
+ *
  * The key difference: Card lessons are for reading/reflecting, Practice lessons are for doing.
  */
 
@@ -43,7 +43,7 @@ export function CardLesson({
   const totalCards = config.cards.length
   const isLastCard = currentCardIndex === totalCards - 1
   const currentCard = config.cards[currentCardIndex]
-  
+
   // Calculate button width: use 85% of screen width, but cap at 300px for readability
   const buttonWidth = Math.min(width * 0.85, 300)
 
@@ -58,7 +58,7 @@ export function CardLesson({
   return (
     <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
-      
+
       {/* Progress dots */}
       {totalCards > 1 && (
         <View
@@ -78,9 +78,7 @@ export function CardLesson({
                 height: index === currentCardIndex ? 8 : 6,
                 borderRadius: index === currentCardIndex ? 4 : 3,
                 backgroundColor:
-                  index === currentCardIndex
-                    ? theme.colors.tint
-                    : theme.colors.border,
+                  index === currentCardIndex ? theme.colors.tint : theme.colors.border,
               }))}
             />
           ))}
@@ -97,10 +95,7 @@ export function CardLesson({
           paddingBottom: 100, // Reserve space for button
         }))}
       >
-        <Animated.View
-          key={currentCardIndex}
-          entering={FadeIn.duration(300)}
-        >
+        <Animated.View key={currentCardIndex} entering={FadeIn.duration(300)}>
           <LessonCard tone={currentCard.type === "tip" ? "tip" : "default"}>
             <Text>{"body" in currentCard ? currentCard.body : (currentCard as any).caption}</Text>
           </LessonCard>
@@ -120,7 +115,7 @@ export function CardLesson({
       >
         <RectangularButton
           width={buttonWidth}
-          buttonText={isLastCard ? (config.commitment?.text || "Finish") : "Next"}
+          buttonText={isLastCard ? config.commitment?.text || "Finish" : "Next"}
           onClick={handleNext}
         />
       </View>

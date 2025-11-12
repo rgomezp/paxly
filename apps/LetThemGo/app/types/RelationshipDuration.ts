@@ -6,4 +6,3 @@ enum RelationshipDuration {
 }
 
 export { RelationshipDuration as RelationshipDurations }
-

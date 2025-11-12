@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
 import Purchases from "react-native-purchases"
@@ -44,5 +44,3 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
 const $root: ViewStyle = {
   flex: 1,
 }
-
-

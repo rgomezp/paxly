@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react"
 import { OnboardingStep } from "./OnboardingStep"
 import LoginManager from "@/managers/LoginManager"
-import Log from "@/utils/Log"
 import { OneSignal } from "react-native-onesignal"
 import { ganon } from "@/services/ganon/ganon"
 import AnalyticsManager from "@/managers/AnalyticsManager"
@@ -40,11 +39,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       OneSignal.User.addTag("onboard_no_login", "1")
     }
     OneSignal.User.addTag("onboard_email_opt_in", emailOptIn ? "1" : "0")
-
-    // Check if this is a new user or existing user before setting finishedOnboarding
-    // If finishedOnboarding already exists (from restore), this is an existing user
-    const existingFinishedOnboarding = ganon.get("finishedOnboarding")
-    const isNewUser = !existingFinishedOnboarding
 
     ganon.set("finishedOnboarding", true)
 

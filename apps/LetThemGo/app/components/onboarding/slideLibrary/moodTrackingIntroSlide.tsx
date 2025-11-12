@@ -38,7 +38,7 @@ function MoodTrackingIntroComponent({ onSelection: _onSelection }: MoodTrackingI
       {/* Explanation text */}
       <View style={themed($explanationContainer)}>
         <RNText style={themed([$explanationText])}>
-          We'll send you gentle reminders to help you stay consistent.
+          We&apos;ll send you gentle reminders to help you stay consistent.
         </RNText>
       </View>
     </View>
@@ -86,4 +86,3 @@ const $explanationText: ThemedStyle<TextStyle> = (theme) => ({
   lineHeight: 20,
   color: theme.colors.text,
 })
-

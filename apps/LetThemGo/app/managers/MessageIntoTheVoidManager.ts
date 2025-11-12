@@ -17,7 +17,7 @@ export default class MessageIntoTheVoidManager {
     rootStoreSingleton.messageIntoTheVoidStore.clearDraft()
   }
 
-  static sendMessage(text: string): void {
+  static sendMessage(_text: string): void {
     // Delete the draft when sending
     MessageIntoTheVoidManager.clearDraft()
     // The message is intentionally not saved - it's sent into the void

@@ -5,4 +5,3 @@ enum WhoEndedIt {
 }
 
 export { WhoEndedIt as WhoEndedItChoices }
-

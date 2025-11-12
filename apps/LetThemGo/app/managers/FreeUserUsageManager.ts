@@ -44,4 +44,3 @@ export default class FreeUserUsageManager {
     return DEFAULT_FREE_LIMIT
   }
 }
-

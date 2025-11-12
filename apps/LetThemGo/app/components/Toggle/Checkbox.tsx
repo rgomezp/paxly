@@ -5,7 +5,8 @@ import { iconRegistry, IconTypes } from "../Icon"
 import { $inputOuterBase, BaseToggleInputProps, ToggleProps, Toggle } from "./Toggle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-export interface CheckboxToggleProps extends Omit<ToggleProps<CheckboxInputProps>, "ToggleInput" | "inputDetailStyle"> {
+export interface CheckboxToggleProps
+  extends Omit<ToggleProps<CheckboxInputProps>, "ToggleInput" | "inputDetailStyle"> {
   /**
    * Optional style prop that affects the Image component.
    */

@@ -6,7 +6,11 @@ import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
 import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import SettingRow from "./components/SettingRow"
-import { useThemeSettingConfig, useDeleteAccountSettingConfig, useMoodReminderFrequencySettingConfig } from "./configs"
+import {
+  useThemeSettingConfig,
+  useDeleteAccountSettingConfig,
+  useMoodReminderFrequencySettingConfig,
+} from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import LoadingModal from "@/components/modals/LoadingModal"
@@ -71,6 +75,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
   const settings = useMemo(
     () => [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm, refreshKey],
   )
 

@@ -4,4 +4,3 @@ export interface IJournalEntry {
 }
 
 export default IJournalEntry
-

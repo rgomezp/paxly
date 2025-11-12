@@ -30,13 +30,15 @@ export default class MoodManager {
     try {
       // Update MST store so observers react immediately
       rootStoreSingleton.moodStore.add(item)
-    } catch (_e) {
+    } catch {
       // If store not available for some reason, ignore; persistence is already done
     }
     // Mark the daily task as completed for today
     try {
       DailyTaskManager.markCompleted("mood")
-    } catch (_e) {}
+    } catch {
+      // Ignore errors
+    }
     return item
   }
 
@@ -88,7 +90,7 @@ export default class MoodManager {
   static populateDummyData() {
     const now = new Date()
     const items: IMoodHistoryItem[] = []
-    
+
     // Sample moods and activities for variety
     const moodOptions: MoodId[] = [
       MoodId.Sad,
@@ -107,7 +109,7 @@ export default class MoodManager {
       MoodId.Empty,
       MoodId.Joyful,
     ]
-    
+
     const activityOptions: Activity[] = [
       Activity.Exercise,
       Activity.Meditation,
@@ -123,58 +125,56 @@ export default class MoodManager {
       Activity.BedRotting,
       Activity.Other,
     ]
-    
+
     // Create 1-3 mood entries per day for the past 7 days
     for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
       const date = new Date(now)
       date.setDate(date.getDate() - dayOffset)
       date.setHours(0, 0, 0, 0)
-      
+
       // Random number of entries per day (1-3)
       const entriesPerDay = Math.floor(Math.random() * 3) + 1
-      
+
       for (let entryIndex = 0; entryIndex < entriesPerDay; entryIndex++) {
         // Random time during the day (between 8 AM and 10 PM)
         const hour = Math.floor(Math.random() * 14) + 8
         const minute = Math.floor(Math.random() * 60)
         const entryDate = new Date(date)
         entryDate.setHours(hour, minute, 0, 0)
-        
+
         // Pick random mood and activity
         const moodId = moodOptions[Math.floor(Math.random() * moodOptions.length)]
         const activity = activityOptions[Math.floor(Math.random() * activityOptions.length)]
         const mood = MOODS[moodId]
-        
+
         const item: IMoodHistoryItem = {
           mood,
           activity,
           notes: entryIndex === 0 ? "" : "", // Sometimes add notes, mostly empty
           date: entryDate.getTime(),
         }
-        
+
         items.push(item)
       }
     }
-    
+
     // Sort by date (oldest first)
     items.sort((a, b) => a.date - b.date)
-    
+
     // Get existing history and merge
     const existingHistory = MoodManager.getHistory()
     const mergedHistory = [...existingHistory, ...items]
-    
+
     // Save to ganon
     ganon.set("moodHistory", mergedHistory)
-    
+
     // Update MST store by reloading from ganon
     try {
       rootStoreSingleton.moodStore.loadFromGanon()
-    } catch (_e) {
+    } catch {
       // If store not available, that's okay - persistence is already done
     }
-    
+
     return items.length
   }
 }
-
-

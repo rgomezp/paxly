@@ -27,7 +27,7 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
   useEffect(() => {
     // Load date locale for formatting
     loadDateFnsLocale()
-    
+
     // Fetch customer info to get detailed subscription information
     const fetchCustomerInfo = async () => {
       try {
@@ -113,7 +113,8 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
       } else if (Platform.OS === "android") {
         // Android: Open Google Play Store subscription management
         // This URL format should work for most cases
-        const url = "https://play.google.com/store/account/subscriptions?package=com.honeywolf.letthemgo&sku="
+        const url =
+          "https://play.google.com/store/account/subscriptions?package=com.honeywolf.letthemgo&sku="
         const canOpen = await Linking.canOpenURL(url)
         if (canOpen) {
           await Linking.openURL(url)
@@ -152,7 +153,12 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
 
   return (
     <Screen style={themed($root)} preset="scroll">
-      <View style={themed([$container, { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 }])}>
+      <View
+        style={themed([
+          $container,
+          { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 },
+        ])}
+      >
         <Text
           text={LANGUAGE_COPY.words.membership[Language.current]}
           preset="heading"
@@ -162,7 +168,12 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
         {activeEntitlement ? (
           <>
             <View style={themed($infoSection)}>
-              <View style={themed([$infoRow, { borderBottomColor: theme.colors.border || "rgba(255, 255, 255, 0.1)" }])}>
+              <View
+                style={themed([
+                  $infoRow,
+                  { borderBottomColor: theme.colors.border || "rgba(255, 255, 255, 0.1)" },
+                ])}
+              >
                 <Text
                   text={LANGUAGE_COPY.words.currentPlan[Language.current]}
                   preset="subheading"
@@ -176,7 +187,12 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
               </View>
 
               {formattedExpirationDate && (
-                <View style={themed([$infoRow, { borderBottomColor: theme.colors.border || "rgba(255, 255, 255, 0.1)" }])}>
+                <View
+                  style={themed([
+                    $infoRow,
+                    { borderBottomColor: theme.colors.border || "rgba(255, 255, 255, 0.1)" },
+                  ])}
+                >
                   <Text
                     text={LANGUAGE_COPY.words.expirationDate[Language.current]}
                     preset="subheading"
@@ -191,7 +207,12 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
               )}
 
               {formattedRenewalDate && (
-                <View style={themed([$infoRow, { borderBottomColor: theme.colors.border || "rgba(255, 255, 255, 0.1)" }])}>
+                <View
+                  style={themed([
+                    $infoRow,
+                    { borderBottomColor: theme.colors.border || "rgba(255, 255, 255, 0.1)" },
+                  ])}
+                >
                   <Text
                     text={LANGUAGE_COPY.words.renewalDate[Language.current]}
                     preset="subheading"

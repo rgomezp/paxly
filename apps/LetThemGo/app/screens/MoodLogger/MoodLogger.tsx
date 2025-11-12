@@ -63,7 +63,6 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   function onSave() {
     if (!selectedMood || !selectedActivity) return
 
-
     MoodManager.create({ moodId: selectedMood, activity: selectedActivity, notes })
     navigation.goBack()
   }

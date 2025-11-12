@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { StyleProp, TextStyle, View } from "react-native"
+import { StyleProp, TextStyle, View, ViewStyle } from "react-native"
 import { Text } from "./Text"
 
 interface AnimatedTextSimulationProps {
@@ -92,13 +92,28 @@ export function AnimatedTextSimulation({
   }, [text, tokenizer, minDelay, maxDelay, shouldStart])
 
   return (
-    <View style={{ position: "relative" }}>
+    <View style={$container}>
       {/* Invisible full text to reserve space */}
-      <Text style={[style, { opacity: 0 }]}>{text}</Text>
+      <Text style={[style, $invisibleText]}>{text}</Text>
       {/* Animated text overlaid on top */}
-      <View style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+      <View style={$overlay}>
         <Text style={style}>{currentTokens.join(separator)}</Text>
       </View>
     </View>
   )
+}
+
+const $container: ViewStyle = {
+  position: "relative",
+}
+
+const $invisibleText: TextStyle = {
+  opacity: 0,
+}
+
+const $overlay: ViewStyle = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
 }

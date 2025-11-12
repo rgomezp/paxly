@@ -35,11 +35,7 @@ jest.mock("expo-localization", () => ({
 jest.mock("@react-native-firebase/app/lib/internal/RNFBNativeEventEmitter", () => {
   const { EventEmitter } = require("events")
   return {
-    RNFBNativeEventEmitter: class MockRNFBNativeEventEmitter extends EventEmitter {
-      constructor() {
-        super()
-      }
-    },
+    RNFBNativeEventEmitter: class MockRNFBNativeEventEmitter extends EventEmitter {},
   }
 })
 

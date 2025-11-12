@@ -55,7 +55,9 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
       </TouchableOpacity>
       {isModalConfig(config) && !config.onPress && (
         <BottomModal visible={isModalVisible} onClose={() => setModalVisible(false)}>
-          {typeof config.modalContent === "function" ? config.modalContent(() => setModalVisible(false)) : config.modalContent}
+          {typeof config.modalContent === "function"
+            ? config.modalContent(() => setModalVisible(false))
+            : config.modalContent}
         </BottomModal>
       )}
     </>

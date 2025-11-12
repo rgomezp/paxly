@@ -2,19 +2,20 @@
 
 /**
  * Wrapper script for `eas build` that fixes the cleanup bug in @expo/build-tools
- * 
+ *
  * The bug: process.kill() is called on a process that doesn't exist, causing ESRCH error
  * The fix: Use NODE_OPTIONS to inject a require hook that patches process.kill globally
- * 
+ *
  * This wrapper patches process.kill at the module level before any child processes are spawned.
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+const { spawn } = require("child_process")
+const path = require("path")
+const fs = require("fs")
 
 // Create a patch module that fixes process.kill
-const patchModulePath = path.join(__dirname, '.process-kill-patch.js');
+// eslint-disable-next-line no-undef
+const patchModulePath = path.join(__dirname, ".process-kill-patch.js")
 const patchModuleContent = `
 // Patch process.kill to handle ESRCH errors gracefully
 const originalKill = process.kill;
@@ -32,50 +33,58 @@ process.kill = function(pid, signal) {
     throw error;
   }
 };
-`;
+`
 
-fs.writeFileSync(patchModulePath, patchModuleContent);
+fs.writeFileSync(patchModulePath, patchModuleContent)
 
 // Set NODE_OPTIONS to require our patch module before anything else
 // This ensures the patch is applied in all child processes
-const originalNodeOptions = process.env.NODE_OPTIONS || '';
-const nodeOptions = originalNodeOptions 
+const originalNodeOptions = process.env.NODE_OPTIONS || ""
+const nodeOptions = originalNodeOptions
   ? `${originalNodeOptions} -r ${patchModulePath}`
-  : `-r ${patchModulePath}`;
+  : `-r ${patchModulePath}`
 
 // Get the eas build arguments
-const args = process.argv.slice(2);
+const args = process.argv.slice(2)
 
 // Spawn eas build with the patched environment
-const easBuild = spawn('eas', ['build', ...args], {
-  stdio: 'inherit',
+const easBuild = spawn("eas", ["build", ...args], {
+  stdio: "inherit",
   shell: true,
   env: {
     ...process.env,
-    NODE_OPTIONS: nodeOptions
-  }
-});
+    NODE_OPTIONS: nodeOptions,
+  },
+})
 
-easBuild.on('error', (error) => {
-  console.error('Failed to start eas build:', error);
+easBuild.on("error", (error) => {
+  console.error("Failed to start eas build:", error)
   // Clean up patch module
-  try { fs.unlinkSync(patchModulePath); } catch {}
-  process.exit(1);
-});
+  try {
+    fs.unlinkSync(patchModulePath)
+  } catch {}
+  process.exit(1)
+})
 
-easBuild.on('exit', (code) => {
+easBuild.on("exit", (code) => {
   // Clean up patch module
-  try { fs.unlinkSync(patchModulePath); } catch {}
-  process.exit(code || 0);
-});
+  try {
+    fs.unlinkSync(patchModulePath)
+  } catch {}
+  process.exit(code || 0)
+})
 
 // Handle cleanup on unexpected termination
-process.on('SIGINT', () => {
-  try { fs.unlinkSync(patchModulePath); } catch {}
-  process.exit(1);
-});
+process.on("SIGINT", () => {
+  try {
+    fs.unlinkSync(patchModulePath)
+  } catch {}
+  process.exit(1)
+})
 
-process.on('SIGTERM', () => {
-  try { fs.unlinkSync(patchModulePath); } catch {}
-  process.exit(1);
-});
+process.on("SIGTERM", () => {
+  try {
+    fs.unlinkSync(patchModulePath)
+  } catch {}
+  process.exit(1)
+})

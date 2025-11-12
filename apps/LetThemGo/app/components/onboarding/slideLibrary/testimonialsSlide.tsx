@@ -80,10 +80,14 @@ const TestimonialComponent: React.FC = () => {
     <View style={themed($container)}>
       {/* testimonials circles graphic */}
       <View style={themed($imageContainer)}>
-        <ExpoImage source={testimonialCirclesImage} style={themed($testimonialImage)} contentFit="contain" />
+        <ExpoImage
+          source={testimonialCirclesImage}
+          style={themed($testimonialImage)}
+          contentFit="contain"
+        />
       </View>
       <Text style={themed($ratingHelpText)}>
-        Giving us a rating helps us mend more people's hearts just like yours
+        Giving us a rating helps us mend more people&apos;s hearts just like yours
       </Text>
       {displayTestimonials.map((testimonial, index) => (
         <TestimonialCard key={index} testimonial={testimonial} />

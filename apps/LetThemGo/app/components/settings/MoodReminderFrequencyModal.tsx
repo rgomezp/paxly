@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { View, ViewStyle, AppState, AppStateStatus } from "react-native"
-import { MultipleChoiceSelector, type MultipleChoiceOption } from "@/components/onboarding/shared/MultipleChoiceSelector"
+import {
+  MultipleChoiceSelector,
+  type MultipleChoiceOption,
+} from "@/components/onboarding/shared/MultipleChoiceSelector"
 import { MoodReminderFrequency, MoodReminderFrequencyLabels } from "@/types/MoodReminderFrequency"
 import { ganon } from "@/services/ganon/ganon"
 import { OneSignal } from "react-native-onesignal"
@@ -18,10 +21,22 @@ interface MoodReminderFrequencyModalProps {
 }
 
 const options: MultipleChoiceOption<MoodReminderFrequency>[] = [
-  { id: MoodReminderFrequency.EVERY_HOUR, label: MoodReminderFrequencyLabels[MoodReminderFrequency.EVERY_HOUR] },
-  { id: MoodReminderFrequency.THREE_TIMES_DAY, label: MoodReminderFrequencyLabels[MoodReminderFrequency.THREE_TIMES_DAY] },
-  { id: MoodReminderFrequency.SIX_TIMES_DAY, label: MoodReminderFrequencyLabels[MoodReminderFrequency.SIX_TIMES_DAY] },
-  { id: MoodReminderFrequency.ONCE_DAY, label: MoodReminderFrequencyLabels[MoodReminderFrequency.ONCE_DAY] },
+  {
+    id: MoodReminderFrequency.EVERY_HOUR,
+    label: MoodReminderFrequencyLabels[MoodReminderFrequency.EVERY_HOUR],
+  },
+  {
+    id: MoodReminderFrequency.THREE_TIMES_DAY,
+    label: MoodReminderFrequencyLabels[MoodReminderFrequency.THREE_TIMES_DAY],
+  },
+  {
+    id: MoodReminderFrequency.SIX_TIMES_DAY,
+    label: MoodReminderFrequencyLabels[MoodReminderFrequency.SIX_TIMES_DAY],
+  },
+  {
+    id: MoodReminderFrequency.ONCE_DAY,
+    label: MoodReminderFrequencyLabels[MoodReminderFrequency.ONCE_DAY],
+  },
 ]
 
 export function MoodReminderFrequencyModal({ onClose }: MoodReminderFrequencyModalProps) {
@@ -37,10 +52,10 @@ export function MoodReminderFrequencyModal({ onClose }: MoodReminderFrequencyMod
   const checkPermission = useCallback(async () => {
     try {
       const permissionStatus = await OneSignal.Notifications.getPermissionAsync()
-      
+
       // getPermissionAsync returns a boolean indicating if permission is granted
       const isGranted = Boolean(permissionStatus)
-      
+
       setHasPermission(isGranted)
       setIsRequestingPermission(false)
     } catch (error) {
@@ -103,7 +118,9 @@ export function MoodReminderFrequencyModal({ onClose }: MoodReminderFrequencyMod
     // Add OneSignal tag
     try {
       OneSignal.User.addTag("mood_reminder_frequency", selectedFrequency)
-      Log.info(`MoodReminderFrequencyModal: Added OneSignal tag: mood_reminder_frequency=${selectedFrequency}`)
+      Log.info(
+        `MoodReminderFrequencyModal: Added OneSignal tag: mood_reminder_frequency=${selectedFrequency}`,
+      )
     } catch (e) {
       Log.error(`MoodReminderFrequencyModal: Error adding OneSignal tag: ${e}`)
     }
@@ -136,19 +153,19 @@ export function MoodReminderFrequencyModal({ onClose }: MoodReminderFrequencyMod
   const handleRequestPermission = async () => {
     try {
       setIsRequestingPermission(true)
-      
+
       // Add timeout to prevent infinite loading if requestPermission hangs
       const timeoutPromise = new Promise<boolean>((resolve) => {
         setTimeout(() => {
           resolve(false)
         }, 10000) // 10 second timeout
       })
-      
+
       const permissionPromise = OneSignal.Notifications.requestPermission(true)
-      
+
       // Race between permission request and timeout
       await Promise.race([permissionPromise, timeoutPromise])
-      
+
       // Re-check permission status after request to get accurate state
       await checkPermission()
     } catch (error) {
@@ -166,7 +183,8 @@ export function MoodReminderFrequencyModal({ onClose }: MoodReminderFrequencyMod
           Notification permission is required for mood reminders.
         </Text>
         <Text style={themed($permissionHelpText)}>
-          Tap the button below to enable notifications, or enable it manually in your device settings.
+          Tap the button below to enable notifications, or enable it manually in your device
+          settings.
         </Text>
         <View style={themed($buttonContainer)}>
           <RectangularButton
@@ -193,7 +211,7 @@ export function MoodReminderFrequencyModal({ onClose }: MoodReminderFrequencyMod
   )
 }
 
-const $container: ThemedStyle<ViewStyle> = (theme) => ({
+const $container: ThemedStyle<ViewStyle> = () => ({
   width: "100%",
 })
 
@@ -203,7 +221,7 @@ const $loadingText: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.text,
 })
 
-const $permissionContainer: ThemedStyle<ViewStyle> = (_theme) => ({
+const $permissionContainer: ThemedStyle<ViewStyle> = () => ({
   width: "100%",
   alignItems: "center",
   paddingVertical: 20,
@@ -224,8 +242,7 @@ const $permissionHelpText: ThemedStyle<TextStyle> = (theme) => ({
   paddingHorizontal: 20,
 })
 
-const $buttonContainer: ThemedStyle<ViewStyle> = (_theme) => ({
+const $buttonContainer: ThemedStyle<ViewStyle> = () => ({
   alignItems: "center",
   marginTop: 8,
 })
-

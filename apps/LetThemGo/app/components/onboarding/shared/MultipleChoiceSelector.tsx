@@ -33,7 +33,7 @@ export function MultipleChoiceSelector<T extends string = string>({
   initialSelectedOptions = [],
 }: MultipleChoiceSelectorProps<T>) {
   const [selectedOptions, setSelectedOptions] = useState<T[]>(initialSelectedOptions)
-  const { themed, theme, themeContext } = useAppTheme()
+  const { themed, themeContext } = useAppTheme()
 
   // Update selected options when initialSelectedOptions changes
   useEffect(() => {
@@ -149,7 +149,7 @@ export function MultipleChoiceSelector<T extends string = string>({
           >
             {renderOptions()}
           </ScrollView>
-          <View style={[styles.scrollHint, { backgroundColor: theme.colors.background }]}>
+          <View style={[styles.scrollHint, themed($scrollHintContainer)]}>
             <Text style={themed($scrollHintText)}>Scroll for more options</Text>
           </View>
         </View>
@@ -187,11 +187,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: "100%",
   },
-  limitContainer: {
-    alignItems: "center",
-    marginTop: -40,
-    paddingBottom: 10,
-  },
   limitContainerTop: {
     alignItems: "center",
     marginBottom: 8,
@@ -212,7 +207,6 @@ const styles = StyleSheet.create({
   },
   scrollHint: {
     alignItems: "center",
-    borderTopColor: "#ddd",
     borderTopWidth: 1,
     bottom: 0,
     left: -20,
@@ -231,6 +225,11 @@ const $limitText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.palette.neutral500,
   fontSize: 12,
   textAlign: "center",
+})
+
+const $scrollHintContainer: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.background,
+  borderTopColor: colors.border,
 })
 
 const $scrollHintText: ThemedStyle<TextStyle> = ({ colors }) => ({

@@ -17,7 +17,7 @@ export const MoodStoreModel = types
       // Persist to ganon
       try {
         ganon.set("moodHistory", self.history.slice())
-      } catch (e) {
+      } catch {
         // noop; persistence errors shouldn't break UI updates
       }
     },

@@ -50,10 +50,10 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
     )
     // Clone component and pass isActive prop if it's a valid React element
     // Note: React 19 doesn't allow passing props to Fragments, so we check for that
-    const isFragment = isValidElement(item.component) && 
-      (item.component.type === Fragment || 
-       (typeof item.component.type === "symbol"))
-    
+    const isFragment =
+      isValidElement(item.component) &&
+      (item.component.type === Fragment || typeof item.component.type === "symbol")
+
     const componentView = item.component && (
       <View style={styles.component}>
         {isValidElement(item.component) && !isFragment

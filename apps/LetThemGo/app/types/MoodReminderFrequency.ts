@@ -18,4 +18,3 @@ export const MoodReminderFrequencyShorthand: Record<MoodReminderFrequency, strin
   [MoodReminderFrequency.SIX_TIMES_DAY]: "6x/day",
   [MoodReminderFrequency.ONCE_DAY]: "1x/day",
 }
-

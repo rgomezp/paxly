@@ -20,7 +20,7 @@ export const MessageIntoTheVoidStoreModel = types
       // Persist to ganon
       try {
         ganon.set("messageIntoTheVoidDraft", text || null)
-      } catch (e) {
+      } catch {
         // noop; persistence errors shouldn't break UI updates
       }
     },
@@ -34,4 +34,3 @@ export const MessageIntoTheVoidStoreModel = types
   }))
 
 export interface MessageIntoTheVoidStore extends Instance<typeof MessageIntoTheVoidStoreModel> {}
-

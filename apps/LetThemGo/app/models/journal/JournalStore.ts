@@ -2,11 +2,10 @@ import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { ganon } from "@/services/ganon/ganon"
 import IJournalEntry from "@/types/IJournalEntry"
 
-const JournalEntryModel = types
-  .model("JournalEntry", {
-    text: types.string,
-    date: types.number, // epoch ms
-  })
+const JournalEntryModel = types.model("JournalEntry", {
+  text: types.string,
+  date: types.number, // epoch ms
+})
 
 export const JournalStoreModel = types
   .model("JournalStore", {
@@ -32,7 +31,7 @@ export const JournalStoreModel = types
       // Persist to ganon
       try {
         ganon.set("journalEntries", self.entries.slice())
-      } catch (e) {
+      } catch {
         // noop; persistence errors shouldn't break UI updates
       }
       return entry
@@ -49,7 +48,7 @@ export const JournalStoreModel = types
         // Persist to ganon
         try {
           ganon.set("journalEntries", self.entries.slice())
-        } catch (e) {
+        } catch {
           // noop; persistence errors shouldn't break UI updates
         }
       }
@@ -61,5 +60,3 @@ export const JournalStoreModel = types
 
 export interface JournalStore extends Instance<typeof JournalStoreModel> {}
 export interface JournalStoreSnapshot extends SnapshotOut<typeof JournalStoreModel> {}
-
-

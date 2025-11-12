@@ -6,7 +6,6 @@ export function msUntilNextLocalMidnight(): number {
   return Math.max(0, tomorrow.getTime() - now.getTime())
 }
 
-
 export function getLocalDateKey(date: Date = new Date()): string {
   // Build YYYY-MM-DD in the user's local timezone
   const year = date.getFullYear()
@@ -14,5 +13,3 @@ export function getLocalDateKey(date: Date = new Date()): string {
   const day = date.getDate().toString().padStart(2, "0")
   return `${year}-${month}-${day}`
 }
-
-

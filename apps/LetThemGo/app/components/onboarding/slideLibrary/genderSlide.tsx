@@ -66,4 +66,3 @@ export function genderSlide({ onSelection }: GenderSlideProps): ISlide {
     ),
   }
 }
-

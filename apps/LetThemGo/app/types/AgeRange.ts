@@ -8,4 +8,3 @@ enum AgeRange {
 }
 
 export { AgeRange as AgeRanges }
-

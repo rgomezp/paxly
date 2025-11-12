@@ -12,7 +12,7 @@ type ConfigState = {
   pendingPromise: Promise<void> | null
 }
 
-let configState: ConfigState = {
+const configState: ConfigState = {
   isConfigured: null,
   lastAttempt: 0,
   lastError: null,

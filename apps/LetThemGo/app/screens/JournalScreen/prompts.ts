@@ -21,7 +21,7 @@ export const JOURNAL_PROMPTS = [
   "Write about a time you surprised yourself with your strength.",
   "What are you learning about love from this experience?",
   "How can you show yourself the same love you gave others?",
-  "What does \"moving on\" really mean to you?",
+  'What does "moving on" really mean to you?',
 
   // ☀️ Finding Gratitude & Peace
   "List five small things that made you smile recently.",
@@ -45,7 +45,7 @@ export const JOURNAL_PROMPTS = [
   "What does a healthy love look like to you now?",
   "If you could write one sentence to your ex without sending it, what would it say?",
   "How would you describe this chapter of your life?",
-  "What does \"letting go\" mean to you — emotionally, not just logically?",
+  'What does "letting go" mean to you — emotionally, not just logically?',
 
   // 🌸 Rebuilding Joy & Purpose
   "What hobbies or passions have you rediscovered?",
@@ -57,7 +57,7 @@ export const JOURNAL_PROMPTS = [
   "Write about a time you felt truly alive — what were you doing?",
   "What's a small promise you can make to yourself today?",
   "How do you want to look back on this time a year from now?",
-  "What does \"self-love\" mean to you, in action?",
+  'What does "self-love" mean to you, in action?',
 ]
 
 /**

@@ -4,4 +4,3 @@ enum YesNo {
 }
 
 export { YesNo as YesNoChoices }
-

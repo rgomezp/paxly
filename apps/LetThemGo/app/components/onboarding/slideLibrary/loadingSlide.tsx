@@ -1,6 +1,11 @@
 import { useEffect, useRef } from "react"
 import { View, StyleSheet, useWindowDimensions } from "react-native"
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from "react-native-reanimated"
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+} from "react-native-reanimated"
 import LottieView from "lottie-react-native"
 import type { ISlide } from "@/types/ISlide"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -107,28 +112,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 20,
   },
+  lottie: {
+    height: 200,
+    width: 200,
+  },
   lottieContainer: {
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
     width: "100%",
   },
-  lottie: {
-    height: 200,
-    width: 200,
-  },
   progressBarContainer: {
     marginBottom: 40,
     marginTop: 20,
+  },
+  progressBarFill: {
+    borderRadius: 4,
+    height: "100%",
   },
   progressBarTrack: {
     borderRadius: 4,
     height: 8,
     overflow: "hidden",
   },
-  progressBarFill: {
-    borderRadius: 4,
-    height: "100%",
-  },
 })
-

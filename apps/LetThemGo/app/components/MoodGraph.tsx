@@ -35,43 +35,45 @@ export const MoodGraph: FC<MoodGraphProps> = observer(function MoodGraph({
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
 
-  const buckets: DayBucket[] = demoData || (() => {
-    // Build last 7 days, oldest -> newest
-    const today = new Date()
-    const start = new Date()
-    start.setDate(today.getDate() - 6)
+  const buckets: DayBucket[] =
+    demoData ||
+    (() => {
+      // Build last 7 days, oldest -> newest
+      const today = new Date()
+      const start = new Date()
+      start.setDate(today.getDate() - 6)
 
-    const makeKey = (d: Date) => getLocalDateKey(d)
-    const short = (d: Date) => d.toLocaleDateString(undefined, { weekday: "short" }).toLowerCase()
+      const makeKey = (d: Date) => getLocalDateKey(d)
+      const short = (d: Date) => d.toLocaleDateString(undefined, { weekday: "short" }).toLowerCase()
 
-    const map: Record<string, DayBucket> = {}
-    for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
-      const key = makeKey(d)
-      map[key] = {
-        key,
-        label: short(new Date(d)),
-        negative: 0,
-        neutral: 0,
-        positive: 0,
-        total: 0,
+      const map: Record<string, DayBucket> = {}
+      for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+        const key = makeKey(d)
+        map[key] = {
+          key,
+          label: short(new Date(d)),
+          negative: 0,
+          neutral: 0,
+          positive: 0,
+          total: 0,
+        }
       }
-    }
 
-    const historyList: IMoodHistoryItem[] = moodStore.history.length
-      ? (moodStore.history.slice() as IMoodHistoryItem[])
-      : MoodManager.getHistory()
-    for (const item of historyList) {
-      const date = new Date(item.date)
-      const key = makeKey(date)
-      const bucket = map[key]
-      if (!bucket) continue
-      if (item.mood.category === MoodCategory.Negative) bucket.negative += 1
-      else if (item.mood.category === MoodCategory.Neutral) bucket.neutral += 1
-      else bucket.positive += 1
-      bucket.total += 1
-    }
-    return Object.values(map)
-  })()
+      const historyList: IMoodHistoryItem[] = moodStore.history.length
+        ? (moodStore.history.slice() as IMoodHistoryItem[])
+        : MoodManager.getHistory()
+      for (const item of historyList) {
+        const date = new Date(item.date)
+        const key = makeKey(date)
+        const bucket = map[key]
+        if (!bucket) continue
+        if (item.mood.category === MoodCategory.Negative) bucket.negative += 1
+        else if (item.mood.category === MoodCategory.Neutral) bucket.neutral += 1
+        else bucket.positive += 1
+        bucket.total += 1
+      }
+      return Object.values(map)
+    })()
 
   const chartHeight = propChartHeight || 180
 
