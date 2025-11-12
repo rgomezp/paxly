@@ -1,4 +1,5 @@
 import { ganon } from "@/services/ganon/ganon"
+import { rootStoreSingleton } from "@/models/helpers/useStores"
 
 export default class MessageIntoTheVoidManager {
   static getDraft(): string | null {
@@ -6,11 +7,14 @@ export default class MessageIntoTheVoidManager {
   }
 
   static saveDraft(text: string): void {
+    // Update both ganon and the store for reactivity
     ganon.set("messageIntoTheVoidDraft", text)
+    rootStoreSingleton.messageIntoTheVoidStore.setDraft(text)
   }
 
   static clearDraft(): void {
     ganon.set("messageIntoTheVoidDraft", null)
+    rootStoreSingleton.messageIntoTheVoidStore.clearDraft()
   }
 
   static sendMessage(text: string): void {

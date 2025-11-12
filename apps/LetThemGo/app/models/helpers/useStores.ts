@@ -92,6 +92,7 @@ export const useInitialRootStore = (callback?: () => void | Promise<void>) => {
 export const clearAllStores = () => {
   rootStoreSingleton.moodStore.clear()
   rootStoreSingleton.journalStore.clearAll()
+  rootStoreSingleton.messageIntoTheVoidStore.clearDraft()
 }
 
 /**
@@ -101,4 +102,5 @@ export const clearAllStores = () => {
 export const reloadAllStores = () => {
   rootStoreSingleton.moodStore.loadFromGanon()
   rootStoreSingleton.journalStore.loadFromGanon()
+  rootStoreSingleton.messageIntoTheVoidStore.loadFromGanon()
 }
