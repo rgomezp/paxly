@@ -1,7 +1,7 @@
-import { FC, useMemo, useState, useRef, useEffect } from "react"
+import { FC, useMemo } from "react"
+import { observer } from "mobx-react-lite"
 import {
   View,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -15,12 +15,8 @@ import { Text } from "@/components"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
-import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import RectangularButton from "@/components/buttons/RectangularButton"
-import MessageIntoTheVoidManager from "@/managers/MessageIntoTheVoidManager"
-import SendMessageConfirmationModal from "@/components/modals/SendMessageConfirmationModal"
-import { Audio } from "expo-av"
-import Log from "@/utils/Log"
+import { useStores } from "@/models"
 
 // Conditionally import expo-image for animated WebP support
 let ExpoImage: any = null
@@ -33,96 +29,15 @@ interface MessageIntoTheVoidScreenProps extends AppStackScreenProps<"MessageInto
 const HEADER_COPY =
   "This is a safe place to say what you can't—or shouldn't—send. Write it out, feel it fully, and release it. Your note isn't delivered to anyone; it simply drifts away so you can keep your peace. Write it in a single session, or save it as a draft to work on over time.\n\nHonor your feelings and move them out of your body. Take a breath, type what you need to say, and let gravity do the rest."
 
-export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> =
+export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> = observer(
   function MessageIntoTheVoidScreen({ navigation }) {
-    const { themed, theme } = useAppTheme()
+    const { themed } = useAppTheme()
     const insets = useSafeAreaInsets()
-    const initialDraft = MessageIntoTheVoidManager.getDraft()
-    const [text, setText] = useState(initialDraft ?? "")
-    const [isEditing, setIsEditing] = useState(false)
-    const [isSendModalVisible, setIsSendModalVisible] = useState(false)
-    const scrollViewRef = useRef<ScrollView>(null)
-    const inputRef = useRef<TextInput>(null)
-
-    const trimmedText = text.trim()
-    const hasDraft = initialDraft !== null && initialDraft.trim().length > 0
-    const isValid = trimmedText.length > 0
-
-    // Auto-save draft when text changes
-    useEffect(() => {
-      if (isEditing && text.length > 0) {
-        // Debounce save
-        const timeoutId = setTimeout(() => {
-          MessageIntoTheVoidManager.saveDraft(text)
-        }, 500)
-        return () => clearTimeout(timeoutId)
-      }
-      return undefined
-    }, [text, isEditing])
+    const { messageIntoTheVoidStore } = useStores()
+    const hasDraft = messageIntoTheVoidStore.hasDraft
 
     const handleStartEditing = () => {
-      setIsEditing(true)
-      // Focus input after a short delay
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
-    }
-
-    const handleSend = () => {
-      if (!text.trim()) return
-      setIsSendModalVisible(true)
-    }
-
-    const handleConfirmSend = async () => {
-      // Play send sound effect
-      try {
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/sounds/transition.m4a"),
-          {
-            shouldPlay: true,
-            volume: 1.0,
-          },
-        )
-
-        // Set up status listener for auto-cleanup
-        sound.setOnPlaybackStatusUpdate((status) => {
-          if (status.isLoaded && status.didJustFinish) {
-            sound.unloadAsync().catch(() => {
-              // Ignore cleanup errors
-            })
-          }
-        })
-
-        // Auto-cleanup after playback completes
-        setTimeout(() => {
-          sound
-            .getStatusAsync()
-            .then((status) => {
-              if (status.isLoaded) {
-                sound.unloadAsync().catch(() => {
-                  // Ignore cleanup errors
-                })
-              }
-            })
-            .catch(() => {
-              // Sound already unloaded, ignore
-            })
-        }, 3000) // 3 second buffer for cleanup
-      } catch (error) {
-        Log.error("MessageIntoTheVoidScreen: Failed to play send sound:", error)
-      }
-
-      MessageIntoTheVoidManager.sendMessage(text.trim())
-      setIsSendModalVisible(false)
-      navigation.goBack()
-    }
-
-    const handleSelectionChange = (event: any) => {
-      if (scrollViewRef.current && event.nativeEvent.selection) {
-        setTimeout(() => {
-          scrollViewRef.current?.scrollToEnd({ animated: true })
-        }, 100)
-      }
+      navigation.navigate("ComposeMessage")
     }
 
     const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
@@ -139,7 +54,6 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> =
       >
         <View style={[themed($innerContainer), $containerInsetStyle]}>
           <ScrollView
-            ref={scrollViewRef}
             style={themed($scroll)}
             contentContainerStyle={$contentInsetStyle}
             keyboardShouldPersistTaps="handled"
@@ -166,56 +80,21 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> =
             </View>
             <Text text={HEADER_COPY} style={themed($headerCopy)} />
 
-            {!isEditing && (
-              <View style={themed($createButtonContainer)}>
-                <RectangularButton
-                  buttonText={hasDraft ? "Continue draft" : "Create"}
-                  onClick={handleStartEditing}
-                  width="100%"
-                  icon={hasDraft ? "edit" : "plus"}
-                  isPaidFeature={true}
-                />
-              </View>
-            )}
-
-            {isEditing && (
-              <View style={themed($inputWrapper)}>
-                <TextInput
-                  ref={inputRef}
-                  placeholder="Write what you need to say..."
-                  placeholderTextColor={theme.colors.textDim}
-                  value={text}
-                  onChangeText={setText}
-                  multiline
-                  style={themed($input)}
-                  scrollEnabled={false}
-                  onSelectionChange={handleSelectionChange}
-                  textAlignVertical="top"
-                  blurOnSubmit={false}
-                  returnKeyType="default"
-                  autoCorrect={true}
-                  autoCapitalize="sentences"
-                />
-              </View>
-            )}
+            <View style={themed($createButtonContainer)}>
+              <RectangularButton
+                buttonText={hasDraft ? "Continue draft" : "Create"}
+                onClick={handleStartEditing}
+                width="100%"
+                icon={hasDraft ? "edit" : "plus"}
+                isPaidFeature={true}
+              />
+            </View>
           </ScrollView>
         </View>
-        {isEditing && (
-          <FloatingCenterButton
-            isValid={isValid}
-            text="Send"
-            onPress={handleSend}
-            icon="paper-plane"
-          />
-        )}
-        <SendMessageConfirmationModal
-          visible={isSendModalVisible}
-          onClose={() => setIsSendModalVisible(false)}
-          onConfirm={handleConfirmSend}
-        />
       </KeyboardAvoidingView>
     )
-  }
+  },
+)
 
 const $container: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
@@ -246,21 +125,6 @@ const $createButtonContainer: ThemedStyle<ViewStyle> = () => ({
   marginTop: 12,
   marginBottom: 24,
   alignItems: "center",
-})
-
-const $inputWrapper: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
-  minHeight: 180,
-})
-
-const $input: ThemedStyle<TextStyle> = (theme) => ({
-  minHeight: 180,
-  borderRadius: 12,
-  padding: 12,
-  color: theme.colors.text,
-  backgroundColor: theme.colors.card,
-  fontSize: 16,
-  lineHeight: 24,
 })
 
 const $graphicContainer: ViewStyle = {
