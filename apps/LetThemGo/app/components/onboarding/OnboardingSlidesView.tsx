@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { StyleSheet, ScrollView, Animated, Dimensions, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import OnboardingItem from "./OnboardingItem"
@@ -10,6 +10,8 @@ import NextButton from "../buttons/NextButton"
 import StoreReviewManager from "@/managers/StoreReviewManager"
 import Log from "@/utils/Log"
 import { useCustomColor } from "@/hooks/useCustomColor"
+import AnalyticsManager from "@/managers/AnalyticsManager"
+import { ONBOARDING_VERSION } from "@/constants/onboarding"
 
 interface OnboardingSlidesViewProps {
   onComplete?: () => void
@@ -34,6 +36,18 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
   }
 
   const { slides } = useSlides(handleSelection)
+
+  // Track slide views with analytics
+  useEffect(() => {
+    if (slides.length > 0 && currentIndex < slides.length) {
+      const currentSlide = slides[currentIndex]
+      AnalyticsManager.getInstance().logEvent("onboarding_slide_viewed", {
+        slide_id: currentSlide.id,
+        slide_index: currentIndex,
+        onboarding_version: ONBOARDING_VERSION,
+      })
+    }
+  }, [currentIndex, slides])
 
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x
