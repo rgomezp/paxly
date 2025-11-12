@@ -57,7 +57,7 @@ interface StorageMapping {
   contactTemptationSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
-  flagOverrides: Partial<IFlags>;
+  flagOverrides: Partial<IFlags>
 }
 
 export default StorageMapping
