@@ -176,6 +176,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
                 onDrinkFinished={() => {
                   setIsWatering(false)
                 }}
+                showName={true}
               />
               {progressData.timeDisplay.secondary ? (
                 <>
