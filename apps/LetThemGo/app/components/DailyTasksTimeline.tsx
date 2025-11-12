@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TouchableOpacity } from "react-native"
 import { Text } from "@/components"
@@ -12,7 +12,7 @@ import { useStores } from "@/models"
 import { useEntitlements } from "../entitlements/useEntitlements"
 import { FEATURES } from "../entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
-import { useFeatureFlags } from "@/hooks/useFlags"
+import { FlagContext } from "@/hooks/useFlags"
 
 type Props = {
   onPressMood: () => void
@@ -31,7 +31,11 @@ export default observer(function DailyTasksTimeline({
   const { moodStore } = useStores()
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
   const { hasFeatureAccess } = useEntitlements()
-  const flags = useFeatureFlags()
+  const flagContext = useContext(FlagContext)
+  if (!flagContext) {
+    throw new Error("DailyTasksTimeline must be used within a FlagProvider")
+  }
+  const flags = flagContext.useFeatureFlags()
 
   // Get the task limit from feature flags, fallback to default if not available
   const taskLimit = flags.task_limit_free_users ?? FreeUserUsageManager.getDefaultFreeLimit()
@@ -125,16 +129,26 @@ export default observer(function DailyTasksTimeline({
         <Text text="Daily Tasks" preset="subheading" style={themed({ color: theme.colors.text })} />
       </View>
       <View style={themed([$timeline])}>
-        {Row("Log your mood", moodDone, () => {
-          onPressMood()
-        }, "mood")}
+        {Row(
+          "Log your mood",
+          moodDone,
+          () => {
+            onPressMood()
+          },
+          "mood",
+        )}
         {false &&
           Row("Daily lesson", done.lesson, () => {
             onPressLesson?.()
           })}
-        {Row("Write in your journal", done.journal, () => {
-          onPressJournal?.()
-        }, "journal")}
+        {Row(
+          "Write in your journal",
+          done.journal,
+          () => {
+            onPressJournal?.()
+          },
+          "journal",
+        )}
       </View>
     </View>
   )
