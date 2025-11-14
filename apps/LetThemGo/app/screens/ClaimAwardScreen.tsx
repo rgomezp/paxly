@@ -63,8 +63,8 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
     const awarded = AwardManager.award(true)
 
     if (awarded) {
-      // Navigate back to Lessons screen (skipping SingleLesson screen)
-      navigation.navigate("Lessons")
+      // Replace this screen with Lessons screen so ClaimAward can't be navigated back to
+      navigation.replace("Lessons")
     }
   }
 
