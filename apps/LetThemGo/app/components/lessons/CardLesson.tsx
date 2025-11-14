@@ -22,15 +22,15 @@
 
 import { CardLessonConfig } from "@/types/lessons/ICardLessonConfig"
 import { Text } from ".."
-import { View, StyleSheet } from "react-native"
+import { View, StyleSheet, ScrollView } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useState } from "react"
 import Animated, { FadeIn } from "react-native-reanimated"
 import { LessonCard } from "./primitives/LessonCard"
 import { LessonHeader } from "./LessonHeader"
 import RectangularButton from "../buttons/RectangularButton"
-import ProgressBar from "../ProgressBar"
 import { QACard } from "./primitives/QACard"
+import { LessonFooter } from "./LessonFooter"
 
 const buttonContainerStyles = StyleSheet.create({
   noHorizontalMargin: {
@@ -67,19 +67,28 @@ export function CardLesson({
     }
   }
 
+  // Calculate footer height: buttons + padding + progress bar (if visible)
+  // Buttons: 50px height + 10px margin = 60px
+  // Footer padding: md top (16px) + lg bottom (24px) = 40px
+  // Progress bar: ~4px + sm padding (12px) = ~16px (at bottom)
+  // Total: ~100px base + 16px progress bar = ~116px when progress bar visible, ~100px when not
+  const footerHeight = totalCards > 1 ? 116 : 100
+
   return (
     <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
 
       {/* Current card */}
-      <View
-        style={themed(() => ({
-          flex: 3,
+      <ScrollView
+        style={themed(() => ({ flex: 1 }))}
+        contentContainerStyle={themed(() => ({
+          flexGrow: 1,
           justifyContent: "center",
           alignItems: "center",
           padding: theme.spacing.md,
-          paddingBottom: 100, // Reserve space for button
+          paddingBottom: footerHeight + theme.spacing.lg, // Footer height + extra spacing
         }))}
+        showsVerticalScrollIndicator={false}
       >
         <Animated.View key={currentCardIndex} entering={FadeIn.duration(300)}>
           {currentCard.type === "qa" ? (
@@ -92,53 +101,39 @@ export function CardLesson({
             </LessonCard>
           )}
         </Animated.View>
-        {/* Progress bar */}
-        {totalCards > 1 && (
-          <View
-            style={themed(() => ({
-              paddingVertical: theme.spacing.sm,
-            }))}
-          >
-            <ProgressBar
-              currentIndex={currentCardIndex}
-              totalItems={totalCards}
-              widthPercent={0.9}
+      </ScrollView>
+
+      {/* Footer: Navigation buttons and progress bar */}
+      <LessonFooter
+        showProgressBar={totalCards > 1}
+        currentIndex={currentCardIndex}
+        totalItems={totalCards}
+      >
+        <View
+          style={themed(() => ({
+            flexDirection: "row",
+            gap: theme.spacing.sm,
+          }))}
+        >
+          <View style={themed(() => ({ flex: 1 }))}>
+            <RectangularButton
+              width="100%"
+              buttonText="Back"
+              onClick={handleBack}
+              isDisabled={isFirstCard}
+              customStyles={buttonContainerStyles.noHorizontalMargin}
             />
           </View>
-        )}
-      </View>
-
-      {/* Navigation buttons */}
-      <View
-        style={themed(() => ({
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          paddingBottom: theme.spacing.lg,
-          paddingHorizontal: theme.spacing.md,
-          flexDirection: "row",
-          gap: theme.spacing.sm,
-        }))}
-      >
-        <View style={themed(() => ({ flex: 1 }))}>
-          <RectangularButton
-            width="100%"
-            buttonText="Back"
-            onClick={handleBack}
-            isDisabled={isFirstCard}
-            customStyles={buttonContainerStyles.noHorizontalMargin}
-          />
+          <View style={themed(() => ({ flex: 3 }))}>
+            <RectangularButton
+              width="100%"
+              buttonText={isLastCard ? config.commitment?.text || "Finish" : "Next"}
+              onClick={handleNext}
+              customStyles={buttonContainerStyles.noHorizontalMargin}
+            />
+          </View>
         </View>
-        <View style={themed(() => ({ flex: 3 }))}>
-          <RectangularButton
-            width="100%"
-            buttonText={isLastCard ? config.commitment?.text || "Finish" : "Next"}
-            onClick={handleNext}
-            customStyles={buttonContainerStyles.noHorizontalMargin}
-          />
-        </View>
-      </View>
+      </LessonFooter>
     </View>
   )
 }
