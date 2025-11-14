@@ -41,7 +41,9 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
 
     // Extract slide function calls from the slides array
     // Find the slides array section
-    const slidesArrayMatch = fileContent.match(/const slides: ISlide\[\] = useMemo\s*\(\s*\(\) => \[([\s\S]*?)\],/m)
+    const slidesArrayMatch = fileContent.match(
+      /const slides: ISlide\[\] = useMemo\s*\(\s*\(\) => \[([\s\S]*?)\],/m,
+    )
     if (!slidesArrayMatch) {
       throw new Error("Could not find slides array in useSlides.tsx")
     }
