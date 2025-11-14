@@ -20,7 +20,7 @@ import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
 import { useContext, useMemo, ComponentProps, useRef } from "react"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
-import { House, BookOpen, User } from "phosphor-react-native"
+import { HouseIcon, UserIcon, BooksIcon } from "phosphor-react-native"
 import Log from "@/utils/Log"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
@@ -61,7 +61,7 @@ const TabNavigator = observer(function TabNavigator() {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <ThemedPhosphorIcon
-              Component={House}
+              Component={HouseIcon}
               color={color}
               size={size ?? 22}
               weight={focused ? "fill" : "regular"}
@@ -75,7 +75,7 @@ const TabNavigator = observer(function TabNavigator() {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <ThemedPhosphorIcon
-              Component={BookOpen}
+              Component={BooksIcon}
               color={color}
               size={size ?? 22}
               weight={focused ? "fill" : "regular"}
@@ -89,7 +89,7 @@ const TabNavigator = observer(function TabNavigator() {
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <ThemedPhosphorIcon
-              Component={User}
+              Component={UserIcon}
               color={color}
               size={size ?? 22}
               weight={focused ? "fill" : "regular"}
