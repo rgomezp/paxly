@@ -4,39 +4,73 @@ import { View, Animated, useWindowDimensions } from "react-native"
 import { progressBarStyles } from "../theme/styles"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-type ProgressBarProps = {
-  data: ISlide[]
-  scrollX: Animated.Value
-  highlightedColor?: string
-}
+type ProgressBarProps =
+  | {
+      // Scroll-based navigation (for carousels)
+      data: ISlide[]
+      scrollX: Animated.Value
+      highlightedColor?: string
+      widthPercent?: number
+    }
+  | {
+      // Index-based navigation (for step-by-step lessons)
+      currentIndex: number
+      totalItems: number
+      highlightedColor?: string
+      widthPercent?: number
+    }
 
-export default function ProgressBar({ data, scrollX, highlightedColor }: ProgressBarProps) {
+export default function ProgressBar(props: ProgressBarProps) {
   const { theme } = useAppTheme()
   const { width } = useWindowDimensions()
   const progressWidth = useRef(new Animated.Value(0)).current
 
   // Use theme-aware tint color if no highlightedColor is provided
-  const color = highlightedColor || theme.colors.tint
+  const color = props.highlightedColor || theme.colors.tint
 
-  const totalSlides = data.length
-  const progressBarWidth = width * 0.8 // 60% of screen width
+  // Determine if using scroll-based or index-based navigation
+  const isScrollBased = "scrollX" in props && "data" in props
+  const totalItems = isScrollBased ? props.data.length : props.totalItems
+  const widthPercent = props.widthPercent ?? 0.8
+  const progressBarWidth = width * widthPercent
 
   useEffect(() => {
-    const listener = scrollX.addListener(({ value }) => {
-      const currentProgress = Math.min(value / width, totalSlides - 1)
-      const animatedProgress = (currentProgress / (totalSlides - 1)) * progressBarWidth
+    if (isScrollBased && props.scrollX) {
+      // Scroll-based navigation
+      const listener = props.scrollX.addListener(({ value }) => {
+        const currentProgress = Math.min(value / width, totalItems - 1)
+        const animatedProgress = (currentProgress / (totalItems - 1)) * progressBarWidth
+
+        Animated.timing(progressWidth, {
+          toValue: animatedProgress,
+          duration: 300,
+          useNativeDriver: false,
+        }).start()
+      })
+
+      return () => {
+        props.scrollX.removeListener(listener)
+      }
+    } else if (!isScrollBased) {
+      // Index-based navigation
+      const currentProgress = props.currentIndex
+      const animatedProgress =
+        totalItems > 1 ? (currentProgress / (totalItems - 1)) * progressBarWidth : progressBarWidth
 
       Animated.timing(progressWidth, {
         toValue: animatedProgress,
         duration: 300,
         useNativeDriver: false,
       }).start()
-    })
-
-    return () => {
-      scrollX.removeListener(listener)
     }
-  }, [scrollX, progressBarWidth, totalSlides, width, progressWidth])
+  }, [
+    isScrollBased,
+    isScrollBased ? props.scrollX : props.currentIndex,
+    progressBarWidth,
+    totalItems,
+    width,
+    progressWidth,
+  ])
 
   return (
     <View style={progressBarStyles.container}>

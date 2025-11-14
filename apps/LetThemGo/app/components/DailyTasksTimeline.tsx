@@ -13,20 +13,14 @@ import { useEntitlements } from "../entitlements/useEntitlements"
 import { FEATURES } from "../entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
+import { navigate } from "@/navigators/navigationUtilities"
+import TodaysLessonManager from "@/managers/TodaysLessonManager"
 
 type Props = {
-  onPressMood: () => void
-  onPressLesson?: () => void
-  onPressJournal?: () => void
   refreshToken?: number
 }
 
-export default observer(function DailyTasksTimeline({
-  onPressMood,
-  onPressLesson,
-  onPressJournal,
-  refreshToken,
-}: Props) {
+export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
@@ -73,9 +67,15 @@ export default observer(function DailyTasksTimeline({
     label: string,
     completed: boolean,
     onPress?: () => void,
-    taskType?: "mood" | "journal",
+    taskType?: "mood" | "journal" | "lesson",
+    disabled?: boolean,
   ) => {
     const innerOnPress = async () => {
+      // Don't proceed if disabled
+      if (disabled) {
+        return
+      }
+
       const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
 
       // If not premium, check free user limits for specific tasks using feature flag limit
@@ -88,6 +88,13 @@ export default observer(function DailyTasksTimeline({
           await presentPaywallSafely()
           return
         }
+        if (
+          taskType === "lesson" &&
+          FreeUserUsageManager.hasReachedLessonCompletionLimit(taskLimit)
+        ) {
+          await presentPaywallSafely()
+          return
+        }
       }
 
       // If premium or under limit, proceed
@@ -95,10 +102,21 @@ export default observer(function DailyTasksTimeline({
     }
 
     return (
-      <TouchableOpacity onPress={innerOnPress} activeOpacity={0.9} style={themed([$row])}>
+      <TouchableOpacity
+        onPress={innerOnPress}
+        activeOpacity={disabled ? 1 : 0.9}
+        disabled={disabled}
+        style={themed([$row])}
+      >
         <View
           style={[
-            themed([$buttonContainer, { backgroundColor: theme.colors.card }]),
+            themed([
+              $buttonContainer,
+              {
+                backgroundColor: theme.colors.card,
+                opacity: disabled ? 0.5 : 1,
+              },
+            ]),
             $styles.borderRadius,
             $styles.dropShadow,
           ]}
@@ -117,7 +135,7 @@ export default observer(function DailyTasksTimeline({
             </View>
             <Text text={label} size="xs" style={themed({ color: theme.colors.text })} />
           </View>
-          <Icon icon="caretRight" color={theme.colors.tint} size={12} />
+          {!disabled && <Icon icon="caretRight" color={theme.colors.tint} size={12} />}
         </View>
       </TouchableOpacity>
     )
@@ -133,19 +151,29 @@ export default observer(function DailyTasksTimeline({
           "Log your mood",
           moodDone,
           () => {
-            onPressMood()
+            navigate("MoodLogger")
           },
           "mood",
         )}
-        {false &&
-          Row("Daily lesson", done.lesson, () => {
-            onPressLesson?.()
-          })}
+        {Row(
+          "Daily lesson",
+          done.lesson,
+          () => {
+            const todaysLessonId = TodaysLessonManager.getTodaysLesson()
+            if (todaysLessonId) {
+              navigate("SingleLesson", { lessonId: todaysLessonId })
+            } else {
+              navigate("Lessons")
+            }
+          },
+          "lesson",
+          done.lesson, // Disable if completed
+        )}
         {Row(
           "Write in your journal",
           done.journal,
           () => {
-            onPressJournal?.()
+            navigate("Journal")
           },
           "journal",
         )}
