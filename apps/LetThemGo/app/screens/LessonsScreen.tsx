@@ -340,7 +340,7 @@ const $lessonsList: ViewStyle = {
 }
 
 const $lessonItem: ViewStyle = {
-  marginTop: 8,
+  marginTop: 22,
   padding: 16,
   borderRadius: 8,
   ...$styles.dropShadow,
