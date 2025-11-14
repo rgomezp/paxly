@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useCallback } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, ScrollView } from "react-native"
+import { View, ViewStyle, ScrollView as RNScrollView } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import { AppStackScreenProps } from "@/navigators"
 import { MoodGraph, Quote } from "@/components"
@@ -50,9 +50,13 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           theme: Theme
           toggleDrawer: () => void
         }) => (
-          <ScrollView style={[themedDrawer($container), contentInsets]}>
+          <RNScrollView style={[themedDrawer($container), contentInsets]}>
             <Quote />
-            <View style={themed($buttonsWrapper)}>
+            <RNScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={themed($buttonsWrapper)}
+            >
               <CircularButton
                 onPress={() => navigate("MoodLogs", undefined)}
                 icon={SmileyIcon}
@@ -69,10 +73,10 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 label="My Stuff"
                 badge={shouldShowBadge}
               />
-            </View>
+            </RNScrollView>
             <MoodGraph />
             <View style={themed($bottomSpacing)} />
-          </ScrollView>
+          </RNScrollView>
         )}
       />
     </>
@@ -81,15 +85,13 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
 
 const $container: ViewStyle = {
   flex: 1,
-  paddingHorizontal: 10,
 }
 
 const $buttonsWrapper: ViewStyle = {
   flexDirection: "row",
-  justifyContent: "center",
   alignItems: "center",
   marginTop: 62,
-  marginBottom: 64,
+  marginBottom: 34,
   paddingHorizontal: 16,
   gap: 24,
 }

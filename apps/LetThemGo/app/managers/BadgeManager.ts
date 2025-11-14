@@ -8,7 +8,7 @@ import { ganon } from "@/services/ganon/ganon"
 import Log from "@/utils/Log"
 import { IBadgeData } from "@/types/IBadgeData"
 
-const TTL_MS = 7 * 24 * 60 * 60 * 1000 // 1 week in milliseconds
+const TTL_MS = 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
 
 export default class BadgeManager {
   /**
