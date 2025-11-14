@@ -9,14 +9,21 @@ import { ganon } from "@/services/ganon/ganon"
 
 export const NatureSoundsSection: FC = function NatureSoundsSection() {
   const { themed, theme } = useAppTheme()
-  const [isPlaying, setIsPlaying] = useState(ganon.get("isPlayingNatureSounds") ?? false)
+  const [isPlaying, setIsPlaying] = useState(false)
   const soundRef = useRef<Audio.Sound | null>(null)
+  const isLoadingRef = useRef(false)
 
   // Load and play sound if it should be playing on mount
   useEffect(() => {
     const loadAndPlaySound = async () => {
       const shouldPlay = ganon.get("isPlayingNatureSounds") ?? false
-      if (shouldPlay && !soundRef.current) {
+      
+      // Prevent multiple loads
+      if (isLoadingRef.current) return
+      if (soundRef.current) return
+      
+      if (shouldPlay) {
+        isLoadingRef.current = true
         try {
           const { sound } = await Audio.Sound.createAsync(
             require("../../assets/sounds/birds.mp3"),
@@ -32,6 +39,8 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
           Log.error("NatureSoundsSection: Failed to load sound on mount:", error)
           setIsPlaying(false)
           ganon.set("isPlayingNatureSounds", false)
+        } finally {
+          isLoadingRef.current = false
         }
       }
     }
@@ -42,16 +51,28 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
   // Cleanup sound on unmount
   useEffect(() => {
     return () => {
-      if (soundRef.current) {
-        soundRef.current.unloadAsync().catch(() => {
-          // Ignore cleanup errors
-        })
-        soundRef.current = null
+      const cleanup = async () => {
+        if (soundRef.current) {
+          try {
+            // Stop and unload completely
+            await soundRef.current.stopAsync()
+            await soundRef.current.unloadAsync()
+          } catch (error) {
+            // Ignore cleanup errors
+            Log.error("NatureSoundsSection: Cleanup error:", error)
+          } finally {
+            soundRef.current = null
+          }
+        }
       }
+      cleanup()
     }
   }, [])
 
   const handleTogglePlay = async () => {
+    // Prevent multiple simultaneous operations
+    if (isLoadingRef.current) return
+    
     try {
       if (isPlaying) {
         // Pause the sound
@@ -63,6 +84,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
       } else {
         // Play the sound
         if (!soundRef.current) {
+          isLoadingRef.current = true
           // Create and load the sound if it doesn't exist
           const { sound } = await Audio.Sound.createAsync(
             require("../../assets/sounds/birds.mp3"),
@@ -74,6 +96,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
           )
           soundRef.current = sound
           setIsPlaying(true)
+          isLoadingRef.current = false
         } else {
           // Resume if it already exists
           await soundRef.current.playAsync()
@@ -84,6 +107,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
     } catch (error) {
       Log.error("NatureSoundsSection: Failed to toggle play:", error)
       setIsPlaying(false)
+      isLoadingRef.current = false
     }
   }
 
