@@ -3,7 +3,10 @@
  *
  * Awards are given in order, after lessons are completed.
  *
- * Requirements for an award to be given:
+ * Special case: The first award is guaranteed on the first lesson completion
+ * (bypasses all normal requirements to introduce the notification system).
+ *
+ * Normal requirements for subsequent awards:
  * - It has been at least 3 days since the last award was given.
  * - The user has completed at least 2 total lessons.
  * - There's a 50% chance to give an award.
@@ -70,10 +73,31 @@ export default class AwardManager {
   }
 
   /**
+   * Checks if the first award should be given on the first lesson completion
+   * This bypasses all normal requirements to guarantee the first award
+   * @returns true if this is the first lesson completion and no awards have been given yet
+   */
+  static shouldAwardFirstAwardOnFirstLesson(): boolean {
+    const awardData = this.getAwardData()
+    const completedLessons = LessonManager.getCompletedLessons()
+
+    // Check if this is the first lesson completion and no awards have been given
+    return completedLessons.length === 1 && awardData.earnedAwardIds.length === 0
+  }
+
+  /**
    * Checks if an award is available based on the requirements (includes random chance)
    * @returns true if an award should be given, false otherwise
    */
   static checkAwardAvailability(): boolean {
+    // First, check if we should award the first award on first lesson completion
+    if (this.shouldAwardFirstAwardOnFirstLesson()) {
+      Log.info(
+        `AwardManager: checkAwardAvailability: awarding first award on first lesson completion`,
+      )
+      return true
+    }
+
     if (!this.checkDeterministicRequirements()) {
       return false
     }
@@ -90,15 +114,21 @@ export default class AwardManager {
    * @returns The next award metadata, or null if no award is available
    */
   static getNextAward(): IAward | null {
-    if (!this.checkDeterministicRequirements()) {
-      return null
-    }
-
     const awardData = this.getAwardData()
     const nextAwardIndex = awardData.earnedAwardIds.length
 
     // Check if there are any awards left
     if (nextAwardIndex >= AWARD_SEQUENCE.length) {
+      return null
+    }
+
+    // If this is the first award on first lesson, return it without checking other requirements
+    if (this.shouldAwardFirstAwardOnFirstLesson()) {
+      return AWARD_SEQUENCE[nextAwardIndex]
+    }
+
+    // For subsequent awards, check deterministic requirements
+    if (!this.checkDeterministicRequirements()) {
       return null
     }
 
@@ -115,9 +145,13 @@ export default class AwardManager {
       return null
     }
 
-    // Even if skipping availability check, verify deterministic requirements
-    if (!this.checkDeterministicRequirements()) {
-      return null
+    // If this is the first award on first lesson, bypass normal requirements
+    const isFirstAwardOnFirstLesson = this.shouldAwardFirstAwardOnFirstLesson()
+    if (!isFirstAwardOnFirstLesson) {
+      // Even if skipping availability check, verify deterministic requirements
+      if (!this.checkDeterministicRequirements()) {
+        return null
+      }
     }
 
     const awardData = this.getAwardData()
