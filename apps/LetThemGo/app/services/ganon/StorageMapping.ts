@@ -72,7 +72,6 @@ interface StorageMapping {
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   flagOverrides: Partial<IFlags>
-  isPlayingNatureSounds: boolean
   dailyLesson: ITodaysLessonState | null
   completedLessons: CompletedLessonsState
   lessonResponses: ILessonResponses
