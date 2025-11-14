@@ -10,7 +10,6 @@ import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
 import NoContactManager from "@/managers/NoContactManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import DailyTasksTimeline from "@/components/DailyTasksTimeline"
-import { navigate } from "@/navigators/navigationUtilities"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
@@ -133,11 +132,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
             icon="exclamation-triangle"
           />
         </View>
-        <DailyTasksTimeline
-          refreshToken={refreshTrigger}
-          onPressMood={() => navigate("MoodLogger")}
-          onPressJournal={() => navigate("Journal")}
-        />
+        <DailyTasksTimeline refreshToken={refreshTrigger} />
         <MessageIntoTheVoidSection />
         <NatureSoundsSection />
       </ScrollView>
