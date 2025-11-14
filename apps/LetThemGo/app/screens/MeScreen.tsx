@@ -9,7 +9,7 @@ import { useHomeDrawerSections } from "./HomeDrawerSections"
 import NoContactManager from "@/managers/NoContactManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { Smiley, BookOpen } from "phosphor-react-native"
+import { Smiley, BookOpen, Trophy } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { CircularButton } from "@/components/buttons/CircularButton"
 
@@ -51,6 +51,11 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 onPress={() => navigate("JournalLogs", undefined)}
                 icon={BookOpen}
                 label="Journal"
+              />
+              <CircularButton
+                onPress={() => navigate("MyStuff", undefined)}
+                icon={Trophy}
+                label="My Stuff"
               />
             </View>
           </ScrollView>

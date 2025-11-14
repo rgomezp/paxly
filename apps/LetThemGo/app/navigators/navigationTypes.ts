@@ -32,6 +32,8 @@ export type AppStackParamList = {
   ComposeMessage: undefined
   MoodLogs: undefined
   JournalLogs: undefined
+  MyStuff: undefined
+  ClaimAward: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

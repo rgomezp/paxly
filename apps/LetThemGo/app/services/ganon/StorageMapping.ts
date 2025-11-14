@@ -23,6 +23,7 @@ import { AppMainGoalChoices } from "@/types/AppMainGoal"
 import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
 import { IFlags } from "@/types/IFlags"
 import { ILessonResponses } from "@/types/ILessonResponses"
+import { IAwardData } from "@/types/IAwardData"
 
 // Storage key constants
 export const STORAGE_KEYS = {
@@ -75,6 +76,7 @@ interface StorageMapping {
   dailyLesson: ITodaysLessonState | null
   completedLessons: CompletedLessonsState
   lessonResponses: ILessonResponses
+  awardData: IAwardData
 }
 
 export default StorageMapping

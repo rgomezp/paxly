@@ -23,6 +23,7 @@ export default class LessonManager {
       } catch {
         // If store not available for some reason, ignore; persistence is already done
       }
+
     }
   }
 

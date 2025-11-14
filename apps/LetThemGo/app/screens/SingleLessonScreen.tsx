@@ -6,7 +6,8 @@ import { ViewStyle } from "react-native"
 import TodaysLessonManager from "@/managers/TodaysLessonManager"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import LessonManager from "@/managers/LessonManager"
-// import { useNavigation } from "@react-navigation/native"
+import AwardManager from "@/managers/AwardManager"
+import { navigate } from "@/navigators/navigationUtilities"
 
 interface SingleLessonScreenProps extends AppStackScreenProps<"SingleLesson"> {}
 
@@ -22,7 +23,13 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
     if (todaysLessonId === lessonId) {
       DailyTaskManager.markCompleted("lesson")
     }
-    navigation.goBack()
+
+    // Check if an award is available and navigate to claim screen
+    if (AwardManager.checkAwardAvailability()) {
+      navigate("ClaimAward", undefined)
+    } else {
+      navigation.goBack()
+    }
   }
 
   return (
