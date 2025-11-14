@@ -4,12 +4,12 @@ import { View, ViewStyle, ScrollView } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { MoodGraph, Quote } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
-import type { Theme } from "@/theme"
+import type { Theme, ThemedStyle } from "@/theme"
 import { useHomeDrawerSections } from "./HomeDrawerSections"
 import NoContactManager from "@/managers/NoContactManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { Smiley, BookOpen, Trophy } from "phosphor-react-native"
+import { SmileyIcon, TrophyIcon, BookOpenIcon } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { CircularButton } from "@/components/buttons/CircularButton"
 
@@ -40,24 +40,25 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
         }) => (
           <ScrollView style={[themedDrawer($container), contentInsets]}>
             <Quote />
-            <MoodGraph />
             <View style={themed($buttonsWrapper)}>
               <CircularButton
                 onPress={() => navigate("MoodLogs", undefined)}
-                icon={Smiley}
+                icon={SmileyIcon}
                 label="Moods"
               />
               <CircularButton
                 onPress={() => navigate("JournalLogs", undefined)}
-                icon={BookOpen}
+                icon={BookOpenIcon}
                 label="Journal"
               />
               <CircularButton
                 onPress={() => navigate("MyStuff", undefined)}
-                icon={Trophy}
+                icon={TrophyIcon}
                 label="My Stuff"
               />
             </View>
+            <MoodGraph />
+            <View style={themed($bottomSpacing)} />
           </ScrollView>
         )}
       />
@@ -67,14 +68,19 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
 
 const $container: ViewStyle = {
   flex: 1,
+  paddingHorizontal: 10,
 }
 
 const $buttonsWrapper: ViewStyle = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: 32,
-  marginBottom: 24,
+  marginTop: 62,
+  marginBottom: 64,
   paddingHorizontal: 16,
   gap: 24,
 }
+
+const $bottomSpacing: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  height: spacing.xxxl,
+})
