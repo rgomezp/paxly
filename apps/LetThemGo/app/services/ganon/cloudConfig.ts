@@ -24,7 +24,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "contactTemptationSituation",
       "appMainGoal",
     ],
-    subcollectionKeys: ["moodHistory", "journalEntries"],
+    subcollectionKeys: ["moodHistory", "journalEntries", "lessonResponses"],
   },
   settings: {
     docKeys: ["theme"],
