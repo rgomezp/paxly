@@ -33,6 +33,8 @@ export function CheckRow({
           borderRadius: 6,
           marginRight: theme.spacing.lg,
           backgroundColor: value ? theme.colors.tint : theme.colors.card,
+          borderWidth: 1,
+          borderColor: theme.colors.border,
           justifyContent: "center",
           alignItems: "center",
           flexShrink: 0,

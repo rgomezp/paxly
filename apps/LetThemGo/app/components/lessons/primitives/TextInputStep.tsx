@@ -52,6 +52,7 @@ export function TextInputStep({
           borderColor: theme.colors.border,
           color: theme.colors.text,
           minHeight: 44,
+          backgroundColor: theme.colors.background,
         }))}
         placeholder={placeholder}
         placeholderTextColor={theme.colors.textDim}
