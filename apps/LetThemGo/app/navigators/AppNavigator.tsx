@@ -59,8 +59,13 @@ const TabNavigator = observer(function TabNavigator() {
         name="Home"
         component={Screens.HomeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <ThemedPhosphorIcon Component={House} color={color} size={size ?? 22} weight="fill" />
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={House}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
           ),
         }}
       />
@@ -68,12 +73,12 @@ const TabNavigator = observer(function TabNavigator() {
         name="Lessons"
         component={Screens.LessonsScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color, size, focused }) => (
             <ThemedPhosphorIcon
               Component={BookOpen}
               color={color}
               size={size ?? 22}
-              weight="fill"
+              weight={focused ? "fill" : "regular"}
             />
           ),
         }}
@@ -82,8 +87,13 @@ const TabNavigator = observer(function TabNavigator() {
         name="Me"
         component={Screens.MeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <ThemedPhosphorIcon Component={User} color={color} size={size ?? 22} weight="fill" />
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={User}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
           ),
         }}
       />
