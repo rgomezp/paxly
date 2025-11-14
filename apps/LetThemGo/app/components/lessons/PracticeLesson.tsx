@@ -10,7 +10,8 @@ import { AudioStep } from "./primitives/AudioStep"
 import { LessonHeader } from "./LessonHeader"
 import { CheckRow } from "./primitives/CheckRow"
 import { TextInputStep } from "./primitives/TextInputStep"
-import ProgressBar from "../ProgressBar"
+import { Button } from "../Button"
+import { LessonFooter } from "./LessonFooter"
 
 export function PracticeLesson({
   config,
@@ -35,6 +36,7 @@ export function PracticeLesson({
     next()
   }
   const showButton = showFinish || (s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio")
+  const isTimerStep = s?.t === "timer"
   return (
     <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
@@ -78,39 +80,43 @@ export function PracticeLesson({
           />
         )}
       </View>
-      <View
-        style={themed(() => ({
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          paddingBottom: theme.spacing.lg,
-          alignItems: "center",
-        }))}
+      <LessonFooter
+        showProgressBar={config.steps.length > 1}
+        currentIndex={step}
+        totalItems={config.steps.length}
       >
-        {/* Progress bar */}
-        {config.steps.length > 1 && (
-          <View
-            style={themed(() => ({
-              paddingBottom: theme.spacing.md,
-              width: "100%",
-              alignItems: "center",
-            }))}
-          >
-            <ProgressBar currentIndex={step} totalItems={config.steps.length} widthPercent={0.9} />
-          </View>
-        )}
-        {showButton && (
-          <RectangularButton
-            width={200}
-            buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
-            onClick={() => {
-              if (showFinish || step + 1 >= config.steps.length) onComplete?.()
-              else next()
-            }}
-          />
-        )}
-      </View>
+        <View
+          style={themed(() => ({
+            alignItems: "center",
+          }))}
+        >
+          {isTimerStep && (
+            <Button
+              onPress={next}
+              style={themed(() => ({
+                paddingVertical: theme.spacing.sm,
+                paddingHorizontal: theme.spacing.md,
+              }))}
+              textStyle={themed(() => ({
+                color: theme.colors.tint,
+                fontSize: 16,
+              }))}
+            >
+              Skip
+            </Button>
+          )}
+          {showButton && !isTimerStep && (
+            <RectangularButton
+              width={200}
+              buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
+              onClick={() => {
+                if (showFinish || step + 1 >= config.steps.length) onComplete?.()
+                else next()
+              }}
+            />
+          )}
+        </View>
+      </LessonFooter>
     </View>
   )
 }
