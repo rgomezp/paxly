@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, TextStyle } from "react-native"
+import { View, ViewStyle, TextStyle, ImageStyle, Image, Animated } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -8,14 +8,24 @@ import AwardManager from "@/managers/AwardManager"
 import { IAward } from "@/types/IAward"
 import type { ThemedStyle } from "@/theme"
 import RectangularButton from "@/components/buttons/RectangularButton"
+import { getAwardImage } from "@/data/AwardImageRegistry"
+
+// Conditionally import expo-image for animated WebP support
+let ExpoImage: any = null
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  ExpoImage = require("expo-image").Image
+} catch {}
 
 interface ClaimAwardScreenProps extends AppStackScreenProps<"ClaimAward"> {}
 
 export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function ClaimAwardScreen({
   navigation,
 }) {
-  const { themed } = useAppTheme()
+  const { themed, themeContext } = useAppTheme()
   const [award, setAward] = useState<IAward | null>(null)
+  const fadeAnim = useRef(new Animated.Value(0)).current
+  const scaleAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     // Check for available award when screen loads
@@ -27,6 +37,24 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
       navigation.goBack()
     }
   }, [navigation])
+
+  useEffect(() => {
+    // Fade in and scale up the award image when award is set
+    if (award) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ]).start()
+    }
+  }, [award, fadeAnim, scaleAnim])
 
   const handleClaim = () => {
     if (!award) return
@@ -44,12 +72,44 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
     return null
   }
 
+  const awardImage = getAwardImage(award.id)
+  const spotlightImage =
+    themeContext === "light"
+      ? require("../../assets/images/spotlight_animation_light_mode.webp")
+      : require("../../assets/images/spotlight_animation.webp")
+
   return (
     <Screen preset="fixed" contentContainerStyle={$container}>
       <View style={themed($awardCard)}>
-        {/* Award image placeholder - images don't exist yet */}
-        <View style={$awardImagePlaceholder}>
-          <Text style={$awardImagePlaceholderText}>🏆</Text>
+        {/* Award image with spotlight background */}
+        <View style={$awardImageContainer}>
+          {/* Spotlight background - use expo-image for animated WebP support */}
+          {ExpoImage ? (
+            <ExpoImage
+              source={spotlightImage}
+              style={$spotlightImage}
+              contentFit="contain"
+              transition={0}
+            />
+          ) : (
+            <Image source={spotlightImage} style={$spotlightImage} resizeMode="contain" />
+          )}
+          {/* Award image on top with fade-in and scale animation */}
+          <Animated.View
+            style={[
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: scaleAnim }],
+              },
+              $awardImageWrapper,
+            ]}
+          >
+            {awardImage ? (
+              <Image source={awardImage} style={$awardImage} resizeMode="contain" />
+            ) : (
+              <Text style={$awardImagePlaceholderText}>🏆</Text>
+            )}
+          </Animated.View>
         </View>
 
         {/* Award title and description */}
@@ -88,10 +148,36 @@ const $awardCard: ThemedStyle<ViewStyle> = (theme) => ({
   height: "45%",
 })
 
-const $awardImagePlaceholder: ViewStyle = {
+const $awardImageContainer: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   flex: 2,
+  width: "100%",
+  position: "relative",
+}
+
+const $spotlightImage: ImageStyle = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  maxWidth: 250,
+  maxHeight: 250,
+  zIndex: 0,
+}
+
+const $awardImageWrapper: ViewStyle = {
+  width: "100%",
+  height: "100%",
+  maxWidth: 200,
+  maxHeight: 200,
+  zIndex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+const $awardImage: ImageStyle = {
+  width: "100%",
+  height: "100%",
 }
 
 const $awardImagePlaceholderText: TextStyle = {
