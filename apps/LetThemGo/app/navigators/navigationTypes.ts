@@ -25,6 +25,7 @@ export type AppStackParamList = {
   MoodLogger: undefined
   Journal: { mode?: "edit"; date?: number; initialText?: string } | undefined
   JournalReader: { date: number }
+  Lessons: undefined
   SingleLesson: { lessonId: string }
   Membership: undefined
   MessageIntoTheVoid: undefined

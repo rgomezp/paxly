@@ -19,7 +19,8 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
 import { useContext, useMemo, ComponentProps, useRef } from "react"
-import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
+import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
+import { House, BookOpen, User } from "phosphor-react-native"
 import Log from "@/utils/Log"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
@@ -59,7 +60,21 @@ const TabNavigator = observer(function TabNavigator() {
         component={Screens.HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <ThemedFontAwesome5Icon name="home" color={color} size={size ?? 22} solid />
+            <ThemedPhosphorIcon Component={House} color={color} size={size ?? 22} weight="fill" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Lessons"
+        component={Screens.LessonsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <ThemedPhosphorIcon
+              Component={BookOpen}
+              color={color}
+              size={size ?? 22}
+              weight="fill"
+            />
           ),
         }}
       />
@@ -68,7 +83,7 @@ const TabNavigator = observer(function TabNavigator() {
         component={Screens.MeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <ThemedFontAwesome5Icon name="user" color={color} size={size ?? 22} solid />
+            <ThemedPhosphorIcon Component={User} color={color} size={size ?? 22} weight="fill" />
           ),
         }}
       />
@@ -142,6 +157,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="MoodLogger" component={Screens.MoodLogger} />
       <Stack.Screen name="Journal" component={Screens.JournalScreen} />
       <Stack.Screen name="JournalReader" component={Screens.JournalReaderScreen} />
+      <Stack.Screen name="Lessons" component={Screens.LessonsScreen} />
       <Stack.Screen name="SingleLesson" component={Screens.SingleLessonScreen} />
       <Stack.Screen name="Membership" component={Screens.MembershipScreen} />
       <Stack.Screen name="MessageIntoTheVoid" component={Screens.MessageIntoTheVoidScreen} />
