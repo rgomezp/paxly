@@ -1,12 +1,14 @@
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState, useCallback } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, ScrollView } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import { AppStackScreenProps } from "@/navigators"
 import { MoodGraph, Quote } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme, ThemedStyle } from "@/theme"
 import { useHomeDrawerSections } from "./HomeDrawerSections"
 import NoContactManager from "@/managers/NoContactManager"
+import BadgeManager from "@/managers/BadgeManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { SmileyIcon, TrophyIcon, BookOpenIcon } from "phosphor-react-native"
@@ -21,9 +23,19 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   const contentInsets = useSafeAreaInsetsStyle([])
   const { themed } = useAppTheme()
 
+  // State for badge visibility (updates when screen is focused)
+  const [shouldShowBadge, setShouldShowBadge] = useState(() => BadgeManager.shouldShowBadge())
+
   useEffect(() => {
     NoContactManager.initializeNoContactData()
   }, [])
+
+  // Update badge state when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      setShouldShowBadge(BadgeManager.shouldShowBadge())
+    }, []),
+  )
 
   return (
     <>
@@ -55,6 +67,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 onPress={() => navigate("MyStuff", undefined)}
                 icon={TrophyIcon}
                 label="My Stuff"
+                badge={shouldShowBadge}
               />
             </View>
             <MoodGraph />

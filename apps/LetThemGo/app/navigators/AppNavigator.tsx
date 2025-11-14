@@ -18,10 +18,11 @@ import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
-import { useContext, useMemo, ComponentProps, useRef } from "react"
+import { useContext, useMemo, ComponentProps, useRef, useState, useEffect } from "react"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
 import { HouseIcon, UserIcon, BooksIcon } from "phosphor-react-native"
 import Log from "@/utils/Log"
+import BadgeManager from "@/managers/BadgeManager"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
 import type { AppStackParamList } from "./navigationTypes"
@@ -42,6 +43,22 @@ const TabNavigator = observer(function TabNavigator() {
     () => (context?.themeScheme === "dark" ? darkTheme : lightTheme),
     [context?.themeScheme],
   )
+  const navigation = useNavigation()
+
+  // State for badge visibility (updates when navigation state changes)
+  const [shouldShowBadge, setShouldShowBadge] = useState(() => BadgeManager.shouldShowBadge())
+
+  // Update badge state when navigation changes (e.g., when user navigates between tabs)
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("state", () => {
+      setShouldShowBadge(BadgeManager.shouldShowBadge())
+    })
+
+    // Also check on mount and when component updates
+    setShouldShowBadge(BadgeManager.shouldShowBadge())
+
+    return unsubscribe
+  }, [navigation])
 
   return (
     <Tab.Navigator
@@ -95,6 +112,10 @@ const TabNavigator = observer(function TabNavigator() {
               weight={focused ? "fill" : "regular"}
             />
           ),
+          tabBarBadge: shouldShowBadge ? "" : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: theme.colors.palette.accent100,
+          },
         }}
       />
     </Tab.Navigator>

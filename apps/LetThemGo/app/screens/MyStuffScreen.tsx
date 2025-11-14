@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react"
+import { FC, useMemo, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, ImageStyle, ScrollView, Image } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -6,6 +6,7 @@ import { Screen, Text } from "@/components"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import AwardManager from "@/managers/AwardManager"
+import BadgeManager from "@/managers/BadgeManager"
 import { IAward } from "@/types/IAward"
 import type { ThemedStyle } from "@/theme"
 import { getAwardImage } from "@/data/AwardImageRegistry"
@@ -15,6 +16,11 @@ interface MyStuffScreenProps extends AppStackScreenProps<"MyStuff"> {}
 export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffScreen() {
   const insets = useSafeAreaInsets()
   const { themed } = useAppTheme()
+
+  // Clear badge when user visits My Stuff screen
+  useEffect(() => {
+    BadgeManager.clearBadge()
+  }, [])
 
   const allAwards = AwardManager.getAllAwards()
   const earnedAwards = AwardManager.getEarnedAwards()

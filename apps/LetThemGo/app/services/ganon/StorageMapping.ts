@@ -24,6 +24,7 @@ import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
 import { IFlags } from "@/types/IFlags"
 import { ILessonResponses } from "@/types/ILessonResponses"
 import { IAwardData } from "@/types/IAwardData"
+import { IBadgeData } from "@/types/IBadgeData"
 
 // Storage key constants
 export const STORAGE_KEYS = {
@@ -77,6 +78,7 @@ interface StorageMapping {
   completedLessons: CompletedLessonsState
   lessonResponses: ILessonResponses
   awardData: IAwardData
+  meTabBadgeData: IBadgeData | null
 }
 
 export default StorageMapping

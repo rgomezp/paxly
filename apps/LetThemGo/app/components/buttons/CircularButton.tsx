@@ -60,12 +60,12 @@ export const CircularButton: FC<CircularButtonProps> = ({
 
   const $badge: ViewStyle = {
     position: "absolute",
-    top: -4,
-    right: -4,
+    top: 0,
+    right: 2,
     minWidth: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: badgeColor || theme.colors.tint,
+    backgroundColor: badgeColor || theme.colors.palette.accent100,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 4,
