@@ -30,6 +30,7 @@ import { LessonCard } from "./primitives/LessonCard"
 import { LessonHeader } from "./LessonHeader"
 import RectangularButton from "../buttons/RectangularButton"
 import ProgressBar from "../ProgressBar"
+import { QACard } from "./primitives/QACard"
 
 const buttonContainerStyles = StyleSheet.create({
   noHorizontalMargin: {
@@ -81,9 +82,15 @@ export function CardLesson({
         }))}
       >
         <Animated.View key={currentCardIndex} entering={FadeIn.duration(300)}>
-          <LessonCard tone={currentCard.type === "tip" ? "tip" : "default"}>
-            <Text>{"body" in currentCard ? currentCard.body : (currentCard as any).caption}</Text>
-          </LessonCard>
+          {currentCard.type === "qa" ? (
+            <LessonCard>
+              <QACard question={currentCard.question} options={currentCard.options} />
+            </LessonCard>
+          ) : (
+            <LessonCard tone={currentCard.type === "tip" ? "tip" : "default"}>
+              <Text>{"body" in currentCard ? currentCard.body : (currentCard as any).caption}</Text>
+            </LessonCard>
+          )}
         </Animated.View>
         {/* Progress bar */}
         {totalCards > 1 && (
