@@ -58,6 +58,12 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
               contentContainerStyle={themed($buttonsWrapper)}
             >
               <CircularButton
+                onPress={() => navigate("MyStuff", undefined)}
+                icon={TrophyIcon}
+                label="My Stuff"
+                badge={shouldShowBadge}
+              />
+              <CircularButton
                 onPress={() => navigate("MoodLogs", undefined)}
                 icon={SmileyIcon}
                 label="Moods"
@@ -66,12 +72,6 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 onPress={() => navigate("JournalLogs", undefined)}
                 icon={BookOpenIcon}
                 label="Journal"
-              />
-              <CircularButton
-                onPress={() => navigate("MyStuff", undefined)}
-                icon={TrophyIcon}
-                label="My Stuff"
-                badge={shouldShowBadge}
               />
             </RNScrollView>
             <MoodGraph />
