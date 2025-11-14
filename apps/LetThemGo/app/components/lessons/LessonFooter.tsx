@@ -1,6 +1,7 @@
-import { View, ReactNode } from "react-native"
+import { View } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import ProgressBar from "../ProgressBar"
+import { ReactNode } from "react"
 
 interface LessonFooterProps {
   children: ReactNode
@@ -44,4 +45,3 @@ export function LessonFooter({
     </View>
   )
 }
-
