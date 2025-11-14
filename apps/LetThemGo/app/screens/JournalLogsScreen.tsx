@@ -73,25 +73,25 @@ export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(
     </View>
   )
 
-  const renderEmpty = () => (
-    <EmptyState
-      style={themed($emptyStateContainer as any)}
-      heading="No journal entries yet"
-      content="Your thoughts will appear here. Start your first entry to get going."
-    />
-  )
-
   return (
     <View style={[themed($container), { paddingTop: insets.top }]}>
-      <ListView
-        data={entries}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        estimatedItemSize={100}
-        ListHeaderComponent={renderHeader}
-        ListEmptyComponent={renderEmpty}
-        contentContainerStyle={entries.length === 0 ? themed($emptyListContainer) : undefined}
-      />
+      {entries.length === 0 ? (
+        <View style={themed($emptyStateWrapper)}>
+          <EmptyState
+            style={themed($emptyStateContainer as any)}
+            heading="No journal entries yet"
+            content="Your thoughts will appear here. Start your first entry to get going."
+          />
+        </View>
+      ) : (
+        <ListView
+          data={entries}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          estimatedItemSize={100}
+          ListHeaderComponent={renderHeader}
+        />
+      )}
     </View>
   )
   },
@@ -148,14 +148,15 @@ const $divider: ViewStyle = {
   marginHorizontal: 16,
 }
 
-const $emptyStateContainer: ThemedStyle<RNViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.xxl,
-  paddingHorizontal: 16,
+const $emptyStateWrapper: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
 })
 
-const $emptyListContainer: ViewStyle = {
-  flexGrow: 1,
-}
+const $emptyStateContainer: ThemedStyle<RNViewStyle> = () => ({
+  paddingHorizontal: 16,
+})
 
 function formatRelativeTime(timestamp: number): string {
   const seconds = Math.max(1, Math.floor((Date.now() - timestamp) / 1000))
