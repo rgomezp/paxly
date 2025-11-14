@@ -17,11 +17,11 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
   useEffect(() => {
     const loadAndPlaySound = async () => {
       const shouldPlay = ganon.get("isPlayingNatureSounds") ?? false
-      
+
       // Prevent multiple loads
       if (isLoadingRef.current) return
       if (soundRef.current) return
-      
+
       if (shouldPlay) {
         isLoadingRef.current = true
         try {
@@ -72,7 +72,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
   const handleTogglePlay = async () => {
     // Prevent multiple simultaneous operations
     if (isLoadingRef.current) return
-    
+
     try {
       if (isPlaying) {
         // Pause the sound

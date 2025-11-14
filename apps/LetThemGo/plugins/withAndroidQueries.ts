@@ -21,9 +21,7 @@ export const withAndroidQueries: ConfigPlugin = (config) => {
       return intents.some((intent: any) => {
         if (!intent.data) return false
         const dataArray = Array.isArray(intent.data) ? intent.data : [intent.data]
-        return dataArray.some(
-          (data: any) => data.$?.["android:scheme"] === "mailto",
-        )
+        return dataArray.some((data: any) => data.$?.["android:scheme"] === "mailto")
       })
     })
 
@@ -50,4 +48,3 @@ export const withAndroidQueries: ConfigPlugin = (config) => {
     return modConfig
   })
 }
-

@@ -66,15 +66,7 @@ export default function ProgressBar(props: ProgressBarProps) {
         useNativeDriver: false,
       }).start()
     }
-  }, [
-    isScrollBased,
-    scrollX,
-    currentIndex,
-    progressBarWidth,
-    totalItems,
-    width,
-    progressWidth,
-  ])
+  }, [isScrollBased, scrollX, currentIndex, progressBarWidth, totalItems, width, progressWidth])
 
   return (
     <View style={progressBarStyles.container}>
