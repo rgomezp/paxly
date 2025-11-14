@@ -1,6 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, ImageStyle, Image, Animated } from "react-native"
+import { Audio } from "expo-av"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -9,6 +10,7 @@ import { IAward } from "@/types/IAward"
 import type { ThemedStyle } from "@/theme"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import { getAwardImage } from "@/data/AwardImageRegistry"
+import Log from "@/utils/Log"
 
 // Conditionally import expo-image for animated WebP support
 let ExpoImage: any = null
@@ -53,6 +55,48 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
           useNativeDriver: true,
         }),
       ]).start()
+
+      // Play award sparkle sound when award is set
+      const playSparkleSound = async () => {
+        try {
+          const { sound } = await Audio.Sound.createAsync(
+            require("../../assets/sounds/award_sparkle.mp3"),
+            {
+              shouldPlay: true,
+              volume: 1.0,
+            },
+          )
+
+          // Set up status listener for auto-cleanup
+          sound.setOnPlaybackStatusUpdate((status) => {
+            if (status.isLoaded && status.didJustFinish) {
+              sound.unloadAsync().catch(() => {
+                // Ignore cleanup errors
+              })
+            }
+          })
+
+          // Auto-cleanup after playback completes
+          setTimeout(() => {
+            sound
+              .getStatusAsync()
+              .then((status) => {
+                if (status.isLoaded) {
+                  sound.unloadAsync().catch(() => {
+                    // Ignore cleanup errors
+                  })
+                }
+              })
+              .catch(() => {
+                // Sound already unloaded, ignore
+              })
+          }, 3000) // 3 second buffer for cleanup
+        } catch (error) {
+          Log.error("ClaimAwardScreen: Failed to play award sparkle sound:", error)
+        }
+      }
+
+      playSparkleSound()
     }
   }, [award, fadeAnim, scaleAnim])
 
@@ -63,8 +107,11 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
     const awarded = AwardManager.award(true)
 
     if (awarded) {
-      // Replace this screen with Lessons screen so ClaimAward can't be navigated back to
-      navigation.replace("Lessons")
+      // Reset navigation stack to TabNavigator, removing SingleLesson and ClaimAward from the stack
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "TabNavigator" }],
+      })
     }
   }
 
