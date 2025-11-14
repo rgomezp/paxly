@@ -4,6 +4,7 @@ import { LESSONS } from "@/data/LessonRegistry"
 import { ITodaysLessonState } from "@/types/ITodaysLessonState"
 import { STORAGE_KEYS } from "@/services/ganon/StorageMapping"
 import LessonManager from "./LessonManager"
+import { MODULE_ORDER } from "@/data/ModuleDisplayNames"
 
 export default class TodaysLessonManager {
   /**
@@ -23,20 +24,12 @@ export default class TodaysLessonManager {
   }
 
   /**
-   * Selects today's lesson (rotates through available lessons)
-   * Excludes special cases lessons and completed lessons from daily lesson selection
+   * Selects today's lesson using a round-robin algorithm across modules.
+   * Selects one uncompleted lesson from each module per day, advancing to the next module
+   * each day regardless of whether the previous lesson was completed.
+   * Excludes special cases lessons and completed lessons from daily lesson selection.
    */
   private static selectTodaysLesson(): string | null {
-    // Filter out special cases lessons and completed lessons from daily lesson selection
-    const eligibleLessonIds = Object.keys(LESSONS).filter(
-      (lessonId) =>
-        LESSONS[lessonId].moduleId !== "special_cases" && !LessonManager.isCompleted(lessonId),
-    )
-
-    if (eligibleLessonIds.length === 0) {
-      return null
-    }
-
     const todayKey = getLocalDateKey()
 
     // Re-check state after getting lesson list to avoid race conditions
@@ -46,22 +39,76 @@ export default class TodaysLessonManager {
       return state.lessonId
     }
 
-    // Get the last lesson index used (or -1 if none)
-    const lastIndex = state?.lastIndex ?? -1
+    // Get eligible modules (exclude special_cases)
+    const eligibleModules = MODULE_ORDER.filter((moduleId) => moduleId !== "special_cases")
 
-    // Rotate to the next lesson
-    const nextIndex = (lastIndex + 1) % eligibleLessonIds.length
-    const lessonId = eligibleLessonIds[nextIndex]
-
-    // Save the selection
-    const newState: ITodaysLessonState = {
-      dateKey: todayKey,
-      lessonId,
-      lastIndex: nextIndex,
+    if (eligibleModules.length === 0) {
+      return null
     }
-    ganon.set(STORAGE_KEYS.dailyLesson, newState)
 
-    return lessonId
+    // Get the last module index used (or -1 if none, meaning we start at module 0)
+    const lastModuleIndex = state?.moduleIndex ?? -1
+
+    // Advance to the next module (round-robin)
+    const startModuleIndex = (lastModuleIndex + 1) % eligibleModules.length
+
+    // Try to find a lesson from the current module or subsequent modules
+    // (in case current module has no uncompleted lessons)
+    let currentModuleIndex = startModuleIndex
+    let attempts = 0
+    const maxAttempts = eligibleModules.length
+
+    while (attempts < maxAttempts) {
+      const currentModuleId = eligibleModules[currentModuleIndex]
+
+      // Get all lessons for the current module, excluding completed ones
+      const moduleLessons = Object.keys(LESSONS)
+        .filter(
+          (lessonId) =>
+            LESSONS[lessonId].moduleId === currentModuleId && !LessonManager.isCompleted(lessonId),
+        )
+        .sort((a, b) => {
+          // Sort by original order in LESSONS to maintain consistency
+          const orderA = Object.keys(LESSONS).indexOf(a)
+          const orderB = Object.keys(LESSONS).indexOf(b)
+          return orderA - orderB
+        })
+
+      if (moduleLessons.length > 0) {
+        // Found uncompleted lessons in this module
+        // Get the lesson index for this module (or 0 if none)
+        const moduleLessonIndices = state?.moduleLessonIndices ?? {}
+        const currentLessonIndex = moduleLessonIndices[currentModuleId] ?? 0
+
+        // Select the lesson at the current index (round-robin within the module)
+        const selectedLessonIndex = currentLessonIndex % moduleLessons.length
+        const lessonId = moduleLessons[selectedLessonIndex]
+
+        // Update the lesson index for this module
+        const updatedModuleLessonIndices = {
+          ...moduleLessonIndices,
+          [currentModuleId]: selectedLessonIndex + 1,
+        }
+
+        // Save the selection
+        const newState: ITodaysLessonState = {
+          dateKey: todayKey,
+          lessonId,
+          moduleIndex: currentModuleIndex,
+          moduleLessonIndices: updatedModuleLessonIndices,
+        }
+        ganon.set(STORAGE_KEYS.dailyLesson, newState)
+
+        return lessonId
+      }
+
+      // No uncompleted lessons in this module, try next module
+      currentModuleIndex = (currentModuleIndex + 1) % eligibleModules.length
+      attempts++
+    }
+
+    // All modules exhausted, no lessons available
+    return null
   }
 
   /**
