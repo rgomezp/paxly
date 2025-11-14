@@ -35,14 +35,14 @@ export default class LessonResponseManager {
     const responses = (ganon.get("lessonResponses") ?? {}) as ILessonResponses
     const lessonResponses: Record<string, string> = {}
     const prefix = `${lessonId}:`
-    
+
     for (const [key, value] of Object.entries(responses)) {
       if (key.startsWith(prefix)) {
         const inputId = key.substring(prefix.length)
         lessonResponses[inputId] = value
       }
     }
-    
+
     return lessonResponses
   }
 
@@ -63,12 +63,11 @@ export default class LessonResponseManager {
     const responses = (ganon.get("lessonResponses") ?? {}) as ILessonResponses
     const prefix = `${lessonId}:`
     const keysToDelete = Object.keys(responses).filter((key) => key.startsWith(prefix))
-    
+
     for (const key of keysToDelete) {
       delete responses[key]
     }
-    
+
     ganon.set("lessonResponses", responses)
   }
 }
-

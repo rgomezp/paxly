@@ -105,7 +105,11 @@ export function BuilderLesson({
                     }))}
                     placeholder={it.label}
                     placeholderTextColor={theme.colors.textDim}
-                    value={textInputs[it.inputId || `text_${it.label.replace(/\s+/g, "_").toLowerCase()}`] ?? ""}
+                    value={
+                      textInputs[
+                        it.inputId || `text_${it.label.replace(/\s+/g, "_").toLowerCase()}`
+                      ] ?? ""
+                    }
                     onChangeText={(t) => handleTextChange(it, t)}
                   />
                 )

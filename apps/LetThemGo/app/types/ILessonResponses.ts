@@ -6,4 +6,3 @@
 export interface ILessonResponses {
   [key: string]: string // key is `${lessonId}:${inputId}`, value is the text
 }
-
