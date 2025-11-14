@@ -141,6 +141,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         },
       ],
       ...existingPlugins,
+      require("./plugins/withAndroidQueries").withAndroidQueries,
       // require("./plugins/withSplashScreen").withSplashScreen,
     ],
     experiments: {
