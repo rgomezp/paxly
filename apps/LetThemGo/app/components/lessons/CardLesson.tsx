@@ -22,13 +22,21 @@
 
 import { CardLessonConfig } from "@/types/lessons/ICardLessonConfig"
 import { Text } from ".."
-import { View, useWindowDimensions } from "react-native"
+import { View, StyleSheet } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useState } from "react"
 import Animated, { FadeIn } from "react-native-reanimated"
 import { LessonCard } from "./primitives/LessonCard"
 import { LessonHeader } from "./LessonHeader"
 import RectangularButton from "../buttons/RectangularButton"
+import ProgressBar from "../ProgressBar"
+
+const buttonContainerStyles = StyleSheet.create({
+  noHorizontalMargin: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
+})
 
 export function CardLesson({
   config,
@@ -38,14 +46,11 @@ export function CardLesson({
   onComplete?: () => void
 }) {
   const { themed, theme } = useAppTheme()
-  const { width } = useWindowDimensions()
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const totalCards = config.cards.length
   const isLastCard = currentCardIndex === totalCards - 1
+  const isFirstCard = currentCardIndex === 0
   const currentCard = config.cards[currentCardIndex]
-
-  // Calculate button width: use 85% of screen width, but cap at 300px for readability
-  const buttonWidth = Math.min(width * 0.85, 300)
 
   const handleNext = () => {
     if (isLastCard) {
@@ -55,40 +60,20 @@ export function CardLesson({
     }
   }
 
+  const handleBack = () => {
+    if (!isFirstCard) {
+      setCurrentCardIndex(currentCardIndex - 1)
+    }
+  }
+
   return (
     <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
 
-      {/* Progress dots */}
-      {totalCards > 1 && (
-        <View
-          style={themed(() => ({
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: theme.spacing.xs,
-            paddingVertical: theme.spacing.sm,
-          }))}
-        >
-          {config.cards.map((_, index) => (
-            <View
-              key={index}
-              style={themed(() => ({
-                width: index === currentCardIndex ? 8 : 6,
-                height: index === currentCardIndex ? 8 : 6,
-                borderRadius: index === currentCardIndex ? 4 : 3,
-                backgroundColor:
-                  index === currentCardIndex ? theme.colors.tint : theme.colors.border,
-              }))}
-            />
-          ))}
-        </View>
-      )}
-
       {/* Current card */}
       <View
         style={themed(() => ({
-          flex: 1,
+          flex: 3,
           justifyContent: "center",
           alignItems: "center",
           padding: theme.spacing.md,
@@ -100,9 +85,23 @@ export function CardLesson({
             <Text>{"body" in currentCard ? currentCard.body : (currentCard as any).caption}</Text>
           </LessonCard>
         </Animated.View>
+        {/* Progress bar */}
+        {totalCards > 1 && (
+          <View
+            style={themed(() => ({
+              paddingVertical: theme.spacing.sm,
+            }))}
+          >
+            <ProgressBar
+              currentIndex={currentCardIndex}
+              totalItems={totalCards}
+              widthPercent={0.9}
+            />
+          </View>
+        )}
       </View>
 
-      {/* Navigation button */}
+      {/* Navigation buttons */}
       <View
         style={themed(() => ({
           position: "absolute",
@@ -110,14 +109,28 @@ export function CardLesson({
           left: 0,
           right: 0,
           paddingBottom: theme.spacing.lg,
-          alignItems: "center",
+          paddingHorizontal: theme.spacing.md,
+          flexDirection: "row",
+          gap: theme.spacing.sm,
         }))}
       >
-        <RectangularButton
-          width={buttonWidth}
-          buttonText={isLastCard ? config.commitment?.text || "Finish" : "Next"}
-          onClick={handleNext}
-        />
+        <View style={themed(() => ({ flex: 1 }))}>
+          <RectangularButton
+            width="100%"
+            buttonText="Back"
+            onClick={handleBack}
+            isDisabled={isFirstCard}
+            customStyles={buttonContainerStyles.noHorizontalMargin}
+          />
+        </View>
+        <View style={themed(() => ({ flex: 3 }))}>
+          <RectangularButton
+            width="100%"
+            buttonText={isLastCard ? config.commitment?.text || "Finish" : "Next"}
+            onClick={handleNext}
+            customStyles={buttonContainerStyles.noHorizontalMargin}
+          />
+        </View>
       </View>
     </View>
   )

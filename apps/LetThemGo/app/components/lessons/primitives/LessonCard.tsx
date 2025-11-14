@@ -1,6 +1,7 @@
 import { View } from "react-native"
 import { ReactNode } from "react"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { ThemedFontAwesome5Icon } from "../../ThemedFontAwesome5Icon"
 
 export function LessonCard({
   children,
@@ -21,6 +22,23 @@ export function LessonCard({
       }))}
     >
       {children}
+      {tone === "tip" && (
+        <View
+          style={themed(() => ({
+            flexDirection: "column",
+            alignItems: "flex-end",
+            marginTop: theme.spacing.xs,
+          }))}
+        >
+          <ThemedFontAwesome5Icon
+            name="lightbulb"
+            size={16}
+            color={theme.colors.tint}
+            solid
+            style={themed(() => ({ marginRight: theme.spacing.xs }))}
+          />
+        </View>
+      )}
     </View>
   )
 }

@@ -10,6 +10,7 @@ import { AudioStep } from "./primitives/AudioStep"
 import { LessonHeader } from "./LessonHeader"
 import { CheckRow } from "./primitives/CheckRow"
 import { TextInputStep } from "./primitives/TextInputStep"
+import ProgressBar from "../ProgressBar"
 
 export function PracticeLesson({
   config,
@@ -51,11 +52,16 @@ export function PracticeLesson({
             <Text style={themed(() => ({ textAlign: "center" }))}>{s.body}</Text>
           </View>
         )}
-        {s?.t === "timer" && <Countdown seconds={s.seconds} label={s.label} onDone={next} />}
-        {s?.t === "breath" && <Breath pattern={s.pattern} rounds={s.rounds} onDone={next} />}
-        {s?.t === "audio" && <AudioStep asset={(s as any).asset} onDone={onComplete} />}
+        {s?.t === "timer" && (
+          <Countdown key={step} seconds={s.seconds} label={s.label} onDone={next} />
+        )}
+        {s?.t === "breath" && (
+          <Breath key={step} pattern={s.pattern} rounds={s.rounds} onDone={next} />
+        )}
+        {s?.t === "audio" && <AudioStep key={step} asset={(s as any).asset} onDone={onComplete} />}
         {s?.t === "check" && (
           <CheckRow
+            key={step}
             label={s.prompt}
             value={checkValues[step] ?? false}
             onToggle={handleCheckToggle}
@@ -63,9 +69,12 @@ export function PracticeLesson({
         )}
         {s?.t === "textInput" && (
           <TextInputStep
+            key={step}
             prompt={s.prompt}
             placeholder={s.placeholder}
             onDone={handleTextInputDone}
+            lessonId={config.id}
+            inputId={s.inputId || `step_${step}`}
           />
         )}
       </View>
@@ -79,6 +88,18 @@ export function PracticeLesson({
           alignItems: "center",
         }))}
       >
+        {/* Progress bar */}
+        {config.steps.length > 1 && (
+          <View
+            style={themed(() => ({
+              paddingBottom: theme.spacing.md,
+              width: "100%",
+              alignItems: "center",
+            }))}
+          >
+            <ProgressBar currentIndex={step} totalItems={config.steps.length} widthPercent={0.9} />
+          </View>
+        )}
         {showButton && (
           <RectangularButton
             width={200}
