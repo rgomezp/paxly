@@ -162,6 +162,8 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="Membership" component={Screens.MembershipScreen} />
       <Stack.Screen name="MessageIntoTheVoid" component={Screens.MessageIntoTheVoidScreen} />
       <Stack.Screen name="ComposeMessage" component={Screens.ComposeMessageScreen} />
+      <Stack.Screen name="MoodLogs" component={Screens.MoodLogsScreen} />
+      <Stack.Screen name="JournalLogs" component={Screens.JournalLogsScreen} />
     </Stack.Navigator>
   )
 })
