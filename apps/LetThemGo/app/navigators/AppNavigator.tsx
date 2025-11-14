@@ -67,6 +67,7 @@ const TabNavigator = observer(function TabNavigator() {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: theme.colors.background,
+          paddingTop: 10,
         },
         tabBarActiveTintColor: theme.colors.tint,
         tabBarInactiveTintColor: theme.colors.text,
