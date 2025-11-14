@@ -34,10 +34,14 @@ export default function ProgressBar(props: ProgressBarProps) {
   const widthPercent = props.widthPercent ?? 0.8
   const progressBarWidth = width * widthPercent
 
+  // Extract dependencies to avoid complex expressions in dependency array
+  const scrollX = isScrollBased ? props.scrollX : null
+  const currentIndex = !isScrollBased ? props.currentIndex : null
+
   useEffect(() => {
-    if (isScrollBased && props.scrollX) {
+    if (isScrollBased && scrollX) {
       // Scroll-based navigation
-      const listener = props.scrollX.addListener(({ value }) => {
+      const listener = scrollX.addListener(({ value }) => {
         const currentProgress = Math.min(value / width, totalItems - 1)
         const animatedProgress = (currentProgress / (totalItems - 1)) * progressBarWidth
 
@@ -49,13 +53,12 @@ export default function ProgressBar(props: ProgressBarProps) {
       })
 
       return () => {
-        props.scrollX.removeListener(listener)
+        scrollX.removeListener(listener)
       }
-    } else if (!isScrollBased) {
+    } else if (!isScrollBased && currentIndex !== null) {
       // Index-based navigation
-      const currentProgress = props.currentIndex
       const animatedProgress =
-        totalItems > 1 ? (currentProgress / (totalItems - 1)) * progressBarWidth : progressBarWidth
+        totalItems > 1 ? (currentIndex / (totalItems - 1)) * progressBarWidth : progressBarWidth
 
       Animated.timing(progressWidth, {
         toValue: animatedProgress,
@@ -65,7 +68,8 @@ export default function ProgressBar(props: ProgressBarProps) {
     }
   }, [
     isScrollBased,
-    isScrollBased ? props.scrollX : props.currentIndex,
+    scrollX,
+    currentIndex,
     progressBarWidth,
     totalItems,
     width,
