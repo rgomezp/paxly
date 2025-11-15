@@ -7,11 +7,13 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { LESSONS } from "@/data/LessonRegistry"
 import { MODULE_DISPLAY_NAMES, MODULE_ORDER } from "@/data/ModuleDisplayNames"
+import { MODULE_ICONS } from "@/data/ModuleIcons"
 import { ModuleId } from "@/types/lessons/ModuleId"
 import { navigate } from "@/navigators/navigationUtilities"
 import TodaysLessonManager from "@/managers/TodaysLessonManager"
 import { Icon } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
+import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
 import { $styles } from "@/theme/styles"
 import { useStores } from "@/models"
 import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
@@ -171,11 +173,19 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
               >
                 <View style={themed($moduleHeaderContent)}>
                   <View style={themed($moduleTitleRow)}>
-                    <Text
-                      text={MODULE_DISPLAY_NAMES[moduleId]}
-                      preset="subheading"
-                      style={themed({ color: theme.colors.text })}
-                    />
+                    <View style={themed($moduleTitleWithIcon)}>
+                      <ThemedPhosphorIcon
+                        Component={MODULE_ICONS[moduleId]}
+                        size={20}
+                        color={theme.colors.text}
+                        style={themed({ marginRight: 8 })}
+                      />
+                      <Text
+                        text={MODULE_DISPLAY_NAMES[moduleId]}
+                        preset="subheading"
+                        style={themed({ color: theme.colors.text })}
+                      />
+                    </View>
                     <Icon
                       icon={isExpanded ? "caretRight" : "caretRight"}
                       size={16}
@@ -319,6 +329,12 @@ const $moduleTitleRow: ViewStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   marginBottom: 8,
+}
+
+const $moduleTitleWithIcon: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  flex: 1,
 }
 
 const $progressBarContainer: ViewStyle = {
