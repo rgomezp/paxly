@@ -86,9 +86,12 @@ const TestimonialComponent: React.FC = () => {
           contentFit="contain"
         />
       </View>
-      <Text style={themed($ratingHelpText)}>
-        Giving us a rating helps us mend more people&apos;s hearts just like yours
-      </Text>
+      <View style={themed($socialProofHeader)}>
+        <Text style={themed($userCountText)}>Join 10,000+ people on their healing journey</Text>
+        <Text style={themed($ratingHelpText)}>
+          Your rating helps us reach more people who need support
+        </Text>
+      </View>
       {displayTestimonials.map((testimonial, index) => (
         <TestimonialCard key={index} testimonial={testimonial} />
       ))}
@@ -130,11 +133,25 @@ const $imageContainer: ThemedStyle<ViewStyle> = () => ({
   marginBottom: 12,
 })
 
+const $socialProofHeader: ThemedStyle<ViewStyle> = () => ({
+  marginBottom: 24,
+  alignSelf: "stretch",
+  alignItems: "center",
+})
+
+const $userCountText: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.text,
+  fontSize: 16,
+  fontWeight: "600",
+  textAlign: "center",
+  marginBottom: 8,
+  paddingHorizontal: 10,
+})
+
 const $ratingHelpText: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.textDim,
   fontSize: 12,
   textAlign: "center",
-  marginBottom: 24,
   paddingHorizontal: 10,
   lineHeight: 16,
 })

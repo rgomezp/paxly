@@ -24,8 +24,9 @@ export function problemSolutionSlide({
 }: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
-    title: "Can’t stop checking or reaching out?",
-    description: "Or perhaps you're just struggling to let them go. We'll help you get there.",
+    title: "Can't stop checking or reaching out?",
+    description:
+      "No contact has been shown to be one of the most effective ways to heal from a breakup.",
     component: <ProblemSolutionComponent />,
     textPlacement: "bottom",
     textAlignment: "left",

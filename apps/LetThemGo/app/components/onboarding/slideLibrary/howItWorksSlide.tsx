@@ -34,7 +34,8 @@ export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlidePr
   return {
     id: "howItWorks",
     title: "Start your journey today",
-    description: "In only 60 days, you'll be on your way to healing and moving on.",
+    description:
+      "Join thousands who've found healing. In only 60 days, you'll be well on your way.",
     component: <HowItWorksComponent />,
   }
 }

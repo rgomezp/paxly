@@ -21,8 +21,8 @@ interface Benefit {
 export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide {
   return {
     id: "hero",
-    title: "Breakups are tough. Let’s make them easier.",
-    description: "It takes about 3 months on average to get over a breakup 💔",
+    title: "We're here to help.",
+    description: "It takes about 3 months on average to heal from a breakup.",
     component: <HeroComponent />,
     textPlacement: "top",
   }
