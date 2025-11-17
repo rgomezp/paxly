@@ -254,11 +254,12 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                                 size="xs"
                                 style={themed({ color: theme.colors.textDim, marginTop: 2 })}
                               />
-                              <Text
+                              {/* Temporarily hidden duration */}
+                              {/* <Text
                                 text={`${lesson.estMinutes} min`}
                                 size="xs"
                                 style={themed({ color: theme.colors.textDim, marginTop: 4 })}
-                              />
+                              /> */}
                             </View>
                           </View>
                           <View style={themed($lessonItemRight)}>
