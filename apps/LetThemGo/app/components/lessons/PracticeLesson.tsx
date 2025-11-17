@@ -3,15 +3,15 @@ import { Text } from ".."
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useState } from "react"
 import { PracticeLessonConfig } from "@/types/lessons/IPracticeLessonConfig"
-import RectangularButton from "../buttons/RectangularButton"
 import { Countdown } from "./primitives/Countdown"
 import { Breath } from "./primitives/Breath"
 import { AudioStep } from "./primitives/AudioStep"
 import { LessonHeader } from "./LessonHeader"
 import { CheckRow } from "./primitives/CheckRow"
 import { TextInputStep } from "./primitives/TextInputStep"
-import { Button } from "../Button"
+import { SliderStep } from "./primitives/SliderStep"
 import { LessonFooter } from "./LessonFooter"
+import { LessonNavigationButtons } from "./LessonNavigationButtons"
 
 export function PracticeLesson({
   config,
@@ -22,21 +22,35 @@ export function PracticeLesson({
 }) {
   const { themed, theme } = useAppTheme()
   const [step, setStep] = useState(0)
-  const [showFinish, setShowFinish] = useState(false)
   const [checkValues, setCheckValues] = useState<Record<number, boolean>>({})
   const s = config.steps[step]
-  const next = () => {
-    if (step + 1 < config.steps.length) setStep(step + 1)
-    else setShowFinish(true)
+  const totalSteps = config.steps.length
+  const isLastStep = step === totalSteps - 1
+  const isFirstStep = step === 0
+
+  const handleNext = () => {
+    if (isLastStep) {
+      onComplete?.()
+    } else {
+      setStep(step + 1)
+    }
   }
+
+  const handleBack = () => {
+    if (!isFirstStep) {
+      setStep(step - 1)
+    }
+  }
+
   const handleCheckToggle = () => {
     setCheckValues((prev) => ({ ...prev, [step]: !prev[step] }))
   }
   const handleTextInputDone = () => {
-    next()
+    handleNext()
   }
-  const showButton = showFinish || (s?.t !== "timer" && s?.t !== "breath" && s?.t !== "audio")
-  const isTimerStep = s?.t === "timer"
+  const handleSliderDone = () => {
+    handleNext()
+  }
   return (
     <View style={themed(() => ({ flex: 1 }))}>
       <LessonHeader title={config.title} subtitle={config.goal} />
@@ -55,12 +69,12 @@ export function PracticeLesson({
           </View>
         )}
         {s?.t === "timer" && (
-          <Countdown key={step} seconds={s.seconds} label={s.label} onDone={next} />
+          <Countdown key={step} seconds={s.seconds} label={s.label} onDone={handleNext} />
         )}
         {s?.t === "breath" && (
-          <Breath key={step} pattern={s.pattern} rounds={s.rounds} onDone={next} />
+          <Breath key={step} pattern={s.pattern} rounds={s.rounds} onDone={handleNext} />
         )}
-        {s?.t === "audio" && <AudioStep key={step} asset={(s as any).asset} onDone={onComplete} />}
+        {s?.t === "audio" && <AudioStep key={step} asset={(s as any).asset} onDone={handleNext} />}
         {s?.t === "check" && (
           <CheckRow
             key={step}
@@ -79,43 +93,30 @@ export function PracticeLesson({
             inputId={s.inputId || `step_${step}`}
           />
         )}
+        {s?.t === "slider" && (
+          <SliderStep
+            key={step}
+            prompt={s.prompt}
+            min={s.min}
+            max={s.max}
+            defaultValue={s.defaultValue}
+            onDone={handleSliderDone}
+            lessonId={config.id}
+            inputId={s.inputId || `step_${step}`}
+          />
+        )}
       </View>
       <LessonFooter
         showProgressBar={config.steps.length > 1}
         currentIndex={step}
         totalItems={config.steps.length}
       >
-        <View
-          style={themed(() => ({
-            alignItems: "center",
-          }))}
-        >
-          {isTimerStep && (
-            <Button
-              onPress={next}
-              style={themed(() => ({
-                paddingVertical: theme.spacing.sm,
-                paddingHorizontal: theme.spacing.md,
-              }))}
-              textStyle={themed(() => ({
-                color: theme.colors.tint,
-                fontSize: 16,
-              }))}
-            >
-              Skip
-            </Button>
-          )}
-          {showButton && !isTimerStep && (
-            <RectangularButton
-              width={200}
-              buttonText={showFinish || step + 1 >= config.steps.length ? "Finish" : "Next"}
-              onClick={() => {
-                if (showFinish || step + 1 >= config.steps.length) onComplete?.()
-                else next()
-              }}
-            />
-          )}
-        </View>
+        <LessonNavigationButtons
+          onBack={handleBack}
+          onNext={handleNext}
+          isFirst={isFirstStep}
+          isLast={isLastStep}
+        />
       </LessonFooter>
     </View>
   )

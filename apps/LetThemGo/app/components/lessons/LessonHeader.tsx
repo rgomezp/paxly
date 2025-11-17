@@ -16,7 +16,7 @@ export function LessonHeader({ title, subtitle }: { title: string; subtitle?: st
         gap: theme.spacing.xs,
         paddingHorizontal: theme.spacing.md,
         paddingTop: theme.spacing.md,
-        paddingBottom: theme.spacing.sm,
+        paddingBottom: theme.spacing.xl,
       }))}
     >
       {(() => {

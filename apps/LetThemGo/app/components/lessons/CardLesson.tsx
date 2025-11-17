@@ -22,22 +22,15 @@
 
 import { CardLessonConfig } from "@/types/lessons/ICardLessonConfig"
 import { Text } from ".."
-import { View, StyleSheet, ScrollView } from "react-native"
+import { View, ScrollView } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useState } from "react"
 import Animated, { FadeIn } from "react-native-reanimated"
 import { LessonCard } from "./primitives/LessonCard"
 import { LessonHeader } from "./LessonHeader"
-import RectangularButton from "../buttons/RectangularButton"
 import { QACard } from "./primitives/QACard"
 import { LessonFooter } from "./LessonFooter"
-
-const buttonContainerStyles = StyleSheet.create({
-  noHorizontalMargin: {
-    marginLeft: 0,
-    marginRight: 0,
-  },
-})
+import { LessonNavigationButtons } from "./LessonNavigationButtons"
 
 export function CardLesson({
   config,
@@ -109,30 +102,13 @@ export function CardLesson({
         currentIndex={currentCardIndex}
         totalItems={totalCards}
       >
-        <View
-          style={themed(() => ({
-            flexDirection: "row",
-            gap: theme.spacing.sm,
-          }))}
-        >
-          <View style={themed(() => ({ flex: 1 }))}>
-            <RectangularButton
-              width="100%"
-              buttonText="Back"
-              onClick={handleBack}
-              isDisabled={isFirstCard}
-              customStyles={buttonContainerStyles.noHorizontalMargin}
-            />
-          </View>
-          <View style={themed(() => ({ flex: 3 }))}>
-            <RectangularButton
-              width="100%"
-              buttonText={isLastCard ? config.commitment?.text || "Finish" : "Next"}
-              onClick={handleNext}
-              customStyles={buttonContainerStyles.noHorizontalMargin}
-            />
-          </View>
-        </View>
+        <LessonNavigationButtons
+          onBack={handleBack}
+          onNext={handleNext}
+          isFirst={isFirstCard}
+          isLast={isLastCard}
+          nextButtonText={isLastCard ? config.commitment?.text : undefined}
+        />
       </LessonFooter>
     </View>
   )

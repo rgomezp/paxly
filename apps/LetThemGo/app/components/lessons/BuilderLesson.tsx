@@ -42,7 +42,6 @@ export function BuilderLesson({
 
   return (
     <View style={themed(() => ({ flex: 1 }))}>
-      <LessonHeader title={config.title} subtitle={config.goal} />
       <ScrollView
         style={themed(() => ({ flex: 1 }))}
         contentContainerStyle={themed(() => ({
@@ -50,6 +49,7 @@ export function BuilderLesson({
           paddingBottom: 100, // Reserve space for button
         }))}
       >
+        <LessonHeader title={config.title} subtitle={config.goal} />
         {config.sections.map((s, idx) => (
           <View key={idx} style={themed(() => ({ marginBottom: theme.spacing.lg }))}>
             <Text

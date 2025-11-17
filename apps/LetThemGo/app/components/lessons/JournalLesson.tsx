@@ -1,7 +1,7 @@
 import { JournalLessonConfig } from "@/types/lessons/IJournalLessonConfig"
 import { useState, useEffect } from "react"
 import { Text } from ".."
-import { FlatList, ScrollView, TextInput, View } from "react-native"
+import { FlatList, ScrollView, StyleSheet, TextInput, View } from "react-native"
 import RectangularButton from "../buttons/RectangularButton"
 import { SliderPseudo } from "./primitives/SliderPseudo"
 import { Chip } from "./primitives/Chip"
@@ -37,13 +37,13 @@ export function JournalLesson({
   }
   return (
     <View style={themed(() => ({ flex: 1 }))}>
-      <LessonHeader title={config.title} subtitle={config.goal} />
       <ScrollView
         style={themed(() => ({
           flex: 1,
           padding: theme.spacing.md,
         }))}
       >
+        <LessonHeader title={config.title} subtitle={config.goal} />
         {config.fields.map((f, index) => {
           const isLast = index === config.fields.length - 1
           const marginBottom = isLast ? theme.spacing.xxxl * 3 : theme.spacing.lg
@@ -73,17 +73,19 @@ export function JournalLesson({
               ) : f.kind === "radio" ? (
                 <>
                   <Text>{(f as any).label}</Text>
-                  <FlatList
-                    data={(f as any).options}
-                    horizontal
-                    renderItem={({ item }) => (
-                      <Chip
-                        selected={form[f.name] === item}
-                        label={item}
-                        onPress={() => update(f.name, item)}
-                      />
-                    )}
-                  />
+                  <View style={themed(() => ({ marginTop: theme.spacing.md }))}>
+                    <FlatList
+                      data={(f as any).options}
+                      horizontal
+                      renderItem={({ item }) => (
+                        <Chip
+                          selected={form[f.name] === item}
+                          label={item}
+                          onPress={() => update(f.name, item)}
+                        />
+                      )}
+                    />
+                  </View>
                 </>
               ) : f.kind === "slider" ? (
                 <SliderPseudo
@@ -117,8 +119,15 @@ export function JournalLesson({
         <RectangularButton
           buttonText={config.commitment?.text || "Finish"}
           onClick={() => onComplete?.()}
+          customStyles={styles.buttonMinWidth}
         />
       </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  buttonMinWidth: {
+    minWidth: 200,
+  },
+})
