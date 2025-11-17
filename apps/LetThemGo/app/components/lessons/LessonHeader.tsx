@@ -23,10 +23,12 @@ export function LessonHeader({ title, subtitle }: { title: string; subtitle?: st
         const progressData = NoContactManager.calculateDisplay()
         const goal = progressData?.currentGoal ?? NoContactGoal.OneDay
         const watered = PlantyManager.hasWateredToday()
+        const isSad = PlantyManager.hasNotWateredIn3Days()
         return (
           <Planty
             goal={goal}
             wateredToday={watered}
+            isSad={isSad}
             style={themed(() => ({ width: 72, height: 72, marginBottom: theme.spacing.xs }))}
           />
         )

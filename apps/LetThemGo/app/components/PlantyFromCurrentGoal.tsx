@@ -30,6 +30,7 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
   const progressData = NoContactManager.calculateDisplay()
   const goal = progressData?.currentGoal ?? NoContactGoal.OneDay
   const watered = PlantyManager.hasWateredToday()
+  const isSad = PlantyManager.hasNotWateredIn3Days()
 
   // Get mascot name if showName is true
   const mascotName = showName ? (ganon.get("mascotName") as MascotNames | null) : null
@@ -42,6 +43,7 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
       <Planty
         goal={goal}
         wateredToday={watered}
+        isSad={isSad}
         style={style}
         isWatering={isWatering}
         onDrinkFinished={onDrinkFinished}
