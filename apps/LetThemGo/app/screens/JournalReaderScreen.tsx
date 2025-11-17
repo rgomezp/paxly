@@ -27,6 +27,7 @@ export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(
     }, [journalStore.entries, date])
     const isEntryAlive = entry ? isAlive(entry as any) : false
     const displayedText = isEntryAlive ? entry!.text : ""
+    const displayedPrompt = isEntryAlive && entry!.prompt ? entry!.prompt : null
     const formattedDate = useMemo(() => {
       if (!isEntryAlive || !entry) return ""
       try {
@@ -81,6 +82,9 @@ export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(
           {formattedDate ? (
             <Text preset="subheading" style={themed($dateSubheading)} text={formattedDate} />
           ) : null}
+          {displayedPrompt ? (
+            <Text preset="subheading" style={themed($promptSubheading)} text={displayedPrompt} />
+          ) : null}
           <Text style={themed($body)} text={displayedText} />
         </ScrollView>
         {isEntryAlive ? (
@@ -115,6 +119,12 @@ const $title: ThemedStyle<TextStyle> = (theme) => ({
 const $dateSubheading: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.textDim,
   marginBottom: 12,
+})
+
+const $promptSubheading: ThemedStyle<TextStyle> = (theme) => ({
+  color: theme.colors.text,
+  marginBottom: 12,
+  fontStyle: "italic",
 })
 
 const $body: ThemedStyle<TextStyle> = (theme) => ({

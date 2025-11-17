@@ -1,4 +1,4 @@
-import { FC, useMemo, useState, useRef } from "react"
+import { FC, useMemo, useState, useRef, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 import {
   View,
@@ -34,6 +34,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
   const { journalStore } = useStores()
 
   const isEdit = route.params?.mode === "edit" && typeof route.params?.date === "number"
+  const DEFAULT_PROMPT = "What's on your heart today?"
 
   const trimmedText = text.trim()
   const initialTrimmed = (route.params?.initialText ?? "").trim()
@@ -41,16 +42,36 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     ? trimmedText.length > 0 && trimmedText !== initialTrimmed
     : trimmedText.length > 0
 
+  // Load saved prompt when editing
+  const editDate = route.params?.date
+  useEffect(() => {
+    if (isEdit && editDate) {
+      const entry = journalStore.entries.find((e) => e.date === editDate)
+      if (entry?.prompt) {
+        setPromptText(entry.prompt)
+      } else {
+        setPromptText(DEFAULT_PROMPT)
+      }
+    } else {
+      setPromptText(DEFAULT_PROMPT)
+    }
+  }, [isEdit, editDate, journalStore.entries])
+
   function onSave() {
     if (!text.trim()) {
       navigation.goBack()
       return
     }
 
+    // Only save prompt if it's different from the default
+    // Pass undefined to clear it if it's the default, or the custom prompt if it's not
+    const promptToSave = promptText !== DEFAULT_PROMPT ? promptText : undefined
+
     if (isEdit) {
-      journalStore.updateByDate(route.params!.date as number, text.trim())
+      // Always pass promptToSave (even if undefined) to allow clearing the prompt
+      journalStore.updateByDate(route.params!.date as number, text.trim(), promptToSave)
     } else {
-      journalStore.create(text.trim())
+      journalStore.create(text.trim(), promptToSave)
       DailyTaskManager.markCompleted("journal")
     }
     navigation.goBack()
@@ -72,7 +93,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     [insets.bottom],
   )
 
-  const [promptText, setPromptText] = useState<string>("What's on your heart today?")
+  const [promptText, setPromptText] = useState<string>(DEFAULT_PROMPT)
 
   const handleShowPrompt = () => {
     setPromptText(getRandomPrompt())
