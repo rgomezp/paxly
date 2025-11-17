@@ -10,7 +10,7 @@ import { MODULE_DISPLAY_NAMES, MODULE_ORDER } from "@/data/ModuleDisplayNames"
 import { MODULE_ICONS } from "@/data/ModuleIcons"
 import { ModuleId } from "@/types/lessons/ModuleId"
 import { navigate } from "@/navigators/navigationUtilities"
-import TodaysLessonManager from "@/managers/TodaysLessonManager"
+import DailyLessonManager from "@/managers/DailyLessonManager"
 import { Icon } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
@@ -28,7 +28,7 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
   const { theme, themed } = useAppTheme()
   const { lessonStore } = useStores()
   const completedLessons = lessonStore.getCompletedLessons()
-  const todaysLessonId = TodaysLessonManager.getTodaysLesson()
+  const todaysLessonId = DailyLessonManager.getTodaysLesson()
   const { hasFeatureAccess } = useEntitlements()
   const flagContext = useContext(FlagContext)
   if (!flagContext) {

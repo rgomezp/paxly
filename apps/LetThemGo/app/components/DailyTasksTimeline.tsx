@@ -1,6 +1,6 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useMemo } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, TouchableOpacity } from "react-native"
+import { View, ViewStyle, TouchableOpacity, InteractionManager } from "react-native"
 import { Text } from "@/components"
 import { $styles } from "@/theme/styles"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -14,7 +14,7 @@ import { FEATURES } from "../entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
 import { navigate } from "@/navigators/navigationUtilities"
-import TodaysLessonManager from "@/managers/TodaysLessonManager"
+import DailyLessonManager from "@/managers/DailyLessonManager"
 
 type Props = {
   refreshToken?: number
@@ -49,8 +49,16 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
     return () => clearTimeout(id)
   }, [refreshToken])
 
-  // Compute directly in render so MobX can track observable usage; avoid useMemo with observables
+  // Pre-compute today's lesson ID to avoid heavy work during navigation
+  // This prevents jankiness on Android during navigation transitions
+  // We use todayKey as a dependency to recompute when the date changes
   const todayKey = getLocalDateKey()
+  const todaysLessonId = useMemo(() => {
+    return DailyLessonManager.getTodaysLesson()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [todayKey])
+
+  // Compute directly in render so MobX can track observable usage; avoid useMemo with observables
   const history = moodStore.history
   let moodDone = false
   if (history.length) {
@@ -159,12 +167,15 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
           "Daily lesson",
           done.lesson,
           () => {
-            const todaysLessonId = TodaysLessonManager.getTodaysLesson()
-            if (todaysLessonId) {
-              navigate("SingleLesson", { lessonId: todaysLessonId })
-            } else {
-              navigate("Lessons")
-            }
+            // Use InteractionManager to defer navigation until after interactions complete
+            // This prevents jankiness on Android during navigation transitions
+            InteractionManager.runAfterInteractions(() => {
+              if (todaysLessonId) {
+                navigate("SingleLesson", { lessonId: todaysLessonId })
+              } else {
+                navigate("Lessons")
+              }
+            })
           },
           "lesson",
           done.lesson, // Disable if completed

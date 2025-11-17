@@ -3,7 +3,7 @@ import type { AppStackScreenProps } from "@/navigators/navigationTypes"
 import { Screen } from "@/components/Screen"
 import { LessonPlayer } from "@/components/lessons/LessonPlayer"
 import { ViewStyle } from "react-native"
-import TodaysLessonManager from "@/managers/TodaysLessonManager"
+import DailyLessonManager from "@/managers/DailyLessonManager"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import LessonManager from "@/managers/LessonManager"
 import AwardManager from "@/managers/AwardManager"
@@ -50,7 +50,7 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
     LessonManager.markCompleted(lessonId)
 
     // Check if this is today's lesson and mark it as complete
-    const todaysLessonId = TodaysLessonManager.getTodaysLesson()
+    const todaysLessonId = DailyLessonManager.getTodaysLesson()
     if (todaysLessonId === lessonId) {
       DailyTaskManager.markCompleted("lesson")
     }
