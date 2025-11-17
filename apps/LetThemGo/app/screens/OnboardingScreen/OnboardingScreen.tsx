@@ -6,6 +6,7 @@ import OnboardingOpeningScreen from "@/components/onboarding/OnboardingOpeningSc
 import OnboardingLoginScreen from "@/components/onboarding/OnboardingLoginScreen"
 import OnboardingHardPaywall from "./OnboardingHardPaywall"
 import OnboardingFallbackPaywall from "./OnboardingFallbackPaywall"
+import OnboardingLoadingScreen from "@/components/onboarding/OnboardingLoadingScreen"
 
 export const OnboardingScreen = () => {
   const { step, setStep } = useOnboardingState()
@@ -22,9 +23,15 @@ export const OnboardingScreen = () => {
       return (
         <ScrollProvider>
           <View style={$root}>
-            <OnboardingSlidesView onComplete={() => setStep("paywall")} />
+            <OnboardingSlidesView onComplete={() => setStep("loading")} />
           </View>
         </ScrollProvider>
+      )
+    case "loading":
+      return (
+        <View style={$root}>
+          <OnboardingLoadingScreen onComplete={() => setStep("paywall")} />
+        </View>
       )
     case "paywall":
       return (
