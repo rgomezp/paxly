@@ -98,7 +98,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
             preset="heading"
             style={themed($title)}
           />
-          <Text text={promptText} style={themed($promptText)} />
+          <Text text={promptText} preset="subheading" />
           <View style={themed($inputWrapper)}>
             <TextInput
               ref={inputRef}
@@ -148,16 +148,10 @@ const $title: ThemedStyle<TextStyle> = (theme) => ({
   marginBottom: 12,
 })
 
-const $promptText: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.colors.text,
-  fontSize: 16,
-  marginBottom: 12,
-  fontStyle: "italic",
-})
-
 const $inputWrapper: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
   minHeight: 180,
+  marginTop: 12,
 })
 
 const $input: ThemedStyle<TextStyle> = (theme) => ({
@@ -171,7 +165,7 @@ const $input: ThemedStyle<TextStyle> = (theme) => ({
 })
 
 const $promptButton: ThemedStyle<ViewStyle> = () => ({
-  paddingVertical: 8,
+  paddingBottom: 20,
   paddingHorizontal: 12,
   alignItems: "center",
   justifyContent: "center",

@@ -74,11 +74,7 @@ export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffSc
     <Screen preset="scroll" style={themed($container)}>
       <View style={[themed($headerContainer), { paddingTop: insets.top + 16 }]}>
         <Text text="My Stuff" preset="heading" style={themed($title)} />
-        <Text
-          text="Your collection of awards and achievements"
-          preset="default"
-          style={themed($subtitle)}
-        />
+        <Text text="Earn rewards by completing lessons!" preset="subheading" />
       </View>
       <ScrollView
         contentContainerStyle={themed($scrollContent)}
