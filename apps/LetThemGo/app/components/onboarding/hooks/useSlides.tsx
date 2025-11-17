@@ -16,13 +16,13 @@ import { isFirstBreakupSlide } from "../slideLibrary/isFirstBreakupSlide"
 import { noContactReasonSlide } from "../slideLibrary/noContactReasonSlide"
 import { checkSocialMediaSlide } from "../slideLibrary/checkSocialMediaSlide"
 import { contactTemptationSituationsSlide } from "../slideLibrary/contactTemptationSituationsSlide"
-import { appMainGoalSlide } from "../slideLibrary/appMainGoalSlide"
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
 import { loadingSlide } from "../slideLibrary/loadingSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
+import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -62,7 +62,7 @@ export const useSlides = (onSelection?: () => void) => {
   // Helper function to refresh nickname after it's saved
   const refreshNickname = async () => {
     try {
-      const user = await UserManager.getUser()
+      const user = UserManager.getUser()
       setNickname(user?.nickname || null)
     } catch (error) {
       Log.error(`Error refreshing nickname: ${error}`)
@@ -71,12 +71,19 @@ export const useSlides = (onSelection?: () => void) => {
 
   const slides: ISlide[] = useMemo(
     () => [
-      heroSlide({ onSelection }),
-      problemSolutionSlide({ onSelection }),
-      howItWorksSlide({ onSelection }),
-      nicknameSlide({ onSelection, refreshNickname }),
-      mascotNameSlide({ onSelection }),
-      mascotIntroSlide({ onSelection }),
+      // First 5 screens: Wow moment and key principles
+      wowMomentSlide({ onSelection }), // Reciprocity (valuable insight) + Authority (research-backed) - WOW MOMENT
+      heroSlide({ onSelection }), // Authority (research mention) + Unity ("we're here")
+      problemSolutionSlide({ onSelection }), // Unity ("we've all been there", "together")
+      howItWorksSlide({ onSelection }), // Social Proof ("join thousands")
+
+      // Commitment/Consistency - Getting user commitments
+      nicknameSlide({ onSelection, refreshNickname }), // Commitment (name)
+      mascotNameSlide({ onSelection }), // Commitment (mascot name)
+      mascotIntroSlide({ onSelection }), // Liking (personalized interaction)
+      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
+
+      // Data collection slides
       lastContactSlide({ onSelection }),
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
@@ -85,11 +92,13 @@ export const useSlides = (onSelection?: () => void) => {
       noContactReasonSlide({ onSelection }),
       checkSocialMediaSlide({ onSelection }),
       contactTemptationSituationsSlide({ onSelection }),
-      appMainGoalSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
+
+      // Setup slides
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
-      testimonialsSlide({ onSelection }),
+
+      // Final slides
       referralSourceSlide({ onSelection }),
       loadingSlide({ onSelection }),
     ],

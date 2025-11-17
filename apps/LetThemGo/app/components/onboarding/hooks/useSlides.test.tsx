@@ -7,15 +7,17 @@ import path from "path"
  * (order or length), the ONBOARDING_VERSION constant must be updated.
  *
  * Expected slide order and IDs - update this when slides change:
- * Last updated for ONBOARDING_VERSION: 1.0.0
+ * Last updated for ONBOARDING_VERSION: 1.1
  */
 const EXPECTED_SLIDE_IDS = [
+  "wowMoment",
   "hero",
   "problem_solution",
   "howItWorks",
   "name_input",
   "mascotName",
   "mascotIntro",
+  "testimonials",
   "lastContactDate",
   "gender",
   "ageRange",
@@ -24,11 +26,9 @@ const EXPECTED_SLIDE_IDS = [
   "noContactReason",
   "checkSocialMedia",
   "contactTemptationSituation",
-  "appMainGoal",
   "whoEndedIt",
   "moodTrackingIntro",
   "moodReminderFrequency",
-  "testimonials",
   "referralSource",
   "loading",
 ]
@@ -57,12 +57,14 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
     // Map function names to slide IDs
     // This mapping should match the actual slide IDs returned by each function
     const functionNameToId: Record<string, string> = {
+      wowMomentSlide: "wowMoment",
       heroSlide: "hero",
       problemSolutionSlide: "problem_solution",
       howItWorksSlide: "howItWorks",
       nicknameSlide: "name_input",
       mascotNameSlide: "mascotName",
       mascotIntroSlide: "mascotIntro",
+      testimonialsSlide: "testimonials",
       lastContactSlide: "lastContactDate",
       genderSlide: "gender",
       ageSlide: "ageRange",
@@ -71,11 +73,9 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       noContactReasonSlide: "noContactReason",
       checkSocialMediaSlide: "checkSocialMedia",
       contactTemptationSituationsSlide: "contactTemptationSituation",
-      appMainGoalSlide: "appMainGoal",
       whoEndedItSlide: "whoEndedIt",
       moodTrackingIntroSlide: "moodTrackingIntro",
       moodReminderFrequencySlide: "moodReminderFrequency",
-      testimonialsSlide: "testimonials",
       referralSourceSlide: "referralSource",
       loadingSlide: "loading",
     }
