@@ -1,6 +1,7 @@
-import { FC, useMemo } from "react"
+import { FC, useMemo, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, TextStyle } from "react-native"
+import { View, ViewStyle, TextStyle, Alert, Pressable } from "react-native"
+import { Swipeable } from "react-native-gesture-handler"
 import { AppStackScreenProps } from "@/navigators"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -11,6 +12,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Text } from "@/components/Text"
 import { EmptyState } from "@/components/EmptyState"
 import { MoodLogItem } from "@/components/MoodLogItem"
+import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import type { ThemedStyle } from "@/theme"
 import type { ViewStyle as RNViewStyle } from "react-native"
 
@@ -20,8 +22,9 @@ type MoodLogListItem = IMoodHistoryItem & { id: string }
 
 export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLogsScreen() {
   const insets = useSafeAreaInsets()
-  const { themed } = useAppTheme()
+  const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
+  const swipeableRefs = useRef<Map<string, Swipeable>>(new Map())
 
   const historySource: IMoodHistoryItem[] = moodStore.history.length
     ? (moodStore.history.slice() as IMoodHistoryItem[])
@@ -35,11 +38,57 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
     [historySource],
   )
 
+  const handleDelete = (item: MoodLogListItem) => {
+    Alert.alert("Delete mood log", "Are you sure you want to delete this mood log?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => {
+          // Close the swipeable first to hide the delete button
+          const swipeable = swipeableRefs.current.get(item.id)
+          swipeable?.close()
+
+          // Clean up the ref
+          swipeableRefs.current.delete(item.id)
+
+          // Delete the mood log
+          MoodManager.deleteByDate(item.date)
+          // Also update the store to ensure UI updates immediately
+          moodStore.deleteByDate(item.date)
+        },
+      },
+    ])
+  }
+
   const renderItem = ({ item }: { item: MoodLogListItem }) => {
+    const renderRightActions = () => {
+      return (
+        <Pressable
+          onPress={() => handleDelete(item)}
+          style={[themed($deleteAction), { backgroundColor: theme.colors.palette.negative }]}
+        >
+          <ThemedFontAwesome5Icon name="trash" color={theme.colors.text} size={20} solid />
+        </Pressable>
+      )
+    }
+
     return (
-      <View style={$itemWrapper}>
-        <MoodLogItem item={item} />
-      </View>
+      <Swipeable
+        ref={(ref) => {
+          if (ref) {
+            swipeableRefs.current.set(item.id, ref)
+          } else {
+            swipeableRefs.current.delete(item.id)
+          }
+        }}
+        renderRightActions={renderRightActions}
+        rightThreshold={40}
+      >
+        <View style={$itemWrapper}>
+          <MoodLogItem item={item} />
+        </View>
+      </Swipeable>
     )
   }
 
@@ -89,6 +138,15 @@ const $title: ThemedStyle<TextStyle> = (theme) => ({
 
 const $itemWrapper: ViewStyle = {
   paddingHorizontal: 16,
+}
+
+const $deleteAction: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  width: 80,
+  borderRadius: 12,
+  marginRight: 16,
+  marginBottom: 12,
 }
 
 const $emptyStateWrapper: ThemedStyle<ViewStyle> = () => ({

@@ -19,6 +19,7 @@ if (__DEV__) {
 import "./utils/gestureHandler"
 import "./utils/ignoreWarnings"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
 import { useInitialRootStore } from "./models"
@@ -64,17 +65,19 @@ const config = {
  */
 function OnboardingWrapper() {
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <FlagProvider>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
-          <KeyboardProvider>
-            <OnboardingProvider>
-              <OnboardingScreen />
-            </OnboardingProvider>
-          </KeyboardProvider>
-        </ErrorBoundary>
-      </FlagProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <FlagProvider>
+          <ErrorBoundary catchErrors={Config.catchErrors}>
+            <KeyboardProvider>
+              <OnboardingProvider>
+                <OnboardingScreen />
+              </OnboardingProvider>
+            </KeyboardProvider>
+          </ErrorBoundary>
+        </FlagProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }
 
@@ -115,15 +118,17 @@ function AppContent() {
 
   // otherwise, we're ready to render the app
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <FlagProvider>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
-          <KeyboardProvider>
-            <AppNavigator linking={linking} />
-          </KeyboardProvider>
-        </ErrorBoundary>
-      </FlagProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <FlagProvider>
+          <ErrorBoundary catchErrors={Config.catchErrors}>
+            <KeyboardProvider>
+              <AppNavigator linking={linking} />
+            </KeyboardProvider>
+          </ErrorBoundary>
+        </FlagProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }
 
