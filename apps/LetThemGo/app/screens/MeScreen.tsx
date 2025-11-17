@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useCallback } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, ScrollView as RNScrollView } from "react-native"
+import { View, ViewStyle, ScrollView as RNScrollView, useWindowDimensions } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import { AppStackScreenProps } from "@/navigators"
 import { MoodGraph, Quote } from "@/components"
@@ -11,9 +11,9 @@ import NoContactManager from "@/managers/NoContactManager"
 import BadgeManager from "@/managers/BadgeManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { SmileyIcon, TrophyIcon, BookOpenIcon } from "phosphor-react-native"
+import { SmileyIcon, TrophyIcon, BookOpenIcon, PaperPlaneTiltIcon } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
-import { CircularButton } from "@/components/buttons/CircularButton"
+import { ActionCard } from "@/components/buttons/ActionCard"
 
 interface MeScreenProps extends AppStackScreenProps<"Me"> {}
 
@@ -22,6 +22,14 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   // Content should not add its own top inset; header already accounts for it
   const contentInsets = useSafeAreaInsetsStyle([])
   const { themed } = useAppTheme()
+  const { width } = useWindowDimensions()
+
+  // Calculate card width and container width for centering
+  // Use a consistent gap value
+  const gap = 10
+  const horizontalPadding = 32
+  const cardWidth = (width - horizontalPadding - gap) / 2
+  const containerWidth = 2 * cardWidth + gap
 
   // State for badge visibility (updates when screen is focused)
   const [shouldShowBadge, setShouldShowBadge] = useState(() => BadgeManager.shouldShowBadge())
@@ -51,30 +59,35 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           toggleDrawer: () => void
         }) => (
           <RNScrollView style={[themedDrawer($container), contentInsets]}>
-            <Quote />
-            <RNScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={themed($buttonsWrapper)}
-            >
-              <CircularButton
+            <MoodGraph />
+            <View style={[themed($buttonsWrapper), { width: containerWidth, gap }]}>
+              <ActionCard
+                onPress={() => navigate("MoodLogs", undefined)}
+                icon={SmileyIcon}
+                label="Mood logs"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("JournalLogs", undefined)}
+                icon={BookOpenIcon}
+                label="Journal entries"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("MessageIntoTheVoid", undefined)}
+                icon={PaperPlaneTiltIcon}
+                label="Send to the Void"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
                 onPress={() => navigate("MyStuff", undefined)}
                 icon={TrophyIcon}
                 label="My Stuff"
                 badge={shouldShowBadge}
+                style={{ width: cardWidth, maxWidth: cardWidth }}
               />
-              <CircularButton
-                onPress={() => navigate("MoodLogs", undefined)}
-                icon={SmileyIcon}
-                label="Moods"
-              />
-              <CircularButton
-                onPress={() => navigate("JournalLogs", undefined)}
-                icon={BookOpenIcon}
-                label="Journal"
-              />
-            </RNScrollView>
-            <MoodGraph />
+            </View>
+            <Quote />
             <View style={themed($bottomSpacing)} />
           </RNScrollView>
         )}
@@ -89,11 +102,11 @@ const $container: ViewStyle = {
 
 const $buttonsWrapper: ViewStyle = {
   flexDirection: "row",
-  alignItems: "center",
+  flexWrap: "wrap",
+  alignItems: "stretch",
   marginTop: 62,
   marginBottom: 34,
-  paddingHorizontal: 16,
-  gap: 24,
+  alignSelf: "center",
 }
 
 const $bottomSpacing: ThemedStyle<ViewStyle> = ({ spacing }) => ({

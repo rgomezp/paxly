@@ -19,13 +19,12 @@ export interface CircularButtonProps {
   badgeColor?: string
 }
 
-export const CircularButton: FC<CircularButtonProps> = ({
+export const ActionCard: FC<CircularButtonProps> = ({
   onPress,
   icon,
   label,
-  iconSize = 20,
+  iconSize = 28,
   iconColor,
-  backgroundColor,
   labelColor,
   style,
   badge,
@@ -35,22 +34,20 @@ export const CircularButton: FC<CircularButtonProps> = ({
 
   const $buttonContainer: ViewStyle = {
     position: "relative",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 12,
-    backgroundColor: backgroundColor || "transparent",
     borderWidth: 1,
     borderColor: theme.colors.border,
-    minHeight: 48,
   }
 
   const $iconContainer: ViewStyle = {
-    marginRight: 12,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
+    marginBottom: 12,
   }
 
   const $badge: ViewStyle = {
@@ -76,7 +73,8 @@ export const CircularButton: FC<CircularButtonProps> = ({
   const $buttonLabel: TextStyle = {
     fontSize: 14,
     fontWeight: "600",
-    color: labelColor || theme.colors.text,
+    color: labelColor || theme.colors.tint,
+    textAlign: "left",
   }
 
   const showBadge = badge !== undefined && badge !== false && badge !== null
@@ -91,7 +89,7 @@ export const CircularButton: FC<CircularButtonProps> = ({
           size={iconSize}
         />
       </View>
-      <Text style={themed($buttonLabel)}>{label}</Text>
+      <Text style={themed($buttonLabel)}>{label} →</Text>
       {showBadge && (
         <View style={$badge}>
           {badgeValue && (
