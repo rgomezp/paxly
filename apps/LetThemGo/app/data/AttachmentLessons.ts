@@ -26,7 +26,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
           "Describe one pattern (Be specific: What do you do when you feel insecure? Examples: 'I text repeatedly when they don't respond,' 'I withdraw and shut down,' 'I need constant reassurance')",
       },
     ],
-    commitment: { text: "Identify 2 behaviors" },
+    commitment: { text: "Finish" },
   },
   d10_protest_behaviors: {
     id: "d10_protest_behaviors",
@@ -61,7 +61,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
         body: "Practice: When you feel the urge to protest (act out, withdraw, create drama), pause and ask: 'What do I actually need right now?' Then name it directly, even if just to yourself first.",
       },
     ],
-    commitment: { text: "Replace 1 protest behavior" },
+    commitment: { text: "Finish" },
   },
   d11_parts_intro: {
     id: "d11_parts_intro",
@@ -84,7 +84,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
           "What each part wants you to know (Each part has a positive intention, even if its methods are problematic. What is each part trying to protect you from? What does it want for you?)",
       },
     ],
-    commitment: { text: "Name 2 parts" },
+    commitment: { text: "Finish" },
   },
   d12_secure_actions: {
     id: "d12_secure_actions",
@@ -105,7 +105,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "2 secure actions" },
+    commitment: { text: "Finish" },
   },
   attachment_needs_inventory: {
     id: "attachment_needs_inventory",
@@ -128,7 +128,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
           "Ways to meet these needs yourself (Secure attachment means you can meet some needs yourself. How can you self-soothe, self-validate, or create safety for yourself? This reduces dependency on others)",
       },
     ],
-    commitment: { text: "Meet 1 need" },
+    commitment: { text: "Finish" },
   },
   attachment_anxious_patterns: {
     id: "attachment_anxious_patterns",
@@ -262,7 +262,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
       },
     ],
     commitment: {
-      text: "Name activation 3×",
+      text: "Finish",
       duration: "today",
     },
     checkIn: { mood: true, urge: true },
@@ -300,7 +300,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
         body: "You don't have to become completely dependent. Secure attachment means you CAN rely on yourself AND you CAN rely on others. Both are available to you.",
       },
     ],
-    commitment: { text: "Ask for help" },
+    commitment: { text: "Finish" },
   },
   attachment_secure_practices: {
     id: "attachment_secure_practices",
@@ -321,7 +321,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "2 secure behaviors" },
+    commitment: { text: "Finish" },
   },
   attachment_internal_working_model: {
     id: "attachment_internal_working_model",
@@ -344,7 +344,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
           "New, healthier beliefs (What would you like to believe instead? Make them believable, not just positive. Examples: 'Love can be consistent AND people are human,' 'I can express needs AND respect boundaries')",
       },
     ],
-    commitment: { text: "1 new belief" },
+    commitment: { text: "Finish" },
   },
   dating_attachment_awareness: {
     id: "dating_attachment_awareness",
@@ -367,6 +367,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
           "How will you adjust? (What will you do differently? Examples: 'I'll wait 24 hours before responding to texts,' 'I'll ask directly instead of hinting,' 'I'll notice deactivation and stay present')",
       },
     ],
-    commitment: { text: "Stay aware" },
+    commitment: { text: "Finish" },
   },
 }

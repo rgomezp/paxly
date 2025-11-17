@@ -32,7 +32,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
           "Guardrails you'll keep (What boundaries will you maintain? Examples: 'No sex for first 3 dates,' 'Max 2 dates per week,' 'I'll debrief after each date,' 'I'll check in with myself about my attachment patterns.' These protect you from rushing into something unhealthy)",
       },
     ],
-    commitment: { text: "Wait or proceed" },
+    commitment: { text: "Finish" },
   },
   w7_pace_plan: {
     id: "w7_pace_plan",
@@ -53,7 +53,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Set reminders" },
+    commitment: { text: "Finish" },
   },
   w7_first_3_dates: {
     id: "w7_first_3_dates",
@@ -84,7 +84,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
         body: "These guardrails aren't about being cold or guarded. They're about gathering real information before your attachment system gets activated. Slow and steady wins the race to healthy connection.",
       },
     ],
-    commitment: { text: "Debrief after" },
+    commitment: { text: "Finish" },
   },
   w8_debrief_template: {
     id: "w8_debrief_template",
@@ -115,7 +115,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
           "Do I want a next date? Why? (Base this on YOUR experience, not their interest level. If you're unsure, that's information. You don't need to say yes just because they asked)",
       },
     ],
-    commitment: { text: "Fill after date" },
+    commitment: { text: "Finish" },
   },
   w8_values_alignment: {
     id: "w8_values_alignment",
@@ -138,7 +138,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
           "Signals of alignment/misalignment (What are you looking for? Examples of alignment: They show respect, they're consistent, they share similar priorities. Examples of misalignment: They dismiss your values, they show contempt, they prioritize things that conflict with yours. Notice patterns, not just words)",
       },
     ],
-    commitment: { text: "Ask 2 questions" },
+    commitment: { text: "Finish" },
   },
   dating_red_flags_early: {
     id: "dating_red_flags_early",
@@ -169,7 +169,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
         body: "Red flags don't mean they're a bad person—they mean they're not right for you, or not ready for a healthy relationship. Either way, that's enough reason to step back.",
       },
     ],
-    commitment: { text: "Know your deal-breakers" },
+    commitment: { text: "Finish" },
   },
   dating_self_worth: {
     id: "dating_self_worth",
@@ -192,7 +192,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
           "Reminders for when dating gets hard (What will you tell yourself when rejection happens? When someone ghosts? When you feel insecure? Examples: 'My worth isn't determined by their response,' 'Rejection is redirection,' 'I'm worthy of someone who sees my value')",
       },
     ],
-    commitment: { text: "Remember worth" },
+    commitment: { text: "Finish" },
   },
   dating_communication_skills: {
     id: "dating_communication_skills",
@@ -215,7 +215,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
           "How will you practice active listening? (Active listening means hearing what they're actually saying, not just waiting for your turn to talk. It means asking clarifying questions, reflecting back what you heard, and being present. This builds connection and prevents misunderstandings)",
       },
     ],
-    commitment: { text: "Practice healthy communication" },
+    commitment: { text: "Finish" },
   },
   dating_self_care_plan: {
     id: "dating_self_care_plan",
@@ -236,7 +236,7 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Self-care daily" },
+    commitment: { text: "Finish" },
   },
   dating_boundaries_expectations: {
     id: "dating_boundaries_expectations",
@@ -271,6 +271,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
           "How will I communicate these boundaries? (Practice clear, direct communication. Example: 'I need to take things slow,' 'I value consistency in communication,' 'I'm not comfortable with that.' You don't need to explain why—just state what you need)",
       },
     ],
-    commitment: { text: "Set 1 boundary" },
+    commitment: { text: "Finish" },
   },
 }

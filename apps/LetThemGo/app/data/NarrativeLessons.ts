@@ -31,7 +31,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
           "What it means now - How are you making sense of this? What's the story you're telling yourself? This can evolve—what does it mean right now? (Not forever, just now)",
       },
     ],
-    commitment: { text: "Write 1 paragraph today" },
+    commitment: { text: "Finish" },
   },
   d20_self_forgiveness: {
     id: "d20_self_forgiveness",
@@ -62,7 +62,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
         body: "This doesn't mean you don't take responsibility. It means you take responsibility AND you offer yourself compassion. Both are possible. Both are necessary for healing.",
       },
     ],
-    commitment: { text: "I forgive myself" },
+    commitment: { text: "Finish" },
   },
   d20_grief_permissions: {
     id: "d20_grief_permissions",
@@ -93,7 +93,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
         body: "Grief is love with nowhere to go. It's proof you cared. Let yourself feel it. It won't last forever, but trying to suppress it will make it last longer.",
       },
     ],
-    commitment: { text: "Grant yourself 1 permission" },
+    commitment: { text: "Finish" },
   },
   d21_closure_ritual: {
     id: "d21_closure_ritual",
@@ -114,7 +114,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "20-min ritual" },
+    commitment: { text: "Finish" },
   },
   d21_keep_the_good: {
     id: "d21_keep_the_good",
@@ -143,7 +143,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
           "One lesson (What's one key lesson you're taking from this? This helps you extract meaning without romanticizing the pain)",
       },
     ],
-    commitment: { text: "Log 3 learnings" },
+    commitment: { text: "Finish" },
   },
   narrative_rewrite_story: {
     id: "narrative_rewrite_story",
@@ -166,7 +166,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
           "A more balanced, accurate story (What's a more nuanced version? One that holds complexity—there were good parts AND problems, you both contributed AND it wasn't all your fault, it was meaningful AND it's over. Make it believable, not just positive)",
       },
     ],
-    commitment: { text: "Tell new story" },
+    commitment: { text: "Finish" },
   },
   narrative_acceptance_practice: {
     id: "narrative_acceptance_practice",
@@ -202,7 +202,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
         prompt: "I can practice acceptance when I'm resisting reality",
       },
     ],
-    commitment: { text: "Accept daily" },
+    commitment: { text: "Finish" },
   },
   narrative_meaning_making: {
     id: "narrative_meaning_making",
@@ -225,7 +225,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
           "How did you grow? (What skills did you develop? What did you discover about yourself? What are you proud of yourself for? This acknowledges your resilience without minimizing the pain)",
       },
     ],
-    commitment: { text: "Acknowledge" },
+    commitment: { text: "Finish" },
   },
   narrative_let_go_ritual: {
     id: "narrative_let_go_ritual",
@@ -246,7 +246,7 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Complete ritual" },
+    commitment: { text: "Finish" },
   },
   narrative_future_vision: {
     id: "narrative_future_vision",
@@ -269,6 +269,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
           "First steps toward that vision (What are small, concrete actions you can take? Examples: 'Reconnect with friends,' 'Start that hobby,' 'Focus on career,' 'Travel somewhere new.' Make them specific and achievable)",
       },
     ],
-    commitment: { text: "1 step today" },
+    commitment: { text: "Finish" },
   },
 }

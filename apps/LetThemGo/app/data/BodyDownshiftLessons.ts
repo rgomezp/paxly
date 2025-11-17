@@ -40,7 +40,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       },
     ],
     haptics: true,
-    commitment: { text: "2 rounds" },
+    commitment: { text: "Finish" },
   },
   d4_cold_option: {
     id: "d4_cold_option",
@@ -71,7 +71,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Keep a clean bowl or cold pack ready. When panic hits, you want tools immediately available, not something you have to search for.",
       },
     ],
-    commitment: { text: "Pick 1 option" },
+    commitment: { text: "Finish" },
   },
   d4_shake_reset: {
     id: "d4_shake_reset",
@@ -198,9 +198,10 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Rate your physical tension now on a scale of 0-10. Compare it to before the shaking. Even a one-point drop is significant—that's trapped energy that left your system.",
       },
       {
-        t: "textInput",
+        t: "slider",
         prompt: "Tension level now? (0-10)",
-        placeholder: "e.g., '4 (was 7 before)'",
+        min: 0,
+        max: 10,
       },
 
       // BREATH INTEGRATION
@@ -242,7 +243,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     ],
     haptics: true,
     commitment: {
-      text: "Shake after big emotions",
+      text: "Finish",
       duration: "week",
     },
   },
@@ -298,13 +299,10 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Let's practice right now. First, check in: How strong is your urge to contact them at this moment?",
       },
       {
-        t: "check",
-        prompt: "Rate your current urge: 0 (none) to 10 (overwhelming)",
-      },
-      {
-        t: "textInput",
-        prompt: "What number? (0-10)",
-        placeholder: "e.g., 7",
+        t: "slider",
+        prompt: "Rate your current urge:",
+        min: 0,
+        max: 10,
       },
 
       // SOMATIC AWARENESS
@@ -326,9 +324,9 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // QUALITY EXPLORATION
       {
         t: "instruction",
-        body: "Now describe the quality. Not the story ('I miss them'), but the physical sensation. Is it:\n\n• Hot or cold?\n• Sharp or dull?\n• Tight or loose?\n• Moving or still?\n• Heavy or light?",
+        body: "Now describe the quality. Not the story ('I miss them'), but the physical sensation.\n\nIs it:\n\n• Hot or cold?\n• Sharp or dull?\n• Tight or loose?\n• Moving or still?\n• Heavy or light?",
       },
-      { t: "timer", seconds: 45, label: "Observe the quality" },
+      { t: "timer", seconds: 15, label: "Observe the quality" },
 
       // THE SURF
       {
@@ -351,13 +349,10 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "You did it. You stayed with an uncomfortable feeling for 90 seconds without acting on it. That's the skill.",
       },
       {
-        t: "check",
+        t: "slider",
         prompt: "Check in: Rate your urge now (0-10)",
-      },
-      {
-        t: "textInput",
-        prompt: "What number now?",
-        placeholder: "e.g., 5",
+        min: 0,
+        max: 10,
       },
       {
         t: "instruction",
@@ -378,7 +373,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "Every time you surf an urge successfully, you're building:\n• Distress tolerance\n• Emotional regulation\n• Self-trust\n• Evidence that you can handle discomfort",
+        body: "Every time you surf an urge successfully, you're building:\n\n• Distress tolerance\n• Emotional regulation\n• Self-trust\n• Evidence that you can handle discomfort",
       },
       {
         t: "instruction",
@@ -397,7 +392,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     ],
     haptics: true,
     commitment: {
-      text: "Surf >6/10",
+      text: "Finish",
       duration: "week",
     },
     checkIn: { urge: true },
@@ -624,7 +619,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     ],
     haptics: true,
     commitment: {
-      text: "Daily 3-point scan",
+      text: "Finish",
       duration: "week",
     },
   },
@@ -674,7 +669,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Use this when you feel physically tense or before sleep. It's particularly helpful for releasing the tension you didn't realize you were holding.",
       },
     ],
-    commitment: { text: "Practice muscle relaxation" },
+    commitment: { text: "Finish" },
   },
   body_walking_meditation: {
     id: "body_walking_meditation",
@@ -711,7 +706,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "This is particularly helpful when you're ruminating or feeling restless. Movement + awareness = grounding. Use it anytime you need to shift out of your head and into your body.",
       },
     ],
-    commitment: { text: "5-min walk" },
+    commitment: { text: "Finish" },
   },
   body_grounding_techniques: {
     id: "body_grounding_techniques",
@@ -742,7 +737,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Practice 2-3 methods regularly so they become automatic. When panic hits, you want tools you can access without thinking. Muscle memory matters.",
       },
     ],
-    commitment: { text: "2 methods" },
+    commitment: { text: "Finish" },
   },
   body_breath_variations: {
     id: "body_breath_variations",
@@ -788,7 +783,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Use your preferred pattern when you need regulation. Having options gives you flexibility—use box breathing for steady calm, 4-7-8 when you need stronger downregulation.",
       },
     ],
-    commitment: { text: "Use pattern 3×" },
+    commitment: { text: "Finish" },
   },
   body_tension_release: {
     id: "body_tension_release",
@@ -827,6 +822,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
         body: "Use this sequence when you feel physically tense, after long periods of sitting, or when stress is building in your body. It's a quick reset that your body understands.",
       },
     ],
-    commitment: { text: "Do sequence" },
+    commitment: { text: "Finish" },
   },
 }

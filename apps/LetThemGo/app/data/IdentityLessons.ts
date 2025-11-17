@@ -31,7 +31,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "Roles gained (What new roles or identities are emerging? Examples: 'single person,' 'independent,' 'someone who's healing,' 'more self-reliant')",
       },
     ],
-    commitment: { text: "Schedule 1 activity" },
+    commitment: { text: "Finish" },
   },
   d16_values_sort: {
     id: "d16_values_sort",
@@ -54,7 +54,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "One value-aligned action today (What's one small thing you can do today that aligns with one of your top values? This reconnects you with yourself)",
       },
     ],
-    commitment: { text: "Take 1 value-aligned action" },
+    commitment: { text: "Finish" },
   },
   d17_morning_ritual: {
     id: "d17_morning_ritual",
@@ -75,7 +75,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Try morning ritual" },
+    commitment: { text: "Finish" },
   },
   d18_friend_reconnect: {
     id: "d18_friend_reconnect",
@@ -98,7 +98,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "Draft your message (Keep it simple and authentic. Example: 'Hey, been thinking about you. Would love to catch up if you're open to it.' No need to explain the breakup unless you want to)",
       },
     ],
-    commitment: { text: "Send 1 text" },
+    commitment: { text: "Finish" },
   },
   d18_future_self_note: {
     id: "d18_future_self_note",
@@ -115,7 +115,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "Write to yourself 30 days from now (What do you want to tell your future self? What are you proud of yourself for right now? What do you hope for? This exercise builds hope and agency—you're actively shaping your future)",
       },
     ],
-    commitment: { text: "Schedule delivery" },
+    commitment: { text: "Finish" },
   },
   identity_strengths_inventory: {
     id: "identity_strengths_inventory",
@@ -138,7 +138,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "Examples of when you used them (When have you demonstrated these strengths? This reminds you: you have resources. You've handled difficult things before. You're capable)",
       },
     ],
-    commitment: { text: "Use 1 strength" },
+    commitment: { text: "Finish" },
   },
   identity_hobbies_reconnect: {
     id: "identity_hobbies_reconnect",
@@ -161,7 +161,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "New hobbies to try (What have you always wanted to try? What sounds interesting? Trying new things builds identity and confidence. You're discovering who you are now)",
       },
     ],
-    commitment: { text: "Try 1 hobby" },
+    commitment: { text: "Finish" },
   },
   identity_self_compassion: {
     id: "identity_self_compassion",
@@ -198,7 +198,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
         prompt: "I can practice self-compassion when I'm struggling",
       },
     ],
-    commitment: { text: "Self-compassion" },
+    commitment: { text: "Finish" },
   },
   identity_goals_setting: {
     id: "identity_goals_setting",
@@ -221,7 +221,7 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
           "Long-term goals (this year) - What do you want for yourself in the next year? These can be bigger, more aspirational. Examples: 'Travel somewhere new,' 'Learn a new skill,' 'Build a stronger social circle'",
       },
     ],
-    commitment: { text: "1 step forward" },
+    commitment: { text: "Finish" },
   },
   identity_autonomy_practice: {
     id: "identity_autonomy_practice",
@@ -252,6 +252,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
         body: "Each independent decision strengthens your sense of self. You're rebuilding trust in yourself and your ability to navigate life on your own terms.",
       },
     ],
-    commitment: { text: "3 decisions" },
+    commitment: { text: "Finish" },
   },
 }

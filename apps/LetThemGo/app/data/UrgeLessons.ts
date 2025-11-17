@@ -24,7 +24,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       { t: "instruction", body: "Let's wait 90 seconds to let the urge pass." },
       { t: "timer", seconds: 90, label: "Urge peaks then falls" },
     ],
-    commitment: { text: "Run timer >6/10" },
+    commitment: { text: "Finish" },
   },
   urge_grounding_54321: {
     id: "urge_grounding_54321",
@@ -50,7 +50,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         body: "Notice how the urge feels now. It's still there, but you're present with it.",
       },
     ],
-    commitment: { text: "Use when >5/10" },
+    commitment: { text: "Finish" },
   },
   urge_breath_box: {
     id: "urge_breath_box",
@@ -69,7 +69,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       { t: "instruction", body: "Notice any shift in the urge. It may feel less urgent." },
       { t: "instruction", body: "Remember: this feeling will pass. You've got this." },
     ],
-    commitment: { text: "3 rounds daily" },
+    commitment: { text: "Finish" },
   },
   urge_reminder_why: {
     id: "urge_reminder_why",
@@ -96,7 +96,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         body: "What you're feeling right now is valid. And you don't need to act on it.",
       },
     ],
-    commitment: { text: "Read when hits" },
+    commitment: { text: "Finish" },
   },
   urge_distraction_redirect: {
     id: "urge_distraction_redirect",
@@ -120,7 +120,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         prompt: "Name one way you feel different after redirecting.",
       },
     ],
-    commitment: { text: "Redirect" },
+    commitment: { text: "Finish" },
   },
   urge_body_scan: {
     id: "urge_body_scan",
@@ -142,7 +142,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       { t: "breath", pattern: "physiological", rounds: 3 },
       { t: "instruction", body: "You're observing the urge, not being controlled by it." },
     ],
-    commitment: { text: "Body awareness" },
+    commitment: { text: "Finish" },
   },
   urge_cognitive_reframe: {
     id: "urge_cognitive_reframe",
@@ -169,7 +169,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         body: "Right now, choose yourself. Choose the person you're becoming.",
       },
     ],
-    commitment: { text: "Reframe" },
+    commitment: { text: "Finish" },
   },
   urge_unsent_letter: {
     id: "urge_unsent_letter",
@@ -187,7 +187,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         minWords: 50,
       },
     ],
-    commitment: { text: "Write only" },
+    commitment: { text: "Finish" },
   },
   urge_commitment_renewal: {
     id: "urge_commitment_renewal",
@@ -213,7 +213,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       { t: "timer", seconds: 60, label: "Breathe and commit" },
     ],
-    commitment: { text: "Renew" },
+    commitment: { text: "Finish" },
   },
   urge_quick_reset: {
     id: "urge_quick_reset",
@@ -230,7 +230,7 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       { t: "instruction", body: "The urge is intense, but temporary. You can wait." },
       { t: "timer", seconds: 30, label: "Wait" },
     ],
-    commitment: { text: "Use when urgent" },
+    commitment: { text: "Finish" },
   },
 }
 

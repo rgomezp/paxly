@@ -56,7 +56,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
         prompt: "I'll use the worry window technique when ruminations intrude",
       },
     ],
-    commitment: { text: "Stick to window" },
+    commitment: { text: "Finish" },
   },
   d7_thought_traps: {
     id: "d7_thought_traps",
@@ -173,7 +173,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
       },
     ],
     commitment: {
-      text: "Name 3 traps",
+      text: "Finish",
       duration: "today",
     },
   },
@@ -249,7 +249,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
           "One action now (What's one small thing you can do that aligns with the balanced thought?)",
       },
     ],
-    commitment: { text: "Say aloud 3×" },
+    commitment: { text: "Finish" },
   },
   d8_catastrophe_ladder: {
     id: "d8_catastrophe_ladder",
@@ -278,7 +278,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
           "How I'd cope (Even if the worst happened, what would you do? What resources do you have? This builds confidence that you can handle difficulty)",
       },
     ],
-    commitment: { text: "Work through 1 fear" },
+    commitment: { text: "Finish" },
   },
   cognitive_evidence_check: {
     id: "cognitive_evidence_check",
@@ -312,7 +312,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
           "More balanced thought (Based on the evidence, what's a more accurate, nuanced perspective?)",
       },
     ],
-    commitment: { text: "Check 2 thoughts" },
+    commitment: { text: "Finish" },
   },
   cognitive_perspective_shift: {
     id: "cognitive_perspective_shift",
@@ -340,7 +340,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
           "How I'll see it in 6 months (Project forward. With time and distance, how might you view this differently? What will matter then?)",
       },
     ],
-    commitment: { text: "Perspective shift" },
+    commitment: { text: "Finish" },
   },
   cognitive_black_white_thinking: {
     id: "cognitive_black_white_thinking",
@@ -375,7 +375,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
         body: "Use the word 'AND' instead of 'BUT.' 'I'm hurting AND I'm healing.' 'This is hard AND I can handle it.' This holds complexity without dismissing either side.",
       },
     ],
-    commitment: { text: "Catch 3 thoughts" },
+    commitment: { text: "Finish" },
   },
   cognitive_should_statements: {
     id: "cognitive_should_statements",
@@ -398,7 +398,7 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
           "Replace with kinder alternatives (Turn 'should' into 'I wish' or 'I prefer.' Example: 'I wish I were further along, AND I'm doing my best.' This creates space for reality without harsh judgment)",
       },
     ],
-    commitment: { text: "Replace 2 shoulds" },
+    commitment: { text: "Finish" },
   },
   cognitive_restructuring_practice: {
     id: "cognitive_restructuring_practice",
@@ -449,6 +449,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
           "How would you feel with the alternative thought? (If you believed the balanced thought instead, how would your emotions shift?)",
       },
     ],
-    commitment: { text: "Restructure 2 thoughts" },
+    commitment: { text: "Finish" },
   },
 }

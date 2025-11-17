@@ -170,7 +170,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     ],
     haptics: true,
     commitment: {
-      text: "30 days no checking",
+      text: "Finish",
       duration: "week",
     },
   },
@@ -322,7 +322,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     ],
     haptics: true,
     commitment: {
-      text: "Plan for 3 trigger dates",
+      text: "Finish",
       duration: "week",
     },
   },
@@ -354,7 +354,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
           "Sober soothers list (What can you do instead? Examples: cold water on face, breath work, call a friend, go for a walk, listen to music, journal, take a shower. These regulate your nervous system without suppressing it. Have 3-5 options ready)",
       },
     ],
-    commitment: { text: "Choose 2" },
+    commitment: { text: "Finish" },
   },
   spec_coworker_ex: {
     id: "spec_coworker_ex",
@@ -375,7 +375,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Share plan" },
+    commitment: { text: "Finish" },
   },
   spec_shared_custody: {
     id: "spec_shared_custody",
@@ -396,7 +396,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Follow rules" },
+    commitment: { text: "Finish" },
   },
   spec_long_distance: {
     id: "spec_long_distance",
@@ -419,7 +419,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
           "How will you handle them? (What boundaries will you set? Examples: Block on all platforms, delete shared digital spaces, create new routines that don't involve waiting for their messages, focus on local connections. What will work for your situation?)",
       },
     ],
-    commitment: { text: "Implement" },
+    commitment: { text: "Finish" },
   },
   spec_mutual_friends: {
     id: "spec_mutual_friends",
@@ -609,7 +609,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     ],
     haptics: true,
     commitment: {
-      text: "Set friend boundaries",
+      text: "Finish",
       duration: "week",
     },
   },
@@ -632,7 +632,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Separate finances" },
+    commitment: { text: "Finish" },
   },
   spec_abuse_safety: {
     id: "spec_abuse_safety",
@@ -653,7 +653,7 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Stay safe" },
+    commitment: { text: "Finish" },
   },
   spec_high_conflict_breakup: {
     id: "spec_high_conflict_breakup",
@@ -689,6 +689,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Stay safe" },
+    commitment: { text: "Finish" },
   },
 }

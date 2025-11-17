@@ -43,7 +43,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
         prompt: "I can use movement to shift my mood when I'm down",
       },
     ],
-    commitment: { text: "10-min walk" },
+    commitment: { text: "Finish" },
   },
   w5_mastery_calendar: {
     id: "w5_mastery_calendar",
@@ -63,7 +63,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Add 2 goals" },
+    commitment: { text: "Finish" },
   },
   w5_social_micro: {
     id: "w5_social_micro",
@@ -84,7 +84,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Schedule 1" },
+    commitment: { text: "Finish" },
   },
   w6_novelty_dose: {
     id: "w6_novelty_dose",
@@ -111,7 +111,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
         body: "Novelty also helps break the association between your daily routines and your ex. When you change your route, you're not just getting dopamine—you're creating new neural pathways that aren't linked to them.",
       },
     ],
-    commitment: { text: "Try 1 new thing", duration: "week" },
+    commitment: { text: "Finish", duration: "week" },
   },
   w6_gratitude_real: {
     id: "w6_gratitude_real",
@@ -128,7 +128,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
           "3 small grains of good (Not 'I'm grateful for everything'—that's toxic positivity. Find 3 tiny, specific things: 'The sun felt warm on my face,' 'My coffee tasted good,' 'I finished one task.' This grounds you in reality without dismissing your pain)",
       },
     ],
-    commitment: { text: "Write 3 small positives" },
+    commitment: { text: "Finish" },
   },
   joy_micro_joys: {
     id: "joy_micro_joys",
@@ -151,7 +151,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
           "How can you savor these moments? (Savoring means intentionally extending positive experiences. How can you notice and appreciate these micro-joys more? This trains your brain to register positive moments)",
       },
     ],
-    commitment: { text: "Notice 3 joys" },
+    commitment: { text: "Finish" },
   },
   joy_competence_building: {
     id: "joy_competence_building",
@@ -172,7 +172,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "2 small wins" },
+    commitment: { text: "Finish" },
   },
   joy_play_exploration: {
     id: "joy_play_exploration",
@@ -195,7 +195,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
           "When will you do one? (Schedule it like an appointment. Play doesn't happen spontaneously when you're depressed—you need to plan it)",
       },
     ],
-    commitment: { text: "1 playful thing" },
+    commitment: { text: "Finish" },
   },
   joy_achievement_tracking: {
     id: "joy_achievement_tracking",
@@ -218,7 +218,7 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
           "How will you celebrate? (Celebration doesn't need to be big. It can be: 'I'll acknowledge this achievement,' 'I'll treat myself to something small,' 'I'll tell someone about it.' Celebration reinforces your progress)",
       },
     ],
-    commitment: { text: "Celebrate" },
+    commitment: { text: "Finish" },
   },
   joy_flow_activities: {
     id: "joy_flow_activities",
@@ -249,6 +249,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
         body: "You might not feel like doing flow activities right now. That's normal. But if you can push through the initial resistance and start, flow often follows. The activity creates the motivation, not the other way around.",
       },
     ],
-    commitment: { text: "1 flow activity" },
+    commitment: { text: "Finish" },
   },
 }

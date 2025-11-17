@@ -36,7 +36,7 @@ export const MINI_INTERVENTIONS_LESSONS: Record<string, ILessonConfig> = {
       { t: "breath", pattern: "physiological", rounds: 3 },
       { t: "timer", seconds: 60, label: "Settle and notice the shift" },
     ],
-    commitment: { text: "Open NC dashboard" },
+    commitment: { text: "Finish" },
   },
   mini_text_buddy: {
     id: "mini_text_buddy",
@@ -56,7 +56,7 @@ export const MINI_INTERVENTIONS_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Pin buddy" },
+    commitment: { text: "Finish" },
   },
   mini_public_wave: {
     id: "mini_public_wave",
@@ -88,7 +88,7 @@ export const MINI_INTERVENTIONS_LESSONS: Record<string, ILessonConfig> = {
         body: "You're okay. Emotional waves pass. You handled this. When you're ready, you can return or leave—your choice.",
       },
     ],
-    commitment: { text: "Restroom reset" },
+    commitment: { text: "Finish" },
   },
   mini_sleep_rescue: {
     id: "mini_sleep_rescue",
@@ -116,6 +116,6 @@ export const MINI_INTERVENTIONS_LESSONS: Record<string, ILessonConfig> = {
         body: "If you're still awake after this, that's okay. Your nervous system has shifted. You can try again or just rest—resting is still restorative even if you're not sleeping.",
       },
     ],
-    commitment: { text: "Start if awake" },
+    commitment: { text: "Finish" },
   },
 }

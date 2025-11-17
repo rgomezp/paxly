@@ -149,8 +149,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
       },
     ],
     commitment: {
-      text: "7 days NC",
-      duration: "week",
+      text: "Finish",
     },
   },
   d13_block_filters: {
@@ -214,7 +213,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
           "What I'm choosing next (How will you move forward? What are you committing to? This is where you take your power back)",
       },
     ],
-    commitment: { text: "Archive letter" },
+    commitment: { text: "Finish" },
   },
   d15_trigger_map: {
     id: "d15_trigger_map",
@@ -237,7 +236,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
           "One change to move a trigger out of sight (What's one concrete thing you can change? Examples: Change your route, delete an app, avoid a certain time/place)",
       },
     ],
-    commitment: { text: "Move 1 trigger" },
+    commitment: { text: "Finish" },
   },
   d15_relapse_plan: {
     id: "d15_relapse_plan",
@@ -475,7 +474,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
         body: "You have a plan. You understand what happens. You know how to respond. This is harm reduction, not perfection. You've got this.",
       },
     ],
-    commitment: { text: "Save plan" },
+    commitment: { text: "Finish" },
   },
   nc_urge_plan: {
     id: "nc_urge_plan",
@@ -496,7 +495,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Practice plan" },
+    commitment: { text: "Finish" },
   },
   nc_digital_cleanup: {
     id: "nc_digital_cleanup",
@@ -517,7 +516,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Digital cleanup" },
+    commitment: { text: "Finish" },
   },
   nc_physical_cleanup: {
     id: "nc_physical_cleanup",
@@ -538,7 +537,7 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Box items" },
+    commitment: { text: "Finish" },
   },
   nc_boundary_communication: {
     id: "nc_boundary_communication",
@@ -561,6 +560,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
           "How will you communicate it? (Keep it brief, clear, and firm. No explanations or justifications needed. Example: 'I need space to heal. Please don't contact me.' You don't owe them a long explanation)",
       },
     ],
-    commitment: { text: "Practice boundary" },
+    commitment: { text: "Finish" },
   },
 }

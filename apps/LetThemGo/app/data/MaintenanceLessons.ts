@@ -31,7 +31,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "One adjustment (Based on your wins and risks, what's one small change you'll make? Examples: 'I'll add a morning routine,' 'I'll check in with support weekly,' 'I'll practice one skill daily')",
       },
     ],
-    commitment: { text: "Adjust plan" },
+    commitment: { text: "Finish" },
   },
   m_maint_60: {
     id: "m_maint_60",
@@ -54,7 +54,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "Upgrade one habit by 10% (Small improvements compound. Examples: 'I'll add 2 more minutes to my morning routine,' 'I'll practice one additional skill,' 'I'll check in with support twice a week instead of once.' Tiny upgrades prevent stagnation)",
       },
     ],
-    commitment: { text: "Upgrade 1 habit" },
+    commitment: { text: "Finish" },
   },
   m_maint_90: {
     id: "m_maint_90",
@@ -71,7 +71,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "Write your 90-day letter (What do you want to tell yourself in 90 days? What are you proud of yourself for? What do you hope for? What encouragement do you need? This builds hope and agency—you're actively shaping your future)",
       },
     ],
-    commitment: { text: "Schedule letter" },
+    commitment: { text: "Finish" },
   },
   m_craving_protocol: {
     id: "m_craving_protocol",
@@ -98,7 +98,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
         body: "The goal isn't to never have cravings—that's unrealistic. The goal is to have a plan when they hit. Each time you use the protocol successfully, you're strengthening new neural pathways.",
       },
     ],
-    commitment: { text: "Pin to SOS" },
+    commitment: { text: "Finish" },
   },
   m_relapse_review: {
     id: "m_relapse_review",
@@ -127,7 +127,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "One change for next time (Based on what happened, what's one small adjustment? Examples: 'I'll check in with support before that situation,' 'I'll use my craving protocol earlier,' 'I'll avoid that trigger')",
       },
     ],
-    commitment: { text: "One change" },
+    commitment: { text: "Finish" },
   },
   m_habit_tracking: {
     id: "m_habit_tracking",
@@ -150,7 +150,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "How's your progress? (Be honest: Are you consistent? Are some habits easier than others? What's working? What needs adjustment? Progress isn't linear—notice patterns without judgment)",
       },
     ],
-    commitment: { text: "Track habits" },
+    commitment: { text: "Finish" },
   },
   m_trigger_awareness: {
     id: "m_trigger_awareness",
@@ -173,7 +173,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "How are you responding? (What are you doing when triggers hit? Are you using your skills? Are you reaching out? Are you noticing patterns? This helps you see your growth and identify areas for improvement)",
       },
     ],
-    commitment: { text: "Stay aware" },
+    commitment: { text: "Finish" },
   },
   m_support_maintenance: {
     id: "m_support_maintenance",
@@ -194,7 +194,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Maintain support" },
+    commitment: { text: "Finish" },
   },
   m_celebration_milestones: {
     id: "m_celebration_milestones",
@@ -217,7 +217,7 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
           "How will you celebrate? (Celebration reinforces progress. It can be small: 'I'll acknowledge this to myself,' 'I'll tell someone,' 'I'll treat myself to something.' The act of celebrating matters more than the size)",
       },
     ],
-    commitment: { text: "Celebrate wins" },
+    commitment: { text: "Finish" },
   },
   m_ongoing_self_care: {
     id: "m_ongoing_self_care",
@@ -238,6 +238,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Self-care daily" },
+    commitment: { text: "Finish" },
   },
 }

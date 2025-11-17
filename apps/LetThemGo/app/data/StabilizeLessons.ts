@@ -37,7 +37,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         body: "When panic hits, say: 'This is my nervous system responding to loss. It's intense, and it will pass. I have tools.'",
       },
     ],
-    commitment: { text: "Add 3 contacts", duration: "today" },
+    commitment: { text: "Finish" },
     checkIn: { mood: true, urge: true },
     gating: { minHoursBeforeNext: 12 },
   },
@@ -46,7 +46,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Name 5 Things",
     goal: "Interrupt spirals with sensory grounding",
-    estMinutes: 15,
+    estMinutes: 8,
     format: "practice",
     steps: [
       {
@@ -141,39 +141,80 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         body: "Remember: The goal isn't to eliminate panic—it's to create enough regulation that you can make conscious choices rather than reactive ones.",
       },
     ],
-    commitment: { text: "Use 5-4-3-2-1" },
+    commitment: { text: "Finish" },
   },
   d1_sleep_triage: {
     id: "d1_sleep_triage",
     moduleId: "stabilize",
-    title: "Sleep Triage Tonight",
-    goal: "Set up a same-day sleep rescue",
-    estMinutes: 4,
-    format: "builder",
-    sections: [
+    title: "The Power of Sleep",
+    goal: "Understand how sleep accelerates heartbreak healing",
+    estMinutes: 8,
+    format: "card",
+    cards: [
       {
-        title:
-          "Environment: Signal safety to your nervous system (Your body needs darkness to produce melatonin—blue light from phones suppresses this)",
-        items: [
-          { label: "Dim lights 2h before bed", kind: "check" },
-          { label: "Phone charges outside bedroom", kind: "check" },
-        ],
-        minRequired: 1,
+        type: "text",
+        body: "Right now, your brain is working overtime processing loss. Every thought about your ex, every wave of panic, every moment of grief—your nervous system is trying to make sense of it all.",
       },
       {
-        title:
-          "Routine: Create predictability (The goal isn't perfect sleep—it's slightly better sleep. Even 20% improvement helps your nervous system reset)",
-        items: [
-          { label: "Set target lights-out", kind: "datetime" },
-          {
-            label: "Choose a wind-down activity",
-            kind: "picker",
-            options: ["read", "shower", "stretch", "audio"],
-          },
+        type: "text",
+        body: "Sleep isn't just rest. During deep sleep, your brain performs critical repair work: consolidating memories, clearing metabolic waste, and regulating emotional circuits. This is when healing actually happens.",
+      },
+      {
+        type: "text",
+        body: "Research shows that sleep deprivation after emotional trauma makes recovery significantly harder. Without adequate sleep, your amygdala (fear center) becomes hyperactive, your prefrontal cortex (rational thinking) weakens, and emotional regulation becomes nearly impossible.",
+      },
+      {
+        type: "tip",
+        body: "Key insight: Sleep is when your brain processes and integrates the breakup. It's not avoiding the pain—it's actively working through it at a neurological level.",
+      },
+      {
+        type: "text",
+        body: "During REM sleep, your brain replays emotional experiences and weakens their intensity. This is why you might wake up feeling slightly different—your brain has been doing the work of emotional processing while you slept.",
+      },
+      {
+        type: "text",
+        body: "When you're sleep-deprived, cortisol stays elevated, making you more reactive, more anxious, and more likely to reach out to your ex. Good sleep lowers cortisol and increases your capacity to handle difficult emotions.",
+      },
+      {
+        type: "qa",
+        question: "How has your sleep been since the breakup?",
+        options: [
+          "Completely disrupted",
+          "Trouble falling/staying asleep",
+          "Sleeping but not rested",
+          "Relatively normal",
         ],
+      },
+      {
+        type: "text",
+        body: "Sleep also supports neuroplasticity—your brain's ability to form new neural pathways. Every night you sleep well, you're literally rewiring your brain away from the attachment patterns that keep you stuck.",
+      },
+      {
+        type: "text",
+        body: "Your immune system needs sleep to function properly. Heartbreak creates physical stress, and without sleep, your body can't repair itself. This is why you might feel physically exhausted even when you're not doing much.",
+      },
+      {
+        type: "tip",
+        body: "The goal isn't perfect sleep—it's slightly better sleep. Even 20% improvement helps your nervous system reset. One good night can shift your entire next day.",
+      },
+      {
+        type: "text",
+        body: "Here's what helps: Create a dark, cool environment (your body needs darkness to produce melatonin). Charge your phone outside the bedroom (blue light suppresses sleep hormones). Set a consistent wind-down routine (read, shower, stretch, or listen to calming audio).",
+      },
+      {
+        type: "text",
+        body: "If your mind races at night, try this: Before bed, write down your racing thoughts on paper. This signals to your brain that you've captured them, so it doesn't need to keep replaying them. Your brain can let go because it knows the thoughts are stored.",
+      },
+      {
+        type: "text",
+        body: "Remember: Sleep is not a luxury during heartbreak—it's essential medicine. Every hour of quality sleep is an investment in your recovery. Your future self will thank you for prioritizing rest.",
+      },
+      {
+        type: "tip",
+        body: "Tonight, commit to one sleep improvement: dim lights 2 hours before bed, charge your phone outside the bedroom, or set a wind-down routine. Small changes compound into real healing.",
       },
     ],
-    commitment: { text: "Lights out" },
+    commitment: { text: "Finish" },
   },
   d2_panic_edu: {
     id: "d2_panic_edu",
@@ -246,7 +287,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         body: "Progress looks like: Shorter panic waves. Faster recovery. More moments of clarity. Not the absence of pain, but increased capacity to be with it.",
       },
     ],
-    commitment: { text: "Label alarm 3×", duration: "today" },
+    commitment: { text: "Finish" },
     checkIn: { mood: true, urge: true },
   },
   d2_crisis_plan: {
@@ -259,23 +300,23 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     sections: [
       {
         title:
-          "Contacts: People who can anchor you (Research shows that social support is one of the strongest predictors of recovery. Have these ready before crisis hits)",
+          "Name the people who can anchor you when a crisis hits (research shows that social support is one of the strongest predictors of recovery)",
         items: [
-          { label: "Add primary support", kind: "contact", source: "phonebook" },
-          { label: "Add backup support", kind: "contact", source: "phonebook" },
+          { label: "Add primary support", kind: "shortText" },
+          { label: "Add secondary support", kind: "shortText" },
+          { label: "Add backup support", kind: "shortText" },
         ],
-        minRequired: 1,
       },
       {
-        title:
-          "First Aid: Immediate regulation tools (These activate your parasympathetic nervous system—your body's brake pedal. Use them when panic feels overwhelming)",
+        title: "What do these people mean to you (in 2-3 sentences)?",
         items: [
-          { label: "3-minute breath reset", kind: "check" },
-          { label: "Step outside / cold water", kind: "check" },
+          { label: "Primary support meaning", kind: "shortText" },
+          { label: "Secondary support meaning", kind: "shortText" },
+          { label: "Backup support meaning", kind: "shortText" },
         ],
       },
     ],
-    commitment: { text: "Pin SOS" },
+    commitment: { text: "Finish" },
   },
   d3_contact_risk_scan: {
     id: "d3_contact_risk_scan",
@@ -289,48 +330,42 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         name: "understanding",
         kind: "longText",
         label:
-          "First, let's understand why contact feels so urgent. Your brain treats your ex like a drug—literally. What specific feeling does contact promise to fix? (loneliness, anxiety, emptiness, fear?)",
-        minWords: 15,
+          "First, let's understand why contact feels so urgent. Your brain treats your ex like a drug—literally.\n\nWhat specific feeling does contact promise to fix? (loneliness, anxiety, emptiness, fear?)",
       },
       {
         name: "physical_cues",
         kind: "longText",
         label:
-          "What physical sensations arise right before you want to reach out? (chest tightness, stomach drop, skin crawling, restlessness?)",
-        minWords: 10,
+          "What physical sensations arise right before you want to reach out? (chest tightness, stomach drop, skin crawling, restlessness?)\n\nName them.",
       },
       {
         name: "triggers",
         kind: "longText",
         label:
           "What are your top 3 contact triggers? Be specific: certain times (late night, Sunday mornings)? Places (your apartment, their neighborhood)? States (after drinking, when lonely)?",
-        minWords: 20,
       },
       {
         name: "routes",
         kind: "longText",
         label:
           "How do you typically initiate contact? List all routes: direct text, Instagram story views, 'accidental' calls, mutual friends, checking their Spotify?",
-        minWords: 15,
       },
       {
         name: "justifications",
         kind: "longText",
         label:
           "What stories does your brain tell to justify contact? ('Just to check they're okay,' 'For closure,' 'To return their things,' 'They might have changed')",
-        minWords: 15,
       },
       {
         name: "aftermath",
         kind: "longText",
         label:
-          "What typically happens AFTER you make contact? How do you feel 2 hours later? 24 hours later? (Be honest about the crash)",
-        minWords: 20,
+          "What typically happens AFTER you make contact? How do you feel 2 hours later? 24 hours later? (Be honest)",
       },
       {
         name: "risk",
         kind: "slider",
-        label: "Current contact urge intensity (0 = no urge, 10 = overwhelming)",
+        label: "Current contact urge intensity",
         min: 0,
         max: 10,
       },
@@ -342,7 +377,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         minWords: 15,
       },
     ],
-    commitment: { text: "Remove 3 cues" },
+    commitment: { text: "Finish" },
   },
   d3_meal_anchor: {
     id: "d3_meal_anchor",
@@ -354,16 +389,27 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     sections: [
       {
         title:
-          "Today's anchors: Protein + carb combos stabilize blood sugar (When your blood sugar crashes, your nervous system interprets it as more stress. Regular meals prevent this cascade)",
+          "Did you know:\n\nWhen your blood sugar crashes, your nervous system interprets it as more stress. Regular meals can prevent this cascade.\n\nToday's anchors:\n\nProtein + carb combos stabilize blood sugar.\n\nTake a second to think about how you've been eating lately.",
         items: [
-          { label: "Breakfast protein+carb", kind: "check" },
-          { label: "Lunch protein+carb", kind: "check" },
-          { label: "Dinner protein+carb", kind: "check" },
+          { label: "I've been eating regularly", kind: "check" },
+          { label: "I could be doing better", kind: "check" },
         ],
-        minRequired: 2,
+      },
+      {
+        title: "What have you eaten today?",
+        items: [
+          { label: "Breakfast", kind: "shortText" },
+          { label: "Lunch", kind: "shortText" },
+          { label: "Dinner", kind: "shortText" },
+        ],
+      },
+      {
+        title:
+          "Commit to one dietary improvement tomorrow:\n\n(Protein + carb combos are the best way to stabilize blood sugar)",
+        items: [{ label: "e.g: eat a protein + carb combo for breakfast", kind: "shortText" }],
       },
     ],
-    commitment: { text: "Eat 3 anchors", duration: "today" },
+    commitment: { text: "Finish" },
   },
   d3_support_ping: {
     id: "d3_support_ping",
@@ -376,17 +422,15 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       {
         name: "recipient",
         kind: "shortText",
-        label:
-          "Who will you text? (Choose someone safe—not the ex, not someone who will minimize your pain)",
+        label: "Who is someone you can text right now if you need support? Name them.",
       },
       {
         name: "message",
         kind: "longText",
-        label:
-          "Draft your message (Keep it simple: 'Having a hard day. Could use some support.' You can use this verbatim)",
+        label: "Draft your message. Even if you don't send it, it's helpful to have it ready.",
       },
     ],
-    commitment: { text: "Send text" },
+    commitment: { text: "Finish" },
   },
   stabilize_breath_anchor: {
     id: "stabilize_breath_anchor",
@@ -414,7 +458,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "timer",
-        seconds: 45,
+        seconds: 20,
         label: "Simply observe your natural breath pattern",
       },
       {
@@ -433,7 +477,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       { t: "breath", pattern: "physiological", rounds: 3 },
       {
         t: "timer",
-        seconds: 30,
+        seconds: 15,
         label: "Notice any shifts in your body",
       },
       {
@@ -468,27 +512,91 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         body: "Each time you practice, you're strengthening vagal tone—your nervous system's resilience. Think of it like building a muscle. Consistent practice creates lasting change.",
       },
     ],
-    commitment: { text: "Use anchor 3×" },
+    commitment: { text: "Finish" },
   },
   d11_soothe_kit: {
     id: "d11_soothe_kit",
     moduleId: "stabilize",
     title: "Self-Soothe Kit",
     goal: "Build secure self-soothing options",
-    estMinutes: 3,
+    estMinutes: 10,
     format: "builder",
     sections: [
       {
         title:
-          "Kit Items: Tools for regulation (Self-soothing uses your five senses to signal safety. When you're activated, sensory input can help ground you in the present moment)",
+          "Understanding self-soothing:\n\nWhen you're activated, your nervous system is stuck in threat mode. Self-soothing uses sensory input to signal safety. Each sense can ground you in the present moment and help regulate your system",
+        items: [{ label: "I understand how self-soothing works", kind: "check" }],
+      },
+      {
+        title:
+          "1. Sight: visual anchors that calm you.\n\nWhat do you see that brings comfort? Photos, nature, art, colors, textures, or specific objects",
         items: [
-          { label: "Breath tool", kind: "check" },
-          { label: "Soothing scent", kind: "check" },
-          { label: "Comfort object", kind: "check" },
+          { label: "Visual anchor 1", kind: "shortText", inputId: "sight_1" },
+          { label: "Visual anchor 2", kind: "shortText", inputId: "sight_2" },
+          { label: "Visual anchor 3", kind: "shortText", inputId: "sight_3" },
         ],
         minRequired: 2,
       },
+      {
+        title:
+          "2. Sound: auditory tools for regulation.\n\nSounds can shift your nervous system state. Music, nature sounds, white noise, guided meditations, or even silence",
+        items: [
+          { label: "Soothing sound 1", kind: "shortText", inputId: "sound_1" },
+          { label: "Soothing sound 2", kind: "shortText", inputId: "sound_2" },
+          { label: "Soothing sound 3", kind: "shortText", inputId: "sound_3" },
+        ],
+        minRequired: 2,
+      },
+      {
+        title:
+          "3. Touch: physical comfort and grounding.\n\nTexture, temperature, pressure, and movement can regulate your system. Weighted blankets, soft fabrics, warm baths, holding objects, or gentle movement",
+        items: [
+          { label: "Touch tool 1", kind: "shortText", inputId: "touch_1" },
+          { label: "Touch tool 2", kind: "shortText", inputId: "touch_2" },
+          { label: "Touch tool 3", kind: "shortText", inputId: "touch_3" },
+        ],
+        minRequired: 2,
+      },
+      {
+        title:
+          "4. Smell: scent as a regulation tool.\n\nScents directly access your limbic system. Essential oils, candles, fresh air, coffee, familiar scents, or comforting aromas",
+        items: [
+          { label: "Soothing scent 1", kind: "shortText", inputId: "smell_1" },
+          { label: "Soothing scent 2", kind: "shortText", inputId: "smell_2" },
+        ],
+        minRequired: 1,
+      },
+      {
+        title:
+          "5. Taste: comforting flavors.\n\nTaste can anchor you in the present. Warm tea, comforting foods, mints, or flavors that bring calm",
+        items: [
+          { label: "Comforting taste 1", kind: "shortText", inputId: "taste_1" },
+          { label: "Comforting taste 2", kind: "shortText", inputId: "taste_2" },
+        ],
+        minRequired: 1,
+      },
+      {
+        title:
+          "6. Breath: your built-in regulation tool.\n\nYour breath is always available. Which breathing pattern works best for you?",
+        items: [
+          { label: "Physiological sigh (2 inhales, 1 long exhale)", kind: "check" },
+          { label: "Box breathing (4-4-4-4)", kind: "check" },
+          { label: "4-7-8 breathing", kind: "check" },
+          { label: "Other breathing pattern", kind: "shortText", inputId: "breath_other" },
+        ],
+        minRequired: 1,
+      },
+      {
+        title:
+          "Make it accessible: Where will you keep reminders? (Your tools are only useful if you remember them. Where can you place reminders?)",
+        items: [
+          { label: "Phone note/reminder", kind: "check" },
+          { label: "Physical reminder at home", kind: "check" },
+          { label: "Set a daily check-in", kind: "check" },
+        ],
+        minRequired: 1,
+      },
     ],
-    commitment: { text: "Place kit items" },
+    commitment: { text: "Finish" },
   },
 }

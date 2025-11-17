@@ -25,7 +25,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
           "Nice-to-haves (What would you prefer but can live without? Examples: shared hobbies, similar values, good communication. These are preferences, not requirements. Knowing the difference protects you from settling)",
       },
     ],
-    commitment: { text: "Mark your top 3" },
+    commitment: { text: "Finish" },
   },
   w4_red_green_flags: {
     id: "w4_red_green_flags",
@@ -56,7 +56,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
         body: "Create your own flag list based on your values and experiences. What behaviors feel safe to you? What behaviors feel unsafe? This becomes your early warning system.",
       },
     ],
-    commitment: { text: "Save flag list" },
+    commitment: { text: "Finish" },
   },
   w5_boundary_scripts: {
     id: "w5_boundary_scripts",
@@ -80,7 +80,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
         options: ["text", "call", "in person"],
       },
     ],
-    commitment: { text: "Rehearse once" },
+    commitment: { text: "Finish" },
   },
   w5_items_exchange: {
     id: "w5_items_exchange",
@@ -101,7 +101,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 2,
       },
     ],
-    commitment: { text: "Confirm details" },
+    commitment: { text: "Finish" },
   },
   w5_coparent_mode: {
     id: "w5_coparent_mode",
@@ -124,7 +124,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
           "BIFF message (Brief, Informative, Friendly, Firm) - Brief: Keep it short. Informative: Just the facts. Friendly: Neutral, not hostile. Firm: Clear about what you need. Example: 'I can drop off the items Tuesday at 3pm at the coffee shop. Let me know if that works.'",
       },
     ],
-    commitment: { text: "Use BIFF" },
+    commitment: { text: "Finish" },
   },
   boundaries_assertiveness_practice: {
     id: "boundaries_assertiveness_practice",
@@ -147,7 +147,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
           "How you'll assert your boundary (Write exactly what you'll say. Keep it brief and clear. Example: 'I can't do that.' 'I need you to stop.' 'That doesn't work for me.' No need to explain or justify)",
       },
     ],
-    commitment: { text: "Be assertive" },
+    commitment: { text: "Finish" },
   },
   boundaries_emotional_boundaries: {
     id: "boundaries_emotional_boundaries",
@@ -178,7 +178,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
         body: "After a breakup, you might feel responsible for their feelings. You're not. Their emotions are their responsibility, just as yours are yours.",
       },
     ],
-    commitment: { text: "Set 1 boundary" },
+    commitment: { text: "Finish" },
   },
   boundaries_time_boundaries: {
     id: "boundaries_time_boundaries",
@@ -198,7 +198,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
         minRequired: 1,
       },
     ],
-    commitment: { text: "Protect time" },
+    commitment: { text: "Finish" },
   },
   boundaries_physical_boundaries: {
     id: "boundaries_physical_boundaries",
@@ -221,7 +221,7 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
           "How will you communicate them? (Be clear and direct. Example: 'I need space. Please don't come to my home unannounced.' You don't need to explain why—just state what you need)",
       },
     ],
-    commitment: { text: "Respect boundaries" },
+    commitment: { text: "Finish" },
   },
   boundaries_self_respect: {
     id: "boundaries_self_respect",
@@ -252,6 +252,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
         body: "After a breakup, boundaries protect your healing. They create space for you to recover without being pulled back into old patterns. This is one of the most important acts of self-respect you can practice.",
       },
     ],
-    commitment: { text: "Self-respect" },
+    commitment: { text: "Finish" },
   },
 }
