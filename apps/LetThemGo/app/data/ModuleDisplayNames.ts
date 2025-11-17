@@ -31,26 +31,42 @@ export const MODULE_DISPLAY_NAMES: Record<ModuleId, string> = {
  */
 export const MODULE_ORDER: ModuleId[] = [
   // Phase 1: Crisis Management (Days 1-7)
+  "no_contact", // Critical early - establish safety
   "stabilize", // Immediate crisis intervention
   "body_downshift", // Physical regulation
   "cognitive_aid", // Mental/thought management
 
-  // Phase 2: Safety & Boundaries (Week 1-2)
-  "no_contact", // Critical early - establish safety
-
-  // Phase 3: Understanding (Week 2-4)
+  // Phase 2: Understanding (Week 2-4)
   "attachment", // Understanding attachment patterns
   "identity", // Rebuilding sense of self
 
-  // Phase 4: Rebuilding (Month 2-3)
+  // Phase 3: Rebuilding (Month 2-3)
   "narrative", // Reframing the story
   "boundaries", // Setting healthy boundaries
 
-  // Phase 5: Growth (Month 3+)
+  // Phase 4: Growth (Month 3+)
   "joy_competence", // Finding joy and rebuilding competence
   "dating_ready", // Only when ready
 
-  // Phase 6: Ongoing Support
+  // Phase 5: Ongoing Support
   "maintenance", // Ongoing work
+
+  // Not part of any phase for daily lesson selection, but a module
   "special_cases", // Specific situations
 ]
+
+// used for daily lesson selection
+export const MODULE_PHASES: Record<Exclude<ModuleId, "special_cases">, number> = {
+  no_contact: 1,
+  stabilize: 1,
+  body_downshift: 1,
+  cognitive_aid: 1,
+  attachment: 2,
+  identity: 2,
+  narrative: 3,
+  boundaries: 3,
+  joy_competence: 4,
+  dating_ready: 4,
+  maintenance: 5,
+  mini_interventions: 5,
+}

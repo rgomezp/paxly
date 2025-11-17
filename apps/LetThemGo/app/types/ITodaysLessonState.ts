@@ -3,7 +3,8 @@ export interface ITodaysLessonState {
   dateKey: string
   lessonId: string | null
   lastIndex?: number // Deprecated: kept for backward compatibility
-  // Round-robin module selection state
-  moduleIndex?: number // Current module index in the round-robin
+  // Phase-based round-robin module selection state
+  currentPhase?: number // Current phase (1-5)
+  moduleIndex?: number // Current module index within the current phase
   moduleLessonIndices?: Record<string, number> // Tracks lesson index within each module
 }

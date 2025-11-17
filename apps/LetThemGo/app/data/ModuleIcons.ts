@@ -35,4 +35,3 @@ export const MODULE_ICONS: Record<ModuleId, ComponentType<IconProps>> = {
   mini_interventions: LightningIcon,
   special_cases: QuestionMarkIcon,
 }
-

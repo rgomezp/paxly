@@ -9,6 +9,14 @@ export interface PracticeLessonConfig extends BaseLessonConfig {
     | { t: "audio"; asset: string }
     | { t: "check"; prompt: string } // Checkbox/confirmation step
     | { t: "textInput"; prompt: string; placeholder?: string; inputId?: string } // Text input step
+    | {
+        t: "slider"
+        prompt: string
+        min?: number
+        max?: number
+        defaultValue?: number
+        inputId?: string
+      } // Slider step
   >
   autoAdvance?: boolean // default true
   haptics?: boolean // default true
