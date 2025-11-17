@@ -79,6 +79,7 @@ const $dropletBtn: ViewStyle = {
   borderRadius: 16,
   alignItems: "center",
   justifyContent: "center",
+  zIndex: 10,
 }
 
 const $dropletEmoji: TextStyle = {

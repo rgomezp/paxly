@@ -14,7 +14,6 @@ import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
 import { Audio } from "expo-av"
-import { MessageIntoTheVoidSection } from "@/components/MessageIntoTheVoidSection"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
@@ -133,7 +132,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
           />
         </View>
         <DailyTasksTimeline refreshToken={refreshTrigger} />
-        <MessageIntoTheVoidSection />
         <NatureSoundsSection />
       </ScrollView>
       <HelpModal

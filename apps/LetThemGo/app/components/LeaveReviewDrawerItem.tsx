@@ -26,7 +26,7 @@ export const LeaveReviewDrawerItem: FC<LeaveReviewDrawerItemProps> = ({
     try {
       // First, attempt to show native review prompt
       const reviewShown = await StoreReviewManager.requestReview(true)
-      
+
       if (!reviewShown) {
         // If native review cannot be shown, fallback to opening App Store page
         const config = Constants?.expoConfig?.extra

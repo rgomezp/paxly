@@ -23,49 +23,48 @@ type JournalLogItem = {
   text: string
 }
 
-export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(
-  function JournalLogsScreen() {
-    const insets = useSafeAreaInsets()
-    const { theme, themed } = useAppTheme()
-    const { journalStore } = useStores()
+export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(function JournalLogsScreen() {
+  const insets = useSafeAreaInsets()
+  const { theme, themed } = useAppTheme()
+  const { journalStore } = useStores()
 
-    const entries: JournalLogItem[] = useMemo(
-      () =>
-        journalStore.sortedEntries.map((item, idx) => ({
-          id: `journal-item-${item.date}-${idx}`,
-          date: item.date,
-          text: item.text,
-        })),
-      [journalStore.sortedEntries],
+  const entries: JournalLogItem[] = useMemo(
+    () =>
+      journalStore.sortedEntries.map((item, idx) => ({
+        id: `journal-item-${item.date}-${idx}`,
+        date: item.date,
+        text: item.text,
+      })),
+    [journalStore.sortedEntries],
+  )
+
+  const renderItem = ({ item }: { item: JournalLogItem }) => {
+    const preview =
+      item.text.length > PREVIEW_CHAR_LIMIT
+        ? item.text.slice(0, PREVIEW_CHAR_LIMIT) + "…"
+        : item.text
+
+    return (
+      <View>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigate("JournalReader", { date: item.date })}
+          style={themed($row)}
+        >
+          <View style={[themed($iconBox), { backgroundColor: theme.colors.card }]}>
+            <ThemedFontAwesome5Icon name="fire" color={theme.colors.text} size={18} solid />
+          </View>
+          <View style={$rowContent}>
+            <Text style={themed([$entryText, { color: theme.colors.text }])}>{preview}</Text>
+            <Text style={themed([$timeText, { color: theme.colors.textDim }])}>
+              {formatRelativeTime(item.date)}
+            </Text>
+          </View>
+        </Pressable>
+        <View style={[themed($divider), { backgroundColor: theme.colors.separator }]} />
+      </View>
     )
-
-    const renderItem = ({ item }: { item: JournalLogItem }) => {
-      const preview =
-        item.text.length > PREVIEW_CHAR_LIMIT
-          ? item.text.slice(0, PREVIEW_CHAR_LIMIT) + "…"
-          : item.text
-
-      return (
-        <View>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => navigate("JournalReader", { date: item.date })}
-            style={themed($row)}
-          >
-            <View style={[themed($iconBox), { backgroundColor: theme.colors.card }]}>
-              <ThemedFontAwesome5Icon name="fire" color={theme.colors.text} size={18} solid />
-            </View>
-            <View style={$rowContent}>
-              <Text style={themed([$entryText, { color: theme.colors.text }])}>{preview}</Text>
-              <Text style={themed([$timeText, { color: theme.colors.textDim }])}>
-                {formatRelativeTime(item.date)}
-              </Text>
-            </View>
-          </Pressable>
-          <View style={[themed($divider), { backgroundColor: theme.colors.separator }]} />
-        </View>
-      )
-    }
+  }
 
   const renderHeader = () => (
     <View style={themed($headerContainer)}>
@@ -94,8 +93,7 @@ export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(
       )}
     </View>
   )
-  },
-)
+})
 
 const $container: ThemedStyle<ViewStyle> = (theme) => ({
   flex: 1,
@@ -171,4 +169,3 @@ function formatRelativeTime(timestamp: number): string {
   const weeks = Math.floor(days / 7)
   return weeks === 1 ? "a week ago" : `${weeks} weeks ago`
 }
-

@@ -101,11 +101,6 @@ const $title: ThemedStyle<TextStyle> = (theme) => ({
   marginBottom: 8,
 })
 
-const $subtitle: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.colors.textDim,
-  fontSize: 14,
-})
-
 const $scrollContent: ViewStyle = {
   paddingHorizontal: 20,
   paddingBottom: 32,

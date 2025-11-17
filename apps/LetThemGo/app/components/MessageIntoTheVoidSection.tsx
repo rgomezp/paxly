@@ -12,7 +12,7 @@ export const MessageIntoTheVoidSection: FC = function MessageIntoTheVoidSection(
     <>
       <View style={themed($messageSectionHeader)}>
         <Text
-          text="Message Into the Void"
+          text="Send to the Void"
           preset="subheading"
           style={themed({ color: theme.colors.text })}
         />

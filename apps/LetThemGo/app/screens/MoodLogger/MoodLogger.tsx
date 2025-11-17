@@ -197,7 +197,11 @@ function EmojiTile(props: {
 }) {
   const { emoji, label, selected, onPress, themeBackground, themeText } = props
   return (
-    <TouchableOpacity onPress={onPress} style={[$tile, { backgroundColor: themeBackground }]}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={1}
+      style={[$tile, { backgroundColor: themeBackground }]}
+    >
       <RNText style={$emojiText}>{emoji}</RNText>
       <Text
         weight="bold"
