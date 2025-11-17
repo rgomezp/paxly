@@ -19,7 +19,6 @@ import { contactTemptationSituationsSlide } from "../slideLibrary/contactTemptat
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
-import { loadingSlide } from "../slideLibrary/loadingSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
@@ -79,8 +78,6 @@ export const useSlides = (onSelection?: () => void) => {
 
       // Commitment/Consistency - Getting user commitments
       nicknameSlide({ onSelection, refreshNickname }), // Commitment (name)
-      mascotNameSlide({ onSelection }), // Commitment (mascot name)
-      mascotIntroSlide({ onSelection }), // Liking (personalized interaction)
 
       // Data collection slides
       lastContactSlide({ onSelection }),
@@ -93,14 +90,16 @@ export const useSlides = (onSelection?: () => void) => {
       contactTemptationSituationsSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
 
+      mascotNameSlide({ onSelection }), // Commitment (mascot name)
+      mascotIntroSlide({ onSelection }), // Liking (personalized interaction)
+      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
+
       // Setup slides
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
-      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 
       // Final slides
       referralSourceSlide({ onSelection }),
-      loadingSlide({ onSelection }),
     ],
     [onSelection],
   )
