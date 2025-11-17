@@ -81,7 +81,6 @@ export const useSlides = (onSelection?: () => void) => {
       nicknameSlide({ onSelection, refreshNickname }), // Commitment (name)
       mascotNameSlide({ onSelection }), // Commitment (mascot name)
       mascotIntroSlide({ onSelection }), // Liking (personalized interaction)
-      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 
       // Data collection slides
       lastContactSlide({ onSelection }),
@@ -97,6 +96,7 @@ export const useSlides = (onSelection?: () => void) => {
       // Setup slides
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
+      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 
       // Final slides
       referralSourceSlide({ onSelection }),
