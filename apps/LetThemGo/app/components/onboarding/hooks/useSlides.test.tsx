@@ -7,7 +7,7 @@ import path from "path"
  * (order or length), the ONBOARDING_VERSION constant must be updated.
  *
  * Expected slide order and IDs - update this when slides change:
- * Last updated for ONBOARDING_VERSION: 1.1
+ * Last updated for ONBOARDING_VERSION: 1.2
  */
 const EXPECTED_SLIDE_IDS = [
   "wowMoment",

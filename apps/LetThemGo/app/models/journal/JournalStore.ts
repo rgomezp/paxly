@@ -20,7 +20,13 @@ export const JournalStoreModel = types
   .actions((self) => ({
     loadFromGanon() {
       const items = (ganon.get("journalEntries") ?? []) as IJournalEntry[]
-      self.entries.replace(items)
+      // Ensure prompt is explicitly undefined if missing, to match the model type
+      const mappedItems = items.map((item) => ({
+        text: item.text,
+        date: item.date,
+        prompt: item.prompt ?? undefined,
+      }))
+      self.entries.replace(mappedItems)
     },
     clearAll() {
       self.entries.replace([])
