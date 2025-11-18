@@ -67,6 +67,7 @@ export const ensureRevenueCatConfigured = async (): Promise<void> => {
     try {
       // Check if RevenueCat is already configured
       if (await Purchases.isConfigured()) {
+        Log.info("RevenueCat is already configured")
         configState.isConfigured = true
         configState.lastError = null
         configState.pendingPromise = null
