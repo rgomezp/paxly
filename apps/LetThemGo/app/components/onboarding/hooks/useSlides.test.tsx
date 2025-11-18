@@ -30,6 +30,7 @@ const EXPECTED_SLIDE_IDS = [
   "moodTrackingIntro",
   "moodReminderFrequency",
   "referralSource",
+  "freeToTry",
 ]
 
 describe("useSlides - ONBOARDING_VERSION consistency", () => {
@@ -76,6 +77,7 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       moodTrackingIntroSlide: "moodTrackingIntro",
       moodReminderFrequencySlide: "moodReminderFrequency",
       referralSourceSlide: "referralSource",
+      freeToTrySlide: "freeToTry",
     }
 
     // Convert function names to slide IDs
