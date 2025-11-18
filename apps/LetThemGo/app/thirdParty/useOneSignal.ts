@@ -43,7 +43,7 @@ const useOneSignal = (): boolean => {
           }
 
           if (ganon.get("finishedOnboarding") === true) {
-            OneSignal.User.addAlias("onboarding_status", "completed")
+            OneSignal.User.addTag("onboarding_status", "completed")
           }
         } catch (error) {
           Log.error(JSON.stringify(error))
