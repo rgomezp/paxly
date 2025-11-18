@@ -51,7 +51,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     if (!isLoggedIn) {
       OneSignal.User.addTag("onboard_no_login", "1")
     }
-    OneSignal.User.addTag("onboard_email_opt_in", emailOptIn ? "1" : "0")
+
+    OneSignal.User.addTag("onboarding_status", "completed")
 
     ganon.set("finishedOnboarding", true)
 
