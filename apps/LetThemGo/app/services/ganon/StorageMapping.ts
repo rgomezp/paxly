@@ -51,6 +51,7 @@ interface StorageMapping {
   onboardCompleted: boolean
   referralData: IReferralData
   entitlementId: string | null
+  trialStatus: "started" | "lapsed" | null
   premiumOverride: boolean
   reviewBackoff: IReviewBackoffData
   passedAppCheck: boolean

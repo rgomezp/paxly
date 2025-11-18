@@ -15,10 +15,12 @@ import { useEffect, useRef, useState } from "react"
 import { View, StyleSheet, SafeAreaView } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
 import Purchases from "react-native-purchases"
+import { OneSignal } from "react-native-onesignal"
 import Log from "../../utils/Log"
 import AnalyticsManager from "../../managers/AnalyticsManager"
 import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { ganon } from "@/services/ganon/ganon"
 
 interface OnboardingHardPaywallProps {
   onComplete: () => void
@@ -112,6 +114,26 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     onCancel()
   }
 
+  const handlePurchaseCompleted = () => {
+    Log.info("OnboardingHardPaywall: Purchase completed")
+
+    // Check if this is a trial offering and tag the user
+    if (offering?.identifier === "trial_offering") {
+      try {
+        OneSignal.User.addTag("trial_status", "started")
+        ganon.set("trialStatus", "started")
+        Log.info("OnboardingHardPaywall: Tagged user with trial_status: started")
+        AnalyticsManager.getInstance().logEvent("trial_started", {
+          offering_id: offering.identifier,
+        })
+      } catch (error) {
+        Log.error(`OnboardingHardPaywall: Error adding trial_status tag: ${error}`)
+      }
+    }
+
+    onComplete()
+  }
+
   // Set up a listener for purchase state changes
   useEffect(() => {
     const checkPurchaseStatus = async () => {
@@ -189,7 +211,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
             onRestoreCompleted={handleRestoreCompleted}
             onDismiss={() => handleCancel("dismiss")}
             onPurchaseCancelled={() => handleCancel("purchase_cancelled")}
-            onPurchaseCompleted={onComplete}
+            onPurchaseCompleted={handlePurchaseCompleted}
           />
         </SafeAreaView>
       </View>

@@ -65,6 +65,19 @@ export function useEntitlements(): EntitlementsHook {
           OneSignal.User.removeTag("entitlementId")
         }
 
+        // Check trial status and update to lapsed if user no longer has entitlements
+        const trialStatus = ganon.get("trialStatus")
+        const hasActiveEntitlements = Object.keys(active).length > 0
+        if (trialStatus === "started" && !hasActiveEntitlements) {
+          try {
+            OneSignal.User.addTag("trial_status", "lapsed")
+            ganon.set("trialStatus", "lapsed")
+            Log.info("useEntitlements: Updated trial_status to lapsed")
+          } catch (error) {
+            Log.error(`useEntitlements: Error updating trial_status to lapsed: ${error}`)
+          }
+        }
+
         // Wait for referral check to complete
         await referralPromise
 
@@ -154,6 +167,19 @@ export function useEntitlements(): EntitlementsHook {
         )
         setActiveEntitlements(active)
         setEntitlements(purchaserInfo.entitlements.all)
+
+        // Check trial status and update to lapsed if user no longer has entitlements
+        const trialStatus = ganon.get("trialStatus")
+        const hasActiveEntitlements = Object.keys(active).length > 0
+        if (trialStatus === "started" && !hasActiveEntitlements) {
+          try {
+            OneSignal.User.addTag("trial_status", "lapsed")
+            ganon.set("trialStatus", "lapsed")
+            Log.info("useEntitlements: Updated trial_status to lapsed (via listener)")
+          } catch (error) {
+            Log.error(`useEntitlements: Error updating trial_status to lapsed: ${error}`)
+          }
+        }
 
         // Also refresh referral unlocks when entitlements update
         checkReferralUnlocks()
