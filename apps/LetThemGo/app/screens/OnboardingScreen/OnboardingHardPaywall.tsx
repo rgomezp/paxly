@@ -21,10 +21,20 @@ import AnalyticsManager from "../../managers/AnalyticsManager"
 import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ganon } from "@/services/ganon/ganon"
+import { AgeRanges } from "@/types/AgeRange"
 
 interface OnboardingHardPaywallProps {
   onComplete: () => void
   onCancel: () => void
+}
+
+const AGE_TO_PLACEMENT_ID = {
+  [AgeRanges.SEVENTEEN_OR_UNDER]: "onboarding_placement_young",
+  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "onboarding_placement",
+  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "onboarding_placement",
+  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "onboarding_placement_old",
+  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "onboarding_placement_old",
+  [AgeRanges.FIFTY_SIX_PLUS]: "onboarding_placement_old",
 }
 
 const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplete, onCancel }) => {
@@ -38,19 +48,22 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
   useEffect(() => {
     const fetchPlacementOffering = async () => {
       try {
+        const ageRange = ganon.get("ageRange") as AgeRanges | null
+        const placementId = (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) ?? "onboarding_placement"
+
         // Ensure RevenueCat is configured before proceeding
         await ensureRevenueCatConfigured()
 
         // Get the current offering for the onboarding placement (for A/B testing)
-        const placementOffering =
-          await Purchases.getCurrentOfferingForPlacement("onboarding_placement")
+        const placementOffering = await Purchases.getCurrentOfferingForPlacement(placementId)
 
         if (placementOffering) {
-          Log.info("OnboardingHardPaywall: Using onboarding_placement offering for A/B testing")
+          Log.info(`OnboardingHardPaywall: Using ${placementId} offering for A/B testing`)
           // Track which placement offering is being used for A/B testing analytics
           AnalyticsManager.getInstance().logEvent("onboarding_paywall_placement_loaded", {
             offering_id: placementOffering.identifier,
-            placement: "onboarding_placement",
+            placement: placementId,
+            age_range: ageRange || "unknown",
           })
           setOffering(placementOffering)
         } else {
@@ -179,10 +192,13 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
   useEffect(() => {
     if (!isLoading && offering && !paywallDisplayedRef.current) {
       paywallDisplayedRef.current = true
-      Log.info("OnboardingHardPaywall: Paywall displayed")
+      const ageRange = ganon.get("ageRange") as AgeRanges | null
+      const placementId = (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) ?? "onboarding_placement"
+      Log.info(`OnboardingHardPaywall: Paywall displayed with placement ${placementId}`)
       AnalyticsManager.getInstance().logEvent("onboarding_paywall_displayed", {
         offering_id: offering.identifier,
-        placement: "onboarding_placement",
+        placement: placementId,
+        age_range: ageRange || "unknown",
       })
     }
   }, [isLoading, offering])
