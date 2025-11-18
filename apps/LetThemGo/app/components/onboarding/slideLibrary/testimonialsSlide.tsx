@@ -23,7 +23,6 @@ export function testimonialsSlide({ onSelection: _onSelection }: TestimonialsSli
   }
 }
 
-
 const TestimonialComponent: React.FC = () => {
   const { width } = Dimensions.get("window")
   const { themed } = useAppTheme()
