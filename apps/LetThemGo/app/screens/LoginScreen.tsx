@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, TextStyle, View } from "react-native"
+import { ViewStyle, TextStyle, View, Platform } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import Language from "@/internationalization/Language"
@@ -79,7 +79,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen()
     <Screen style={themed($root)} contentContainerStyle={themed($contentContainer)} preset="scroll">
       <LoadingModal visible={loggingIn} text="Logging in..." />
       <View style={themed($buttons)}>
-        <AppleLoginButton onPress={handleAppleLogin} />
+        {Platform.OS === "ios" && <AppleLoginButton onPress={handleAppleLogin} />}
         <GoogleLoginButton onPress={handleGoogleLogin} />
       </View>
       <View style={themed($titleContainer)}>
