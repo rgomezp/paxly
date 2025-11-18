@@ -22,6 +22,7 @@ import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
+import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 
 export const useSlides = (onSelection?: () => void) => {
   const [nickname, setNickname] = useState<string | null>(null)
@@ -100,6 +101,7 @@ export const useSlides = (onSelection?: () => void) => {
 
       // Final slides
       referralSourceSlide({ onSelection }),
+      freeToTrySlide({ onSelection }), // Risk-free reassurance before paywall
     ],
     [onSelection],
   )
