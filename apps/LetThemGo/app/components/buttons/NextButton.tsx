@@ -9,6 +9,7 @@ type IProps = {
   onPressOverride?: () => void
   isDisabled?: boolean
   backgroundColor?: string
+  nextButtonText?: string
 }
 
 export default function NextButton({
@@ -16,6 +17,7 @@ export default function NextButton({
   onPressOverride,
   isDisabled,
   backgroundColor,
+  nextButtonText,
 }: IProps) {
   const lang = Language.current
 
@@ -31,11 +33,10 @@ export default function NextButton({
   return (
     <View style={styles.container}>
       <RectangularButton
-        buttonText={LANGUAGE_COPY.words.next[lang]}
+        buttonText={nextButtonText || LANGUAGE_COPY.words.next[lang]}
         onClick={handlePress}
         icon="arrow-right"
-        width={120}
-        fontSize={16}
+        fontSize={18}
         isDisabled={isDisabled}
         backgroundColor={backgroundColor}
       />
