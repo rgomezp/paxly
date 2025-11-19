@@ -103,7 +103,12 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
 
       MessageIntoTheVoidManager.sendMessage(text.trim())
       setIsSendModalVisible(false)
-      navigation.navigate("TabNavigator")
+      // Reset navigation stack to TabNavigator to properly return to Home screen
+      // This prevents creating a new navigation stack and remounting components
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "TabNavigator" }],
+      })
     }
 
     // Handle cursor position changes to scroll to the cursor
