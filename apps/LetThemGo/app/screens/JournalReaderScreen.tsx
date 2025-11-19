@@ -108,7 +108,7 @@ const $container: ThemedStyle<ViewStyle> = (theme) => ({
 
 const $scroll: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
-  paddingHorizontal: 16,
+  paddingHorizontal: 24,
 })
 
 const $title: ThemedStyle<TextStyle> = (theme) => ({
