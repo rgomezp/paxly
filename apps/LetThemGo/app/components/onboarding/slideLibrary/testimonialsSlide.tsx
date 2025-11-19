@@ -7,7 +7,7 @@ import type { ViewStyle, TextStyle, ImageStyle } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { TestimonialCard, type Testimonial } from "../shared/TestimonialCard"
 
-const testimonialCirclesImage: ImageRequireSource = require("../../../../assets/images/testimonial_circles.png")
+const testimonialCirclesImage: ImageRequireSource = require("../../../../assets/images/onboarding/testimonial_circles.png")
 
 type TestimonialsSlideProps = {
   onSelection?: () => void

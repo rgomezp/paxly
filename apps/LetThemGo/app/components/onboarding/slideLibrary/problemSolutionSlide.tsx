@@ -9,7 +9,7 @@ type ProblemSolutionSlideProps = {
   onSelection?: () => void
 }
 
-const solutionImage: ImageRequireSource = require("../../../../assets/images/peaceful_girl.png")
+const solutionImage: ImageRequireSource = require("../../../../assets/images/onboarding/peaceful_girl.png")
 
 const quotes: string[] = [
   "My brain keeps trying to convince me to text him, even though I know it probably wouldn't help.",

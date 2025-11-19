@@ -5,7 +5,7 @@ import type { ISlide } from "@/types/ISlide"
 import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 
-const brainImage: ImageRequireSource = require("../../../../assets/images/brain.webp")
+const brainImage: ImageRequireSource = require("../../../../assets/images/onboarding/brain.webp")
 
 type WowMomentSlideProps = {
   onSelection?: () => void

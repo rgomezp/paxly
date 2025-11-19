@@ -6,7 +6,7 @@ import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 import { IconTextItem } from "../shared/IconTextItem"
 
-const logoImage: ImageRequireSource = require("../../../../assets/images/joyful_girl.png")
+const logoImage: ImageRequireSource = require("../../../../assets/images/onboarding/joyful_girl.png")
 
 type HeroSlideProps = {
   onSelection?: () => void
