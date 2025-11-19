@@ -139,6 +139,7 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
             }
             isDisabled={false}
             backgroundColor={color}
+            nextButtonText={slides[currentIndex]?.nextButtonText}
           />
         </View>
       </SafeAreaView>
