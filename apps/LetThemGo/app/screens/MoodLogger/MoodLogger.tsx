@@ -4,7 +4,6 @@ import {
   Animated,
   ImageStyle,
   ScrollView,
-  Text as RNText,
   TextInput,
   TouchableOpacity,
   useWindowDimensions,
@@ -202,7 +201,7 @@ function EmojiTile(props: {
       activeOpacity={1}
       style={[$tile, { backgroundColor: themeBackground }]}
     >
-      <RNText style={$emojiText}>{emoji}</RNText>
+      <Text style={$emojiText}>{emoji}</Text>
       <Text
         weight="bold"
         text={label}
@@ -285,6 +284,7 @@ const $textInput: TextStyle = {
 
 const $emojiText: TextStyle = {
   fontSize: 30,
+  lineHeight: 36,
   textAlign: "center",
 }
 
