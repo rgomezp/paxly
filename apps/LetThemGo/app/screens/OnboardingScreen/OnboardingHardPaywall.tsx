@@ -68,7 +68,9 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
           setOffering(placementOffering)
         } else {
           // Fallback to current offering if placement offering not found
-          Log.info("OnboardingHardPaywall: No placement offering found, using current offering")
+          Log.info(
+            `OnboardingHardPaywall: No placement offering for ${placementId} found, using current offering`,
+          )
           const offerings = await Purchases.getOfferings()
           if (offerings.current) {
             AnalyticsManager.getInstance().logEvent("onboarding_paywall_fallback_offering", {
