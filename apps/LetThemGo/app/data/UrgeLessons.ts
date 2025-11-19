@@ -115,10 +115,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       { t: "timer", seconds: 180, label: "Do something else" },
       { t: "instruction", body: "Check in: How does the urge feel now?" },
-      {
-        t: "textInput",
-        prompt: "Name one way you feel different after redirecting.",
-      },
     ],
     commitment: { text: "Finish" },
   },
@@ -174,17 +170,30 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
   urge_unsent_letter: {
     id: "urge_unsent_letter",
     moduleId: "mini_interventions",
-    title: "Write an Unsent Text",
-    goal: "Express without sending",
-    estMinutes: 5,
-    format: "journal",
-    template: "unsent_letter",
-    fields: [
+    title: "Express Without Sending",
+    goal: "Process your feelings",
+    estMinutes: 3,
+    format: "card",
+    cards: [
       {
-        name: "letter",
-        kind: "longText",
-        label: "Write everything you want to say. This won't be sent.",
-        minWords: 50,
+        type: "text",
+        body: "You have things you want to say. That's valid. But you don't need to send them.",
+      },
+      {
+        type: "tip",
+        body: "The act of expressing—even if only to yourself—can help release the pressure of the urge.",
+      },
+      {
+        type: "text",
+        body: "Consider writing it down privately, or just saying it out loud to yourself. You don't need their response to process your feelings.",
+      },
+      {
+        type: "tip",
+        body: "Consider using the 'Send to the Void' feature to process your feelings.",
+      },
+      {
+        type: "text",
+        body: "Your feelings are real, and you can honor them without breaking no contact.",
       },
     ],
     commitment: { text: "Finish" },
@@ -232,6 +241,167 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     ],
     commitment: { text: "Finish" },
   },
+  urge_future_self: {
+    id: "urge_future_self",
+    moduleId: "mini_interventions",
+    title: "Talk to Future You",
+    goal: "Gain perspective from your future self",
+    estMinutes: 4,
+    format: "practice",
+    steps: [
+      {
+        t: "instruction",
+        body: "Imagine yourself 3 months from now, looking back at this moment.",
+      },
+      {
+        t: "instruction",
+        body: "What would that version of you—who has stayed strong—want to tell you right now?",
+      },
+      { t: "timer", seconds: 45, label: "Listen to future you" },
+      {
+        t: "instruction",
+        body: "Now imagine if you contact them. How does future you feel about that choice?",
+      },
+      { t: "timer", seconds: 45, label: "Consider the outcome" },
+      {
+        t: "check",
+        prompt: "I choose the path my future self will thank me for",
+      },
+      {
+        t: "instruction",
+        body: "Every time you resist, you're becoming that stronger future version of yourself.",
+      },
+    ],
+    commitment: { text: "Finish" },
+  },
+
+  urge_worst_best_case: {
+    id: "urge_worst_best_case",
+    moduleId: "cognitive_aid",
+    title: "Reality Check",
+    goal: "Examine what contact actually means",
+    estMinutes: 4,
+    format: "card",
+    cards: [
+      {
+        type: "text",
+        body: "Your brain is creating a fantasy about what will happen if you reach out. Let's reality-check that.",
+      },
+      {
+        type: "tip",
+        body: "Best case scenario: They respond positively. Then what? Does it change why you broke up? Does it heal the hurt? Or does it just restart the cycle?",
+      },
+      {
+        type: "text",
+        body: "Worst case scenario: They don't respond, or they respond in a way that hurts. You've just set your healing back weeks.",
+      },
+      {
+        type: "tip",
+        body: "Most likely scenario: Brief relief followed by confusion, mixed signals, or reopened wounds.",
+      },
+      {
+        type: "text",
+        body: "The only guaranteed outcome is breaking your streak and disrupting your healing. Is that worth it?",
+      },
+    ],
+    commitment: { text: "Finish" },
+  },
+
+  urge_ice_water: {
+    id: "urge_ice_water",
+    moduleId: "mini_interventions",
+    title: "Cold Water Reset",
+    goal: "Use temperature to interrupt the urge",
+    estMinutes: 3,
+    format: "practice",
+    steps: [
+      {
+        t: "instruction",
+        body: "Strong urges activate your fight-or-flight response. Cold water can interrupt this.",
+      },
+      {
+        t: "instruction",
+        body: "Go splash cold water on your face, hold ice cubes, or run cold water on your wrists.",
+      },
+      { t: "timer", seconds: 60, label: "Use cold water" },
+      {
+        t: "instruction",
+        body: "Notice how the intense physical sensation shifts your focus. The urge loses its grip.",
+      },
+      { t: "breath", pattern: "physiological", rounds: 2 },
+      {
+        t: "instruction",
+        body: "Your nervous system is resetting. The urge is just a signal from your body—not a command you must obey.",
+      },
+    ],
+    commitment: { text: "Finish" },
+  },
+
+  urge_evidence_against: {
+    id: "urge_evidence_against",
+    moduleId: "cognitive_aid",
+    title: "Remember Why You're Here",
+    goal: "Recall the evidence for no contact",
+    estMinutes: 4,
+    format: "practice",
+    steps: [
+      {
+        t: "instruction",
+        body: "Your brain is romanticizing them right now. Let's remember reality.",
+      },
+      {
+        t: "instruction",
+        body: "Think of three specific moments that showed you why this relationship needed to end.",
+      },
+      { t: "timer", seconds: 60, label: "Remember the truth" },
+      {
+        t: "instruction",
+        body: "Think of three ways your life has improved—even slightly—since starting no contact.",
+      },
+      { t: "timer", seconds: 60, label: "Notice your progress" },
+      {
+        t: "check",
+        prompt: "The relationship ended for real reasons. No contact protects me.",
+      },
+      {
+        t: "instruction",
+        body: "Contact won't erase those reasons. It will only confuse them.",
+      },
+    ],
+    commitment: { text: "Finish" },
+  },
+
+  urge_compassionate_boundary: {
+    id: "urge_compassionate_boundary",
+    moduleId: "mini_interventions",
+    title: "Boundary with Self-Compassion",
+    goal: "Hold the boundary while being kind to yourself",
+    estMinutes: 4,
+    format: "card",
+    cards: [
+      {
+        type: "text",
+        body: "It's okay to want to reach out. That desire doesn't make you weak. It makes you human.",
+      },
+      {
+        type: "tip",
+        body: "But wanting to do something and actually doing it are two different choices. You can feel the pull without following it.",
+      },
+      {
+        type: "text",
+        body: "Say to yourself: 'I see this urge. I understand it. And I'm choosing not to act on it because I care about my future.'",
+      },
+      {
+        type: "tip",
+        body: "No contact isn't about punishing yourself or them. It's about creating space for real healing.",
+      },
+      {
+        type: "text",
+        body: "You can hold this boundary firmly AND hold yourself with compassion. Both are acts of love.",
+      },
+    ],
+    commitment: { text: "Finish" },
+  },
 }
 
 /**
@@ -248,4 +418,9 @@ export const URGE_LESSONS: string[] = [
   "urge_unsent_letter",
   "urge_commitment_renewal",
   "urge_quick_reset",
+  "urge_future_self",
+  "urge_worst_best_case",
+  "urge_ice_water",
+  "urge_evidence_against",
+  "urge_compassionate_boundary",
 ]
