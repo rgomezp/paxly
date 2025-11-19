@@ -3,6 +3,7 @@ import { View, ViewStyle } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
 import Purchases from "react-native-purchases"
 import Log from "@/utils/Log"
+import { getAgeRange, getAgeBasedFallbackOffering } from "@/utils/paywallUtils"
 
 export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: () => void }) {
   const [offering, setOffering] = useState<any>(undefined)
@@ -12,9 +13,14 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
     Purchases.getOfferings()
       .then((o) => {
         if (!active) return
-        const fallback = o.all?.["fallback_offering"]
+        const ageRange = getAgeRange()
+        const fallback = getAgeBasedFallbackOffering(o, ageRange)
         if (!fallback) {
-          Log.error("OnboardingFallbackPaywall: fallback_offering not found in offerings")
+          Log.error("OnboardingFallbackPaywall: No age-based fallback offering found in offerings")
+        } else {
+          Log.info(
+            `OnboardingFallbackPaywall: Using age-based fallback offering: ${fallback.identifier}`,
+          )
         }
         setOffering(fallback)
       })
