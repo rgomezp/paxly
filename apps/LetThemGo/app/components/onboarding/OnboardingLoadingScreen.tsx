@@ -39,15 +39,14 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
       onComplete()
     }, LOADING_DURATION)
 
-    // Capture ref value for cleanup
-    const lottieInstance = lottieRef.current
-
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
-      lottieInstance?.pause()
+      // Note: We don't call pause() here because the native view will be destroyed
+      // when the component unmounts, which automatically stops the animation.
+      // Calling pause() can cause errors if the view is already destroyed.
     }
   }, [progress, onComplete])
 
