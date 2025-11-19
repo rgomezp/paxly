@@ -6,7 +6,6 @@ import {
   getAgeRange,
   getPlacementId,
   isValidOffering,
-  getValidOffering,
   getAgeBasedFallbackOffering,
   PLACEMENT_TO_OFFERING_MAP,
 } from "@/utils/paywallUtils"
@@ -60,7 +59,7 @@ export const useOffering = (): UseOfferingResult => {
             }
           }
           if (isValidOffering(offerings.current)) {
-            Log.info(`Current offering: ${offerings.current.identifier}`)
+            Log.info(`Current offering: ${offerings.current?.identifier}`)
           }
         } catch (logError) {
           Log.warn(`Error logging offerings info: ${logError}`)
@@ -160,4 +159,3 @@ export const useOffering = (): UseOfferingResult => {
 
   return { offering, isLoading }
 }
-

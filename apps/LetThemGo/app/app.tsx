@@ -34,6 +34,7 @@ import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
 import { useEffect } from "react"
+import { StyleSheet } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { FlagProvider } from "./hooks/useFlags"
 
@@ -65,7 +66,7 @@ const config = {
  */
 function OnboardingWrapper() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.flex1}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <FlagProvider>
           <ErrorBoundary catchErrors={Config.catchErrors}>
@@ -118,7 +119,7 @@ function AppContent() {
 
   // otherwise, we're ready to render the app
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.flex1}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <FlagProvider>
           <ErrorBoundary catchErrors={Config.catchErrors}>
@@ -159,3 +160,9 @@ export function App() {
     </ThemeProvider>
   )
 }
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
+})

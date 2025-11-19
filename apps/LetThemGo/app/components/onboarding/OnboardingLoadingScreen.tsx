@@ -39,12 +39,15 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
       onComplete()
     }, LOADING_DURATION)
 
+    // Capture ref value for cleanup
+    const lottieInstance = lottieRef.current
+
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
-      lottieRef.current?.pause()
+      lottieInstance?.pause()
     }
   }, [progress, onComplete])
 
@@ -88,12 +91,6 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
 }
 
 const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-  },
-  safeArea: {
-    flex: 1,
-  },
   container: {
     alignItems: "center",
     flex: 1,
@@ -110,12 +107,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  text: {
-    fontSize: 18,
-    textAlign: "center",
-    marginTop: 20,
-    marginBottom: 10,
-  },
   progressBarContainer: {
     marginBottom: 40,
     marginTop: 20,
@@ -129,5 +120,16 @@ const styles = StyleSheet.create({
     height: 8,
     overflow: "hidden",
   },
+  rootContainer: {
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 20,
+    textAlign: "center",
+  },
 })
-

@@ -6,14 +6,16 @@ import { MoodCategory } from "@/types/MoodCategory"
 import { activityToPhrase } from "@/types/Activities"
 import { MOOD_TO_EMOJI, MoodId } from "@/types/Moods"
 import { Text } from "./Text"
-import type { ThemedStyle } from "@/theme"
 
 export interface MoodLogItemProps {
   item: IMoodHistoryItem
   showDivider?: boolean
 }
 
-export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({ item, showDivider = true }) {
+export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({
+  item,
+  showDivider = true,
+}) {
   const { theme, themed } = useAppTheme()
 
   const colors = {
@@ -118,4 +120,3 @@ function formatRelativeTime(timestamp: number): string {
   const weeks = Math.floor(days / 7)
   return weeks === 1 ? "a week ago" : `${weeks} weeks ago`
 }
-

@@ -64,4 +64,3 @@ export const usePurchaseStatus = (onComplete: () => void) => {
     }
   }, [onComplete])
 }
-

@@ -85,4 +85,3 @@ const $userName: ThemedStyle<TextStyle> = (theme) => ({
   fontSize: 16,
   fontWeight: "600",
 })
-
