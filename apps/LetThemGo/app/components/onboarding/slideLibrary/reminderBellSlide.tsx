@@ -36,7 +36,7 @@ export function reminderBellSlide({ onSelection: _onSelection }: ReminderBellSli
                 Log.error(`Error requesting notification permission: ${error}`)
               })
           }
-          setTimeout(requestPermission, 1000)
+          setTimeout(requestPermission, 2000)
         }
       }
       await checkPermission()
