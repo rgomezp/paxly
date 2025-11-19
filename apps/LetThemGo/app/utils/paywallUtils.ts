@@ -1,6 +1,9 @@
 import { AgeRanges } from "@/types/AgeRange"
 import { ganon } from "@/services/ganon/ganon"
 import Log from "./Log"
+import { PurchasesOffering, PurchasesOfferings } from "react-native-purchases"
+import { paywallAnalytics } from "./paywallAnalytics"
+import { OneSignal } from "react-native-onesignal"
 
 export const AGE_TO_PLACEMENT_ID: Record<AgeRanges, string> = {
   [AgeRanges.SEVENTEEN_OR_UNDER]: "onboarding_placement_young",
@@ -58,20 +61,24 @@ export const getPlacementId = (ageRange: AgeRanges | null): string => {
 
 /**
  * Validates if an offering object is valid
+ * Based on PurchasesOffering interface from react-native-purchases
  */
-export const isValidOffering = (offering: any): boolean => {
+export const isValidOffering = (offering: PurchasesOffering | null | undefined): boolean => {
   return (
     offering != null &&
     typeof offering === "object" &&
     typeof offering.identifier === "string" &&
-    offering.identifier.length > 0
+    offering.identifier.length > 0 &&
+    Array.isArray(offering.availablePackages)
   )
 }
 
 /**
  * Safely gets a valid offering from the offerings object
  */
-export const getValidOffering = (offerings: any): any | null => {
+export const getValidOffering = (
+  offerings: PurchasesOfferings | null | undefined,
+): PurchasesOffering | null => {
   if (!offerings || typeof offerings !== "object") {
     return null
   }
@@ -98,9 +105,9 @@ export const getValidOffering = (offerings: any): any | null => {
  * Gets an age-based fallback offering from the offerings object
  */
 export const getAgeBasedFallbackOffering = (
-  offerings: any,
+  offerings: PurchasesOfferings,
   ageRange: AgeRanges | null,
-): any | null => {
+): PurchasesOffering | null => {
   if (!offerings || typeof offerings !== "object") {
     return null
   }
@@ -119,4 +126,39 @@ export const getAgeBasedFallbackOffering = (
 
   // Fallback to generic getValidOffering if age-based fallback not found
   return getValidOffering(offerings)
+}
+
+/**
+ * Handles purchase completion logic shared between paywall components
+ * - Logs purchase completion
+ * - Tags user if trial offering
+ * - Calls analytics
+ * - Calls completion callback with error handling
+ */
+export const handlePurchaseCompletion = (
+  offering: PurchasesOffering | null | undefined,
+  onComplete: () => void,
+  componentName: string,
+): void => {
+  Log.info(`${componentName}: Purchase completed`)
+
+  // Check if this is a trial offering and tag the user
+  const offeringId = offering?.identifier
+  if (offeringId?.includes("trial")) {
+    try {
+      OneSignal.User.addTag("trial_status", "started")
+      ganon.set("trialStatus", "started")
+      Log.info(`${componentName}: Tagged user with trial_status: started`)
+    } catch (tagError) {
+      Log.error(`${componentName}: Error adding trial_status tag: ${tagError}`)
+    }
+
+    paywallAnalytics.trialStarted(offeringId)
+  }
+
+  try {
+    onComplete()
+  } catch (error) {
+    Log.error(`${componentName}: Error in completion callback: ${error}`)
+  }
 }

@@ -14,13 +14,16 @@
 import { useEffect, useRef } from "react"
 import { View, StyleSheet, SafeAreaView } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
-import { OneSignal } from "react-native-onesignal"
 import Log from "../../utils/Log"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { ganon } from "@/services/ganon/ganon"
 import { useOffering } from "@/hooks/useOffering"
 import { usePurchaseStatus } from "@/hooks/usePurchaseStatus"
-import { isValidOffering, getAgeRange, getPlacementId } from "@/utils/paywallUtils"
+import {
+  isValidOffering,
+  getAgeRange,
+  getPlacementId,
+  handlePurchaseCompletion,
+} from "@/utils/paywallUtils"
 import { paywallAnalytics } from "@/utils/paywallAnalytics"
 
 interface OnboardingHardPaywallProps {
@@ -62,27 +65,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
   }
 
   const handlePurchaseCompleted = () => {
-    Log.info("OnboardingHardPaywall: Purchase completed")
-
-    // Check if this is a trial offering and tag the user
-    const offeringId = offering?.identifier
-    if (offeringId?.includes("trial")) {
-      try {
-        OneSignal.User.addTag("trial_status", "started")
-        ganon.set("trialStatus", "started")
-        Log.info("OnboardingHardPaywall: Tagged user with trial_status: started")
-      } catch (tagError) {
-        Log.error(`OnboardingHardPaywall: Error adding trial_status tag: ${tagError}`)
-      }
-
-      paywallAnalytics.trialStarted(offeringId)
-    }
-
-    try {
-      onComplete()
-    } catch (error) {
-      Log.error(`OnboardingHardPaywall: Error in onComplete callback: ${error}`)
-    }
+    handlePurchaseCompletion(offering, onComplete, "OnboardingHardPaywall")
   }
 
   // If no offering is available after loading, proceed to next step
