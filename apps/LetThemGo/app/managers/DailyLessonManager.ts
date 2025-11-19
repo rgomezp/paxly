@@ -175,6 +175,125 @@ export default class DailyLessonManager {
   }
 
   /**
+   * Gets the next uncompleted lesson after today's lesson.
+   * If today's lesson is not completed, returns today's lesson.
+   * If today's lesson is completed, returns the next available lesson.
+   */
+  static getTodaysOrNextLesson(): string | null {
+    const todaysLessonId = this.getTodaysLesson()
+
+    // If no lesson exists, return null
+    if (!todaysLessonId) {
+      return null
+    }
+
+    // If today's lesson is not completed, return it
+    if (!LessonManager.isCompleted(todaysLessonId)) {
+      return todaysLessonId
+    }
+
+    // Today's lesson is completed, find the next one
+    return this.getNextLesson()
+  }
+
+  /**
+   * Gets the next uncompleted lesson without saving state.
+   * This is used to show the next lesson when today's lesson is completed.
+   */
+  private static getNextLesson(): string | null {
+    const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState | undefined
+    const todaysLessonId = state?.lessonId
+
+    // If we have today's lesson, find its module and advance from there
+    const advancedModuleLessonIndices = { ...(state?.moduleLessonIndices ?? {}) }
+    if (todaysLessonId && state) {
+      const todaysLesson = LESSONS[todaysLessonId]
+      if (todaysLesson) {
+        const moduleId = todaysLesson.moduleId
+        // Advance the lesson index for today's module
+        const currentIndex = advancedModuleLessonIndices[moduleId] ?? 0
+        advancedModuleLessonIndices[moduleId] = currentIndex + 1
+      }
+    }
+
+    const modulesByPhase = this.getModulesByPhase()
+    if (modulesByPhase.size === 0) {
+      return null
+    }
+
+    // Start from the current phase and module index
+    let currentPhase = state?.currentPhase ?? 1
+    const phases = Array.from(modulesByPhase.keys()).sort((a, b) => a - b)
+
+    // Find the first phase that has uncompleted lessons
+    while (currentPhase <= phases[phases.length - 1]) {
+      if (!modulesByPhase.has(currentPhase)) {
+        currentPhase++
+        continue
+      }
+
+      const phaseModules = modulesByPhase.get(currentPhase)!
+
+      // If this phase is complete, move to next phase
+      if (this.isPhaseComplete(phaseModules)) {
+        currentPhase++
+        continue
+      }
+
+      // We found a phase with uncompleted lessons
+      // Start from the current module index (or next if today's lesson was from this phase)
+      const lastModuleIndex = state?.currentPhase === currentPhase ? (state?.moduleIndex ?? -1) : -1
+      const startModuleIndex = (lastModuleIndex + 1) % phaseModules.length
+
+      // Try to find a lesson from modules in this phase
+      let currentModuleIndex = startModuleIndex
+      let attempts = 0
+      const maxAttempts = phaseModules.length
+
+      while (attempts < maxAttempts) {
+        const currentModuleId = phaseModules[currentModuleIndex]
+
+        // Get all lessons for the current module, excluding completed ones
+        const moduleLessons = Object.keys(LESSONS)
+          .filter(
+            (lessonId) =>
+              LESSONS[lessonId].moduleId === currentModuleId &&
+              !LessonManager.isCompleted(lessonId),
+          )
+          .sort((a, b) => {
+            // Sort by original order in LESSONS to maintain consistency
+            const orderA = Object.keys(LESSONS).indexOf(a)
+            const orderB = Object.keys(LESSONS).indexOf(b)
+            return orderA - orderB
+          })
+
+        if (moduleLessons.length > 0) {
+          // Found uncompleted lessons in this module
+          // Use the advanced lesson index for this module
+          const currentLessonIndex = advancedModuleLessonIndices[currentModuleId] ?? 0
+
+          // Select the lesson at the current index (round-robin within the module)
+          const selectedLessonIndex = currentLessonIndex % moduleLessons.length
+          const lessonId = moduleLessons[selectedLessonIndex]
+
+          // Return the next lesson without saving state
+          return lessonId
+        }
+
+        // No uncompleted lessons in this module, try next module in phase
+        currentModuleIndex = (currentModuleIndex + 1) % phaseModules.length
+        attempts++
+      }
+
+      // All modules in this phase exhausted, move to next phase
+      currentPhase++
+    }
+
+    // All phases exhausted, no lessons available
+    return null
+  }
+
+  /**
    * Marks today's lesson as completed
    */
   static markCompleted(): void {

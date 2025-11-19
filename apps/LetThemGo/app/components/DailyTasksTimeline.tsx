@@ -49,14 +49,14 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
     return () => clearTimeout(id)
   }, [refreshToken])
 
-  // Pre-compute today's lesson ID to avoid heavy work during navigation
+  // Pre-compute today's lesson ID (or next lesson if today's is completed) to avoid heavy work during navigation
   // This prevents jankiness on Android during navigation transitions
   // We use todayKey as a dependency to recompute when the date changes
   const todayKey = getLocalDateKey()
   const todaysLessonId = useMemo(() => {
-    return DailyLessonManager.getTodaysLesson()
+    return DailyLessonManager.getTodaysOrNextLesson()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todayKey])
+  }, [todayKey, done.lesson])
 
   // Compute directly in render so MobX can track observable usage; avoid useMemo with observables
   const history = moodStore.history
@@ -164,23 +164,6 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
           "mood",
         )}
         {Row(
-          "Daily lesson",
-          done.lesson,
-          () => {
-            // Use InteractionManager to defer navigation until after interactions complete
-            // This prevents jankiness on Android during navigation transitions
-            InteractionManager.runAfterInteractions(() => {
-              if (todaysLessonId) {
-                navigate("SingleLesson", { lessonId: todaysLessonId })
-              } else {
-                navigate("Lessons")
-              }
-            })
-          },
-          "lesson",
-          done.lesson, // Disable if completed
-        )}
-        {Row(
           "Write in your journal",
           done.journal,
           () => {
@@ -188,6 +171,23 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
           },
           "journal",
         )}
+        {todaysLessonId !== null &&
+          Row(
+            done.lesson ? "Next lesson" : "Daily lesson",
+            done.lesson,
+            () => {
+              // Use InteractionManager to defer navigation until after interactions complete
+              // This prevents jankiness on Android during navigation transitions
+              InteractionManager.runAfterInteractions(() => {
+                if (todaysLessonId) {
+                  navigate("SingleLesson", { lessonId: todaysLessonId })
+                } else {
+                  navigate("Lessons")
+                }
+              })
+            },
+            "lesson",
+          )}
       </View>
     </View>
   )
@@ -236,5 +236,3 @@ const $leftGroup: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
 }
-
-// removed dashed timeline styles
