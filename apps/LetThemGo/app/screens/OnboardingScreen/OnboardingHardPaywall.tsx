@@ -66,7 +66,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
 
     // Check if this is a trial offering and tag the user
     const offeringId = offering?.identifier
-    if (typeof offeringId === "string" && offeringId === "trial_offering") {
+    if (offeringId?.includes("trial")) {
       try {
         OneSignal.User.addTag("trial_status", "started")
         ganon.set("trialStatus", "started")
@@ -97,14 +97,14 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
 
   // Log when the paywall is displayed
   useEffect(() => {
-    if (!isLoading && isValidOffering(offering) && !paywallDisplayedRef.current) {
+    if (!isLoading && isValidOffering(offering) && offering && !paywallDisplayedRef.current) {
       paywallDisplayedRef.current = true
 
       const ageRange = getAgeRange()
       const placementId = getPlacementId(ageRange)
 
       Log.info(`OnboardingHardPaywall: Paywall displayed with placement ${placementId}`)
-      paywallAnalytics.displayed(offering.identifier, placementId, ageRange)
+      paywallAnalytics.displayed(offering?.identifier, placementId, ageRange)
     }
   }, [isLoading, offering])
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Purchases from "react-native-purchases"
+import Purchases, { PurchasesOffering } from "react-native-purchases"
 import Log from "@/utils/Log"
 import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
 import {
@@ -12,7 +12,7 @@ import {
 import { paywallAnalytics } from "@/utils/paywallAnalytics"
 
 interface UseOfferingResult {
-  offering: any | null
+  offering: PurchasesOffering | null
   isLoading: boolean
 }
 
@@ -20,7 +20,7 @@ interface UseOfferingResult {
  * Custom hook to fetch and manage RevenueCat offering based on age range placement
  */
 export const useOffering = (): UseOfferingResult => {
-  const [offering, setOffering] = useState<any>(null)
+  const [offering, setOffering] = useState<PurchasesOffering | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
