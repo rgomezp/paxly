@@ -13,4 +13,6 @@ export interface ISlide {
   showStoreReview?: boolean
   textPlacement?: TextPlacement
   textAlignment?: TextAlignment
+  nextButtonText?: string
+  onLoad?: () => void | Promise<void>
 }
