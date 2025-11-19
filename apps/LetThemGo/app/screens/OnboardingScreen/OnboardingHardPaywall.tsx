@@ -65,7 +65,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
   }
 
   const handlePurchaseCompleted = () => {
-    handlePurchaseCompletion(offering, onComplete, "OnboardingHardPaywall")
+    handlePurchaseCompletion(offering, "OnboardingHardPaywall", onComplete)
   }
 
   // If no offering is available after loading, proceed to next step

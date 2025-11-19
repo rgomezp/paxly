@@ -133,12 +133,12 @@ export const getAgeBasedFallbackOffering = (
  * - Logs purchase completion
  * - Tags user if trial offering
  * - Calls analytics
- * - Calls completion callback with error handling
+ * - Calls completion callback with error handling (if provided)
  */
 export const handlePurchaseCompletion = (
   offering: PurchasesOffering | null | undefined,
-  onComplete: () => void,
   componentName: string,
+  onComplete?: () => void,
 ): void => {
   Log.info(`${componentName}: Purchase completed`)
 
@@ -156,9 +156,11 @@ export const handlePurchaseCompletion = (
     paywallAnalytics.trialStarted(offeringId)
   }
 
-  try {
-    onComplete()
-  } catch (error) {
-    Log.error(`${componentName}: Error in completion callback: ${error}`)
+  if (onComplete) {
+    try {
+      onComplete()
+    } catch (error) {
+      Log.error(`${componentName}: Error in completion callback: ${error}`)
+    }
   }
 }

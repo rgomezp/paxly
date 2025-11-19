@@ -13,7 +13,7 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
   const [offering, setOffering] = useState<PurchasesOffering | null>(null)
 
   const handlePurchaseCompleted = useCallback(() => {
-    handlePurchaseCompletion(offering, onFinished, "OnboardingFallbackPaywall")
+    handlePurchaseCompletion(offering, "OnboardingFallbackPaywall", onFinished)
   }, [offering, onFinished])
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui"
 import Log from "@/utils/Log"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import Purchases from "react-native-purchases"
+import { handlePurchaseCompletion } from "@/utils/paywallUtils"
 
 // Memory cache for configuration state
 type ConfigState = {
@@ -167,8 +168,10 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
     const offerings = await Purchases.getOfferings()
     const offering = offeringId ? offerings.all[offeringId] : offerings.current
 
+    let result: PAYWALL_RESULT
+
     if (offering) {
-      return await executePaywallSafely(
+      result = await executePaywallSafely(
         () =>
           RevenueCatUI.presentPaywall({
             offering,
@@ -176,11 +179,20 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
         "Error presenting paywall",
       )
     } else {
-      return await executePaywallSafely(
+      result = await executePaywallSafely(
         () => RevenueCatUI.presentPaywall(),
         "Error presenting paywall",
       )
     }
+
+    // Handle purchase completion if purchase was successful
+    if (result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED) {
+      // Use the offering we presented, or get current offering if we didn't have one
+      const offeringToUse = offering || offerings.current
+      handlePurchaseCompletion(offeringToUse, "presentPaywallSafely")
+    }
+
+    return result
   } catch (error) {
     Log.error(`Error in presentPaywallSafely: ${error}`)
     throw error
@@ -197,10 +209,19 @@ export const presentPaywallIfNeededSafely = async (options: {
     // Ensure RevenueCat is configured before proceeding
     await ensureRevenueCatConfigured()
 
-    return await executePaywallSafely(
+    const result = await executePaywallSafely(
       () => RevenueCatUI.presentPaywallIfNeeded(options),
       "Error presenting paywall if needed",
     )
+
+    // Handle purchase completion if purchase was successful
+    if (result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED) {
+      // Get the current offering to determine which one was used
+      const offerings = await Purchases.getOfferings()
+      handlePurchaseCompletion(offerings.current, "presentPaywallIfNeededSafely")
+    }
+
+    return result
   } catch (error) {
     Log.error(`Error in presentPaywallIfNeededSafely: ${error}`)
     throw error
