@@ -11,121 +11,53 @@
  * Users CANNOT proceed without completing a purchase or having an active subscription.
  */
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { View, StyleSheet, SafeAreaView } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
-import Purchases from "react-native-purchases"
 import { OneSignal } from "react-native-onesignal"
 import Log from "../../utils/Log"
-import AnalyticsManager from "../../managers/AnalyticsManager"
-import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ganon } from "@/services/ganon/ganon"
-import { AgeRanges } from "@/types/AgeRange"
+import { useOffering } from "@/hooks/useOffering"
+import { usePurchaseStatus } from "@/hooks/usePurchaseStatus"
+import { isValidOffering, getAgeRange, getPlacementId } from "@/utils/paywallUtils"
+import { paywallAnalytics } from "@/utils/paywallAnalytics"
 
 interface OnboardingHardPaywallProps {
   onComplete: () => void
   onCancel: () => void
 }
 
-const AGE_TO_PLACEMENT_ID = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "onboarding_placement_young",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "onboarding_placement",
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "onboarding_placement",
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "onboarding_placement_old",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "onboarding_placement_old",
-  [AgeRanges.FIFTY_SIX_PLUS]: "onboarding_placement_old",
-}
-
 const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplete, onCancel }) => {
   const { theme } = useAppTheme()
-  const [offering, setOffering] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { offering, isLoading } = useOffering()
   const noOfferingHandledRef = useRef(false)
   const paywallDisplayedRef = useRef(false)
 
-  // Fetch the specific placement offering for A/B testing
-  useEffect(() => {
-    const fetchPlacementOffering = async () => {
-      try {
-        const ageRange = ganon.get("ageRange") as AgeRanges | null
-        const placementId = (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) ?? "onboarding_placement"
-
-        // Ensure RevenueCat is configured before proceeding
-        await ensureRevenueCatConfigured()
-
-        // Get the current offering for the onboarding placement (for A/B testing)
-        const placementOffering = await Purchases.getCurrentOfferingForPlacement(placementId)
-
-        if (placementOffering) {
-          Log.info(`OnboardingHardPaywall: Using ${placementId} offering for A/B testing`)
-          // Track which placement offering is being used for A/B testing analytics
-          AnalyticsManager.getInstance().logEvent("onboarding_paywall_placement_loaded", {
-            offering_id: placementOffering.identifier,
-            placement: placementId,
-            age_range: ageRange || "unknown",
-          })
-          setOffering(placementOffering)
-        } else {
-          // Fallback to current offering if placement offering not found
-          Log.info(
-            `OnboardingHardPaywall: No placement offering for ${placementId} found, using current offering`,
-          )
-          const offerings = await Purchases.getOfferings()
-          if (offerings.current) {
-            AnalyticsManager.getInstance().logEvent("onboarding_paywall_fallback_offering", {
-              offering_id: offerings.current.identifier,
-              reason: "no_placement_offering",
-            })
-          }
-          setOffering(offerings.current)
-        }
-      } catch (error) {
-        Log.error(`OnboardingHardPaywall: Error fetching placement offering: ${error}`)
-        AnalyticsManager.getInstance().logEvent("onboarding_paywall_error", {
-          error: String(error),
-          step: "fetch_placement_offering",
-        })
-        // Try to get default offering as fallback
-        try {
-          const offerings = await Purchases.getOfferings()
-          if (offerings.current) {
-            AnalyticsManager.getInstance().logEvent("onboarding_paywall_fallback_offering", {
-              offering_id: offerings.current.identifier,
-              reason: "placement_error",
-            })
-          }
-          setOffering(offerings.current)
-        } catch (fallbackError) {
-          Log.error(`OnboardingHardPaywall: Error fetching fallback offering: ${fallbackError}`)
-          AnalyticsManager.getInstance().logEvent("onboarding_paywall_error", {
-            error: String(fallbackError),
-            step: "fetch_fallback_offering",
-          })
-        }
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchPlacementOffering()
-  }, [])
+  // Monitor purchase status to detect successful purchases
+  usePurchaseStatus(onComplete)
 
   const handleRestoreCompleted = ({ customerInfo }: { customerInfo: any }) => {
-    Log.info(
-      `OnboardingHardPaywall: Restore completed for customer: ${customerInfo?.originalAppUserId || "unknown"}`,
-    )
-    // When restore is completed successfully, proceed to next step
-    AnalyticsManager.getInstance().logEvent("onboarding_paywall_restored")
-    onComplete()
+    try {
+      const userId =
+        customerInfo?.originalAppUserId || customerInfo?.originalApplicationUsername || "unknown"
+      Log.info(`OnboardingHardPaywall: Restore completed for customer: ${userId}`)
+    } catch (error) {
+      Log.warn(`OnboardingHardPaywall: Error logging restore info: ${error}`)
+    }
+
+    paywallAnalytics.restored()
+
+    try {
+      onComplete()
+    } catch (error) {
+      Log.error(`OnboardingHardPaywall: Error in onComplete callback: ${error}`)
+    }
   }
 
   const handleCancel = (reason: "dismiss" | "purchase_cancelled") => {
     Log.info(`OnboardingHardPaywall: Purchase flow cancelled - ${reason}`)
-    AnalyticsManager.getInstance().logEvent("onboarding_paywall_cancelled", {
-      reason,
-      offering_id: offering?.identifier,
-    })
+    paywallAnalytics.cancelled(reason, offering?.identifier)
     onCancel()
   }
 
@@ -133,75 +65,46 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     Log.info("OnboardingHardPaywall: Purchase completed")
 
     // Check if this is a trial offering and tag the user
-    if (offering?.identifier === "trial_offering") {
+    const offeringId = offering?.identifier
+    if (typeof offeringId === "string" && offeringId === "trial_offering") {
       try {
         OneSignal.User.addTag("trial_status", "started")
         ganon.set("trialStatus", "started")
         Log.info("OnboardingHardPaywall: Tagged user with trial_status: started")
-        AnalyticsManager.getInstance().logEvent("trial_started", {
-          offering_id: offering.identifier,
-        })
-      } catch (error) {
-        Log.error(`OnboardingHardPaywall: Error adding trial_status tag: ${error}`)
+      } catch (tagError) {
+        Log.error(`OnboardingHardPaywall: Error adding trial_status tag: ${tagError}`)
       }
+
+      paywallAnalytics.trialStarted(offeringId)
     }
 
-    onComplete()
+    try {
+      onComplete()
+    } catch (error) {
+      Log.error(`OnboardingHardPaywall: Error in onComplete callback: ${error}`)
+    }
   }
 
-  // Set up a listener for purchase state changes
-  useEffect(() => {
-    const checkPurchaseStatus = async () => {
-      try {
-        // Check if user has active entitlements
-        const customerInfo = await Purchases.getCustomerInfo()
-        const hasActiveEntitlement = Object.values(customerInfo.entitlements.active).some(
-          (entitlement) => entitlement.isActive,
-        )
-
-        if (hasActiveEntitlement) {
-          Log.info("OnboardingHardPaywall: User already has active entitlement, proceeding")
-          AnalyticsManager.getInstance().logEvent("onboarding_paywall_already_subscribed")
-          onComplete()
-        }
-      } catch (error) {
-        Log.error(`OnboardingHardPaywall: Error checking purchase status: ${error}`)
-      }
-    }
-
-    // Check purchase status when component mounts
-    checkPurchaseStatus()
-
-    // Set up periodic check for purchase status (every 5 seconds)
-    const interval = setInterval(checkPurchaseStatus, 5000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [onComplete])
-
-  // If no offering is available after loading, proceed to next step (post-render)
+  // If no offering is available after loading, proceed to next step
   useEffect(() => {
     if (!isLoading && !offering && !noOfferingHandledRef.current) {
       noOfferingHandledRef.current = true
       Log.error("OnboardingHardPaywall: No offering available, proceeding to next step")
-      AnalyticsManager.getInstance().logEvent("onboarding_paywall_no_offering")
+      paywallAnalytics.noOffering()
       onComplete()
     }
   }, [isLoading, offering, onComplete])
 
   // Log when the paywall is displayed
   useEffect(() => {
-    if (!isLoading && offering && !paywallDisplayedRef.current) {
+    if (!isLoading && isValidOffering(offering) && !paywallDisplayedRef.current) {
       paywallDisplayedRef.current = true
-      const ageRange = ganon.get("ageRange") as AgeRanges | null
-      const placementId = (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) ?? "onboarding_placement"
+
+      const ageRange = getAgeRange()
+      const placementId = getPlacementId(ageRange)
+
       Log.info(`OnboardingHardPaywall: Paywall displayed with placement ${placementId}`)
-      AnalyticsManager.getInstance().logEvent("onboarding_paywall_displayed", {
-        offering_id: offering.identifier,
-        placement: placementId,
-        age_range: ageRange || "unknown",
-      })
+      paywallAnalytics.displayed(offering.identifier, placementId, ageRange)
     }
   }, [isLoading, offering])
 
@@ -215,6 +118,12 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
   }
 
   if (!offering) {
+    return null
+  }
+
+  // Validate offering before rendering paywall
+  if (!isValidOffering(offering)) {
+    Log.error("OnboardingHardPaywall: Invalid offering, cannot render paywall")
     return null
   }
 
