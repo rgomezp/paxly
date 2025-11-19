@@ -60,7 +60,7 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> = obser
             keyboardDismissMode="interactive"
             showsVerticalScrollIndicator={true}
           >
-            <Text text="Message into the Void" preset="heading" style={themed($title)} />
+            <Text text="Send to the Void" preset="heading" style={themed($title)} />
             <View style={$graphicContainer}>
               {ExpoImage ? (
                 <ExpoImage

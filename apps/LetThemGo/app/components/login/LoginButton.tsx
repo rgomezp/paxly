@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { TouchableOpacity, View, DimensionValue } from "react-native"
+import { useWindowDimensions } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { Text } from "../Text"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -27,12 +28,14 @@ export const LoginButton: FC<LoginButtonProps> = ({
   textColor = "white",
   iconColor = "white",
   width = 240,
-  height = 50,
+  height,
   borderColor = "transparent",
   testID,
   disabled = false,
 }) => {
   const { themed } = useAppTheme()
+  const { width: screenWidth } = useWindowDimensions()
+  const maxButtonWidth = screenWidth - 32 // Account for screen padding
 
   return (
     <TouchableOpacity
@@ -42,7 +45,8 @@ export const LoginButton: FC<LoginButtonProps> = ({
         {
           backgroundColor,
           width,
-          height,
+          maxWidth: maxButtonWidth,
+          ...(height && { height }),
           borderColor,
           ...(borderColor && borderColor !== "transparent" && { borderWidth: 1 }),
         },
@@ -65,6 +69,10 @@ const $button: ThemedStyle<any> = () => ({
   justifyContent: "center",
   alignItems: "center",
   elevation: 2,
+  paddingHorizontal: 16,
+  paddingVertical: 12,
+  minHeight: 50,
+  alignSelf: "center",
 })
 
 const $content: ThemedStyle<any> = () => ({
@@ -75,11 +83,15 @@ const $content: ThemedStyle<any> = () => ({
 
 const $icon: ThemedStyle<any> = () => ({
   marginRight: 12,
+  flexShrink: 0,
 })
 
 const $text: ThemedStyle<any> = () => ({
   fontSize: 16,
   fontWeight: "600",
+  flexShrink: 1,
+  textAlign: "center",
+  minWidth: 0,
 })
 
 const $disabled: ThemedStyle<any> = () => ({

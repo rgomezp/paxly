@@ -6,6 +6,7 @@ import { PlantyFromCurrentGoal } from "@/components/PlantyFromCurrentGoal"
 import { WaterDropletButton } from "@/components/WaterDropletButton"
 import { MascotNames } from "@/types/MascotName"
 import { ganon } from "@/services/ganon/ganon"
+import Log from "@/utils/Log"
 
 type MascotIntroSlideProps = {
   onSelection?: () => void
@@ -23,6 +24,7 @@ function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
   }, [])
 
   const handleWaterPress = () => {
+    Log.info("MascotIntroSlide: handleWaterPress")
     setIsWatering(true)
   }
 
@@ -30,7 +32,6 @@ function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.contentContainer}>
         <View style={styles.plantyContainer}>
-          {!hasAnimated && <WaterDropletButton onPress={handleWaterPress} isDemo={true} />}
           <PlantyFromCurrentGoal
             isWatering={isWatering}
             style={styles.planty}
@@ -43,6 +44,7 @@ function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
               }, 300)
             }}
           />
+          {!hasAnimated && <WaterDropletButton onPress={handleWaterPress} isDemo={true} />}
         </View>
       </View>
     </View>

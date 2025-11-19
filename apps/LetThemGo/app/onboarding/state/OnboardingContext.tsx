@@ -6,6 +6,7 @@ import { ganon } from "@/services/ganon/ganon"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
+import Log from "@/utils/Log"
 
 interface OnboardingContextType {
   step: OnboardingStep
@@ -34,11 +35,24 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  // Add OneSignal tag when user starts onboarding (main step)
+  useEffect(() => {
+    if (step === "main") {
+      try {
+        OneSignal.User.addTag("onboarding_status", "started")
+        Log.info("OnboardingContext: Added OneSignal tag: onboarding_status=started")
+      } catch (error) {
+        Log.error(`OnboardingContext: Error adding OneSignal tag: ${error}`)
+      }
+    }
+  }, [step])
+
   const completeOnboarding = async (emailOptIn: boolean) => {
     if (!isLoggedIn) {
       OneSignal.User.addTag("onboard_no_login", "1")
     }
-    OneSignal.User.addTag("onboard_email_opt_in", emailOptIn ? "1" : "0")
+
+    OneSignal.User.addTag("onboarding_status", "completed")
 
     ganon.set("finishedOnboarding", true)
 

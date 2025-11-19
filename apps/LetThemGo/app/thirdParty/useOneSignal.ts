@@ -42,9 +42,8 @@ const useOneSignal = (): boolean => {
             OneSignal.logout()
           }
 
-          // If onboarding was previously completed locally, ensure tag is removed at init
           if (ganon.get("finishedOnboarding") === true) {
-            OneSignal.User.removeTag("onboarding_status")
+            OneSignal.User.addTag("onboarding_status", "completed")
           }
         } catch (error) {
           Log.error(JSON.stringify(error))

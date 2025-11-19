@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react"
 import { Image, ImageStyle, StyleProp } from "react-native"
 import { NoContactGoal } from "@/types/INoContactData"
 
-export type PlantyState = "happy" | "serious" | "drinking"
+export type PlantyState = "happy" | "serious" | "drinking" | "sad"
 type GoalSuffix = "1d" | "1w" | "2w" | "1m" | "2m" | "3m" | "4m" | "5m" | "6m"
 
 interface PlantyProps {
   goal: NoContactGoal
   wateredToday: boolean
+  isSad?: boolean
   isWatering?: boolean
   style?: StyleProp<ImageStyle>
   // Called when the one-shot drinking animation has finished and swapped to happy
@@ -72,6 +73,19 @@ const REGISTRY: Record<PlantyState, Record<"default" | GoalSuffix, any>> = {
     "6m": require("../../assets/images/planty/6m/planty_drinking.webp"),
     // no 1y-specific asset; 1y maps to 6m
   },
+  sad: {
+    "default": require("../../assets/images/planty/1d/planty_sad.webp"),
+    "1d": require("../../assets/images/planty/1d/planty_sad.webp"),
+    "1w": require("../../assets/images/planty/1w/planty_sad.webp"),
+    "2w": require("../../assets/images/planty/2w/planty_sad.webp"),
+    "1m": require("../../assets/images/planty/1m/planty_sad.webp"),
+    "2m": require("../../assets/images/planty/2m/planty_sad.webp"),
+    "3m": require("../../assets/images/planty/3m/planty_sad.webp"),
+    "4m": require("../../assets/images/planty/4m/planty_sad.webp"),
+    "5m": require("../../assets/images/planty/5m/planty_sad.webp"),
+    "6m": require("../../assets/images/planty/6m/planty_sad.webp"),
+    // no 1y-specific asset; 1y maps to 6m
+  },
 } as const
 
 function resolveSource(state: PlantyState, goal: NoContactGoal) {
@@ -83,6 +97,7 @@ function resolveSource(state: PlantyState, goal: NoContactGoal) {
 export default function Planty({
   goal,
   wateredToday,
+  isSad = false,
   isWatering,
   style,
   onDrinkFinished,
@@ -141,7 +156,13 @@ export default function Planty({
     }
   }, [ExpoImage, playingDrink, loopMs])
 
-  const state: PlantyState = playingDrink ? "drinking" : wateredToday ? "happy" : "serious"
+  const state: PlantyState = playingDrink
+    ? "drinking"
+    : isSad
+      ? "sad"
+      : wateredToday
+        ? "happy"
+        : "serious"
   const source = resolveSource(state, goal)
   const suffix = GOAL_SUFFIX[goal]
 

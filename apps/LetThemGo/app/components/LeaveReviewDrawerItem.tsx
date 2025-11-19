@@ -4,6 +4,7 @@ import Constants from "expo-constants"
 import { Text, TextProps } from "./Text"
 import { openLinkInBrowser } from "@/utils/openLinkInBrowser"
 import Log from "@/utils/Log"
+import StoreReviewManager from "@/managers/StoreReviewManager"
 
 export interface LeaveReviewDrawerItemProps extends Omit<TextProps, "onPress"> {
   /**
@@ -21,20 +22,37 @@ export const LeaveReviewDrawerItem: FC<LeaveReviewDrawerItemProps> = ({
   textStyle,
   ...textProps
 }) => {
-  const handlePress = () => {
+  const handlePress = async () => {
     try {
-      // Get app store URLs from Expo constants (from customConfig)
-      const config = Constants?.expoConfig?.extra
-      const appStoreUrl =
-        Platform.OS === "ios" ? config?.iosAppStoreUrl : config?.androidAppStoreUrl
+      // First, attempt to show native review prompt
+      const reviewShown = await StoreReviewManager.requestReview(true)
 
-      if (appStoreUrl) {
-        openLinkInBrowser(appStoreUrl)
-      } else {
-        Log.error("App store URL not configured in customConfig")
+      if (!reviewShown) {
+        // If native review cannot be shown, fallback to opening App Store page
+        const config = Constants?.expoConfig?.extra
+        const appStoreUrl =
+          Platform.OS === "ios" ? config?.iosAppStoreUrl : config?.androidAppStoreUrl
+
+        if (appStoreUrl) {
+          openLinkInBrowser(appStoreUrl)
+        } else {
+          Log.error("App store URL not configured in customConfig")
+        }
       }
     } catch (error) {
-      Log.error(`Error opening app store review link: ${error}`)
+      Log.error(`Error handling review request: ${error}`)
+      // Fallback to App Store on error
+      try {
+        const config = Constants?.expoConfig?.extra
+        const appStoreUrl =
+          Platform.OS === "ios" ? config?.iosAppStoreUrl : config?.androidAppStoreUrl
+
+        if (appStoreUrl) {
+          openLinkInBrowser(appStoreUrl)
+        }
+      } catch (fallbackError) {
+        Log.error(`Error opening app store review link: ${fallbackError}`)
+      }
     }
   }
 

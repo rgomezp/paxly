@@ -1,4 +1,5 @@
 import { LESSONS } from "@/data/LessonRegistry"
+import { URGE_LESSON_DEFINITIONS } from "@/data/UrgeLessons"
 import { CardLesson } from "./CardLesson"
 import { PracticeLesson } from "./PracticeLesson"
 import { JournalLesson } from "./JournalLesson"
@@ -16,7 +17,8 @@ export function LessonPlayer({
   lessonId: string
   onComplete?: () => void
 }) {
-  const cfg = LESSONS[lessonId]
+  // Check both regular lessons and urge lessons
+  const cfg = LESSONS[lessonId] || URGE_LESSON_DEFINITIONS[lessonId]
   if (!cfg) return <Text>Unknown lesson: {lessonId}</Text>
   switch (cfg.format) {
     case "card":

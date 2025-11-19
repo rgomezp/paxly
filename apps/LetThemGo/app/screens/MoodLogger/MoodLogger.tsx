@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef, useState } from "react"
+import { FC, useEffect, useMemo, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   Animated,
@@ -22,6 +22,7 @@ import { MoodCategory } from "@/types/MoodCategory"
 import { ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
 import { ProgressBar, PlantyFromCurrentGoal } from "@/components"
+import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import { $styles } from "@/theme"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
@@ -36,6 +37,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   const [selectedMood, setSelectedMood] = useState<MoodId | null>(null)
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
   const [notes, setNotes] = useState("")
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
   const slides: ISlide[] = useMemo(
     () => [
@@ -66,6 +68,22 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
     MoodManager.create({ moodId: selectedMood, activity: selectedActivity, notes })
     navigation.goBack()
   }
+
+  const isValid = selectedMood !== null && selectedActivity !== null
+
+  // Track current slide index based on scroll position
+  useEffect(() => {
+    const listener = scrollX.addListener(({ value }) => {
+      const slideIndex = Math.round(value / width)
+      setCurrentSlideIndex(slideIndex)
+    })
+
+    return () => {
+      scrollX.removeListener(listener)
+    }
+  }, [scrollX, width])
+
+  const isOnFinalSlide = currentSlideIndex === slides.length - 1
 
   return (
     <View
@@ -142,32 +160,25 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         </ScrollView>
 
         {/* Step 3 - Notes */}
-        <View style={[$notesContainer, { width }]}>
-          <Text
-            text="Notes (optional)"
-            preset="bold"
-            style={[$notesHeaderText, { color: theme.colors.text }]}
-          />
-          <TextInput
-            placeholder="Notes (optional)"
-            placeholderTextColor={theme.colors.textDim}
-            value={notes}
-            onChangeText={setNotes}
-            multiline
-            style={[$textInput, { color: theme.colors.text, backgroundColor: theme.colors.card }]}
-          />
-          <TouchableOpacity
-            onPress={onSave}
-            style={[$saveButton, { backgroundColor: theme.colors.tint }]}
-          >
+        <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$notesContent}>
+          <View style={[$notesContainer, { width }]}>
             <Text
-              text="Save"
+              text="Notes (optional)"
               preset="bold"
-              style={[$saveButtonText, { color: theme.colors.background }]}
+              style={[$notesHeaderText, { color: theme.colors.text }]}
             />
-          </TouchableOpacity>
-        </View>
+            <TextInput
+              placeholder="Notes (optional)"
+              placeholderTextColor={theme.colors.textDim}
+              value={notes}
+              onChangeText={setNotes}
+              multiline
+              style={[$textInput, { color: theme.colors.text, backgroundColor: theme.colors.card }]}
+            />
+          </View>
+        </ScrollView>
       </Animated.ScrollView>
+      {isOnFinalSlide && <FloatingCenterButton isValid={isValid} text="Save" onPress={onSave} />}
     </View>
   )
 })
@@ -186,7 +197,11 @@ function EmojiTile(props: {
 }) {
   const { emoji, label, selected, onPress, themeBackground, themeText } = props
   return (
-    <TouchableOpacity onPress={onPress} style={[$tile, { backgroundColor: themeBackground }]}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={1}
+      style={[$tile, { backgroundColor: themeBackground }]}
+    >
       <RNText style={$emojiText}>{emoji}</RNText>
       <Text
         weight="bold"
@@ -254,6 +269,10 @@ const $notesContainer: ViewStyle = {
   // width will be set dynamically
 }
 
+const $notesContent: ViewStyle = {
+  paddingBottom: 120, // Add padding to prevent content from being hidden behind the button
+}
+
 const $notesHeaderText: TextStyle = {
   marginBottom: 12,
 }
@@ -262,17 +281,6 @@ const $textInput: TextStyle = {
   minHeight: 120,
   borderRadius: 12,
   padding: 12,
-}
-
-const $saveButton: ViewStyle = {
-  marginTop: 20,
-  borderRadius: 12,
-  paddingVertical: 14,
-  alignItems: "center",
-}
-
-const $saveButtonText: TextStyle = {
-  // color will be set dynamically
 }
 
 const $emojiText: TextStyle = {

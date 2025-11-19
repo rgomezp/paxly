@@ -25,10 +25,15 @@ export type AppStackParamList = {
   MoodLogger: undefined
   Journal: { mode?: "edit"; date?: number; initialText?: string } | undefined
   JournalReader: { date: number }
+  Lessons: undefined
   SingleLesson: { lessonId: string }
   Membership: undefined
   MessageIntoTheVoid: undefined
   ComposeMessage: undefined
+  MoodLogs: undefined
+  JournalLogs: undefined
+  MyStuff: undefined
+  ClaimAward: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

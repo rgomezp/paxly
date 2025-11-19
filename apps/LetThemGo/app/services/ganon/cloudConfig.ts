@@ -23,8 +23,14 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "checkSocialMedia",
       "contactTemptationSituation",
       "appMainGoal",
+      "awardData",
+      "moodReminderFrequency",
+      "trialStatus",
     ],
     subcollectionKeys: ["moodHistory", "journalEntries"],
+  },
+  lessons: {
+    subcollectionKeys: ["completedLessons", "lessonResponses", "dailyLesson"],
   },
   settings: {
     docKeys: ["theme"],

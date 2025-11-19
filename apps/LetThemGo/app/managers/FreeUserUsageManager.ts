@@ -1,6 +1,7 @@
 import { ganon } from "@/services/ganon/ganon"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import IJournalEntry from "@/types/IJournalEntry"
+import LessonManager from "./LessonManager"
 
 const DEFAULT_FREE_LIMIT = 2 // Fallback if feature flag is not available
 
@@ -22,6 +23,14 @@ export default class FreeUserUsageManager {
   }
 
   /**
+   * Gets the current lesson completion count for free users
+   */
+  static getLessonCompletionCount(): number {
+    const completedLessons = LessonManager.getCompletedLessons()
+    return completedLessons.length
+  }
+
+  /**
    * Checks if free user has reached the mood log limit
    * @param limit - The limit to check against (from feature flags). Defaults to DEFAULT_FREE_LIMIT if not provided.
    */
@@ -35,6 +44,14 @@ export default class FreeUserUsageManager {
    */
   static hasReachedJournalLogLimit(limit: number = DEFAULT_FREE_LIMIT): boolean {
     return this.getJournalLogCount() >= limit
+  }
+
+  /**
+   * Checks if free user has reached the lesson completion limit (for Pégate rewards)
+   * @param limit - The limit to check against (from feature flags). Defaults to DEFAULT_FREE_LIMIT if not provided.
+   */
+  static hasReachedLessonCompletionLimit(limit: number = DEFAULT_FREE_LIMIT): boolean {
+    return this.getLessonCompletionCount() >= limit
   }
 
   /**

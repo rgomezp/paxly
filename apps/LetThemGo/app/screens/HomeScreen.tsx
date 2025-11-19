@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useCallback, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { ScrollView, View, ViewStyle } from "react-native"
+import { ScrollView, View, ViewStyle, Image, ImageStyle } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -10,12 +10,10 @@ import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
 import NoContactManager from "@/managers/NoContactManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import DailyTasksTimeline from "@/components/DailyTasksTimeline"
-import { navigate } from "@/navigators/navigationUtilities"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
 import { Audio } from "expo-av"
-import { MessageIntoTheVoidSection } from "@/components/MessageIntoTheVoidSection"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
@@ -28,7 +26,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const insets = useSafeAreaInsets()
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
-  const { themed, theme } = useAppTheme()
+  const { themed, theme, themeContext } = useAppTheme()
   const hasShownPaywallRef = useRef<string | null>(null)
 
   // Initialize no contact data if needed
@@ -107,12 +105,20 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
     }, []),
   )
 
+  const logoSource =
+    themeContext === "dark"
+      ? require("../../assets/logos/text_logo_dark.png")
+      : require("../../assets/logos/text_logo.png")
+
   return (
     <>
       <ScrollView style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
         <View
           style={themed({ backgroundColor: theme.colors.background, paddingTop: insets.top })}
         />
+        <View style={themed($logoContainer)}>
+          <Image source={logoSource} style={themed($logo)} resizeMode="contain" />
+        </View>
         <View style={themed($headerSection)}>
           <Text
             text={`${name}, you've been no contact for:`}
@@ -133,12 +139,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
             icon="exclamation-triangle"
           />
         </View>
-        <DailyTasksTimeline
-          refreshToken={refreshTrigger}
-          onPressMood={() => navigate("MoodLogger")}
-          onPressJournal={() => navigate("Journal")}
-        />
-        <MessageIntoTheVoidSection />
+        <DailyTasksTimeline refreshToken={refreshTrigger} />
         <NatureSoundsSection />
       </ScrollView>
       <HelpModal
@@ -157,6 +158,18 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
 const $contentContainer: ViewStyle = {
   flex: 1,
+}
+
+const $logoContainer: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+  paddingVertical: 16,
+  paddingHorizontal: 20,
+}
+
+const $logo: ImageStyle = {
+  width: 200,
+  height: 60,
 }
 
 const $headerSection: ViewStyle = {

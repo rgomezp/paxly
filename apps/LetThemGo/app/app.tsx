@@ -19,6 +19,7 @@ if (__DEV__) {
 import "./utils/gestureHandler"
 import "./utils/ignoreWarnings"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
 import { useInitialRootStore } from "./models"
@@ -33,6 +34,7 @@ import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
 import { useEffect } from "react"
+import { StyleSheet } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { FlagProvider } from "./hooks/useFlags"
 
@@ -64,17 +66,19 @@ const config = {
  */
 function OnboardingWrapper() {
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <FlagProvider>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
-          <KeyboardProvider>
-            <OnboardingProvider>
-              <OnboardingScreen />
-            </OnboardingProvider>
-          </KeyboardProvider>
-        </ErrorBoundary>
-      </FlagProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={styles.flex1}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <FlagProvider>
+          <ErrorBoundary catchErrors={Config.catchErrors}>
+            <KeyboardProvider>
+              <OnboardingProvider>
+                <OnboardingScreen />
+              </OnboardingProvider>
+            </KeyboardProvider>
+          </ErrorBoundary>
+        </FlagProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }
 
@@ -115,15 +119,17 @@ function AppContent() {
 
   // otherwise, we're ready to render the app
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <FlagProvider>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
-          <KeyboardProvider>
-            <AppNavigator linking={linking} />
-          </KeyboardProvider>
-        </ErrorBoundary>
-      </FlagProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={styles.flex1}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <FlagProvider>
+          <ErrorBoundary catchErrors={Config.catchErrors}>
+            <KeyboardProvider>
+              <AppNavigator linking={linking} />
+            </KeyboardProvider>
+          </ErrorBoundary>
+        </FlagProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }
 
@@ -154,3 +160,9 @@ export function App() {
     </ThemeProvider>
   )
 }
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
+})

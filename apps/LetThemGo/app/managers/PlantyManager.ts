@@ -32,4 +32,17 @@ export default class PlantyManager {
     }
     ganon.set("lastWateredData", updatedData)
   }
+
+  static hasNotWateredIn3Days(): boolean {
+    const data = this.getLastWateredData()
+    if (!data.lastWatered) return false // New user, fallback to serious state
+
+    const lastWateredDate = new Date(data.lastWatered)
+    const today = new Date()
+    const daysSinceWatered = Math.floor(
+      (today.getTime() - lastWateredDate.getTime()) / (1000 * 60 * 60 * 24),
+    )
+
+    return daysSinceWatered >= 3
+  }
 }

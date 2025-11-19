@@ -1,13 +1,19 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState, useCallback } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, ScrollView } from "react-native"
+import { View, ViewStyle, ScrollView as RNScrollView, useWindowDimensions } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import { AppStackScreenProps } from "@/navigators"
-import { MoodGraph, MoodLogList, Quote, JournalLogList, SegmentedSelector } from "@/components"
+import { MoodGraph, Quote } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
-import type { Theme } from "@/theme"
+import type { Theme, ThemedStyle } from "@/theme"
 import { useHomeDrawerSections } from "./HomeDrawerSections"
 import NoContactManager from "@/managers/NoContactManager"
+import BadgeManager from "@/managers/BadgeManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
+import { useAppTheme } from "@/utils/useAppTheme"
+import { SmileyIcon, TrophyIcon, BookOpenIcon, PaperPlaneTiltIcon } from "phosphor-react-native"
+import { navigate } from "@/navigators/navigationUtilities"
+import { ActionCard } from "@/components/buttons/ActionCard"
 
 interface MeScreenProps extends AppStackScreenProps<"Me"> {}
 
@@ -15,18 +21,36 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   const sections = useHomeDrawerSections()
   // Content should not add its own top inset; header already accounts for it
   const contentInsets = useSafeAreaInsetsStyle([])
-  const [selectedTab, setSelectedTab] = useState<"moods" | "journal">("moods")
+  const { themed } = useAppTheme()
+  const { width } = useWindowDimensions()
+
+  // Calculate card width and container width for centering
+  // Use a consistent gap value
+  const gap = 10
+  const horizontalPadding = 32
+  const cardWidth = (width - horizontalPadding - gap) / 2
+  const containerWidth = 2 * cardWidth + gap
+
+  // State for badge visibility (updates when screen is focused)
+  const [shouldShowBadge, setShouldShowBadge] = useState(() => BadgeManager.shouldShowBadge())
 
   useEffect(() => {
     NoContactManager.initializeNoContactData()
   }, [])
+
+  // Update badge state when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      setShouldShowBadge(BadgeManager.shouldShowBadge())
+    }, []),
+  )
 
   return (
     <>
       <HomeDrawer
         sections={sections}
         renderContent={({
-          themed,
+          themed: themedDrawer,
           theme: _theme,
           toggleDrawer: _toggleDrawer,
         }: {
@@ -34,21 +58,38 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           theme: Theme
           toggleDrawer: () => void
         }) => (
-          <ScrollView style={[themed($container), contentInsets]}>
-            <Quote />
+          <RNScrollView style={[themedDrawer($container), contentInsets]}>
             <MoodGraph />
-            <View style={themed($selectorWrapper)}>
-              <SegmentedSelector
-                options={[
-                  { key: "moods", label: "Moods" },
-                  { key: "journal", label: "Journal Entries" },
-                ]}
-                selectedKey={selectedTab}
-                onSelect={(k) => setSelectedTab(k as "moods" | "journal")}
+            <View style={[themed($buttonsWrapper), { width: containerWidth, gap }]}>
+              <ActionCard
+                onPress={() => navigate("MoodLogs", undefined)}
+                icon={SmileyIcon}
+                label="Mood logs"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("JournalLogs", undefined)}
+                icon={BookOpenIcon}
+                label="Journal entries"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("MessageIntoTheVoid", undefined)}
+                icon={PaperPlaneTiltIcon}
+                label="Send to the Void"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("MyStuff", undefined)}
+                icon={TrophyIcon}
+                label="My Stuff"
+                badge={shouldShowBadge}
+                style={{ width: cardWidth, maxWidth: cardWidth }}
               />
             </View>
-            {selectedTab === "moods" ? <MoodLogList /> : <JournalLogList />}
-          </ScrollView>
+            <Quote />
+            <View style={themed($bottomSpacing)} />
+          </RNScrollView>
         )}
       />
     </>
@@ -59,9 +100,15 @@ const $container: ViewStyle = {
   flex: 1,
 }
 
-const $selectorWrapper: ViewStyle = {
-  marginTop: 24,
-  paddingHorizontal: 16,
+const $buttonsWrapper: ViewStyle = {
+  flexDirection: "row",
+  flexWrap: "wrap",
+  alignItems: "stretch",
+  marginTop: 62,
+  marginBottom: 34,
+  alignSelf: "center",
 }
 
-// segmented selector styles moved into SegmentedSelector component
+const $bottomSpacing: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  height: spacing.xxxl,
+})

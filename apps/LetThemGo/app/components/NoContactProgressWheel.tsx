@@ -87,6 +87,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
   // Daily task completion detection to show water droplet
   const dailyTasks = DailyTaskManager.getState()
   const hasJournal = dailyTasks.journal
+  const hasLesson = dailyTasks.lesson
   // Mirror DailyTasksTimeline logic for mood done (based on history)
   let hasMood = false
   try {
@@ -104,7 +105,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
     }
   } catch {}
 
-  const allDailyTasksCompleted = hasMood && hasJournal // lesson currently disabled
+  const allDailyTasksCompleted = hasMood && hasJournal && hasLesson
   const wateredToday = PlantyManager.hasWateredToday()
   const showDroplet = allDailyTasksCompleted && !wateredToday
 

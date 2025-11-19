@@ -1,9 +1,10 @@
-import { memo, useCallback, cloneElement, isValidElement, Fragment } from "react"
+import { memo, useCallback, cloneElement, isValidElement, Fragment, useEffect, useRef } from "react"
 import { View, StyleSheet, Image, useWindowDimensions, ViewStyle } from "react-native"
 import { ISlide, TextPlacement, TextAlignment } from "@/types/ISlide"
 import { AnimatedTextSimulation } from "../AnimatedTextSimulation"
 import { Text } from "../Text"
 import { useAppTheme } from "@/utils/useAppTheme"
+import Log from "@/utils/Log"
 
 interface OnboardingItemProps {
   item: ISlide
@@ -24,6 +25,27 @@ const OnboardingItem = memo(({ item, currentIndex, slideIndex }: OnboardingItemP
 
   // Determine if this slide should start the animation
   const shouldStartAnimation = currentIndex === slideIndex
+
+  // Track if onLoad has been called to prevent multiple calls
+  const onLoadCalledRef = useRef(false)
+
+  // Call onLoad when slide becomes active
+  useEffect(() => {
+    if (shouldStartAnimation && item.onLoad && !onLoadCalledRef.current) {
+      onLoadCalledRef.current = true
+      const result = item.onLoad()
+      // Handle promise if onLoad returns one
+      if (result instanceof Promise) {
+        result.catch((error) => {
+          Log.error(`Error in slide onLoad: ${error}`)
+        })
+      }
+    }
+    // Reset when slide becomes inactive
+    if (!shouldStartAnimation) {
+      onLoadCalledRef.current = false
+    }
+  }, [shouldStartAnimation, item, item.onLoad])
 
   // Create dynamic styles based on textPlacement and textAlignment
   const alignItemsValue: ViewStyle["alignItems"] =

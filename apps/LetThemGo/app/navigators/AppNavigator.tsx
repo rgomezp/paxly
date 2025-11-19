@@ -18,9 +18,11 @@ import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
-import { useContext, useMemo, ComponentProps, useRef } from "react"
-import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
+import { useContext, useMemo, ComponentProps, useRef, useState, useEffect } from "react"
+import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
+import { HouseIcon, UserIcon, BooksIcon } from "phosphor-react-native"
 import Log from "@/utils/Log"
+import BadgeManager from "@/managers/BadgeManager"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
 import type { AppStackParamList } from "./navigationTypes"
@@ -41,6 +43,22 @@ const TabNavigator = observer(function TabNavigator() {
     () => (context?.themeScheme === "dark" ? darkTheme : lightTheme),
     [context?.themeScheme],
   )
+  const navigation = useNavigation()
+
+  // State for badge visibility (updates when navigation state changes)
+  const [shouldShowBadge, setShouldShowBadge] = useState(() => BadgeManager.shouldShowBadge())
+
+  // Update badge state when navigation changes (e.g., when user navigates between tabs)
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("state", () => {
+      setShouldShowBadge(BadgeManager.shouldShowBadge())
+    })
+
+    // Also check on mount and when component updates
+    setShouldShowBadge(BadgeManager.shouldShowBadge())
+
+    return unsubscribe
+  }, [navigation])
 
   return (
     <Tab.Navigator
@@ -49,6 +67,7 @@ const TabNavigator = observer(function TabNavigator() {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: theme.colors.background,
+          paddingTop: 10,
         },
         tabBarActiveTintColor: theme.colors.tint,
         tabBarInactiveTintColor: theme.colors.text,
@@ -58,8 +77,27 @@ const TabNavigator = observer(function TabNavigator() {
         name="Home"
         component={Screens.HomeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <ThemedFontAwesome5Icon name="home" color={color} size={size ?? 22} solid />
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={HouseIcon}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Lessons"
+        component={Screens.LessonsScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={BooksIcon}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
           ),
         }}
       />
@@ -67,9 +105,18 @@ const TabNavigator = observer(function TabNavigator() {
         name="Me"
         component={Screens.MeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <ThemedFontAwesome5Icon name="user" color={color} size={size ?? 22} solid />
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={UserIcon}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
           ),
+          tabBarBadge: shouldShowBadge ? "" : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: theme.colors.palette.accent100,
+          },
         }}
       />
     </Tab.Navigator>
@@ -142,10 +189,15 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="MoodLogger" component={Screens.MoodLogger} />
       <Stack.Screen name="Journal" component={Screens.JournalScreen} />
       <Stack.Screen name="JournalReader" component={Screens.JournalReaderScreen} />
+      <Stack.Screen name="Lessons" component={Screens.LessonsScreen} />
       <Stack.Screen name="SingleLesson" component={Screens.SingleLessonScreen} />
       <Stack.Screen name="Membership" component={Screens.MembershipScreen} />
       <Stack.Screen name="MessageIntoTheVoid" component={Screens.MessageIntoTheVoidScreen} />
       <Stack.Screen name="ComposeMessage" component={Screens.ComposeMessageScreen} />
+      <Stack.Screen name="MoodLogs" component={Screens.MoodLogsScreen} />
+      <Stack.Screen name="JournalLogs" component={Screens.JournalLogsScreen} />
+      <Stack.Screen name="MyStuff" component={Screens.MyStuffScreen} />
+      <Stack.Screen name="ClaimAward" component={Screens.ClaimAwardScreen} />
     </Stack.Navigator>
   )
 })

@@ -9,7 +9,7 @@ type ProblemSolutionSlideProps = {
   onSelection?: () => void
 }
 
-const solutionImage: ImageRequireSource = require("../../../../assets/images/peaceful_girl.png")
+const solutionImage: ImageRequireSource = require("../../../../assets/images/onboarding/peaceful_girl.png")
 
 const quotes: string[] = [
   "My brain keeps trying to convince me to text him, even though I know it probably wouldn't help.",
@@ -24,8 +24,9 @@ export function problemSolutionSlide({
 }: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
-    title: "Can’t stop checking or reaching out?",
-    description: "Or perhaps you're just struggling to let them go. We'll help you get there.",
+    title: "Can't stop checking or reaching out?",
+    description:
+      "No contact has been shown to be one of the most effective ways to heal from a breakup.",
     component: <ProblemSolutionComponent />,
     textPlacement: "bottom",
     textAlignment: "left",

@@ -1,21 +1,26 @@
 import { ONBOARDING_VERSION } from "@/constants/onboarding"
 import fs from "fs"
 import path from "path"
+import { type ReactNode } from "react"
+import { renderHook } from "@testing-library/react-native"
+import { useSlides } from "./useSlides"
+import { FlagContext } from "@/hooks/useFlags"
+import UserManager from "@/managers/UserManager"
 
 /**
  * This test ensures that whenever the onboarding slides array changes
  * (order or length), the ONBOARDING_VERSION constant must be updated.
  *
  * Expected slide order and IDs - update this when slides change:
- * Last updated for ONBOARDING_VERSION: 1.0.0
+ * Last updated for ONBOARDING_VERSION: 1.2
+ * Note: freeToTrySlide and reminderBellSlide are conditional (leadup_slides flag)
  */
 const EXPECTED_SLIDE_IDS = [
+  "wowMoment",
   "hero",
   "problem_solution",
   "howItWorks",
   "name_input",
-  "mascotName",
-  "mascotIntro",
   "lastContactDate",
   "gender",
   "ageRange",
@@ -24,13 +29,15 @@ const EXPECTED_SLIDE_IDS = [
   "noContactReason",
   "checkSocialMedia",
   "contactTemptationSituation",
-  "appMainGoal",
   "whoEndedIt",
+  "mascotName",
+  "mascotIntro",
+  "testimonials",
   "moodTrackingIntro",
   "moodReminderFrequency",
-  "testimonials",
   "referralSource",
-  "loading",
+  "freeToTry",
+  "reminderBell",
 ]
 
 describe("useSlides - ONBOARDING_VERSION consistency", () => {
@@ -41,7 +48,9 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
 
     // Extract slide function calls from the slides array
     // Find the slides array section
-    const slidesArrayMatch = fileContent.match(/const slides: ISlide\[\] = useMemo\s*\(\s*\(\) => \[([\s\S]*?)\],/m)
+    const slidesArrayMatch = fileContent.match(
+      /const slides: ISlide\[\] = useMemo\s*\(\s*\(\) => \[([\s\S]*?)\],/m,
+    )
     if (!slidesArrayMatch) {
       throw new Error("Could not find slides array in useSlides.tsx")
     }
@@ -55,12 +64,14 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
     // Map function names to slide IDs
     // This mapping should match the actual slide IDs returned by each function
     const functionNameToId: Record<string, string> = {
+      wowMomentSlide: "wowMoment",
       heroSlide: "hero",
       problemSolutionSlide: "problem_solution",
       howItWorksSlide: "howItWorks",
       nicknameSlide: "name_input",
       mascotNameSlide: "mascotName",
       mascotIntroSlide: "mascotIntro",
+      testimonialsSlide: "testimonials",
       lastContactSlide: "lastContactDate",
       genderSlide: "gender",
       ageSlide: "ageRange",
@@ -69,13 +80,12 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       noContactReasonSlide: "noContactReason",
       checkSocialMediaSlide: "checkSocialMedia",
       contactTemptationSituationsSlide: "contactTemptationSituation",
-      appMainGoalSlide: "appMainGoal",
       whoEndedItSlide: "whoEndedIt",
       moodTrackingIntroSlide: "moodTrackingIntro",
       moodReminderFrequencySlide: "moodReminderFrequency",
-      testimonialsSlide: "testimonials",
       referralSourceSlide: "referralSource",
-      loadingSlide: "loading",
+      freeToTrySlide: "freeToTry",
+      reminderBellSlide: "reminderBell",
     }
 
     // Convert function names to slide IDs
@@ -111,5 +121,122 @@ Please:
 
     // If we get here, the slides match the expected order
     expect(actualSlideIds).toEqual(EXPECTED_SLIDE_IDS)
+  })
+})
+
+describe("useSlides - leadup slides feature", () => {
+  // Mock UserManager
+  beforeEach(() => {
+    jest.spyOn(UserManager, "getUser").mockReturnValue({
+      nickname: "TestUser",
+    } as any)
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  const createWrapper = (leadup_slides: boolean) => {
+    const mockUseFeatureFlags = jest.fn(() => ({ leadup_slides }))
+    const mockFlagContext = {
+      useFeatureFlags: mockUseFeatureFlags,
+    }
+
+    const Wrapper = ({ children }: { children: ReactNode }) => (
+      <FlagContext.Provider value={mockFlagContext as any}>{children}</FlagContext.Provider>
+    )
+    Wrapper.displayName = "FlagContextWrapper"
+
+    return Wrapper
+  }
+
+  it("should include leadup slides (freeToTrySlide and reminderBellSlide) when leadup_slides flag is enabled", () => {
+    const wrapper = createWrapper(true)
+    const { result } = renderHook(() => useSlides(), { wrapper })
+
+    const slides = result.current.slides
+    const slideIds = slides.map((slide) => slide.id)
+
+    // Should include the leadup slides at the end
+    expect(slideIds).toContain("freeToTry") // freeToTrySlide returns "freeToTry" ID
+    expect(slideIds).toContain("reminderBell") // reminderBellSlide returns "reminderBell" ID
+
+    // Verify they are at the end of the array
+    const lastTwoSlides = slideIds.slice(-2)
+    expect(lastTwoSlides).toEqual(["freeToTry", "reminderBell"])
+
+    // Verify the total count includes the leadup slides
+    expect(slides.length).toBe(EXPECTED_SLIDE_IDS.length)
+  })
+
+  it("should NOT include leadup slides when leadup_slides flag is disabled", () => {
+    const wrapper = createWrapper(false)
+    const { result } = renderHook(() => useSlides(), { wrapper })
+
+    const slides = result.current.slides
+    const slideIds = slides.map((slide) => slide.id)
+
+    // Should NOT include the leadup slides
+    expect(slideIds).not.toContain("reminderBell")
+    expect(slideIds).not.toContain("freeToTry")
+
+    // Verify the last slide is referralSource (before leadup slides)
+    expect(slideIds[slideIds.length - 1]).toBe("referralSource")
+
+    // Verify the total count excludes the leadup slides
+    expect(slides.length).toBe(EXPECTED_SLIDE_IDS.length - 2)
+  })
+
+  it("should return correct slide order when leadup_slides is enabled", () => {
+    const wrapper = createWrapper(true)
+    const { result } = renderHook(() => useSlides(), { wrapper })
+
+    const slides = result.current.slides
+    const slideIds = slides.map((slide) => slide.id)
+
+    // Should match the expected order including leadup slides
+    expect(slideIds).toEqual(EXPECTED_SLIDE_IDS)
+  })
+
+  it("should return correct slide order when leadup_slides is disabled", () => {
+    const wrapper = createWrapper(false)
+    const { result } = renderHook(() => useSlides(), { wrapper })
+
+    const slides = result.current.slides
+    const slideIds = slides.map((slide) => slide.id)
+
+    // Should match expected order without the last 2 leadup slides
+    const expectedWithoutLeadup = EXPECTED_SLIDE_IDS.slice(0, -2)
+    expect(slideIds).toEqual(expectedWithoutLeadup)
+  })
+
+  it("should update slides when leadup_slides flag changes", () => {
+    let leadup_slides = false
+    const mockUseFeatureFlags = jest.fn(() => ({ leadup_slides }))
+    const mockFlagContext = {
+      useFeatureFlags: mockUseFeatureFlags,
+    }
+
+    const Wrapper = ({ children }: { children: ReactNode }) => (
+      <FlagContext.Provider value={mockFlagContext as any}>{children}</FlagContext.Provider>
+    )
+    Wrapper.displayName = "FlagContextWrapper"
+
+    const { result, rerender } = renderHook(() => useSlides(), { wrapper: Wrapper })
+
+    // Initially disabled
+    expect(result.current.slides.length).toBe(EXPECTED_SLIDE_IDS.length - 2)
+    expect(result.current.slides.map((s) => s.id)).not.toContain("reminderBell")
+    expect(result.current.slides.map((s) => s.id)).not.toContain("freeToTry")
+
+    // Enable the flag
+    leadup_slides = true
+    mockUseFeatureFlags.mockReturnValue({ leadup_slides })
+    rerender({})
+
+    // Should now include leadup slides
+    expect(result.current.slides.length).toBe(EXPECTED_SLIDE_IDS.length)
+    expect(result.current.slides.map((s) => s.id)).toContain("reminderBell")
+    expect(result.current.slides.map((s) => s.id)).toContain("freeToTry")
   })
 })

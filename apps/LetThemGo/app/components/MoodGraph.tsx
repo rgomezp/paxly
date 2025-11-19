@@ -8,6 +8,7 @@ import MoodManager from "@/managers/MoodManager"
 import { useStores } from "@/models"
 import { MoodCategory } from "@/types/MoodCategory"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
+import { spacing } from "@/theme"
 // MoodLogList renders the list; no longer needed here
 
 type DayBucket = {
@@ -267,7 +268,7 @@ const $legendRow: ViewStyle = {
 }
 
 const $wrapper: ViewStyle = {
-  paddingHorizontal: 8,
+  paddingHorizontal: spacing.lg,
 }
 
 const $titleText: TextStyle = {

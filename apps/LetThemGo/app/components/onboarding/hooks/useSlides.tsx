@@ -1,6 +1,6 @@
 import UserManager from "@/managers/UserManager"
 import Log from "@/utils/Log"
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useContext } from "react"
 import { ISlide } from "@/types/ISlide"
 import { nicknameSlide } from "../slideLibrary/nicknameSlide"
 import { testimonialsSlide } from "../slideLibrary/testimonialsSlide"
@@ -16,22 +16,32 @@ import { isFirstBreakupSlide } from "../slideLibrary/isFirstBreakupSlide"
 import { noContactReasonSlide } from "../slideLibrary/noContactReasonSlide"
 import { checkSocialMediaSlide } from "../slideLibrary/checkSocialMediaSlide"
 import { contactTemptationSituationsSlide } from "../slideLibrary/contactTemptationSituationsSlide"
-import { appMainGoalSlide } from "../slideLibrary/appMainGoalSlide"
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
-import { loadingSlide } from "../slideLibrary/loadingSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
+import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
+import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
+import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
+import { FlagContext } from "@/hooks/useFlags"
 
 export const useSlides = (onSelection?: () => void) => {
+  const flagContext = useContext(FlagContext)
+  if (!flagContext) {
+    throw new Error("useSlides must be used within a FlagProvider")
+  }
+  const { useFeatureFlags } = flagContext
+
   const [nickname, setNickname] = useState<string | null>(null)
+
+  const { leadup_slides } = useFeatureFlags()
 
   // Load nickname when component mounts
   useEffect(() => {
     const loadNickname = async () => {
       try {
-        const user = await UserManager.getUser()
+        const user = UserManager.getUser()
         setNickname(user?.nickname || null)
       } catch (error) {
         Log.error(`Error loading nickname: ${error}`)
@@ -40,29 +50,10 @@ export const useSlides = (onSelection?: () => void) => {
     loadNickname()
   }, [])
 
-  // Helper function to create personalized descriptions using template replacement
-  // Future feature: This can be used for personalized slide descriptions
-  // const getPersonalizedDescription = (baseDescription: string): string => {
-  //   if (!nickname) {
-  //     return baseDescription
-  //       .replace(/\{nickname\},?\s*/g, "")
-  //       .replace(/,\s*$/, "")
-  //       .replace(/\s+/g, " ")
-  //       .trim()
-  //   }
-  //   return baseDescription.replace(/\{nickname\}/g, nickname)
-  // }
-
-  // Future feature: Handle referral source selection
-  // const handleReferralSourceSelection = (source: string) => {
-  //   setShowReferralCodeSlide(source === ReferralSource.FRIENDS_OR_FAMILY)
-  //   onSelection?.()
-  // }
-
   // Helper function to refresh nickname after it's saved
   const refreshNickname = async () => {
     try {
-      const user = await UserManager.getUser()
+      const user = UserManager.getUser()
       setNickname(user?.nickname || null)
     } catch (error) {
       Log.error(`Error refreshing nickname: ${error}`)
@@ -71,12 +62,16 @@ export const useSlides = (onSelection?: () => void) => {
 
   const slides: ISlide[] = useMemo(
     () => [
-      heroSlide({ onSelection }),
-      problemSolutionSlide({ onSelection }),
-      howItWorksSlide({ onSelection }),
-      nicknameSlide({ onSelection, refreshNickname }),
-      mascotNameSlide({ onSelection }),
-      mascotIntroSlide({ onSelection }),
+      // First 5 screens: Wow moment and key principles
+      wowMomentSlide({ onSelection }), // Reciprocity (valuable insight) + Authority (research-backed) - WOW MOMENT
+      heroSlide({ onSelection }), // Authority (research mention) + Unity ("we're here")
+      problemSolutionSlide({ onSelection }), // Unity ("we've all been there", "together")
+      howItWorksSlide({ onSelection }), // Social Proof ("join thousands")
+
+      // Commitment/Consistency - Getting user commitments
+      nicknameSlide({ onSelection, refreshNickname }), // Commitment (name)
+
+      // Data collection slides
       lastContactSlide({ onSelection }),
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
@@ -85,15 +80,24 @@ export const useSlides = (onSelection?: () => void) => {
       noContactReasonSlide({ onSelection }),
       checkSocialMediaSlide({ onSelection }),
       contactTemptationSituationsSlide({ onSelection }),
-      appMainGoalSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
+
+      mascotNameSlide({ onSelection }), // Commitment (mascot name)
+      mascotIntroSlide({ onSelection }), // Liking (personalized interaction)
+      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
+
+      // Setup slides
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
-      testimonialsSlide({ onSelection }),
+
+      // Final slides
       referralSourceSlide({ onSelection }),
-      loadingSlide({ onSelection }),
+
+      ...(leadup_slides
+        ? [freeToTrySlide({ onSelection }), reminderBellSlide({ onSelection })]
+        : []),
     ],
-    [onSelection],
+    [onSelection, leadup_slides],
   )
 
   return { slides, nickname }

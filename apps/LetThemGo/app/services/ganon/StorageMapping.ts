@@ -7,6 +7,7 @@ import IReviewBackoffData from "@/types/IReviewBackoffData"
 import INoContactData from "@/types/INoContactData"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
+import { ITodaysLessonState } from "@/types/ITodaysLessonState"
 import IJournalEntry from "@/types/IJournalEntry"
 import { ILastWateredData } from "@/types/ILastWateredData"
 import { GoalChoices } from "@/types/GoalChoice"
@@ -21,6 +22,21 @@ import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSit
 import { AppMainGoalChoices } from "@/types/AppMainGoal"
 import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
 import { IFlags } from "@/types/IFlags"
+import { ILessonResponses } from "@/types/ILessonResponses"
+import { IAwardData } from "@/types/IAwardData"
+import { IBadgeData } from "@/types/IBadgeData"
+
+// Storage key constants
+export const STORAGE_KEYS = {
+  completedLessons: "completedLessons",
+  dailyLesson: "dailyLesson",
+} as const
+
+interface CompletedLessonsState {
+  lessonIds: string[]
+  lastUpdated: number
+}
+
 interface StorageMapping {
   // v1
   email: string | null
@@ -35,6 +51,7 @@ interface StorageMapping {
   onboardCompleted: boolean
   referralData: IReferralData
   entitlementId: string | null
+  trialStatus: "started" | "lapsed" | null
   premiumOverride: boolean
   reviewBackoff: IReviewBackoffData
   passedAppCheck: boolean
@@ -58,7 +75,11 @@ interface StorageMapping {
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   flagOverrides: Partial<IFlags>
-  isPlayingNatureSounds: boolean
+  dailyLesson: ITodaysLessonState | null
+  completedLessons: CompletedLessonsState
+  lessonResponses: ILessonResponses
+  awardData: IAwardData
+  meTabBadgeData: IBadgeData | null
 }
 
 export default StorageMapping

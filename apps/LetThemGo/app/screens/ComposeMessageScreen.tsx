@@ -137,7 +137,7 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
             keyboardDismissMode="interactive"
             showsVerticalScrollIndicator={true}
           >
-            <Text text="Message into the Void" preset="heading" style={themed($title)} />
+            <Text text="Send to the Void" preset="heading" style={themed($title)} />
             <View style={themed($inputWrapper)}>
               <TextInput
                 ref={inputRef}

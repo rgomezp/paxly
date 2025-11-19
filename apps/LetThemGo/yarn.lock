@@ -2657,22 +2657,22 @@
   dependencies:
     nanoid "^3.3.11"
 
-"@revenuecat/purchases-js-hybrid-mappings@17.16.1":
-  version "17.16.1"
-  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-js-hybrid-mappings/-/purchases-js-hybrid-mappings-17.16.1.tgz#97cb608ba19d5c9674779ab9afa10b76f479a391"
-  integrity sha512-QBA/AMpy2sulOHqhbDK8O4S5Pdw0YaWb78W83q/NG+SwXE/mfFkcFKGphIQu1QjZoVGCGxfeS8GeggWkCGFUjg==
+"@revenuecat/purchases-js-hybrid-mappings@17.18.0":
+  version "17.18.0"
+  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-js-hybrid-mappings/-/purchases-js-hybrid-mappings-17.18.0.tgz#dd08667cc4b178433356d909ee2aae3f79463be2"
+  integrity sha512-iffj8FzWwTz9ocfXKXdotomoopfztux7hlLSKMJ3CbFwJgeGC6IFfP1qB7Z9KoK+7xpXJjk3ozL8qucq0OYR4g==
   dependencies:
-    "@revenuecat/purchases-js" "1.18.0"
+    "@revenuecat/purchases-js" "1.18.3"
 
-"@revenuecat/purchases-js@1.18.0":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-js/-/purchases-js-1.18.0.tgz#58498f5aedd74efbda903f816530df0db4b390f7"
-  integrity sha512-KvRMvqC3hf+uzF7Fh1okofHW64SmGnuEV/fCi3e8RKfcwtoo0FP1DbkBTPUeOR5yIe5HcrodshNcPjI9OhNuxg==
+"@revenuecat/purchases-js@1.18.3":
+  version "1.18.3"
+  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-js/-/purchases-js-1.18.3.tgz#f7056e9a2d57b0a2779402efa7f92505e39b9229"
+  integrity sha512-n43M5aRqC3dnWizJPx930cJSZ9M3UxiTiFri/4msH4wmqIb30nRspDdoEt79cGybUxcSt85Ma/Ot7AYmn/IClg==
 
-"@revenuecat/purchases-typescript-internal@17.16.1":
-  version "17.16.1"
-  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-typescript-internal/-/purchases-typescript-internal-17.16.1.tgz#31a300063562df5737113ab3fae8a1920f449d70"
-  integrity sha512-9Qoohp6co0wJtuvkqnOjEZCvc1CBf+r1aEMlcPoUBWuDnRScXNXE2ScnxZXvCke4HUDespQWqH1Nurrq1vciMQ==
+"@revenuecat/purchases-typescript-internal@17.18.0":
+  version "17.18.0"
+  resolved "https://registry.yarnpkg.com/@revenuecat/purchases-typescript-internal/-/purchases-typescript-internal-17.18.0.tgz#fec4cd19af9aef457cb55de4e9cd11bf79e205c3"
+  integrity sha512-bUkxqgwXdQwLrnLBY68siGlbethZqttPZmMl4ttKvuWUjrvpFo2gl9ICGQ734U2EFaCJxlxs7ffYcwsMY1Vqxg==
 
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
@@ -5050,10 +5050,10 @@ expo-system-ui@~5.0.11:
     "@react-native/normalize-colors" "0.79.6"
     debug "^4.3.2"
 
-expo@~53.0.0:
-  version "53.0.23"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-53.0.23.tgz#b6fd102ac74537d86f99e87bd26a254a1b560b9b"
-  integrity sha512-6TOLuNCP3AsSkXBJA5W6U/7wpZUop3Q6BxHMtRD2OOgT7CCPvnYgJdnTzqU+gD1hMfcryD8Ejq9RdHbLduXohg==
+expo@~53.0.24:
+  version "53.0.24"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-53.0.24.tgz#df703c5013177692067938b76eff0a24a6c26ee6"
+  integrity sha512-kSjICDHQnU5QpuvSr1MHSyYpn/q2vzHuTKvzxB9fdQhbFYQgh31nebe+jj9+M/tt4tNvoUpV5isxCwua4jsceA==
   dependencies:
     "@babel/runtime" "^7.20.0"
     "@expo/cli" "0.24.22"
@@ -7736,6 +7736,11 @@ path-scurry@^1.11.1, path-scurry@^1.6.1:
     lru-cache "^10.2.0"
     minipass "^5.0.0 || ^6.0.2 || ^7.0.0"
 
+phosphor-react-native@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/phosphor-react-native/-/phosphor-react-native-3.0.1.tgz#b5e339c1f30afa60fa3224b37735224319647955"
+  integrity sha512-ZmLKWi0+fOPmqqxWfChqeOTfe4AkZ03iBbt5m4OMP9+evSCl0oDyQrCdxzkDbunQhM1NQJirG2mYN+lCNgmdhg==
+
 picocolors@^1.0.0, picocolors@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
@@ -8082,20 +8087,20 @@ react-native-onesignal@^5.2.9:
   dependencies:
     invariant "^2.2.2"
 
-react-native-purchases-ui@^9.6.4:
-  version "9.6.4"
-  resolved "https://registry.yarnpkg.com/react-native-purchases-ui/-/react-native-purchases-ui-9.6.4.tgz#2564bd98bf1695512babb88daca7da8320fee17d"
-  integrity sha512-0HbP6DFV8yeVtsnMIqgE+LqazmBSVBcZFwfxe/7esrFxeIZ0mZ+hy6mEpPADIwclsDnhvCqTtjQQ2FaMf6/DOg==
+react-native-purchases-ui@^9.6.6:
+  version "9.6.6"
+  resolved "https://registry.yarnpkg.com/react-native-purchases-ui/-/react-native-purchases-ui-9.6.6.tgz#4733caa4435486e198cf472fae2f7e905dcb6e0e"
+  integrity sha512-5WpQ6nR9T268C6wGo8/1SeEfrfCxQmFDH8zm03F2PZa8rVsQyOEiMji+HgZs89A5ASKUWJeClRnngHTN6bUKLA==
   dependencies:
-    "@revenuecat/purchases-typescript-internal" "17.16.1"
+    "@revenuecat/purchases-typescript-internal" "17.18.0"
 
-react-native-purchases@^9.6.4:
-  version "9.6.4"
-  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-9.6.4.tgz#7567684ef537cbc6063ce2e3a4d1720d6c77c88c"
-  integrity sha512-fYB4+bMCEL+7FmVu8CHGGJpSCL6RV8rcPkx8944uDHOaefWTB0kuy3C3lP5d+FnWvx78SsfMApLqPyZnKorrPA==
+react-native-purchases@^9.6.6:
+  version "9.6.6"
+  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-9.6.6.tgz#7c69402d0d300ce9315e8b2ab8062a7826441a8e"
+  integrity sha512-Y5a09HfGS+M3aarGBLW+ygOzuNWUJS6AxWYWOQL0HTVO/5y8ArisqdimMqxNOrQS2G6R8X0EDX+17JL81DUIAg==
   dependencies:
-    "@revenuecat/purchases-js-hybrid-mappings" "17.16.1"
-    "@revenuecat/purchases-typescript-internal" "17.16.1"
+    "@revenuecat/purchases-js-hybrid-mappings" "17.18.0"
+    "@revenuecat/purchases-typescript-internal" "17.18.0"
 
 react-native-reanimated@~3.17.4:
   version "3.17.5"

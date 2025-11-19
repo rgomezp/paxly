@@ -29,7 +29,7 @@ function LoadingSlideComponent({ onSelection, isActive = false }: LoadingSlidePr
     if (!isActive) {
       // Reset progress when not active
       progress.value = 0
-      // Stop Lottie animation
+      // Stop Lottie animation - use current ref to avoid stale closure issues
       lottieRef.current?.pause()
       // Clear any pending timeout
       if (timeoutRef.current) {
@@ -58,6 +58,9 @@ function LoadingSlideComponent({ onSelection, isActive = false }: LoadingSlidePr
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
+      // Note: We don't call pause() here because the native view will be destroyed
+      // when the component unmounts, which automatically stops the animation.
+      // Calling pause() can cause errors if the view is already destroyed.
     }
   }, [isActive, progress, onSelection])
 

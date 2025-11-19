@@ -6,8 +6,6 @@ import {
   LogoutDrawerItem,
 } from "@/components"
 import type { Theme } from "@/theme"
-import Language from "@/internationalization/Language"
-import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import customConfig from "../../customConfig"
 import { useEffect, useState } from "react"
 import LoginManager from "@/managers/LoginManager"
@@ -76,7 +74,7 @@ export const useHomeDrawerSections = () => {
             items.push(
               <LogoutDrawerItem
                 key="logout"
-                text={LANGUAGE_COPY.homeScreen.logout[Language.current]}
+                text="Logout"
                 style={themed({ color: theme.colors.text })}
                 containerStyle={themed({ marginBottom: theme.spacing.sm })}
               />,
@@ -85,7 +83,7 @@ export const useHomeDrawerSections = () => {
             items.push(
               <MenuItem
                 key="login"
-                text={LANGUAGE_COPY.homeScreen.loginCreateAccount[Language.current]}
+                text="Login / Create Account"
                 style={themed({ color: theme.colors.text })}
                 containerStyle={themed({ marginBottom: theme.spacing.sm })}
                 route="Login"
@@ -98,7 +96,7 @@ export const useHomeDrawerSections = () => {
           items.push(
             <MenuItem
               key="settings"
-              text={LANGUAGE_COPY.words.settings[Language.current]}
+              text="Settings"
               style={themed({ color: theme.colors.text })}
               containerStyle={themed({ marginBottom: theme.spacing.sm })}
               route="Settings"
@@ -110,7 +108,7 @@ export const useHomeDrawerSections = () => {
         items.push(
           <MembershipDrawerItem
             key="membership"
-            text={LANGUAGE_COPY.words.membership[Language.current]}
+            text="Membership"
             style={themed({ color: theme.colors.text })}
             containerStyle={themed({ marginBottom: theme.spacing.sm })}
           />,
@@ -120,7 +118,7 @@ export const useHomeDrawerSections = () => {
         items.push(
           <LeaveReviewDrawerItem
             key="leaveReview"
-            text={LANGUAGE_COPY.words.leaveReview[Language.current]}
+            text="Leave a Review"
             style={themed({ color: theme.colors.text })}
             containerStyle={themed({ marginBottom: theme.spacing.sm })}
           />,
@@ -134,21 +132,21 @@ export const useHomeDrawerSections = () => {
       data: ({ themed, theme }: { themed: any; theme: Theme }) => [
         <ExternalLinkItem
           key="terms"
-          text={LANGUAGE_COPY.words.termsOfService[Language.current]}
+          text="Terms of Service"
           url={config.termsOfServiceUrl}
           style={themed({ color: theme.colors.text })}
           containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
         <ExternalLinkItem
           key="privacy"
-          text={LANGUAGE_COPY.words.privacyPolicy[Language.current]}
+          text="Privacy Policy"
           url={config.privacyPolicyUrl}
           style={themed({ color: theme.colors.text })}
           containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
         <ExternalLinkItem
           key="support"
-          text={LANGUAGE_COPY.words.support[Language.current]}
+          text="Support"
           url={`mailto:${config.supportEmail}`}
           style={themed({ color: theme.colors.text })}
           containerStyle={themed({ marginBottom: theme.spacing.sm })}

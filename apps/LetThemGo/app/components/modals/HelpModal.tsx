@@ -5,7 +5,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "../buttons/RectangularButton"
 import { useNavigation } from "@react-navigation/native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
-import { URGE_LESSONS } from "@/data/LessonRegistry"
+import { URGE_LESSONS } from "@/data/UrgeLessons"
 
 interface HelpModalProps {
   visible: boolean

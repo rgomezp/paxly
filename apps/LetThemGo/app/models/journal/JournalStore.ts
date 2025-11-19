@@ -5,6 +5,7 @@ import IJournalEntry from "@/types/IJournalEntry"
 const JournalEntryModel = types.model("JournalEntry", {
   text: types.string,
   date: types.number, // epoch ms
+  prompt: types.maybe(types.string),
 })
 
 export const JournalStoreModel = types
@@ -19,14 +20,20 @@ export const JournalStoreModel = types
   .actions((self) => ({
     loadFromGanon() {
       const items = (ganon.get("journalEntries") ?? []) as IJournalEntry[]
-      self.entries.replace(items)
+      // Ensure prompt is explicitly undefined if missing, to match the model type
+      const mappedItems = items.map((item) => ({
+        text: item.text,
+        date: item.date,
+        prompt: item.prompt ?? undefined,
+      }))
+      self.entries.replace(mappedItems)
     },
     clearAll() {
       self.entries.replace([])
       ganon.set("journalEntries", [])
     },
-    create(text: string) {
-      const entry = { text, date: Date.now() }
+    create(text: string, prompt?: string) {
+      const entry = { text, date: Date.now(), prompt }
       self.entries.push(entry)
       // Persist to ganon
       try {
@@ -41,10 +48,12 @@ export const JournalStoreModel = types
       self.entries.replace(next)
       ganon.set("journalEntries", next)
     },
-    updateByDate(timestamp: number, newText: string) {
+    updateByDate(timestamp: number, newText: string, prompt?: string) {
       const idx = self.entries.findIndex((e) => e.date === timestamp)
       if (idx >= 0) {
         self.entries[idx].text = newText
+        // Always update prompt: set to undefined to clear, or to the provided value
+        self.entries[idx].prompt = prompt
         // Persist to ganon
         try {
           ganon.set("journalEntries", self.entries.slice())

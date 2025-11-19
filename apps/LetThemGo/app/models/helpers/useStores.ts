@@ -93,6 +93,7 @@ export const clearAllStores = () => {
   rootStoreSingleton.moodStore.clear()
   rootStoreSingleton.journalStore.clearAll()
   rootStoreSingleton.messageIntoTheVoidStore.clearDraft()
+  rootStoreSingleton.lessonStore.clear()
 }
 
 /**
@@ -103,4 +104,5 @@ export const reloadAllStores = () => {
   rootStoreSingleton.moodStore.loadFromGanon()
   rootStoreSingleton.journalStore.loadFromGanon()
   rootStoreSingleton.messageIntoTheVoidStore.loadFromGanon()
+  rootStoreSingleton.lessonStore.loadFromGanon()
 }

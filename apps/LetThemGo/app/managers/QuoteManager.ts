@@ -34,7 +34,6 @@ export const heartbreakQuotes: Quote[] = [
   },
   { quote: "Love is so short, forgetting is so long.", author: "Pablo Neruda" },
   { quote: "Even the darkest night will end and the sun will rise.", author: "Victor Hugo" },
-  { quote: "Turn your wounds into wisdom.", author: "Oprah Winfrey" },
   {
     quote:
       "Out of suffering have emerged the strongest souls; the most massive characters are seared with scars.",

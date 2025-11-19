@@ -6,7 +6,7 @@ import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 import { IconTextItem, type IconTextData } from "../shared/IconTextItem"
 
-const logoImage: ImageRequireSource = require("../../../../assets/images/watering_jug.png")
+const logoImage: ImageRequireSource = require("../../../../assets/images/onboarding/watering_jug.png")
 
 type HowItWorksSlideProps = {
   onSelection?: () => void
@@ -34,7 +34,7 @@ export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlidePr
   return {
     id: "howItWorks",
     title: "Start your journey today",
-    description: "In only 60 days, you'll be on your way to healing and moving on.",
+    description: "Join thousands who've found healing. In 60 days, you'll be well on your way.",
     component: <HowItWorksComponent />,
   }
 }
