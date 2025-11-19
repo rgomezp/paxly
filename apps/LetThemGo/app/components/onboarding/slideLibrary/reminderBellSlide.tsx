@@ -9,7 +9,7 @@ type ReminderBellSlideProps = {
 
 export function reminderBellSlide({ onSelection: _onSelection }: ReminderBellSlideProps): ISlide {
   return {
-    id: "freeToTry",
+    id: "reminderBell",
     title: "We'll send you a reminder before your trial ends",
     description: "You can cancel anytime.",
     nextButtonText: "Try for $0.00",

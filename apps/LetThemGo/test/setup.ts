@@ -142,3 +142,76 @@ jest.mock("@react-native-firebase/app-check", () => ({
   getToken: jest.fn(() => Promise.resolve({ token: "mock-token" })),
   initializeAppCheck: jest.fn(() => Promise.resolve()),
 }))
+
+jest.mock("react-native-onesignal", () => ({
+  __esModule: true,
+  OneSignal: {
+    Notifications: {
+      getPermissionAsync: jest.fn(() => Promise.resolve(true)),
+      requestPermission: jest.fn(() => Promise.resolve(true)),
+    },
+  },
+}))
+
+jest.mock("react-native-purchases", () => ({
+  __esModule: true,
+  default: {
+    configure: jest.fn(),
+    getOfferings: jest.fn(() => Promise.resolve({ current: null })),
+    getCustomerInfo: jest.fn(() => Promise.resolve({})),
+    setAttributes: jest.fn(() => Promise.resolve()),
+  },
+  LOG_LEVEL: {
+    VERBOSE: "VERBOSE",
+    DEBUG: "DEBUG",
+    INFO: "INFO",
+    WARN: "WARN",
+    ERROR: "ERROR",
+  },
+}))
+
+jest.mock("react-native-purchases-ui", () => ({
+  __esModule: true,
+  default: {
+    presentPaywall: jest.fn(() => Promise.resolve({})),
+  },
+  PAYWALL_RESULT: {
+    NOT_PRESENTED: "NOT_PRESENTED",
+    CANCELLED: "CANCELLED",
+    PURCHASED: "PURCHASED",
+    RESTORED: "RESTORED",
+    ERROR: "ERROR",
+  },
+}))
+
+jest.mock("react-native-keyboard-controller", () => ({
+  __esModule: true,
+  KeyboardAwareScrollView: "KeyboardAwareScrollView",
+  useKeyboardHandler: jest.fn(),
+  useReanimatedKeyboardAnimation: jest.fn(() => ({ height: { value: 0 } })),
+}))
+
+jest.mock("@react-native-google-signin/google-signin", () => ({
+  __esModule: true,
+  GoogleSignin: {
+    configure: jest.fn(),
+    signIn: jest.fn(() => Promise.resolve({})),
+    signOut: jest.fn(() => Promise.resolve()),
+    isSignedIn: jest.fn(() => Promise.resolve(false)),
+    getCurrentUser: jest.fn(() => Promise.resolve(null)),
+  },
+}))
+
+jest.mock("expo-av", () => ({
+  __esModule: true,
+  Audio: {
+    Sound: {
+      createAsync: jest.fn(() =>
+        Promise.resolve({ sound: { play: jest.fn(), unloadAsync: jest.fn() } }),
+      ),
+    },
+    setAudioModeAsync: jest.fn(() => Promise.resolve()),
+  },
+  InterruptionModeAndroid: {},
+  InterruptionModeIOS: {},
+}))
