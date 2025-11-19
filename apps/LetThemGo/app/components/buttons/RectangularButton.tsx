@@ -16,7 +16,7 @@ type IProps = {
   buttonText: string
   onClick: () => void
   backgroundColor?: string
-  width?: DimensionValue // Optional, but defaults to 200 for consistency
+  width?: DimensionValue
   icon?: string
   isDisabled?: boolean
   customStyles?: StyleProp<any> // Additional styles
@@ -194,7 +194,7 @@ export default function RectangularButton(props: IProps) {
       onPress={handleButtonPress}
       style={[
         styles.button,
-        { width: props.width, backgroundColor: darkenedBackgroundColor }, // Default width
+        { minWidth: props.width ?? 200, backgroundColor: darkenedBackgroundColor }, // Default width
         props.isDisabled ? styles.disabled : styles.active,
         props.isSelected && [
           styles.selected,
