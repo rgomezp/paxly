@@ -1,7 +1,7 @@
 import { ganon } from "@/services/ganon/ganon"
 import { getLocalDateKey } from "@/utils/date"
 import { LESSONS } from "@/data/LessonRegistry"
-import { ITodaysLessonState } from "@/types/ITodaysLessonState"
+import { IDailyLessonState } from "@/types/IDailyLessonState"
 import { STORAGE_KEYS } from "@/services/ganon/StorageMapping"
 import LessonManager from "./LessonManager"
 import { MODULE_ORDER, MODULE_PHASES } from "@/data/ModuleDisplayNames"
@@ -13,7 +13,7 @@ export default class DailyLessonManager {
    */
   static getTodaysLesson(): string | null {
     const todayKey = getLocalDateKey()
-    const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState | undefined
+    const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState | undefined
 
     // If we have a lesson for today, return it
     if (state && state.dateKey === todayKey && state.lessonId) {
@@ -76,7 +76,7 @@ export default class DailyLessonManager {
 
     // Re-check state after getting lesson list to avoid race conditions
     // If another call already selected a lesson for today, use that instead
-    const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState | undefined
+    const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState | undefined
     if (state && state.dateKey === todayKey && state.lessonId) {
       return state.lessonId
     }
@@ -149,7 +149,7 @@ export default class DailyLessonManager {
           }
 
           // Save the selection
-          const newState: ITodaysLessonState = {
+          const newState: IDailyLessonState = {
             dateKey: todayKey,
             lessonId,
             currentPhase,
@@ -201,7 +201,7 @@ export default class DailyLessonManager {
    * This is used to show the next lesson when today's lesson is completed.
    */
   private static getNextLesson(): string | null {
-    const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState | undefined
+    const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState | undefined
     const todaysLessonId = state?.lessonId
 
     // If we have today's lesson, find its module and advance from there
@@ -298,7 +298,7 @@ export default class DailyLessonManager {
    */
   static markCompleted(): void {
     const todayKey = getLocalDateKey()
-    const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState | undefined
+    const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState | undefined
 
     if (state && state.dateKey === todayKey) {
       // The lesson is already tracked, completion is handled by DailyTaskManager
