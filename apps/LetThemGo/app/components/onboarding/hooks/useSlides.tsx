@@ -1,6 +1,6 @@
 import UserManager from "@/managers/UserManager"
 import Log from "@/utils/Log"
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useContext } from "react"
 import { ISlide } from "@/types/ISlide"
 import { nicknameSlide } from "../slideLibrary/nicknameSlide"
 import { testimonialsSlide } from "../slideLibrary/testimonialsSlide"
@@ -23,15 +23,25 @@ import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequenc
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
+import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
+import { FlagContext } from "@/hooks/useFlags"
 
 export const useSlides = (onSelection?: () => void) => {
+  const flagContext = useContext(FlagContext)
+  if (!flagContext) {
+    throw new Error("useSlides must be used within a FlagProvider")
+  }
+  const { useFeatureFlags } = flagContext
+
   const [nickname, setNickname] = useState<string | null>(null)
+
+  const { leadup_slides } = useFeatureFlags()
 
   // Load nickname when component mounts
   useEffect(() => {
     const loadNickname = async () => {
       try {
-        const user = await UserManager.getUser()
+        const user = UserManager.getUser()
         setNickname(user?.nickname || null)
       } catch (error) {
         Log.error(`Error loading nickname: ${error}`)
@@ -39,25 +49,6 @@ export const useSlides = (onSelection?: () => void) => {
     }
     loadNickname()
   }, [])
-
-  // Helper function to create personalized descriptions using template replacement
-  // Future feature: This can be used for personalized slide descriptions
-  // const getPersonalizedDescription = (baseDescription: string): string => {
-  //   if (!nickname) {
-  //     return baseDescription
-  //       .replace(/\{nickname\},?\s*/g, "")
-  //       .replace(/,\s*$/, "")
-  //       .replace(/\s+/g, " ")
-  //       .trim()
-  //   }
-  //   return baseDescription.replace(/\{nickname\}/g, nickname)
-  // }
-
-  // Future feature: Handle referral source selection
-  // const handleReferralSourceSelection = (source: string) => {
-  //   setShowReferralCodeSlide(source === ReferralSource.FRIENDS_OR_FAMILY)
-  //   onSelection?.()
-  // }
 
   // Helper function to refresh nickname after it's saved
   const refreshNickname = async () => {
@@ -101,9 +92,12 @@ export const useSlides = (onSelection?: () => void) => {
 
       // Final slides
       referralSourceSlide({ onSelection }),
-      freeToTrySlide({ onSelection }), // Risk-free reassurance before paywall
+
+      ...(leadup_slides
+        ? [freeToTrySlide({ onSelection }), reminderBellSlide({ onSelection })]
+        : []),
     ],
-    [onSelection],
+    [onSelection, leadup_slides],
   )
 
   return { slides, nickname }
