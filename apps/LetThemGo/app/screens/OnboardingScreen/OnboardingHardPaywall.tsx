@@ -87,7 +87,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
       const placementId = getPlacementId(ageRange)
 
       Log.info(`OnboardingHardPaywall: Paywall displayed with placement ${placementId}`)
-      paywallAnalytics.displayed(offering?.identifier, placementId, ageRange)
+      paywallAnalytics.displayed(offering.identifier, placementId, ageRange)
     }
   }, [isLoading, offering])
 
