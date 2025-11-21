@@ -27,9 +27,15 @@ export function InitializationProvider({ children }: { children: React.ReactNode
   const [isDataInitialized, setIsDataInitialized] = useState(false)
 
   useEffect(() => {
-    DataInitializationManager.initializeData().then(() => {
-      setIsDataInitialized(true)
-    })
+    DataInitializationManager.initializeData()
+      .then(() => {
+        setIsDataInitialized(true)
+      })
+      .catch((error) => {
+        Log.error("DataInitializationManager.initializeData() failed", error)
+        // Set to true anyway to avoid blocking the app
+        setIsDataInitialized(true)
+      })
   }, [])
 
   /* N O N - B L O C K I N G */
