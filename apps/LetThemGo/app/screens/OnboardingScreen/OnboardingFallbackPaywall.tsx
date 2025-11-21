@@ -24,7 +24,9 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
         const ageRange = getAgeRange()
         const abandonmentOffering = getAgeBasedAbandonmentOffering(o, ageRange)
         if (!abandonmentOffering) {
-          Log.error("OnboardingFallbackPaywall: No age-based abandonment offering found in offerings")
+          Log.error(
+            "OnboardingFallbackPaywall: No age-based abandonment offering found in offerings",
+          )
         } else {
           Log.info(
             `OnboardingFallbackPaywall: Using age-based abandonment offering: ${abandonmentOffering.identifier}`,
