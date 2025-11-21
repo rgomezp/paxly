@@ -4,6 +4,7 @@ import Log from "./Log"
 import { PurchasesOffering, PurchasesOfferings } from "react-native-purchases"
 import { paywallAnalytics } from "./paywallAnalytics"
 import { OneSignal } from "react-native-onesignal"
+import Purchases from "react-native-purchases"
 
 export const AGE_TO_PLACEMENT_ID: Record<AgeRanges, string> = {
   [AgeRanges.SEVENTEEN_OR_UNDER]: "onboarding_placement_young",
@@ -14,27 +15,15 @@ export const AGE_TO_PLACEMENT_ID: Record<AgeRanges, string> = {
   [AgeRanges.FIFTY_SIX_PLUS]: "onboarding_placement_old",
 }
 
-// Manual mapping of placement IDs to expected offering identifiers
-// This is a fallback when getCurrentOfferingForPlacement doesn't work
-export const PLACEMENT_TO_OFFERING_MAP: Record<string, string[]> = {
-  onboarding_placement_young: ["trial_offering_young", "trial_offering_young_fallback"],
-  onboarding_placement: ["default_offering", "trial_offering", "trial_offering_b"],
-  onboarding_placement_old: [
-    "trial_offering_old",
-    "trial_offering_old_fallback",
-    "trial_offering_b",
-  ],
-}
-
-// Mapping of age ranges to fallback offering identifiers
-// Used when placement offerings are not available
-export const AGE_TO_FALLBACK_OFFERING: Record<AgeRanges, string> = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "trial_offering_young_fallback",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "trial_offering_fallback",
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "trial_offering_fallback",
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "trial_offering_old_fallback",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "trial_offering_old_fallback",
-  [AgeRanges.FIFTY_SIX_PLUS]: "trial_offering_old_fallback",
+// Mapping of age ranges to abandonment paywall offering identifiers
+// Used for the abandonment paywall shown after user dismisses the main paywall
+export const AGE_TO_ABANDONMENT_OFFERING: Record<AgeRanges, string> = {
+  [AgeRanges.SEVENTEEN_OR_UNDER]: "fallback_offering_young",
+  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "fallback_offering",
+  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "fallback_offering",
+  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "fallback_offering_old",
+  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "fallback_offering_old",
+  [AgeRanges.FIFTY_SIX_PLUS]: "fallback_offering_old",
 }
 
 /**
@@ -102,9 +91,13 @@ export const getValidOffering = (
 }
 
 /**
- * Gets an age-based fallback offering from the offerings object
+ * Gets the abandonment paywall offering based on age range
+ * Used specifically for the abandonment paywall shown after user dismisses the main paywall
+ * young: fallback_offering_young
+ * old: fallback_offering_old
+ * other: fallback_offering
  */
-export const getAgeBasedFallbackOffering = (
+export const getAgeBasedAbandonmentOffering = (
   offerings: PurchasesOfferings,
   ageRange: AgeRanges | null,
 ): PurchasesOffering | null => {
@@ -112,20 +105,60 @@ export const getAgeBasedFallbackOffering = (
     return null
   }
 
-  // If we have an age range, try to get the specific fallback offering
-  if (ageRange && AGE_TO_FALLBACK_OFFERING[ageRange]) {
-    const fallbackOfferingId = AGE_TO_FALLBACK_OFFERING[ageRange]
+  if (ageRange && AGE_TO_ABANDONMENT_OFFERING[ageRange]) {
+    const abandonmentOfferingId = AGE_TO_ABANDONMENT_OFFERING[ageRange]
     if (offerings.all && typeof offerings.all === "object") {
-      const fallbackOffering = offerings.all[fallbackOfferingId]
-      if (isValidOffering(fallbackOffering)) {
-        Log.info(`Found age-based fallback offering: ${fallbackOfferingId}`)
-        return fallbackOffering
+      const abandonmentOffering = offerings.all[abandonmentOfferingId]
+      if (isValidOffering(abandonmentOffering)) {
+        Log.info(`Found abandonment paywall offering: ${abandonmentOfferingId}`)
+        return abandonmentOffering
       }
     }
   }
 
-  // Fallback to generic getValidOffering if age-based fallback not found
+  // Fallback to generic getValidOffering if age-based abandonment offering not found
   return getValidOffering(offerings)
+}
+
+/**
+ * Logs available offerings for debugging purposes
+ */
+export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
+  if (offerings.all && typeof offerings.all === "object") {
+    const offeringIds = Object.keys(offerings.all)
+    if (offeringIds.length > 0) {
+      Log.info(`Available offerings: ${offeringIds.join(", ")}`)
+    }
+  }
+}
+
+/**
+ * Fetches offering with placement logic
+ * Tries placement offering first, then falls back to current offering
+ */
+export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null> => {
+  const ageRange = getAgeRange()
+  const placementId = getPlacementId(ageRange)
+
+  Log.info(`Syncing offerings before fetching placement ${placementId}`)
+  const offerings = await Purchases.getOfferings()
+  logAvailableOfferings(offerings)
+
+  // Try to get placement offering
+  const placementOffering = await Purchases.getCurrentOfferingForPlacement(placementId)
+  if (placementOffering) {
+    Log.info(`Using ${placementId} offering for A/B testing: ${placementOffering.identifier}`)
+    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, ageRange)
+    return placementOffering
+  }
+
+  // Use current offering as default
+  if (offerings.current) {
+    Log.warn(`No placement offering for ${placementId} found, using current offering`)
+    return offerings.current
+  }
+
+  return null
 }
 
 /**

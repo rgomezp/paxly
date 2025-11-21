@@ -5,7 +5,7 @@ import Purchases, { PurchasesOffering } from "react-native-purchases"
 import Log from "@/utils/Log"
 import {
   getAgeRange,
-  getAgeBasedFallbackOffering,
+  getAgeBasedAbandonmentOffering,
   handlePurchaseCompletion,
 } from "@/utils/paywallUtils"
 
@@ -22,15 +22,15 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
       .then((o) => {
         if (!active) return
         const ageRange = getAgeRange()
-        const fallbackOffering = getAgeBasedFallbackOffering(o, ageRange)
-        if (!fallbackOffering) {
-          Log.error("OnboardingFallbackPaywall: No age-based fallback offering found in offerings")
+        const abandonmentOffering = getAgeBasedAbandonmentOffering(o, ageRange)
+        if (!abandonmentOffering) {
+          Log.error("OnboardingFallbackPaywall: No age-based abandonment offering found in offerings")
         } else {
           Log.info(
-            `OnboardingFallbackPaywall: Using age-based fallback offering: ${fallbackOffering.identifier}`,
+            `OnboardingFallbackPaywall: Using age-based abandonment offering: ${abandonmentOffering.identifier}`,
           )
         }
-        setOffering(fallbackOffering)
+        setOffering(abandonmentOffering)
       })
       .catch((error) => {
         Log.error(`OnboardingFallbackPaywall: Failed to fetch offerings: ${String(error)}`)
