@@ -6,6 +6,7 @@ import { MascotNames } from "@/types/MascotName"
 import { ganon } from "@/services/ganon/ganon"
 import { Image as ExpoImage } from "expo-image"
 import UserManager from "@/managers/UserManager"
+import { OneSignal } from "react-native-onesignal"
 
 type MascotNameSlideProps = {
   onSelection?: () => void
@@ -52,6 +53,14 @@ export function mascotNameSlide({ onSelection }: MascotNameSlideProps): ISlide {
       Log.info(`MascotNameSlide: Saved mascotName: ${selectedMascotName}`)
     } catch (e) {
       Log.error(`MascotNameSlide: Error saving mascotName: ${e}`)
+    }
+
+    // Tag OneSignal user with mascot name
+    try {
+      OneSignal.User.addTag("mascot_name", selectedMascotName)
+      Log.info(`MascotNameSlide: Added OneSignal tag: mascot_name=${selectedMascotName}`)
+    } catch (e) {
+      Log.error(`MascotNameSlide: Error adding OneSignal tag: ${e}`)
     }
 
     // Auto-advance when shouldAutoAdvance is true
