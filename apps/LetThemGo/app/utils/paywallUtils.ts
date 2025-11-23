@@ -202,8 +202,18 @@ export const getAgeBasedAbandonmentOffering = (
     }
   }
 
-  // Fallback to generic getValidOffering if age-based abandonment offering not found
-  return getValidOffering(offerings)
+  // Fallback to fallback_offering if age-based abandonment offering not found
+  if (offerings.all && typeof offerings.all === "object") {
+    const fallbackOffering = offerings.all["fallback_offering"]
+    if (isValidOffering(fallbackOffering)) {
+      Log.info(`Using fallback abandonment offering: fallback_offering`)
+      return fallbackOffering
+    }
+  }
+
+  // Last resort: log error and return null
+  Log.error("No abandonment offering found (neither age-based nor fallback_offering)")
+  return null
 }
 
 /**
