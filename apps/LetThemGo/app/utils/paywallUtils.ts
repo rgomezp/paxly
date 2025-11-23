@@ -27,8 +27,17 @@ export const AGE_TO_ABANDONMENT_OFFERING: Record<AgeRanges, string> = {
 }
 
 /**
- * Checks if an offering contains packages with trial periods by examining package product information
+ * Checks if an offering contains packages with free trial periods by examining package product information
  * This is the most reliable method as it checks the actual product configuration
+ * Works for both iOS and Android by checking:
+ * - iOS/Android: introPrice with price === 0 (free trial)
+ * - Android: subscriptionOptions/defaultOption with freePhase (free trial phase)
+ *
+ * Note: This specifically detects FREE trials. Intro pricing (discounted but not free) is not considered a trial.
+ * Based on RevenueCat type definitions:
+ * - PurchasesIntroPrice.price === 0 indicates a free trial
+ * - SubscriptionOption.freePhase is the free trial phase (amountMicros === 0)
+ * - SubscriptionOption.introPhase is intro pricing (amountMicros > 0, discounted but not free)
  */
 const hasTrialPackages = (offering: PurchasesOffering | null | undefined): boolean => {
   if (!offering || !Array.isArray(offering.availablePackages)) {
@@ -36,36 +45,37 @@ const hasTrialPackages = (offering: PurchasesOffering | null | undefined): boole
   }
 
   try {
-    // Check each package for trial/intro pricing information
+    // Check each package for free trial information
     for (const pkg of offering.availablePackages) {
-      // Check if package has product with intro price (trial period)
-      if (pkg && typeof pkg === "object" && pkg.product && typeof pkg.product === "object") {
-        const product = pkg.product as any
+      // Check if package has product
+      if (!pkg || typeof pkg !== "object" || !pkg.product || typeof pkg.product !== "object") {
+        continue
+      }
 
-        // Check for intro price (indicates trial or promotional period)
-        if (product.introPrice) {
-          // Check if intro price is a free trial (price === 0 or periodType indicates trial)
-          const introPrice = product.introPrice
-          if (
-            introPrice.price === 0 ||
-            introPrice.periodType === "TRIAL" ||
-            introPrice.periodType === "INTRO" ||
-            (typeof introPrice.periodType === "string" &&
-              introPrice.periodType.toUpperCase().includes("TRIAL"))
-          ) {
+      const product = pkg.product
+
+      // Method 1: Check introPrice (works for both iOS and Android)
+      // According to RevenueCat docs, a free trial is indicated by introPrice.price === 0
+      // introPrice is null if there's no intro offer, or has price > 0 for intro pricing
+      if (product.introPrice && product.introPrice.price === 0) {
+        return true
+      }
+
+      // Method 2: Check Android subscription options for freePhase (Google Play only)
+      // freePhase is specifically for free trials (amountMicros === 0)
+      // introPhase is for intro pricing (amountMicros > 0, not a free trial)
+      if (product.subscriptionOptions && Array.isArray(product.subscriptionOptions)) {
+        for (const option of product.subscriptionOptions) {
+          // Only check freePhase for free trials, not introPhase (which is paid intro pricing)
+          if (option.freePhase) {
             return true
           }
         }
+      }
 
-        // Also check for subscriptionPeriod (if it exists and indicates trial)
-        // Some products may have trial information in other properties
-        if (
-          product.subscriptionPeriod &&
-          typeof product.subscriptionPeriod === "string" &&
-          product.subscriptionPeriod.toUpperCase().includes("TRIAL")
-        ) {
-          return true
-        }
+      // Method 3: Check Android default option for freePhase (Google Play only)
+      if (product.defaultOption?.freePhase) {
+        return true
       }
     }
   } catch (error) {
