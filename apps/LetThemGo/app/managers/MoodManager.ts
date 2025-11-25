@@ -4,6 +4,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Activity } from "@/types/Activities"
 import { ALL_MOODS, MOODS, MoodId } from "@/types/Moods"
 import DailyTaskManager from "@/managers/DailyTaskManager"
+import Log from "@/utils/Log"
 
 export default class MoodManager {
   static getHistory(): IMoodHistoryItem[] {
@@ -88,6 +89,7 @@ export default class MoodManager {
    * Useful for screenshots or testing.
    */
   static populateDummyData() {
+    Log.info("🔥 Populating mood history with dummy data for the past week")
     const now = new Date()
     const items: IMoodHistoryItem[] = []
 

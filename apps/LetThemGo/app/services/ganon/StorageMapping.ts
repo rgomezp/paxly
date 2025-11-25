@@ -7,7 +7,7 @@ import IReviewBackoffData from "@/types/IReviewBackoffData"
 import INoContactData from "@/types/INoContactData"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
-import { ITodaysLessonState } from "@/types/ITodaysLessonState"
+import { IDailyLessonState } from "@/types/IDailyLessonState"
 import IJournalEntry from "@/types/IJournalEntry"
 import { ILastWateredData } from "@/types/ILastWateredData"
 import { GoalChoices } from "@/types/GoalChoice"
@@ -75,7 +75,7 @@ interface StorageMapping {
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   flagOverrides: Partial<IFlags>
-  dailyLesson: ITodaysLessonState | null
+  dailyLesson: IDailyLessonState | null
   completedLessons: CompletedLessonsState
   lessonResponses: ILessonResponses
   awardData: IAwardData

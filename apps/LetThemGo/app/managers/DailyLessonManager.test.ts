@@ -1,6 +1,6 @@
 import DailyLessonManager from "./DailyLessonManager"
 import { STORAGE_KEYS } from "@/services/ganon/StorageMapping"
-import { ITodaysLessonState } from "@/types/ITodaysLessonState"
+import { IDailyLessonState } from "@/types/IDailyLessonState"
 
 // Mock dependencies - these need to be hoisted
 jest.mock("@/services/ganon/ganon", () => {
@@ -281,7 +281,7 @@ describe("DailyLessonManager", () => {
       expect(day5Lesson).toBe("no_contact-2")
 
       // Verify the state was saved correctly
-      const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState
+      const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState
       expect(state.currentPhase).toBe(1)
       expect(state.moduleLessonIndices).toEqual({
         no_contact: 2,
@@ -343,7 +343,7 @@ describe("DailyLessonManager", () => {
 
       expect(lessonId).toBe("attachment-1")
 
-      const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState
+      const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState
       expect(state.currentPhase).toBe(2)
     })
 
@@ -373,7 +373,7 @@ describe("DailyLessonManager", () => {
       const day3Lesson = DailyLessonManager.getTodaysLesson()
       expect(day3Lesson).toBe("attachment-2")
 
-      const state = ganon.get(STORAGE_KEYS.dailyLesson) as ITodaysLessonState
+      const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState
       expect(state.currentPhase).toBe(2)
     })
   })

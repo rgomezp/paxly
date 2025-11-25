@@ -109,13 +109,15 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
           />
         </View>
       ) : (
-        <ListView
-          data={history}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          estimatedItemSize={100}
-          ListHeaderComponent={renderHeader}
-        />
+        <View style={$listContainer}>
+          <ListView
+            data={history}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            estimatedItemSize={100}
+            ListHeaderComponent={renderHeader}
+          />
+        </View>
       )}
     </View>
   )
@@ -158,3 +160,8 @@ const $emptyStateWrapper: ThemedStyle<ViewStyle> = () => ({
 const $emptyStateContainer: ThemedStyle<RNViewStyle> = () => ({
   paddingHorizontal: 26,
 })
+
+const $listContainer: ViewStyle = {
+  flex: 1,
+  marginHorizontal: 8,
+}

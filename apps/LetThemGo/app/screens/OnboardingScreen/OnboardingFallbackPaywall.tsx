@@ -1,12 +1,20 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
-import Purchases from "react-native-purchases"
+import Purchases, { PurchasesOffering } from "react-native-purchases"
 import Log from "@/utils/Log"
-import { getAgeRange, getAgeBasedFallbackOffering } from "@/utils/paywallUtils"
+import {
+  getAgeRange,
+  getAgeBasedAbandonmentOffering,
+  handlePurchaseCompletion,
+} from "@/utils/paywallUtils"
 
 export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: () => void }) {
-  const [offering, setOffering] = useState<any>(undefined)
+  const [offering, setOffering] = useState<PurchasesOffering | null>(null)
+
+  const handlePurchaseCompleted = useCallback(() => {
+    handlePurchaseCompletion(offering, "OnboardingFallbackPaywall", onFinished)
+  }, [offering, onFinished])
 
   useEffect(() => {
     let active = true
@@ -14,15 +22,17 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
       .then((o) => {
         if (!active) return
         const ageRange = getAgeRange()
-        const fallback = getAgeBasedFallbackOffering(o, ageRange)
-        if (!fallback) {
-          Log.error("OnboardingFallbackPaywall: No age-based fallback offering found in offerings")
+        const abandonmentOffering = getAgeBasedAbandonmentOffering(o, ageRange)
+        if (!abandonmentOffering) {
+          Log.error(
+            "OnboardingFallbackPaywall: No age-based abandonment offering found in offerings",
+          )
         } else {
           Log.info(
-            `OnboardingFallbackPaywall: Using age-based fallback offering: ${fallback.identifier}`,
+            `OnboardingFallbackPaywall: Using age-based abandonment offering: ${abandonmentOffering.identifier}`,
           )
         }
-        setOffering(fallback)
+        setOffering(abandonmentOffering)
       })
       .catch((error) => {
         Log.error(`OnboardingFallbackPaywall: Failed to fetch offerings: ${String(error)}`)
@@ -41,7 +51,7 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
       <RevenueCatUI.Paywall
         options={{ offering, displayCloseButton: true }}
         onDismiss={onFinished}
-        onPurchaseCompleted={onFinished}
+        onPurchaseCompleted={handlePurchaseCompleted}
       />
     </View>
   )
