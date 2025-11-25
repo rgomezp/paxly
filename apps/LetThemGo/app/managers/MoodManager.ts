@@ -4,6 +4,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Activity } from "@/types/Activities"
 import { ALL_MOODS, MOODS, MoodId } from "@/types/Moods"
 import DailyTaskManager from "@/managers/DailyTaskManager"
+import AnalyticsManager from "@/managers/AnalyticsManager"
 import Log from "@/utils/Log"
 
 export default class MoodManager {
@@ -40,6 +41,14 @@ export default class MoodManager {
     } catch {
       // Ignore errors
     }
+
+    AnalyticsManager.getInstance().logEvent("mood_logged", {
+      moodId: moodId,
+      activity: activity,
+      hasNotes: !!notes,
+      notesLength: notes?.length ?? 0,
+    })
+
     return item
   }
 
