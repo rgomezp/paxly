@@ -179,11 +179,7 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
               // Use InteractionManager to defer navigation until after interactions complete
               // This prevents jankiness on Android during navigation transitions
               InteractionManager.runAfterInteractions(() => {
-                if (todaysLessonId) {
-                  navigate("SingleLesson", { lessonId: todaysLessonId })
-                } else {
-                  navigate("Lessons")
-                }
+                navigate("SingleLesson", { lessonId: todaysLessonId })
               })
             },
             "lesson",

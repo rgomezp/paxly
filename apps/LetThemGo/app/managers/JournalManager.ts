@@ -1,5 +1,6 @@
 import { ganon } from "@/services/ganon/ganon"
 import IJournalEntry from "@/types/IJournalEntry"
+import AnalyticsManager from "./AnalyticsManager"
 
 export default class JournalManager {
   static getEntries(): IJournalEntry[] {
@@ -19,6 +20,11 @@ export default class JournalManager {
     const entries = JournalManager.getEntries()
     entries.push(entry)
     ganon.set("journalEntries", entries)
+
+    AnalyticsManager.getInstance().logEvent("journal_entry_created", {
+      textLength: text.length,
+    })
+
     return entry
   }
 

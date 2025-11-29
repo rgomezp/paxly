@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { StyleSheet, ScrollView, Animated, Dimensions, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import OnboardingItem from "./OnboardingItem"
@@ -26,26 +26,32 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
 
   const scrollX = useRef(new Animated.Value(0)).current
   const scrollViewRef = useRef<ScrollView>(null)
+  const viewedSlideIdsRef = useRef<Set<string>>(new Set())
+  const scrollToRef = useRef<(() => void) | undefined>(undefined)
   const { width } = Dimensions.get("window")
 
-  const handleSelection = () => {
+  // Create stable handleSelection that uses ref to call scrollTo
+  const handleSelection = useCallback(() => {
     // Automatically scroll to next slide after a short delay
     setTimeout(() => {
-      scrollTo()
+      scrollToRef.current?.()
     }, 200)
-  }
+  }, [])
 
   const { slides } = useSlides(handleSelection)
 
-  // Track slide views with analytics
+  // Track slide views with analytics - only once per slide
   useEffect(() => {
     if (slides.length > 0 && currentIndex < slides.length) {
       const currentSlide = slides[currentIndex]
-      AnalyticsManager.getInstance().logEvent("onboarding_slide_viewed", {
-        slide_id: currentSlide.id,
-        slide_index: currentIndex,
-        onboarding_version: ONBOARDING_VERSION,
-      })
+      if (currentSlide && !viewedSlideIdsRef.current.has(currentSlide.id)) {
+        viewedSlideIdsRef.current.add(currentSlide.id)
+        AnalyticsManager.getInstance().logEvent("onboarding_slide_viewed", {
+          slide_id: currentSlide.id,
+          slide_index: currentIndex,
+          onboarding_version: ONBOARDING_VERSION,
+        })
+      }
     }
   }, [currentIndex, slides])
 
@@ -60,7 +66,7 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
   }
 
   // Placeholder for future scroll navigation feature
-  const scrollTo = () => {
+  const scrollTo = useCallback(() => {
     if (isScrolling) return
 
     setIsScrolling(true)
@@ -79,7 +85,12 @@ const OnboardingSlidesView: React.FC<OnboardingSlidesViewProps> = ({ onComplete 
       onComplete?.()
       setIsScrolling(false)
     }
-  }
+  }, [isScrolling, currentIndex, slides.length, width, onComplete])
+
+  // Update ref whenever scrollTo changes
+  useEffect(() => {
+    scrollToRef.current = scrollTo
+  }, [scrollTo])
 
   const handleStoreReviewPrompt = async () => {
     if (!hasShownReviewOnCurrentSlide) {

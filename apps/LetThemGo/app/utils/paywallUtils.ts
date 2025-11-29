@@ -27,6 +27,102 @@ export const AGE_TO_ABANDONMENT_OFFERING: Record<AgeRanges, string> = {
 }
 
 /**
+ * Checks if an offering contains packages with free trial periods by examining package product information
+ * This is the most reliable method as it checks the actual product configuration
+ * Works for both iOS and Android by checking:
+ * - iOS/Android: introPrice with price === 0 (free trial)
+ * - Android: subscriptionOptions/defaultOption with freePhase (free trial phase)
+ *
+ * Note: This specifically detects FREE trials. Intro pricing (discounted but not free) is not considered a trial.
+ * Based on RevenueCat type definitions:
+ * - PurchasesIntroPrice.price === 0 indicates a free trial
+ * - SubscriptionOption.freePhase is the free trial phase (amountMicros === 0)
+ * - SubscriptionOption.introPhase is intro pricing (amountMicros > 0, discounted but not free)
+ */
+const hasTrialPackages = (offering: PurchasesOffering | null | undefined): boolean => {
+  if (!offering || !Array.isArray(offering.availablePackages)) {
+    return false
+  }
+
+  try {
+    // Check each package for free trial information
+    for (const pkg of offering.availablePackages) {
+      // Check if package has product
+      if (!pkg || typeof pkg !== "object" || !pkg.product || typeof pkg.product !== "object") {
+        continue
+      }
+
+      const product = pkg.product
+
+      // Method 1: Check introPrice (works for both iOS and Android)
+      // According to RevenueCat docs, a free trial is indicated by introPrice.price === 0
+      // introPrice is null if there's no intro offer, or has price > 0 for intro pricing
+      if (product.introPrice && product.introPrice.price === 0) {
+        return true
+      }
+
+      // Method 2: Check Android subscription options for freePhase (Google Play only)
+      // freePhase is specifically for free trials (amountMicros === 0)
+      // introPhase is for intro pricing (amountMicros > 0, not a free trial)
+      if (product.subscriptionOptions && Array.isArray(product.subscriptionOptions)) {
+        for (const option of product.subscriptionOptions) {
+          // Only check freePhase for free trials, not introPhase (which is paid intro pricing)
+          if (option.freePhase) {
+            return true
+          }
+        }
+      }
+
+      // Method 3: Check Android default option for freePhase (Google Play only)
+      if (product.defaultOption?.freePhase) {
+        return true
+      }
+    }
+  } catch (error) {
+    Log.warn(`Error checking package trial information: ${error}`)
+  }
+
+  return false
+}
+
+/**
+ * Robustly determines if an offering is a trial offering
+ * Uses multiple detection methods in order of reliability:
+ * 1. Checks package product information for trial periods (most reliable, no code changes needed)
+ * 2. Falls back to identifier substring check (for backward compatibility with existing offerings)
+ */
+export const isTrialOffering = (offering: PurchasesOffering | null | undefined): boolean => {
+  if (!offering) {
+    return false
+  }
+
+  // Method 1: Check package product information for trial periods
+  // This is the most reliable method as it checks the actual product configuration
+  // and doesn't require code updates when new offerings are added
+  if (hasTrialPackages(offering)) {
+    return true
+  }
+
+  const offeringId = offering.identifier
+
+  if (!offeringId || typeof offeringId !== "string") {
+    return false
+  }
+
+  // Method 2: Fallback to identifier substring check (for backward compatibility)
+  // This is less reliable but maintained to catch offerings that may not have
+  // package-level trial information available
+  if (offeringId.toLowerCase().includes("trial")) {
+    Log.warn(
+      `Trial detected via identifier substring check for "${offeringId}". Package-level trial detection should be preferred.`,
+    )
+    return true
+  }
+
+  return false
+}
+
+/**
  * Safely retrieves the age range from storage
  */
 export const getAgeRange = (): AgeRanges | null => {
@@ -116,8 +212,18 @@ export const getAgeBasedAbandonmentOffering = (
     }
   }
 
-  // Fallback to generic getValidOffering if age-based abandonment offering not found
-  return getValidOffering(offerings)
+  // Fallback to fallback_offering if age-based abandonment offering not found
+  if (offerings.all && typeof offerings.all === "object") {
+    const fallbackOffering = offerings.all["fallback_offering"]
+    if (isValidOffering(fallbackOffering)) {
+      Log.info(`Using fallback abandonment offering: fallback_offering`)
+      return fallbackOffering
+    }
+  }
+
+  // Last resort: log error and return null
+  Log.error("No abandonment offering found (neither age-based nor fallback_offering)")
+  return null
 }
 
 /**
@@ -175,13 +281,13 @@ export const handlePurchaseCompletion = (
 ): void => {
   Log.info(`${componentName}: Purchase completed`)
 
-  // Check if this is a trial offering and tag the user
-  const offeringId = offering?.identifier
-  if (offeringId?.includes("trial")) {
+  // Check if this is a trial offering using robust detection method
+  if (isTrialOffering(offering)) {
+    const offeringId = offering?.identifier || "unknown"
     try {
       OneSignal.User.addTag("trial_status", "started")
       ganon.set("trialStatus", "started")
-      Log.info(`${componentName}: Tagged user with trial_status: started`)
+      Log.info(`${componentName}: Tagged user with trial_status: started (offering: ${offeringId})`)
     } catch (tagError) {
       Log.error(`${componentName}: Error adding trial_status tag: ${tagError}`)
     }

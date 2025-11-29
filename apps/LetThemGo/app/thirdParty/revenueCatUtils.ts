@@ -216,9 +216,10 @@ export const presentPaywallIfNeededSafely = async (options: {
 
     // Handle purchase completion if purchase was successful
     if (result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED) {
-      // Get the current offering to determine which one was used
-      const offerings = await Purchases.getOfferings()
-      handlePurchaseCompletion(offerings.current, "presentPaywallIfNeededSafely")
+      // Note: presentPaywallIfNeeded may use a different offering than offerings.current
+      // based on entitlement requirements. We pass null since we can't reliably determine
+      // which offering was actually used. handlePurchaseCompletion handles null gracefully.
+      handlePurchaseCompletion(null, "presentPaywallIfNeededSafely")
     }
 
     return result

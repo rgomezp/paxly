@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { StyleProp, TextStyle, View, ViewStyle } from "react-native"
+
 import { Text } from "./Text"
 
 interface AnimatedTextSimulationProps {
@@ -29,6 +30,9 @@ export function AnimatedTextSimulation({
   const onCompleteRef = useRef(onAnimationComplete)
   const hasStartedRef = useRef(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const currentTextRef = useRef<string>("")
+  const tokensRef = useRef<string[]>([])
+  const indexRef = useRef<number>(1)
 
   // Update the ref when onAnimationComplete changes
   useEffect(() => {
@@ -43,28 +47,42 @@ export function AnimatedTextSimulation({
     }
 
     const tokens = tokenizer(text)
+    tokensRef.current = tokens
 
-    // Initialize with first token to avoid layout jank
-    if (tokens.length > 0) {
-      setCurrentTokens([tokens[0]])
-    } else {
-      setCurrentTokens([])
+    // Reset state if text has changed
+    const textChanged = currentTextRef.current !== text
+    if (textChanged) {
+      currentTextRef.current = text
+      hasStartedRef.current = false
+      indexRef.current = 1
+      // Initialize with first token to avoid layout jank
+      if (tokens.length > 0) {
+        setCurrentTokens([tokens[0]])
+      } else {
+        setCurrentTokens([])
+      }
     }
 
     // Only start animation if shouldStart is true
     if (!shouldStart) {
-      hasStartedRef.current = false
+      return
+    }
+
+    // Don't restart if we've already started for this text
+    if (hasStartedRef.current && !textChanged) {
       return
     }
 
     let isMounted = true
     hasStartedRef.current = true
-
-    let index = 1 // Start from 1 since the first token is already shown
+    indexRef.current = 1 // Reset index when starting animation
 
     const addNextToken = () => {
-      if (!isMounted || index >= tokens.length) {
-        if (isMounted && index >= tokens.length) {
+      const currentIndex = indexRef.current
+      const currentTokens = tokensRef.current
+
+      if (!isMounted || currentIndex >= currentTokens.length) {
+        if (isMounted && currentIndex >= currentTokens.length) {
           onCompleteRef.current?.()
         }
         return
@@ -74,8 +92,12 @@ export function AnimatedTextSimulation({
 
       timeoutRef.current = setTimeout(() => {
         if (!isMounted) return
-        setCurrentTokens((prev) => [...prev, tokens[index]])
-        index++
+        setCurrentTokens((prev) => {
+          // Ensure we're adding the correct token at the correct index
+          const tokenToAdd = currentTokens[currentIndex]
+          return [...prev, tokenToAdd]
+        })
+        indexRef.current = currentIndex + 1
         addNextToken()
       }, delay)
     }
@@ -91,29 +113,18 @@ export function AnimatedTextSimulation({
     }
   }, [text, tokenizer, minDelay, maxDelay, shouldStart])
 
+  const $container: ViewStyle = { position: "relative" }
+  const $invisibleText: TextStyle = { opacity: 0 }
+  const $overlayContainer: ViewStyle = { position: "absolute", top: 0, left: 0, right: 0 }
+
   return (
     <View style={$container}>
       {/* Invisible full text to reserve space */}
       <Text style={[style, $invisibleText]}>{text}</Text>
       {/* Animated text overlaid on top */}
-      <View style={$overlay}>
+      <View style={$overlayContainer}>
         <Text style={style}>{currentTokens.join(separator)}</Text>
       </View>
     </View>
   )
-}
-
-const $container: ViewStyle = {
-  position: "relative",
-}
-
-const $invisibleText: TextStyle = {
-  opacity: 0,
-}
-
-const $overlay: ViewStyle = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
 }

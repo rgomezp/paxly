@@ -93,15 +93,6 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Cleanup sound on unmount (but don't unload if still playing - let singleton manage it)
-  useEffect(() => {
-    return () => {
-      // Only cleanup if component is truly unmounting and sound should stop
-      // The singleton will persist the sound instance
-      // Note: We don't unload here to allow state to persist across remounts
-    }
-  }, [])
-
   const handleTogglePlay = async () => {
     // Prevent multiple simultaneous operations
     if (isLoadingRef.current || manager.getIsLoading()) return

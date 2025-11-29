@@ -1,6 +1,7 @@
 import { ganon } from "@/services/ganon/ganon"
 import { rootStoreSingleton } from "@/models"
 import { STORAGE_KEYS } from "@/services/ganon/StorageMapping"
+import AnalyticsManager from "./AnalyticsManager"
 
 interface CompletedLessonsState {
   lessonIds: string[]
@@ -23,6 +24,10 @@ export default class LessonManager {
       } catch {
         // If store not available for some reason, ignore; persistence is already done
       }
+      // Log analytics event
+      AnalyticsManager.getInstance().logEvent("lesson_completed", {
+        lesson_id: lessonId,
+      })
     }
   }
 
