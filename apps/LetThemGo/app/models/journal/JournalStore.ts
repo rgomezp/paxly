@@ -1,6 +1,7 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { ganon } from "@/services/ganon/ganon"
 import IJournalEntry from "@/types/IJournalEntry"
+import AnalyticsManager from "@/managers/AnalyticsManager"
 
 const JournalEntryModel = types.model("JournalEntry", {
   text: types.string,
@@ -41,6 +42,11 @@ export const JournalStoreModel = types
       } catch {
         // noop; persistence errors shouldn't break UI updates
       }
+
+      AnalyticsManager.getInstance().logEvent("journal_entry_created", {
+        textLength: text.length,
+      })
+
       return entry
     },
     deleteByDate(timestamp: number) {
