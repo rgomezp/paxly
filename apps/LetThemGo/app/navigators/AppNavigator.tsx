@@ -26,6 +26,9 @@ import BadgeManager from "@/managers/BadgeManager"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
 import { OneSignal } from "react-native-onesignal"
 import type { AppStackParamList } from "./navigationTypes"
+import { useAppInitialization } from "@/initialization/useAppInitialization"
+import { useInitialRootStore } from "@/models"
+import * as SplashScreen from "expo-splash-screen"
 
 /**
  * This is a list of all the route names that will exit the app if the back button
@@ -131,23 +134,77 @@ const AppStack = observer(function AppStack() {
   )
   const navigation = useNavigation()
   const lastPlacementRef = useRef<{ value: string; ts: number }>({ value: "", ts: 0 })
+  const { isInitialized } = useAppInitialization()
+  const { rehydrated } = useInitialRootStore()
+  const pendingNavigationRef = useRef<{ route?: string; rcOfferingId?: string } | null>(null)
+  
+  // Use refs to track current state so event handler always has latest values
+  const isInitializedRef = useRef(isInitialized)
+  const rehydratedRef = useRef(rehydrated)
+  const navigationRef = useRef(navigation)
 
-  OneSignal.Notifications.addEventListener("click", (event) => {
-    if (isOneSignalAdditionalData(event.notification.additionalData)) {
-      const data = event.notification.additionalData
-      const route = data?.route as string | undefined
-      const rcOfferingId = data?.rc_offering_id as string | undefined
+  // Keep refs in sync with current values
+  useEffect(() => {
+    isInitializedRef.current = isInitialized
+    rehydratedRef.current = rehydrated
+    navigationRef.current = navigation
+  }, [isInitialized, rehydrated, navigation])
 
-      // Check for conflicting parameters
-      if (route && rcOfferingId && route !== "Home") {
-        Log.error(
-          `OneSignal: Both route (${route}) and rc_offering_id provided. Overriding to Home.`,
-        )
-      }
+  // Handle pending navigation once app is initialized
+  useEffect(() => {
+    if (rehydrated && isInitialized && pendingNavigationRef.current) {
+      const pending = pendingNavigationRef.current
+      pendingNavigationRef.current = null
 
-      try {
+      // Small delay to ensure splash screen is visible briefly
+      setTimeout(() => {
+        try {
+          if (pending.rcOfferingId) {
+            Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${pending.rcOfferingId}`)
+            // @ts-ignore
+            navigation.navigate("Home", { rc_offering_id: pending.rcOfferingId })
+          } else if (pending.route) {
+            Log.info(`OneSignal: Clicked notification with route: ${pending.route}`)
+            // @ts-ignore
+            navigation.navigate(pending.route)
+          }
+        } catch (error) {
+          Log.error(`OneSignal: Error navigating: ${error}`)
+        }
+      }, 500)
+    }
+  }, [rehydrated, isInitialized, navigation])
+
+  useEffect(() => {
+    const handleNotificationClick = async (event: any) => {
+      if (isOneSignalAdditionalData(event.notification.additionalData)) {
+        const data = event.notification.additionalData
+        const route = data?.route as string | undefined
+        const rcOfferingId = data?.rc_offering_id as string | undefined
+
+        // Check for conflicting parameters
+        if (route && rcOfferingId && route !== "Home") {
+          Log.error(
+            `OneSignal: Both route (${route}) and rc_offering_id provided. Overriding to Home.`,
+          )
+        }
+
+        // Ensure splash screen is shown when opening from notification
+        try {
+          await SplashScreen.preventAutoHideAsync()
+        } catch (error) {
+          // Ignore if already prevented
+        }
+
+        // If app is not initialized, queue the navigation
+        if (!rehydratedRef.current || !isInitializedRef.current) {
+          Log.info("OneSignal: App not initialized, queuing navigation")
+          pendingNavigationRef.current = { route, rcOfferingId }
+          return
+        }
+
+        // Throttle identical offering navigations within 2s window
         if (rcOfferingId) {
-          // Throttle identical offering navigations within 2s window
           const now = Date.now()
           if (
             lastPlacementRef.current.value === rcOfferingId &&
@@ -156,21 +213,35 @@ const AppStack = observer(function AppStack() {
             return
           }
           lastPlacementRef.current = { value: rcOfferingId, ts: now }
-          Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${rcOfferingId}`)
-          // @ts-ignore
-          navigation.navigate("Home", { rc_offering_id: rcOfferingId })
-          return
         }
-        if (route) {
-          Log.info(`OneSignal: Clicked notification with route: ${route}`)
-          // @ts-ignore
-          navigation.navigate(route)
-        }
-      } catch (error) {
-        Log.error(`OneSignal: Error navigating: ${error}`)
+
+        // Small delay to ensure splash screen is visible briefly
+        setTimeout(() => {
+          try {
+            if (rcOfferingId) {
+              Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${rcOfferingId}`)
+              // @ts-ignore
+              navigationRef.current.navigate("Home", { rc_offering_id: rcOfferingId })
+              return
+            }
+            if (route) {
+              Log.info(`OneSignal: Clicked notification with route: ${route}`)
+              // @ts-ignore
+              navigationRef.current.navigate(route)
+            }
+          } catch (error) {
+            Log.error(`OneSignal: Error navigating: ${error}`)
+          }
+        }, 500)
       }
     }
-  })
+
+    const subscription = OneSignal.Notifications.addEventListener("click", handleNotificationClick)
+
+    return () => {
+      subscription.remove()
+    }
+  }, []) // Empty deps - we use refs for current values
 
   return (
     <Stack.Navigator
