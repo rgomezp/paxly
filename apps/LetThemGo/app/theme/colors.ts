@@ -27,6 +27,7 @@ const palette = {
   accent300: "#D28468",
   accent400: "#DDA28E",
   accent500: "#E8C1B4",
+  accent600: "#FAF0EC",
 
   angry100: "#F2D6CD",
   angry500: "#C03403",
@@ -61,7 +62,7 @@ export const colors = {
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral100,
+  background: palette.accent600,
   /**
    * Card/surface background color.
    */
