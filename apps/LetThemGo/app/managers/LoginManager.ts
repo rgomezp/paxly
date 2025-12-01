@@ -432,6 +432,16 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
         await GoogleSignin.signOut()
       }
       await signOut(getAuth())
+      
+      // Remove onboarding-related OneSignal tags before logging out
+      try {
+        OneSignal.User.removeTag("onboarding_status")
+        OneSignal.User.removeTag("onboard_no_login")
+        Log.info("LoginManager: logout: Removed OneSignal onboarding tags")
+      } catch (error) {
+        Log.error(`LoginManager: logout: Error removing OneSignal tags: ${error}`)
+      }
+      
       OneSignal.logout()
 
       // Use Ganon's logout lifecycle method
