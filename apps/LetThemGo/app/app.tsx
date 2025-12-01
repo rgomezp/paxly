@@ -37,6 +37,8 @@ import { useEffect } from "react"
 import { StyleSheet } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { FlagProvider } from "./hooks/useFlags"
+import * as SystemUI from "expo-system-ui"
+import { lightTheme, darkTheme } from "./theme"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -143,6 +145,14 @@ export function App() {
   useEffect(() => {
     SplashScreen.preventAutoHideAsync()
   }, [])
+
+  // Set system UI background color (affects splash screen area) based on theme
+  useEffect(() => {
+    const theme = themeScheme === "dark" ? darkTheme : lightTheme
+    SystemUI.setBackgroundColorAsync(theme.colors.background).catch(() => {
+      // Ignore errors if not available
+    })
+  }, [themeScheme])
 
   // Setup auth listener once on mount
   useEffect(() => {
