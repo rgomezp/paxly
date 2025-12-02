@@ -1,7 +1,7 @@
 import { ganon } from "@/services/ganon/ganon"
 import { rootStoreSingleton } from "@/models"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
-import { Activity } from "@/types/Activities"
+import { Activity, ALL_ACTIVITIES } from "@/types/Activities"
 import { ALL_MOODS, MOODS, MoodId } from "@/types/Moods"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import AnalyticsManager from "@/managers/AnalyticsManager"
@@ -91,6 +91,120 @@ export default class MoodManager {
   private static resolveMoodId(item: IMoodHistoryItem): MoodId | undefined {
     const found = Object.entries(MOODS).find(([, mood]) => mood.title === item.mood.title)
     return found?.[0] as MoodId | undefined
+  }
+
+  /**
+   * Returns moods sorted with the top 3 most logged moods first, followed by the top 3 most recently logged moods
+   * (excluding the top 3 most logged), if at least 10 total logs exist. Otherwise returns moods in their original order.
+   */
+  static getSortedMoods(): MoodId[] {
+    const history = MoodManager.getHistory()
+    const totalLogs = history.length
+    const minLogsForPersonalization = 10
+
+    // If we have less than the minimum logs, return original order
+    if (totalLogs < minLogsForPersonalization) {
+      return ALL_MOODS
+    }
+
+    // Count mood occurrences
+    const moodCounts: Record<MoodId, number> = Object.fromEntries(
+      ALL_MOODS.map((moodId) => [moodId, 0]),
+    ) as Record<MoodId, number>
+
+    history.forEach((item) => {
+      const moodId = MoodManager.resolveMoodId(item)
+      if (moodId) {
+        moodCounts[moodId] = (moodCounts[moodId] || 0) + 1
+      }
+    })
+
+    // Get top 3 most logged moods (sorted by count, descending)
+    const topMostLoggedMoods = Object.entries(moodCounts)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3)
+      .map(([moodId]) => moodId as MoodId)
+
+    // Get top 3 most recently logged moods (excluding the top 3 most logged)
+    // Sort history by date descending (most recent first)
+    const sortedByDate = [...history].sort((a, b) => b.date - a.date)
+
+    // Extract unique moods from most recent entries, excluding top 3 most logged
+    const recentMoods: MoodId[] = []
+    const seenMoods = new Set<MoodId>()
+
+    for (const item of sortedByDate) {
+      const moodId = MoodManager.resolveMoodId(item)
+      if (
+        moodId &&
+        !topMostLoggedMoods.includes(moodId) &&
+        !seenMoods.has(moodId) &&
+        recentMoods.length < 3
+      ) {
+        recentMoods.push(moodId)
+        seenMoods.add(moodId)
+      }
+    }
+
+    // Combine: top 3 most logged, then top 3 most recent, then the rest
+    const prioritizedMoods = [...topMostLoggedMoods, ...recentMoods]
+    return [...prioritizedMoods, ...ALL_MOODS.filter((m) => !prioritizedMoods.includes(m))]
+  }
+
+  /**
+   * Returns activities sorted with the top 3 most logged activities first, followed by the top 3 most recently logged activities
+   * (excluding the top 3 most logged), if at least 10 total logs exist. Otherwise returns activities in their original order.
+   */
+  static getSortedActivities(): Activity[] {
+    const history = MoodManager.getHistory()
+    const totalLogs = history.length
+    const minLogsForPersonalization = 10
+
+    // If we have less than the minimum logs, return original order
+    if (totalLogs < minLogsForPersonalization) {
+      return ALL_ACTIVITIES
+    }
+
+    // Count activity occurrences
+    const activityCounts: Record<Activity, number> = Object.fromEntries(
+      ALL_ACTIVITIES.map((activity) => [activity, 0]),
+    ) as Record<Activity, number>
+
+    history.forEach((item) => {
+      activityCounts[item.activity] = (activityCounts[item.activity] || 0) + 1
+    })
+
+    // Get top 3 most logged activities (sorted by count, descending)
+    const topMostLoggedActivities = Object.entries(activityCounts)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3)
+      .map(([activity]) => activity as Activity)
+
+    // Get top 3 most recently logged activities (excluding the top 3 most logged)
+    // Sort history by date descending (most recent first)
+    const sortedByDate = [...history].sort((a, b) => b.date - a.date)
+
+    // Extract unique activities from most recent entries, excluding top 3 most logged
+    const recentActivities: Activity[] = []
+    const seenActivities = new Set<Activity>()
+
+    for (const item of sortedByDate) {
+      if (
+        !topMostLoggedActivities.includes(item.activity) &&
+        !seenActivities.has(item.activity) &&
+        recentActivities.length < 3
+      ) {
+        recentActivities.push(item.activity)
+        seenActivities.add(item.activity)
+      }
+    }
+
+    // Combine: top 3 most logged, then top 3 most recent, then the rest
+    const prioritizedActivities = [...topMostLoggedActivities, ...recentActivities]
+    return [
+      ...prioritizedActivities,
+      ...ALL_ACTIVITIES.filter((a) => !prioritizedActivities.includes(a)),
+    ]
   }
 
   /**

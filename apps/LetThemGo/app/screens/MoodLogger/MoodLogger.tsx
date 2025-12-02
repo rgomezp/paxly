@@ -16,9 +16,9 @@ import { Text } from "@/components"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ISlide } from "@/types/ISlide"
-import { ALL_MOODS, MOOD_TO_EMOJI, MoodId, MOODS } from "@/types/Moods"
+import { MOOD_TO_EMOJI, MoodId, MOODS } from "@/types/Moods"
 import { MoodCategory } from "@/types/MoodCategory"
-import { ACTIVITY_TO_EMOJI, ALL_ACTIVITIES, Activity } from "@/types/Activities"
+import { ACTIVITY_TO_EMOJI, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
 import { ProgressBar, PlantyFromCurrentGoal } from "@/components"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
@@ -46,6 +46,10 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
     ],
     [],
   )
+
+  // Get sorted moods and activities with top 3 most logged first (if at least 10 total logs)
+  const sortedMoods = useMemo(() => MoodManager.getSortedMoods(), [])
+  const sortedActivities = useMemo(() => MoodManager.getSortedActivities(), [])
 
   function goTo(index: number) {
     pagerRef.current?.scrollTo({ x: width * index, animated: true })
@@ -112,7 +116,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
             />
           </View>
           <Grid>
-            {ALL_MOODS.map((m) => {
+            {sortedMoods.map((m) => {
               const category = MOODS[m].category
               const categoryTextColor =
                 category === MoodCategory.Positive
@@ -144,7 +148,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
             style={[$activityHeaderText, { color: theme.colors.text }]}
           />
           <Grid>
-            {ALL_ACTIVITIES.map((a) => (
+            {sortedActivities.map((a) => (
               <EmojiTile
                 key={a}
                 label={a.replace(/_/g, " ")}
