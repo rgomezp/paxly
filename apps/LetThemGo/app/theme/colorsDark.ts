@@ -45,6 +45,7 @@ export const colors = {
   text: palette.neutral800,
   textDim: palette.neutral600,
   background: palette.neutral200,
+  textInputBackground: palette.neutral300,
   card: palette.neutral300,
   border: palette.neutral400,
   tint: palette.primary500,

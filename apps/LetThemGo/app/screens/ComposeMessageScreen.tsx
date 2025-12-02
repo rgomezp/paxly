@@ -198,7 +198,7 @@ const $input: ThemedStyle<TextStyle> = (theme) => ({
   borderRadius: 12,
   padding: 12,
   color: theme.colors.text,
-  backgroundColor: theme.colors.card,
+  backgroundColor: theme.colors.textInputBackground,
   fontSize: 16,
   lineHeight: 24,
 })

@@ -64,6 +64,10 @@ export const colors = {
    */
   background: palette.accent600,
   /**
+   * The default background color of the text input.
+   */
+  textInputBackground: palette.neutral100,
+  /**
    * Card/surface background color.
    */
   card: palette.neutral200,
