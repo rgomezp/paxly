@@ -137,7 +137,7 @@ const AppStack = observer(function AppStack() {
   const { isInitialized } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
   const pendingNavigationRef = useRef<{ route?: string; rcOfferingId?: string } | null>(null)
-  
+
   // Use refs to track current state so event handler always has latest values
   const isInitializedRef = useRef(isInitialized)
   const rehydratedRef = useRef(rehydrated)
@@ -192,7 +192,7 @@ const AppStack = observer(function AppStack() {
         // Ensure splash screen is shown when opening from notification
         try {
           await SplashScreen.preventAutoHideAsync()
-        } catch (error) {
+        } catch {
           // Ignore if already prevented
         }
 
@@ -236,10 +236,10 @@ const AppStack = observer(function AppStack() {
       }
     }
 
-    const subscription = OneSignal.Notifications.addEventListener("click", handleNotificationClick)
+    OneSignal.Notifications.addEventListener("click", handleNotificationClick)
 
     return () => {
-      subscription.remove()
+      OneSignal.Notifications.removeEventListener("click", handleNotificationClick)
     }
   }, []) // Empty deps - we use refs for current values
 
