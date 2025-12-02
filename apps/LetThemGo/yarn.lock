@@ -4944,11 +4944,6 @@ expo-asset@~11.1.7:
     "@expo/image-utils" "^0.7.6"
     expo-constants "~17.1.7"
 
-expo-av@~15.1.7:
-  version "15.1.7"
-  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-15.1.7.tgz#a8422646eca9250c842e8a44fccccb1a4b070a05"
-  integrity sha512-NC+JR+65sxXfQN1mOHp3QBaXTL2J+BzNwVO27XgUEc5s9NaoBTdHWElYXrfxvik6xwytZ+a7abrqfNNgsbQzsA==
-
 expo-build-properties@~0.14.8:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/expo-build-properties/-/expo-build-properties-0.14.8.tgz#03aac5eb297c1f4ad3c5b95d8bf897340104d041"
@@ -8133,6 +8128,11 @@ react-native-screens@~4.11.1:
     react-freeze "^1.0.0"
     react-native-is-edge-to-edge "^1.1.7"
     warn-once "^0.1.0"
+
+react-native-sound@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/react-native-sound/-/react-native-sound-0.13.0.tgz#ec8a5436ea748c5888dfbef6e39d8a27e97e8aac"
+  integrity sha512-SnREzaV0fmpYNuDV1Y8M7FutmaYei0pKBgpldULKKJMkoA3DBv5ppyRxY+oxRQ7HwEpt6LsonrKgM+13GH/tCw==
 
 react-native-svg@15.11.2:
   version "15.11.2"

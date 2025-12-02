@@ -2,7 +2,7 @@ import { TouchableOpacity, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import PlantyManager from "@/managers/PlantyManager"
-import { Audio } from "expo-av"
+import Sound from "react-native-sound"
 
 interface WaterDropletButtonProps {
   onPress?: () => void
@@ -13,7 +13,7 @@ interface WaterDropletButtonProps {
 export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButtonProps) {
   const { theme } = useAppTheme()
 
-  const handlePress = async () => {
+  const handlePress = () => {
     // Only mark as watered if it's not a demo
     if (!isDemo) {
       PlantyManager.markWateredToday()
@@ -24,37 +24,27 @@ export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButt
 
     try {
       // Always create a fresh sound instance to avoid state issues
-      const { sound } = await Audio.Sound.createAsync(require("../../assets/sounds/droplet.mp3"), {
-        shouldPlay: true,
-        volume: 1.0,
-      })
-
-      // Set up status listener for auto-cleanup
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded && status.didJustFinish) {
-          sound.unloadAsync().catch(() => {
-            // Ignore cleanup errors
-          })
-        }
-      })
-
-      // Auto-cleanup after playback completes (sound is ~456ms, give it 1s buffer)
-      setTimeout(() => {
-        sound
-          .getStatusAsync()
-          .then((status) => {
-            if (status.isLoaded) {
-              sound.unloadAsync().catch(() => {
-                // Ignore cleanup errors
-              })
+      const sound = new Sound(
+        require("../../assets/sounds/droplet.mp3"),
+        Sound.MAIN_BUNDLE,
+        (error) => {
+          if (error) {
+            console.error("WaterDropletButton: Failed to load droplet sound:", error)
+            return
+          }
+          // Sound loaded successfully, start playing
+          sound.setVolume(1.0)
+          sound.play((playError) => {
+            if (playError) {
+              console.error("WaterDropletButton: Failed to play droplet sound:", playError)
             }
+            // Auto-cleanup after playback completes
+            sound.release()
           })
-          .catch(() => {
-            // Sound already unloaded, ignore
-          })
-      }, 1000)
+        },
+      )
     } catch (error) {
-      console.error("WaterDropletButton: Failed to play droplet sound:", error)
+      console.error("WaterDropletButton: Failed to create sound:", error)
     }
   }
 

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, ImageStyle, Image, Animated } from "react-native"
-import { Audio } from "expo-av"
+import Sound from "react-native-sound"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -58,42 +58,29 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
       ]).start()
 
       // Play award sparkle sound when award is set
-      const playSparkleSound = async () => {
+      const playSparkleSound = () => {
         try {
-          const { sound } = await Audio.Sound.createAsync(
+          const sound = new Sound(
             require("../../assets/sounds/award_sparkle.mp3"),
-            {
-              shouldPlay: true,
-              volume: 1.0,
+            Sound.MAIN_BUNDLE,
+            (error) => {
+              if (error) {
+                Log.error("ClaimAwardScreen: Failed to load award sparkle sound:", error)
+                return
+              }
+              // Sound loaded successfully, start playing
+              sound.setVolume(1.0)
+              sound.play((playError) => {
+                if (playError) {
+                  Log.error("ClaimAwardScreen: Failed to play award sparkle sound:", playError)
+                }
+                // Auto-cleanup after playback completes
+                sound.release()
+              })
             },
           )
-
-          // Set up status listener for auto-cleanup
-          sound.setOnPlaybackStatusUpdate((status) => {
-            if (status.isLoaded && status.didJustFinish) {
-              sound.unloadAsync().catch(() => {
-                // Ignore cleanup errors
-              })
-            }
-          })
-
-          // Auto-cleanup after playback completes
-          setTimeout(() => {
-            sound
-              .getStatusAsync()
-              .then((status) => {
-                if (status.isLoaded) {
-                  sound.unloadAsync().catch(() => {
-                    // Ignore cleanup errors
-                  })
-                }
-              })
-              .catch(() => {
-                // Sound already unloaded, ignore
-              })
-          }, 3000) // 3 second buffer for cleanup
         } catch (error) {
-          Log.error("ClaimAwardScreen: Failed to play award sparkle sound:", error)
+          Log.error("ClaimAwardScreen: Failed to create award sparkle sound:", error)
         }
       }
 

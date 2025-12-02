@@ -1,6 +1,6 @@
 import { FC, useState, useRef, useEffect } from "react"
 import { View, ViewStyle } from "react-native"
-import { Audio } from "expo-av"
+import Sound from "react-native-sound"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "@/components/buttons/RectangularButton"
@@ -9,7 +9,7 @@ import Log from "@/utils/Log"
 // Singleton to persist nature sounds state across component remounts
 class NatureSoundsManager {
   private static instance: NatureSoundsManager
-  private sound: Audio.Sound | null = null
+  private sound: Sound | null = null
   private isPlayingState: boolean = false
   private isLoading: boolean = false
 
@@ -20,11 +20,11 @@ class NatureSoundsManager {
     return NatureSoundsManager.instance
   }
 
-  getSound(): Audio.Sound | null {
+  getSound(): Sound | null {
     return this.sound
   }
 
-  setSound(sound: Audio.Sound | null) {
+  setSound(sound: Sound | null) {
     this.sound = sound
   }
 
@@ -44,11 +44,11 @@ class NatureSoundsManager {
     this.isLoading = isLoading
   }
 
-  async cleanup() {
+  cleanup() {
     if (this.sound) {
       try {
-        await this.sound.stopAsync()
-        await this.sound.unloadAsync()
+        this.sound.stop()
+        this.sound.release()
       } catch (error) {
         Log.error("NatureSoundsManager: Cleanup error:", error)
       } finally {
@@ -63,7 +63,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
   const { themed, theme } = useAppTheme()
   const manager = NatureSoundsManager.getInstance()
   const [isPlaying, setIsPlaying] = useState(() => manager.getIsPlaying())
-  const soundRef = useRef<Audio.Sound | null>(manager.getSound())
+  const soundRef = useRef<Sound | null>(manager.getSound())
   const isLoadingRef = useRef(manager.getIsLoading())
 
   // Sync state with singleton on mount and check actual playback status
@@ -72,20 +72,15 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
     if (currentSound && currentSound !== soundRef.current) {
       soundRef.current = currentSound
       // Check actual playback status to sync state
-      currentSound
-        .getStatusAsync()
-        .then((status) => {
-          if (status.isLoaded) {
-            const actuallyPlaying = status.isPlaying
-            setIsPlaying(actuallyPlaying)
-            manager.setIsPlaying(actuallyPlaying)
-          }
-        })
-        .catch(() => {
-          // Sound might be unloaded, reset state
-          setIsPlaying(false)
-          manager.setIsPlaying(false)
-        })
+      try {
+        const actuallyPlaying = currentSound.isPlaying()
+        setIsPlaying(actuallyPlaying)
+        manager.setIsPlaying(actuallyPlaying)
+      } catch {
+        // Sound might be released, reset state
+        setIsPlaying(false)
+        manager.setIsPlaying(false)
+      }
     } else {
       setIsPlaying(manager.getIsPlaying())
     }
@@ -93,7 +88,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleTogglePlay = async () => {
+  const handleTogglePlay = () => {
     // Prevent multiple simultaneous operations
     if (isLoadingRef.current || manager.getIsLoading()) return
 
@@ -102,7 +97,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
         // Pause the sound
         const sound = soundRef.current || manager.getSound()
         if (sound) {
-          await sound.pauseAsync()
+          sound.pause()
           setIsPlaying(false)
           manager.setIsPlaying(false)
         }
@@ -113,27 +108,50 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
           manager.setIsLoading(true)
           isLoadingRef.current = true
           // Create and load the sound if it doesn't exist
-          const { sound: newSound } = await Audio.Sound.createAsync(
+          const newSound = new Sound(
             require("../../assets/sounds/birds.mp3"),
-            {
-              shouldPlay: true,
-              isLooping: true,
-              volume: 1.0,
+            Sound.MAIN_BUNDLE,
+            (error) => {
+              if (error) {
+                Log.error("NatureSoundsSection: Failed to load sound:", error)
+                setIsPlaying(false)
+                manager.setIsPlaying(false)
+                isLoadingRef.current = false
+                manager.setIsLoading(false)
+                return
+              }
+              // Sound loaded successfully, start playing
+              newSound.setNumberOfLoops(-1) // Loop indefinitely
+              newSound.setVolume(1.0)
+              newSound.play((playError) => {
+                if (playError) {
+                  Log.error("NatureSoundsSection: Failed to play sound:", playError)
+                  setIsPlaying(false)
+                  manager.setIsPlaying(false)
+                }
+              })
+              setIsPlaying(true)
+              manager.setIsPlaying(true)
+              isLoadingRef.current = false
+              manager.setIsLoading(false)
             },
           )
           sound = newSound
           soundRef.current = sound
           manager.setSound(sound)
-          setIsPlaying(true)
-          manager.setIsPlaying(true)
-          isLoadingRef.current = false
-          manager.setIsLoading(false)
         } else {
           // Resume if it already exists
           soundRef.current = sound
-          await sound.playAsync()
-          setIsPlaying(true)
-          manager.setIsPlaying(true)
+          sound.play((playError) => {
+            if (playError) {
+              Log.error("NatureSoundsSection: Failed to play sound:", playError)
+              setIsPlaying(false)
+              manager.setIsPlaying(false)
+            } else {
+              setIsPlaying(true)
+              manager.setIsPlaying(true)
+            }
+          })
         }
       }
     } catch (error) {

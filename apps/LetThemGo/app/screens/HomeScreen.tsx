@@ -13,7 +13,7 @@ import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
-import { Audio } from "expo-av"
+import Sound from "react-native-sound"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
@@ -44,42 +44,29 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
     hasPlayedChime = true
 
-    const playChime = async () => {
+    const playChime = () => {
       try {
-        const { sound } = await Audio.Sound.createAsync(
+        const sound = new Sound(
           require("../../assets/sounds/melancholy-chime.mp3"),
-          {
-            shouldPlay: true,
-            volume: 1.0,
+          Sound.MAIN_BUNDLE,
+          (error) => {
+            if (error) {
+              Log.error("HomeScreen: Failed to load melancholy chime:", error)
+              return
+            }
+            // Sound loaded successfully, start playing
+            sound.setVolume(1.0)
+            sound.play((playError) => {
+              if (playError) {
+                Log.error("HomeScreen: Failed to play melancholy chime:", playError)
+              }
+              // Auto-cleanup after playback completes
+              sound.release()
+            })
           },
         )
-
-        // Set up status listener for auto-cleanup
-        sound.setOnPlaybackStatusUpdate((status) => {
-          if (status.isLoaded && status.didJustFinish) {
-            sound.unloadAsync().catch(() => {
-              // Ignore cleanup errors
-            })
-          }
-        })
-
-        // Auto-cleanup after playback completes
-        setTimeout(() => {
-          sound
-            .getStatusAsync()
-            .then((status) => {
-              if (status.isLoaded) {
-                sound.unloadAsync().catch(() => {
-                  // Ignore cleanup errors
-                })
-              }
-            })
-            .catch(() => {
-              // Sound already unloaded, ignore
-            })
-        }, 3000) // 3 second buffer for cleanup
       } catch (error) {
-        Log.error("HomeScreen: Failed to play melancholy chime:", error)
+        Log.error("HomeScreen: Failed to create melancholy chime sound:", error)
       }
     }
 
