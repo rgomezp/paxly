@@ -13,7 +13,7 @@ import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
-import Sound from "react-native-sound"
+import { createAudioPlayer } from "expo-audio"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 
@@ -46,27 +46,31 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
     const playChime = () => {
       try {
-        const sound = new Sound(
-          require("../../assets/sounds/melancholy-chime.mp3"),
-          Sound.MAIN_BUNDLE,
-          (error) => {
-            if (error) {
-              Log.error("HomeScreen: Failed to load melancholy chime:", error)
-              return
+        const sound = createAudioPlayer(require("../../assets/sounds/melancholy-chime.mp3"))
+        sound.volume = 1.0
+        sound.play()
+
+        // Set up listener for auto-cleanup when playback finishes
+        const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+          if (status.didJustFinish) {
+            sound.remove()
+            removeListener.remove()
+          }
+        })
+
+        // Auto-cleanup after playback completes
+        setTimeout(() => {
+          try {
+            if (sound.isLoaded) {
+              sound.remove()
+              removeListener.remove()
             }
-            // Sound loaded successfully, start playing
-            sound.setVolume(1.0)
-            sound.play((playError) => {
-              if (playError) {
-                Log.error("HomeScreen: Failed to play melancholy chime:", playError)
-              }
-              // Auto-cleanup after playback completes
-              sound.release()
-            })
-          },
-        )
+          } catch {
+            // Sound already removed, ignore
+          }
+        }, 3000) // 3 second buffer for cleanup
       } catch (error) {
-        Log.error("HomeScreen: Failed to create melancholy chime sound:", error)
+        Log.error("HomeScreen: Failed to play melancholy chime:", error)
       }
     }
 

@@ -2,7 +2,7 @@ import { TouchableOpacity, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import PlantyManager from "@/managers/PlantyManager"
-import Sound from "react-native-sound"
+import { createAudioPlayer } from "expo-audio"
 
 interface WaterDropletButtonProps {
   onPress?: () => void
@@ -24,27 +24,31 @@ export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButt
 
     try {
       // Always create a fresh sound instance to avoid state issues
-      const sound = new Sound(
-        require("../../assets/sounds/droplet.mp3"),
-        Sound.MAIN_BUNDLE,
-        (error) => {
-          if (error) {
-            console.error("WaterDropletButton: Failed to load droplet sound:", error)
-            return
+      const sound = createAudioPlayer(require("../../assets/sounds/droplet.mp3"))
+      sound.volume = 1.0
+      sound.play()
+
+      // Set up listener for auto-cleanup when playback finishes
+      const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+        if (status.didJustFinish) {
+          sound.remove()
+          removeListener.remove()
+        }
+      })
+
+      // Auto-cleanup after playback completes (sound is ~456ms, give it 1s buffer)
+      setTimeout(() => {
+        try {
+          if (sound.isLoaded) {
+            sound.remove()
+            removeListener.remove()
           }
-          // Sound loaded successfully, start playing
-          sound.setVolume(1.0)
-          sound.play((playError) => {
-            if (playError) {
-              console.error("WaterDropletButton: Failed to play droplet sound:", playError)
-            }
-            // Auto-cleanup after playback completes
-            sound.release()
-          })
-        },
-      )
+        } catch {
+          // Sound already removed, ignore
+        }
+      }, 1000)
     } catch (error) {
-      console.error("WaterDropletButton: Failed to create sound:", error)
+      console.error("WaterDropletButton: Failed to play droplet sound:", error)
     }
   }
 

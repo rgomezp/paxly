@@ -202,28 +202,24 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
   },
 }))
 
-jest.mock("react-native-sound", () => {
-  const mockSound = jest.fn().mockImplementation((source, basePath, callback) => {
-    const soundInstance = {
-      play: jest.fn((playCallback) => {
-        if (playCallback) {
-          setTimeout(() => playCallback(null), 0)
-        }
-      }),
-      pause: jest.fn(),
-      stop: jest.fn(),
-      release: jest.fn(),
-      setVolume: jest.fn(),
-      setNumberOfLoops: jest.fn(),
-      isPlaying: jest.fn(() => false),
-    }
-    // Simulate async loading by calling callback after a tick
-    if (callback) {
-      setTimeout(() => callback(null), 0)
-    }
-    return soundInstance
-  }) as any
-  mockSound.MAIN_BUNDLE = ""
-  mockSound.setCategory = jest.fn()
-  return mockSound
-})
+jest.mock("expo-audio", () => ({
+  __esModule: true,
+  createAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    pause: jest.fn(),
+    remove: jest.fn(),
+    addListener: jest.fn(() => ({ remove: jest.fn() })),
+    playing: false,
+    isLoaded: true,
+    loop: false,
+    volume: 1.0,
+  })),
+  setAudioModeAsync: jest.fn(() => Promise.resolve()),
+  useAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    pause: jest.fn(),
+    remove: jest.fn(),
+    playing: false,
+    isLoaded: true,
+  })),
+}))

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, ImageStyle, Image, Animated } from "react-native"
-import Sound from "react-native-sound"
+import { createAudioPlayer } from "expo-audio"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -60,27 +60,31 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
       // Play award sparkle sound when award is set
       const playSparkleSound = () => {
         try {
-          const sound = new Sound(
-            require("../../assets/sounds/award_sparkle.mp3"),
-            Sound.MAIN_BUNDLE,
-            (error) => {
-              if (error) {
-                Log.error("ClaimAwardScreen: Failed to load award sparkle sound:", error)
-                return
+          const sound = createAudioPlayer(require("../../assets/sounds/award_sparkle.mp3"))
+          sound.volume = 1.0
+          sound.play()
+
+          // Set up listener for auto-cleanup when playback finishes
+          const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+            if (status.didJustFinish) {
+              sound.remove()
+              removeListener.remove()
+            }
+          })
+
+          // Auto-cleanup after playback completes
+          setTimeout(() => {
+            try {
+              if (sound.isLoaded) {
+                sound.remove()
+                removeListener.remove()
               }
-              // Sound loaded successfully, start playing
-              sound.setVolume(1.0)
-              sound.play((playError) => {
-                if (playError) {
-                  Log.error("ClaimAwardScreen: Failed to play award sparkle sound:", playError)
-                }
-                // Auto-cleanup after playback completes
-                sound.release()
-              })
-            },
-          )
+            } catch {
+              // Sound already removed, ignore
+            }
+          }, 3000) // 3 second buffer for cleanup
         } catch (error) {
-          Log.error("ClaimAwardScreen: Failed to create award sparkle sound:", error)
+          Log.error("ClaimAwardScreen: Failed to play award sparkle sound:", error)
         }
       }
 

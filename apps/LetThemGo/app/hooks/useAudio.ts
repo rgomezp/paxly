@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react"
-import Sound from "react-native-sound"
-
-// Enable playback in silence mode (iOS)
-Sound.setCategory("Playback", true)
+import { setAudioModeAsync } from "expo-audio"
 
 export function useAudio() {
   const [isAudioSetup, setIsAudioSetup] = useState(false)
 
   useEffect(() => {
-    // react-native-sound doesn't require async setup like expo-av
-    // The Sound.setCategory call above handles audio mode configuration
-    setIsAudioSetup(true)
+    setupAudio()
   }, [])
+
+  const setupAudio = async () => {
+    await setAudioModeAsync({
+      playsInSilentMode: true,
+      interruptionMode: "mixWithOthers",
+      interruptionModeAndroid: "duckOthers",
+    })
+    setIsAudioSetup(true)
+  }
 
   return isAudioSetup
 }

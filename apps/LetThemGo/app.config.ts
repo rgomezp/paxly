@@ -106,6 +106,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       ],
       "expo-localization",
       "expo-font",
+      "expo-audio",
       googleSignInPluginConfig,
       "@react-native-firebase/app",
       "@react-native-firebase/app-check",

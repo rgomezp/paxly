@@ -10,7 +10,7 @@ import type { TextStyle, ViewStyle } from "react-native"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import MessageIntoTheVoidManager from "@/managers/MessageIntoTheVoidManager"
 import SendMessageConfirmationModal from "@/components/modals/SendMessageConfirmationModal"
-import Sound from "react-native-sound"
+import { createAudioPlayer } from "expo-audio"
 import Log from "@/utils/Log"
 import { useStores } from "@/models"
 
@@ -65,34 +65,31 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
     const handleConfirmSend = () => {
       // Play send sound effect
       try {
-        const sound = new Sound(
-          require("../../assets/sounds/transition.m4a"),
-          Sound.MAIN_BUNDLE,
-          (error) => {
-            if (error) {
-              Log.error("ComposeMessageScreen: Failed to load send sound:", error)
-              // Continue with sending message even if sound fails
-              MessageIntoTheVoidManager.sendMessage(text.trim())
-              setIsSendModalVisible(false)
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "TabNavigator" }],
-              })
-              return
+        const sound = createAudioPlayer(require("../../assets/sounds/transition.m4a"))
+        sound.volume = 1.0
+        sound.play()
+
+        // Set up listener for auto-cleanup when playback finishes
+        const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+          if (status.didJustFinish) {
+            sound.remove()
+            removeListener.remove()
+          }
+        })
+
+        // Auto-cleanup after playback completes
+        setTimeout(() => {
+          try {
+            if (sound.isLoaded) {
+              sound.remove()
+              removeListener.remove()
             }
-            // Sound loaded successfully, start playing
-            sound.setVolume(1.0)
-            sound.play((playError) => {
-              if (playError) {
-                Log.error("ComposeMessageScreen: Failed to play send sound:", playError)
-              }
-              // Auto-cleanup after playback completes
-              sound.release()
-            })
-          },
-        )
+          } catch {
+            // Sound already removed, ignore
+          }
+        }, 3000) // 3 second buffer for cleanup
       } catch (error) {
-        Log.error("ComposeMessageScreen: Failed to create send sound:", error)
+        Log.error("ComposeMessageScreen: Failed to play send sound:", error)
       }
 
       MessageIntoTheVoidManager.sendMessage(text.trim())
