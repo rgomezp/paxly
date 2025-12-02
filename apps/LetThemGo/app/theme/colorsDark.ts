@@ -47,6 +47,7 @@ export const colors = {
   background: palette.neutral200,
   textInputBackground: palette.neutral300,
   card: palette.neutral300,
+  dailyTasksTimelineBackground: palette.neutral300,
   border: palette.neutral400,
   tint: palette.primary500,
   tintInactive: palette.neutral300,

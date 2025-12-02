@@ -121,7 +121,7 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
             themed([
               $buttonContainer,
               {
-                backgroundColor: theme.colors.card,
+                backgroundColor: theme.colors.dailyTasksTimelineBackground,
                 opacity: disabled ? 0.5 : 1,
               },
             ]),

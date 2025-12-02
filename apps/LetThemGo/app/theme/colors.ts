@@ -95,4 +95,8 @@ export const colors = {
    * Error Background.
    */
   errorBackground: palette.angry100,
+  /**
+   * The default background color of the daily tasks timeline.
+   */
+  dailyTasksTimelineBackground: palette.neutral100,
 } as const
