@@ -10,6 +10,7 @@ import { OneSignal } from "react-native-onesignal"
 
 type MascotNameSlideProps = {
   onSelection?: () => void
+  refreshMascotName?: () => void
 }
 
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1d/planty.webp")
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export function mascotNameSlide({ onSelection }: MascotNameSlideProps): ISlide {
+export function mascotNameSlide({ onSelection, refreshMascotName }: MascotNameSlideProps): ISlide {
   // Read saved mascotName from ganon
   const savedMascotName = ganon.get("mascotName") as MascotNames | null
   const initialSelected = savedMascotName ? [savedMascotName] : []
@@ -54,6 +55,9 @@ export function mascotNameSlide({ onSelection }: MascotNameSlideProps): ISlide {
     } catch (e) {
       Log.error(`MascotNameSlide: Error saving mascotName: ${e}`)
     }
+
+    // Refresh mascot name in slide state so downstream slides see the latest value
+    refreshMascotName?.()
 
     // Tag OneSignal user with mascot name
     try {
