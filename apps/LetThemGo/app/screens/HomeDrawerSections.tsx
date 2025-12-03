@@ -164,17 +164,34 @@ export const useHomeDrawerSections = () => {
     {
       name: "FAQ",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => {
-        const handlePress = () => {
+        const handleHowToWaterPress = () => {
           Alert.alert(
             `How to Water ${capitalizedMascotName}`,
-            `Simply complete daily tasks then press the water droplet above ${capitalizedMascotName} to water.`,
+            `Simply complete a daily task to earn water. Then press the water droplet above ${capitalizedMascotName} to water.`,
+          )
+        }
+
+        const handleWhySadPress = () => {
+          Alert.alert(
+            `Why is ${capitalizedMascotName} Sad?`,
+            `You haven't watered ${capitalizedMascotName} in 3 days or more! Complete a daily task then water ${capitalizedMascotName} to keep healthy and happy!`,
           )
         }
 
         return [
           <TouchableOpacity
+            key="faq-why-sad"
+            onPress={handleWhySadPress}
+            style={themed({ marginBottom: theme.spacing.sm })}
+          >
+            <Text
+              text={`Why is ${capitalizedMascotName} Sad?`}
+              style={themed({ color: theme.colors.text })}
+            />
+          </TouchableOpacity>,
+          <TouchableOpacity
             key="faq-how-to-water"
-            onPress={handlePress}
+            onPress={handleHowToWaterPress}
             style={themed({ marginBottom: theme.spacing.sm })}
           >
             <Text
