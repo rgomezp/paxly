@@ -15,7 +15,6 @@ export default function NameInput({ showTitle = true, onSelection }: NameInputPr
   const [name, setName] = useState("")
   const {
     theme: { colors },
-    themeContext,
   } = useAppTheme()
   const { color } = useCustomColor()
 
@@ -53,10 +52,9 @@ export default function NameInput({ showTitle = true, onSelection }: NameInputPr
     }
   }
 
-  const isDark = themeContext === "dark"
   const themedInputStyles = {
     color: colors.text,
-    backgroundColor: isDark ? colors.palette.neutral300 : colors.palette.neutral200,
+    backgroundColor: colors.textInputBackground,
     width: "70%" as const,
   }
 
