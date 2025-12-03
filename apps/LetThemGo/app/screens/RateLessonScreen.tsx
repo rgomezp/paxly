@@ -5,6 +5,7 @@ import { Screen, Text } from "@/components"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import LessonCompletionManager from "@/managers/LessonCompletionManager"
 import { useAppTheme } from "@/utils/useAppTheme"
+import AnalyticsManager from "@/managers/AnalyticsManager"
 
 type RateLessonScreenProps = AppStackScreenProps<"RateLesson">
 
@@ -23,6 +24,10 @@ export const RateLessonScreen: FC<RateLessonScreenProps> = ({ route, navigation 
         startedAt,
         completedAt,
         flow,
+        helpful,
+      })
+      AnalyticsManager.getInstance().logEvent("lesson_rated", {
+        lesson_id: lessonId,
         helpful,
       })
     } finally {
