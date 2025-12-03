@@ -70,7 +70,7 @@ export const colors = {
   /**
    * Card/surface background color.
    */
-  card: palette.neutral200,
+  card: palette.neutral100,
   /**
    * The default border color.
    */
