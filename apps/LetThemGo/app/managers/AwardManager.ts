@@ -3,7 +3,7 @@
  *
  * Awards are given in order, after lessons are completed.
  *
- * Special case: The first award is guaranteed on the first lesson completion
+ * Special case: The first two awards are guaranteed on the first two lesson completions
  * (bypasses all normal requirements to introduce the notification system).
  *
  * Normal requirements for subsequent awards:
@@ -73,16 +73,25 @@ export default class AwardManager {
   }
 
   /**
-   * Checks if the first award should be given on the first lesson completion
-   * This bypasses all normal requirements to guarantee the first award
-   * @returns true if this is the first lesson completion and no awards have been given yet
+   * Checks if an award should be given on the first or second lesson completion
+   * This bypasses all normal requirements to guarantee the first two awards
+   * @returns true if this is the first or second lesson completion and the corresponding award hasn't been given yet
    */
-  static shouldAwardFirstAwardOnFirstLesson(): boolean {
+  static shouldAwardOnFirstTwoLessons(): boolean {
     const awardData = this.getAwardData()
     const completedLessons = LessonManager.getCompletedLessons()
 
-    // Check if this is the first lesson completion and no awards have been given
-    return completedLessons.length === 1 && awardData.earnedAwardIds.length === 0
+    // First lesson completion should give the first award
+    if (completedLessons.length === 1 && awardData.earnedAwardIds.length === 0) {
+      return true
+    }
+
+    // Second lesson completion should give the second award
+    if (completedLessons.length === 2 && awardData.earnedAwardIds.length === 1) {
+      return true
+    }
+
+    return false
   }
 
   /**
@@ -90,10 +99,11 @@ export default class AwardManager {
    * @returns true if an award should be given, false otherwise
    */
   static checkAwardAvailability(): boolean {
-    // First, check if we should award the first award on first lesson completion
-    if (this.shouldAwardFirstAwardOnFirstLesson()) {
+    // First, check if we should award on first or second lesson completion
+    if (this.shouldAwardOnFirstTwoLessons()) {
+      const completedLessons = LessonManager.getCompletedLessons()
       Log.info(
-        `AwardManager: checkAwardAvailability: awarding first award on first lesson completion`,
+        `AwardManager: checkAwardAvailability: awarding award on lesson ${completedLessons.length} completion`,
       )
       return true
     }
@@ -122,8 +132,8 @@ export default class AwardManager {
       return null
     }
 
-    // If this is the first award on first lesson, return it without checking other requirements
-    if (this.shouldAwardFirstAwardOnFirstLesson()) {
+    // If this is the first or second award on first two lessons, return it without checking other requirements
+    if (this.shouldAwardOnFirstTwoLessons()) {
       return AWARD_SEQUENCE[nextAwardIndex]
     }
 
@@ -145,9 +155,9 @@ export default class AwardManager {
       return null
     }
 
-    // If this is the first award on first lesson, bypass normal requirements
-    const isFirstAwardOnFirstLesson = this.shouldAwardFirstAwardOnFirstLesson()
-    if (!isFirstAwardOnFirstLesson) {
+    // If this is the first or second award on first two lessons, bypass normal requirements
+    const shouldAwardOnFirstTwoLessons = this.shouldAwardOnFirstTwoLessons()
+    if (!shouldAwardOnFirstTwoLessons) {
       // Even if skipping availability check, verify deterministic requirements
       if (!this.checkDeterministicRequirements()) {
         return null
