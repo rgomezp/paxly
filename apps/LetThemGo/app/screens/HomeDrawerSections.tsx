@@ -4,7 +4,9 @@ import {
   MembershipDrawerItem,
   LeaveReviewDrawerItem,
   LogoutDrawerItem,
+  Text,
 } from "@/components"
+import { Alert, TouchableOpacity } from "react-native"
 import type { Theme } from "@/theme"
 import customConfig from "../../customConfig"
 import { useEffect, useState } from "react"
@@ -13,11 +15,17 @@ import UserManager from "@/managers/UserManager"
 import type IUser from "@/types/IUser"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { EventRegister } from "@/utils/EventEmitter"
+import { ganon } from "@/services/ganon/ganon"
+import { MascotNames } from "@/types/MascotName"
 
 export const useHomeDrawerSections = () => {
   const config = customConfig()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userInfo, setUserInfo] = useState<IUser | undefined>(undefined)
+  const mascotName = (ganon.get("mascotName") as MascotNames | null) ?? null
+  const capitalizedMascotName = mascotName
+    ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
+    : "Planty"
 
   useEffect(() => {
     const updateUserInfo = () => {
@@ -152,6 +160,30 @@ export const useHomeDrawerSections = () => {
           containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
       ],
+    },
+    {
+      name: "FAQ",
+      data: ({ themed, theme }: { themed: any; theme: Theme }) => {
+        const handlePress = () => {
+          Alert.alert(
+            `How to Water ${capitalizedMascotName}`,
+            `Simply complete daily tasks then press the water droplet above ${capitalizedMascotName} to water.`,
+          )
+        }
+
+        return [
+          <TouchableOpacity
+            key="faq-how-to-water"
+            onPress={handlePress}
+            style={themed({ marginBottom: theme.spacing.sm })}
+          >
+            <Text
+              text={`How to Water ${capitalizedMascotName}`}
+              style={themed({ color: theme.colors.text })}
+            />
+          </TouchableOpacity>,
+        ]
+      },
     },
   ]
 }
