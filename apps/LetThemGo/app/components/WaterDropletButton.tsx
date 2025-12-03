@@ -1,4 +1,5 @@
-import { TouchableOpacity, ViewStyle, TextStyle } from "react-native"
+import { useEffect, useRef } from "react"
+import { Animated, Easing, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import PlantyManager from "@/managers/PlantyManager"
@@ -12,6 +13,34 @@ interface WaterDropletButtonProps {
 
 export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButtonProps) {
   const { theme } = useAppTheme()
+
+  const scale = useRef(new Animated.Value(1)).current
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(scale, {
+          toValue: 1.1,
+          duration: 900,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(scale, {
+          toValue: 1,
+          duration: 900,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    )
+
+    animation.start()
+
+    return () => {
+      animation.stop()
+      scale.stopAnimation()
+    }
+  }, [scale])
 
   const handlePress = () => {
     // Only mark as watered if it's not a demo
@@ -53,16 +82,18 @@ export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButt
   }
 
   return (
-    <TouchableOpacity
+    <AnimatedTouchableOpacity
       accessibilityRole="button"
       onPress={handlePress}
-      style={[$dropletBtn, { backgroundColor: theme.colors.tint }]}
+      style={[$dropletBtn, { backgroundColor: theme.colors.tint, transform: [{ scale }] }]}
       hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
     >
       <Text text="💧" style={$dropletEmoji} />
-    </TouchableOpacity>
+    </AnimatedTouchableOpacity>
   )
 }
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
 
 const $dropletBtn: ViewStyle = {
   position: "absolute",

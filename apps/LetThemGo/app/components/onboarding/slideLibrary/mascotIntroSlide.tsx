@@ -60,11 +60,11 @@ export function mascotIntroSlide({ onSelection }: MascotIntroSlideProps): ISlide
 
   return {
     id: "mascotIntro",
-    title: `${capitalizedMascotName}`,
-    description: `> When you complete your daily tasks, you will earn some water which I need to grow! Can you give me some water now?`,
+    title: `Let's Water ${capitalizedMascotName}`,
+    description: `> You will see the water button after completing daily tasks. When you see it, give me some water which I need to be healthy and grow! Let's try it now!`,
     component: <MascotIntroComponent onSelection={onSelection} />,
-    textPlacement: "bottom",
-    textAlignment: "center",
+    textPlacement: "top",
+    textAlignment: "left",
   }
 }
 
