@@ -15,6 +15,9 @@ import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
 import { navigate } from "@/navigators/navigationUtilities"
 import DailyLessonManager from "@/managers/DailyLessonManager"
+import { MascotNames } from "@/types/MascotName"
+import { ganon } from "@/services/ganon/ganon"
+import Log from "@/utils/Log"
 
 type Props = {
   refreshToken?: number
@@ -24,6 +27,8 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
   const [done, setDone] = useState({ mood: false, lesson: false, journal: false })
+  const [mascotName, setMascotName] = useState<MascotNames | null>(null)
+
   const { hasFeatureAccess } = useEntitlements()
   const flagContext = useContext(FlagContext)
   if (!flagContext) {
@@ -33,6 +38,15 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
 
   // Get the task limit from feature flags, fallback to default if not available
   const taskLimit = flags.task_limit_free_users ?? FreeUserUsageManager.getDefaultFreeLimit()
+
+  useEffect(() => {
+    try {
+      const mascotName = ganon.get("mascotName") as MascotNames | null
+      setMascotName(mascotName)
+    } catch (error) {
+      Log.error("DailyTasksTimeline: Error getting mascot name: ", error)
+    }
+  }, [])
 
   useEffect(() => {
     // Initialize from persisted state, ensuring today's dateKey
@@ -149,10 +163,20 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
     )
   }
 
+  // Capitalize mascot name with fallback
+  const capitalizedMascotName = mascotName
+    ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
+    : MascotNames.PLANTY.charAt(0).toUpperCase() + MascotNames.PLANTY.slice(1)
+
   return (
     <View style={themed($container)}>
       <View style={themed($header)}>
         <Text text="Daily Tasks" preset="subheading" style={themed({ color: theme.colors.text })} />
+        <Text
+          text={`Complete at least one to water ${capitalizedMascotName}`}
+          size="xs"
+          style={themed({ color: theme.colors.textDim })}
+        />
       </View>
       <View style={themed([$timeline])}>
         {Row(
@@ -195,7 +219,7 @@ const $container: ViewStyle = {
 
 const $header: ViewStyle = {
   marginBottom: 20,
-  marginLeft: 30,
+  marginHorizontal: 30,
 }
 
 const $timeline: ViewStyle = {
