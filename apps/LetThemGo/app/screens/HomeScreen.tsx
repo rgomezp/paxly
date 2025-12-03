@@ -16,6 +16,7 @@ import { useFocusEffect } from "@react-navigation/native"
 import { createAudioPlayer } from "expo-audio"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
+import AnalyticsManager from "@/managers/AnalyticsManager"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -139,6 +140,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         onLessonActivated={() => {}}
         onIContacted={() => {
           Log.info("HomeScreen: User reset the streak")
+          AnalyticsManager.getInstance().logEvent("no_contact_relapse")
           NoContactManager.resetStreak()
           setRefreshTrigger((prev) => prev + 1)
         }}
