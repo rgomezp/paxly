@@ -252,6 +252,21 @@ export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffe
   // Try to get placement offering
   const placementOffering = await Purchases.getCurrentOfferingForPlacement(placementId)
   if (placementOffering) {
+    // If the placement is effectively "not configured" and just returns the same offering
+    // as the current/default offering, we want to fall back to our explicit abandonment
+    // fallback_offering instead. This avoids depending on a specific offering ID string.
+    const ageBasedFallbackOffering = getAgeBasedAbandonmentOffering(offerings, ageRange)
+    const isSameAsCurrent =
+      offerings.current && placementOffering.identifier === offerings.current.identifier
+
+    if (isSameAsCurrent && ageBasedFallbackOffering) {
+      Log.warn(
+        `Abandonment placement ${placementId} returned current offering (${placementOffering.identifier}); using age-based fallback abandonment offering instead: ${ageBasedFallbackOffering.identifier}`,
+      )
+      paywallAnalytics.placementLoaded(ageBasedFallbackOffering.identifier, placementId, ageRange)
+      return ageBasedFallbackOffering
+    }
+
     Log.info(
       `Using ${placementId} offering for abandonment paywall: ${placementOffering.identifier}`,
     )
@@ -298,6 +313,7 @@ export const getAgeBasedAbandonmentOffering = (
   offerings: PurchasesOfferings,
   ageRange: AgeRanges | null,
 ): PurchasesOffering | null => {
+  Log.info(`getAgeBasedAbandonmentOffering: offerings for age range ${ageRange}}`)
   if (!offerings || typeof offerings !== "object") {
     return null
   }
