@@ -101,7 +101,7 @@ export function BuilderLesson({
                       borderColor: theme.colors.border,
                       color: theme.colors.text,
                       marginTop: theme.spacing.xs,
-                      backgroundColor: theme.colors.background,
+                      backgroundColor: theme.colors.textInputBackground,
                     }))}
                     placeholder={it.label}
                     placeholderTextColor={theme.colors.textDim}
