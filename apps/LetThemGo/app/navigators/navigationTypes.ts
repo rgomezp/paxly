@@ -34,6 +34,13 @@ export type AppStackParamList = {
   JournalLogs: undefined
   MyStuff: undefined
   ClaimAward: undefined
+  RateLesson: {
+    lessonId: string
+    startedAt: number
+    completedAt: number
+    flow: string
+    awardAvailable: boolean
+  }
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
