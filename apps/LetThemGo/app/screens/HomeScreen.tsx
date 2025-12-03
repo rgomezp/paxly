@@ -17,6 +17,7 @@ import { createAudioPlayer } from "expo-audio"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
+import { OneSignal } from "react-native-onesignal"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -33,6 +34,10 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   // Initialize no contact data if needed
   useEffect(() => {
     NoContactManager.initializeNoContactData()
+    OneSignal.InAppMessages.addTrigger("home_screen_loaded", "true")
+    return () => {
+      OneSignal.InAppMessages.removeTrigger("home_screen_loaded")
+    }
   }, [])
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
