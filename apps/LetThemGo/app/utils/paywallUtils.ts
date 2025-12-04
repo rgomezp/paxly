@@ -313,7 +313,7 @@ export const getAgeBasedAbandonmentOffering = (
   offerings: PurchasesOfferings,
   ageRange: AgeRanges | null,
 ): PurchasesOffering | null => {
-  Log.info(`getAgeBasedAbandonmentOffering: offerings for age range ${ageRange}}`)
+  Log.info(`getAgeBasedAbandonmentOffering: offerings for age range ${ageRange}`)
   if (!offerings || typeof offerings !== "object") {
     return null
   }
