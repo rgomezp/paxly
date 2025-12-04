@@ -1,13 +1,14 @@
 import { JournalLessonConfig } from "@/types/lessons/IJournalLessonConfig"
 import { useState, useEffect } from "react"
 import { Text } from ".."
-import { FlatList, ScrollView, StyleSheet, TextInput, View } from "react-native"
+import { FlatList, ScrollView, StyleSheet, TextInput, View, TouchableOpacity } from "react-native"
 import RectangularButton from "../buttons/RectangularButton"
 import { SliderPseudo } from "./primitives/SliderPseudo"
 import { Chip } from "./primitives/Chip"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { LessonHeader } from "./LessonHeader"
 import LessonResponseManager from "@/managers/LessonResponseManager"
+import { ThemedFontAwesome5Icon } from "../ThemedFontAwesome5Icon"
 
 export function JournalLesson({
   config,
@@ -18,6 +19,7 @@ export function JournalLesson({
 }) {
   const { themed, theme } = useAppTheme()
   const [form, setForm] = useState<Record<string, any>>({})
+  const [expandedHelpText, setExpandedHelpText] = useState<Record<string, boolean>>({})
 
   // Load saved responses on mount
   useEffect(() => {
@@ -73,7 +75,51 @@ export function JournalLesson({
                 </>
               ) : f.kind === "radio" ? (
                 <>
-                  <Text>{(f as any).label}</Text>
+                  <View
+                    style={themed(() => ({
+                      flexDirection: "row",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                    }))}
+                  >
+                    <View style={themed(() => ({ flex: 1, marginRight: theme.spacing.sm }))}>
+                      <Text>{(f as any).label}</Text>
+                    </View>
+                    {(f as any).helpText && (
+                      <TouchableOpacity
+                        onPress={() =>
+                          setExpandedHelpText((prev) => ({ ...prev, [f.name]: !prev[f.name] }))
+                        }
+                        style={themed(() => ({ padding: theme.spacing.xs }))}
+                      >
+                        <ThemedFontAwesome5Icon
+                          name="info-circle"
+                          size={18}
+                          color={theme.colors.textDim}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  {(f as any).helpText && expandedHelpText[f.name] && (
+                    <View
+                      style={themed(() => ({
+                        marginTop: theme.spacing.sm,
+                        padding: theme.spacing.md,
+                        backgroundColor: theme.colors.textInputBackground,
+                        borderRadius: 8,
+                      }))}
+                    >
+                      <Text
+                        style={themed(() => ({
+                          color: theme.colors.text,
+                          fontSize: 14,
+                          lineHeight: 20,
+                        }))}
+                      >
+                        {(f as any).helpText}
+                      </Text>
+                    </View>
+                  )}
                   <View style={themed(() => ({ marginTop: theme.spacing.md }))}>
                     <FlatList
                       data={(f as any).options}
