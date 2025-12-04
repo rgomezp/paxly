@@ -106,9 +106,9 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
     }
   } catch {}
 
-  const atLeastOneDailyTaskCompleted = hasMood || hasJournal || hasLesson
+  const anyDailyTaskCompleted = hasMood || hasJournal || hasLesson
   const wateredToday = PlantyManager.hasWateredToday()
-  const showDroplet = atLeastOneDailyTaskCompleted && !wateredToday
+  const showDroplet = anyDailyTaskCompleted && !wateredToday
 
   return (
     <Animated.View style={[themed($container), { opacity: fadeAnim }]}>

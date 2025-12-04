@@ -173,7 +173,7 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
       <View style={themed($header)}>
         <Text text="Daily Tasks" preset="subheading" style={themed({ color: theme.colors.text })} />
         <Text
-          text={`Complete at least one to water ${capitalizedMascotName}`}
+          text={`Complete any task to water ${capitalizedMascotName}`}
           size="xs"
           style={themed({ color: theme.colors.textDim })}
         />
