@@ -10,7 +10,7 @@ import type { TextStyle, ViewStyle } from "react-native"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import MessageIntoTheVoidManager from "@/managers/MessageIntoTheVoidManager"
 import SendMessageConfirmationModal from "@/components/modals/SendMessageConfirmationModal"
-import { Audio } from "expo-av"
+import { createAudioPlayer } from "expo-audio"
 import Log from "@/utils/Log"
 import { useStores } from "@/models"
 
@@ -62,40 +62,31 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
       setIsSendModalVisible(true)
     }
 
-    const handleConfirmSend = async () => {
+    const handleConfirmSend = () => {
       // Play send sound effect
       try {
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/sounds/transition.m4a"),
-          {
-            shouldPlay: true,
-            volume: 1.0,
-          },
-        )
+        const sound = createAudioPlayer(require("../../assets/sounds/transition.m4a"))
+        sound.volume = 1.0
+        sound.play()
 
-        // Set up status listener for auto-cleanup
-        sound.setOnPlaybackStatusUpdate((status) => {
-          if (status.isLoaded && status.didJustFinish) {
-            sound.unloadAsync().catch(() => {
-              // Ignore cleanup errors
-            })
+        // Set up listener for auto-cleanup when playback finishes
+        const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+          if (status.didJustFinish) {
+            sound.remove()
+            removeListener.remove()
           }
         })
 
         // Auto-cleanup after playback completes
         setTimeout(() => {
-          sound
-            .getStatusAsync()
-            .then((status) => {
-              if (status.isLoaded) {
-                sound.unloadAsync().catch(() => {
-                  // Ignore cleanup errors
-                })
-              }
-            })
-            .catch(() => {
-              // Sound already unloaded, ignore
-            })
+          try {
+            if (sound.isLoaded) {
+              sound.remove()
+              removeListener.remove()
+            }
+          } catch {
+            // Sound already removed, ignore
+          }
         }, 3000) // 3 second buffer for cleanup
       } catch (error) {
         Log.error("ComposeMessageScreen: Failed to play send sound:", error)
@@ -207,7 +198,7 @@ const $input: ThemedStyle<TextStyle> = (theme) => ({
   borderRadius: 12,
   padding: 12,
   color: theme.colors.text,
-  backgroundColor: theme.colors.card,
+  backgroundColor: theme.colors.textInputBackground,
   fontSize: 16,
   lineHeight: 24,
 })

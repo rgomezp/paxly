@@ -9,6 +9,7 @@ import LessonManager from "@/managers/LessonManager"
 import AwardManager from "@/managers/AwardManager"
 import LessonCompletionManager from "@/managers/LessonCompletionManager"
 import { navigate } from "@/navigators/navigationUtilities"
+import { shouldShowRateLesson } from "@/utils/lessonFeedback"
 
 interface SingleLessonScreenProps extends AppStackScreenProps<"SingleLesson"> {}
 
@@ -34,17 +35,7 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
     hasCompletedRef.current = true
 
     const completedAt = Date.now()
-
-    // Save completion to Firestore (fire and forget)
-    LessonCompletionManager.saveCompletion({
-      lessonId,
-      startedAt,
-      completedAt,
-      flow: getFlow(),
-    }).catch(() => {
-      // Error is already logged in LessonCompletionManager
-      // Continue with lesson completion flow even if tracking fails
-    })
+    const flow = getFlow()
 
     // Mark lesson as completed
     LessonManager.markCompleted(lessonId)
@@ -55,8 +46,32 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
       DailyTaskManager.markCompleted("lesson")
     }
 
-    // Check if an award is available and navigate to claim screen
-    if (AwardManager.checkAwardAvailability()) {
+    const awardAvailable = AwardManager.checkAwardAvailability()
+
+    // Randomly decide whether to show the RateLesson screen (~50% of completions)
+    if (shouldShowRateLesson()) {
+      navigate("RateLesson", {
+        lessonId,
+        startedAt,
+        completedAt,
+        flow,
+        awardAvailable,
+      })
+      return
+    }
+
+    // No rating screen – save completion immediately (without helpful flag)
+    LessonCompletionManager.saveCompletion({
+      lessonId,
+      startedAt,
+      completedAt,
+      flow,
+    }).catch(() => {
+      // Error is already logged in LessonCompletionManager
+      // Continue with lesson completion flow even if tracking fails
+    })
+
+    if (awardAvailable) {
       navigate("ClaimAward", undefined)
     } else {
       navigation.goBack()

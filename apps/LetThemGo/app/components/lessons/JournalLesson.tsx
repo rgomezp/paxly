@@ -63,6 +63,7 @@ export function JournalLesson({
                       borderColor: theme.colors.border,
                       color: theme.colors.text,
                       marginTop: theme.spacing.md,
+                      backgroundColor: theme.colors.textInputBackground,
                     }))}
                     placeholderTextColor={theme.colors.textDim}
                     multiline={f.kind === "longText"}

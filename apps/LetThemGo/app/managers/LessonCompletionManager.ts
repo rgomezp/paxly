@@ -13,9 +13,10 @@ export default class LessonCompletionManager {
     startedAt: number
     completedAt: number
     flow?: string
+    helpful?: boolean | null
   }): Promise<void> {
     try {
-      const { lessonId, startedAt, completedAt, flow = "unknown" } = params
+      const { lessonId, startedAt, completedAt, flow = "unknown", helpful } = params
 
       // Get user email (optional)
       const email = ganon.get("email")
@@ -36,15 +37,16 @@ export default class LessonCompletionManager {
         flow,
         createdAt: Date.now(),
         ...(email && { email }),
+        ...(Object.prototype.hasOwnProperty.call(params, "helpful") && { helpful }),
       }
 
       // Save to Firestore
       const db = getFirestore()
       const completionsCollection = collection(db, "lesson_completions")
-      await addDoc(completionsCollection, completion)
+      const docRef = await addDoc(completionsCollection, completion)
 
       Log.info(
-        `LessonCompletionManager: Saved completion for lesson ${lessonId} with duration ${durationSec}s${email ? "" : " (no email)"}`,
+        `LessonCompletionManager: Saved completion ${docRef.id} for lesson ${lessonId} with duration ${durationSec}s${email ? "" : " (no email)"}`,
       )
     } catch (error) {
       Log.error(`LessonCompletionManager: Error saving completion: ${error}`)

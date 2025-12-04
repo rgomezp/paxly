@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av"
+import { setAudioModeAsync } from "expo-audio"
 
 export function useAudio() {
   const [isAudioSetup, setIsAudioSetup] = useState(false)
@@ -9,13 +9,10 @@ export function useAudio() {
   }, [])
 
   const setupAudio = async () => {
-    await Audio.setAudioModeAsync({
-      playsInSilentModeIOS: true,
-      staysActiveInBackground: true,
-      shouldDuckAndroid: true,
-      interruptionModeIOS: InterruptionModeIOS.MixWithOthers,
-      interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-      playThroughEarpieceAndroid: false,
+    await setAudioModeAsync({
+      playsInSilentMode: true,
+      interruptionMode: "mixWithOthers",
+      interruptionModeAndroid: "duckOthers",
     })
     setIsAudioSetup(true)
   }

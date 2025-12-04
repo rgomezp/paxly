@@ -1,5 +1,6 @@
 import { ganon } from "@/services/ganon/ganon"
 import { rootStoreSingleton } from "@/models/helpers/useStores"
+import AnalyticsManager from "./AnalyticsManager"
 
 export default class MessageIntoTheVoidManager {
   static getDraft(): string | null {
@@ -21,5 +22,6 @@ export default class MessageIntoTheVoidManager {
     // Delete the draft when sending
     MessageIntoTheVoidManager.clearDraft()
     // The message is intentionally not saved - it's sent into the void
+    AnalyticsManager.getInstance().logEvent("message_into_the_void_sent")
   }
 }

@@ -5,11 +5,11 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { PlantyFromCurrentGoal } from "@/components/PlantyFromCurrentGoal"
 import { WaterDropletButton } from "@/components/WaterDropletButton"
 import { MascotNames } from "@/types/MascotName"
-import { ganon } from "@/services/ganon/ganon"
 import Log from "@/utils/Log"
 
 type MascotIntroSlideProps = {
   onSelection?: () => void
+  mascotName?: MascotNames | null
 }
 
 function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
@@ -51,20 +51,19 @@ function MascotIntroComponent({ onSelection }: MascotIntroSlideProps) {
   )
 }
 
-export function mascotIntroSlide({ onSelection }: MascotIntroSlideProps): ISlide {
-  // Get mascot name for dynamic text
-  const mascotName = ganon.get("mascotName") as MascotNames | null
+export function mascotIntroSlide({ onSelection, mascotName }: MascotIntroSlideProps): ISlide {
+  // Use the latest mascot name passed from useSlides for dynamic text
   const capitalizedMascotName = mascotName
     ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
     : "Planty" // Default fallback if user skipped naming
 
   return {
     id: "mascotIntro",
-    title: `${capitalizedMascotName}`,
-    description: `> When you complete your daily tasks, you will earn some water which I need to grow! Can you give me some water now?`,
+    title: `Let's Water ${capitalizedMascotName}`,
+    description: `> You will see the water button after completing daily tasks. When you see it, give me some water which I need to be healthy and grow! Let's try it now!`,
     component: <MascotIntroComponent onSelection={onSelection} />,
-    textPlacement: "bottom",
-    textAlignment: "center",
+    textPlacement: "top",
+    textAlignment: "left",
   }
 }
 

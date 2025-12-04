@@ -1,13 +1,9 @@
 import { useCallback, useEffect, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
-import Purchases, { PurchasesOffering } from "react-native-purchases"
+import { PurchasesOffering } from "react-native-purchases"
 import Log from "@/utils/Log"
-import {
-  getAgeRange,
-  getAgeBasedAbandonmentOffering,
-  handlePurchaseCompletion,
-} from "@/utils/paywallUtils"
+import { fetchAbandonmentPlacementOffering, handlePurchaseCompletion } from "@/utils/paywallUtils"
 
 export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: () => void }) {
   const [offering, setOffering] = useState<PurchasesOffering | null>(null)
@@ -18,24 +14,22 @@ export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: 
 
   useEffect(() => {
     let active = true
-    Purchases.getOfferings()
-      .then((o) => {
+    fetchAbandonmentPlacementOffering()
+      .then((abandonmentOffering) => {
         if (!active) return
-        const ageRange = getAgeRange()
-        const abandonmentOffering = getAgeBasedAbandonmentOffering(o, ageRange)
         if (!abandonmentOffering) {
-          Log.error(
-            "OnboardingFallbackPaywall: No age-based abandonment offering found in offerings",
-          )
+          Log.error("OnboardingFallbackPaywall: No abandonment placement offering found")
         } else {
           Log.info(
-            `OnboardingFallbackPaywall: Using age-based abandonment offering: ${abandonmentOffering.identifier}`,
+            `OnboardingFallbackPaywall: Using abandonment placement offering: ${abandonmentOffering.identifier}`,
           )
         }
         setOffering(abandonmentOffering)
       })
       .catch((error) => {
-        Log.error(`OnboardingFallbackPaywall: Failed to fetch offerings: ${String(error)}`)
+        Log.error(
+          `OnboardingFallbackPaywall: Failed to fetch abandonment placement offering: ${String(error)}`,
+        )
       })
     return () => {
       active = false

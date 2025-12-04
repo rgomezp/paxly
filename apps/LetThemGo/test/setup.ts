@@ -202,16 +202,24 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
   },
 }))
 
-jest.mock("expo-av", () => ({
+jest.mock("expo-audio", () => ({
   __esModule: true,
-  Audio: {
-    Sound: {
-      createAsync: jest.fn(() =>
-        Promise.resolve({ sound: { play: jest.fn(), unloadAsync: jest.fn() } }),
-      ),
-    },
-    setAudioModeAsync: jest.fn(() => Promise.resolve()),
-  },
-  InterruptionModeAndroid: {},
-  InterruptionModeIOS: {},
+  createAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    pause: jest.fn(),
+    remove: jest.fn(),
+    addListener: jest.fn(() => ({ remove: jest.fn() })),
+    playing: false,
+    isLoaded: true,
+    loop: false,
+    volume: 1.0,
+  })),
+  setAudioModeAsync: jest.fn(() => Promise.resolve()),
+  useAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    pause: jest.fn(),
+    remove: jest.fn(),
+    playing: false,
+    isLoaded: true,
+  })),
 }))

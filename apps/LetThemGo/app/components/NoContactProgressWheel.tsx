@@ -88,6 +88,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
   // Only require mood and journal (not lesson) to show water droplet
   const dailyTasks = DailyTaskManager.getState()
   const hasJournal = dailyTasks.journal
+  const hasLesson = dailyTasks.lesson
   // Mirror DailyTasksTimeline logic for mood done (based on history)
   let hasMood = false
   try {
@@ -105,9 +106,9 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
     }
   } catch {}
 
-  const allDailyTasksCompleted = hasMood && hasJournal
+  const atLeastOneDailyTaskCompleted = hasMood || hasJournal || hasLesson
   const wateredToday = PlantyManager.hasWateredToday()
-  const showDroplet = allDailyTasksCompleted && !wateredToday
+  const showDroplet = atLeastOneDailyTaskCompleted && !wateredToday
 
   return (
     <Animated.View style={[themed($container), { opacity: fadeAnim }]}>

@@ -13,9 +13,11 @@ import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
-import { Audio } from "expo-av"
+import { createAudioPlayer } from "expo-audio"
 import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
+import AnalyticsManager from "@/managers/AnalyticsManager"
+import { OneSignal } from "react-native-onesignal"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -32,6 +34,10 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   // Initialize no contact data if needed
   useEffect(() => {
     NoContactManager.initializeNoContactData()
+    OneSignal.InAppMessages.addTrigger("home_screen_loaded", "true")
+    return () => {
+      OneSignal.InAppMessages.removeTrigger("home_screen_loaded")
+    }
   }, [])
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
@@ -44,39 +50,30 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
     hasPlayedChime = true
 
-    const playChime = async () => {
+    const playChime = () => {
       try {
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/sounds/melancholy-chime.mp3"),
-          {
-            shouldPlay: true,
-            volume: 1.0,
-          },
-        )
+        const sound = createAudioPlayer(require("../../assets/sounds/melancholy-chime.mp3"))
+        sound.volume = 1.0
+        sound.play()
 
-        // Set up status listener for auto-cleanup
-        sound.setOnPlaybackStatusUpdate((status) => {
-          if (status.isLoaded && status.didJustFinish) {
-            sound.unloadAsync().catch(() => {
-              // Ignore cleanup errors
-            })
+        // Set up listener for auto-cleanup when playback finishes
+        const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+          if (status.didJustFinish) {
+            sound.remove()
+            removeListener.remove()
           }
         })
 
         // Auto-cleanup after playback completes
         setTimeout(() => {
-          sound
-            .getStatusAsync()
-            .then((status) => {
-              if (status.isLoaded) {
-                sound.unloadAsync().catch(() => {
-                  // Ignore cleanup errors
-                })
-              }
-            })
-            .catch(() => {
-              // Sound already unloaded, ignore
-            })
+          try {
+            if (sound.isLoaded) {
+              sound.remove()
+              removeListener.remove()
+            }
+          } catch {
+            // Sound already removed, ignore
+          }
         }, 3000) // 3 second buffer for cleanup
       } catch (error) {
         Log.error("HomeScreen: Failed to play melancholy chime:", error)
@@ -148,6 +145,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         onLessonActivated={() => {}}
         onIContacted={() => {
           Log.info("HomeScreen: User reset the streak")
+          AnalyticsManager.getInstance().logEvent("no_contact_relapse")
           NoContactManager.resetStreak()
           setRefreshTrigger((prev) => prev + 1)
         }}

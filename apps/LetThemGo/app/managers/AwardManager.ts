@@ -3,7 +3,7 @@
  *
  * Awards are given in order, after lessons are completed.
  *
- * Special case: The first award is guaranteed on the first lesson completion
+ * Special case: The first two awards are guaranteed on the first two lesson completions
  * (bypasses all normal requirements to introduce the notification system).
  *
  * Normal requirements for subsequent awards:
@@ -73,16 +73,25 @@ export default class AwardManager {
   }
 
   /**
-   * Checks if the first award should be given on the first lesson completion
-   * This bypasses all normal requirements to guarantee the first award
-   * @returns true if this is the first lesson completion and no awards have been given yet
+   * Checks if an award should be given on the first or second lesson completion
+   * This bypasses all normal requirements to guarantee the first two awards
+   * @returns true if this is the first or second lesson completion and the corresponding award hasn't been given yet
    */
-  static shouldAwardFirstAwardOnFirstLesson(): boolean {
+  static shouldAwardOnFirstTwoLessons(): boolean {
     const awardData = this.getAwardData()
     const completedLessons = LessonManager.getCompletedLessons()
 
-    // Check if this is the first lesson completion and no awards have been given
-    return completedLessons.length === 1 && awardData.earnedAwardIds.length === 0
+    // First lesson completion should give the first award
+    if (completedLessons.length === 1 && awardData.earnedAwardIds.length === 0) {
+      return true
+    }
+
+    // Second lesson completion should give the second award
+    if (completedLessons.length === 2 && awardData.earnedAwardIds.length === 1) {
+      return true
+    }
+
+    return false
   }
 
   /**
@@ -90,10 +99,11 @@ export default class AwardManager {
    * @returns true if an award should be given, false otherwise
    */
   static checkAwardAvailability(): boolean {
-    // First, check if we should award the first award on first lesson completion
-    if (this.shouldAwardFirstAwardOnFirstLesson()) {
+    // First, check if we should award on first or second lesson completion
+    if (this.shouldAwardOnFirstTwoLessons()) {
+      const completedLessons = LessonManager.getCompletedLessons()
       Log.info(
-        `AwardManager: checkAwardAvailability: awarding first award on first lesson completion`,
+        `AwardManager: checkAwardAvailability: awarding award on lesson ${completedLessons.length} completion`,
       )
       return true
     }
@@ -109,22 +119,58 @@ export default class AwardManager {
   }
 
   /**
+   * Finds the next unearned award in the sequence, starting from the expected index
+   * This prevents duplicate awards when the sequence is reordered
+   * @param startIndex - The index to start searching from (typically earnedAwardIds.length)
+   * @returns The next unearned award and its index, or null if all awards are earned
+   */
+  private static findNextUnearnedAward(
+    startIndex: number,
+  ): { award: IAward; index: number } | null {
+    const awardData = this.getAwardData()
+    const earnedAwardIdsSet = new Set(awardData.earnedAwardIds)
+
+    // Start from the expected index and find the first unearned award
+    for (let i = startIndex; i < AWARD_SEQUENCE.length; i++) {
+      const award = AWARD_SEQUENCE[i]
+      if (!earnedAwardIdsSet.has(award.id)) {
+        return { award, index: i }
+      }
+    }
+
+    // If no unearned award found from startIndex onwards, check from the beginning
+    // (handles edge case where sequence was reordered and user has awards from later in sequence)
+    for (let i = 0; i < startIndex; i++) {
+      const award = AWARD_SEQUENCE[i]
+      if (!earnedAwardIdsSet.has(award.id)) {
+        return { award, index: i }
+      }
+    }
+
+    return null
+  }
+
+  /**
    * Gets the next award that would be given without actually awarding it
    * This only checks deterministic requirements (no random check)
    * @returns The next award metadata, or null if no award is available
    */
   static getNextAward(): IAward | null {
     const awardData = this.getAwardData()
-    const nextAwardIndex = awardData.earnedAwardIds.length
+    const expectedIndex = awardData.earnedAwardIds.length
 
     // Check if there are any awards left
-    if (nextAwardIndex >= AWARD_SEQUENCE.length) {
+    if (
+      expectedIndex >= AWARD_SEQUENCE.length &&
+      awardData.earnedAwardIds.length >= AWARD_SEQUENCE.length
+    ) {
       return null
     }
 
-    // If this is the first award on first lesson, return it without checking other requirements
-    if (this.shouldAwardFirstAwardOnFirstLesson()) {
-      return AWARD_SEQUENCE[nextAwardIndex]
+    // If this is the first or second award on first two lessons, return it without checking other requirements
+    if (this.shouldAwardOnFirstTwoLessons()) {
+      const result = this.findNextUnearnedAward(expectedIndex)
+      return result ? result.award : null
     }
 
     // For subsequent awards, check deterministic requirements
@@ -132,7 +178,8 @@ export default class AwardManager {
       return null
     }
 
-    return AWARD_SEQUENCE[nextAwardIndex]
+    const result = this.findNextUnearnedAward(expectedIndex)
+    return result ? result.award : null
   }
 
   /**
@@ -145,9 +192,9 @@ export default class AwardManager {
       return null
     }
 
-    // If this is the first award on first lesson, bypass normal requirements
-    const isFirstAwardOnFirstLesson = this.shouldAwardFirstAwardOnFirstLesson()
-    if (!isFirstAwardOnFirstLesson) {
+    // If this is the first or second award on first two lessons, bypass normal requirements
+    const shouldAwardOnFirstTwoLessons = this.shouldAwardOnFirstTwoLessons()
+    if (!shouldAwardOnFirstTwoLessons) {
       // Even if skipping availability check, verify deterministic requirements
       if (!this.checkDeterministicRequirements()) {
         return null
@@ -155,15 +202,18 @@ export default class AwardManager {
     }
 
     const awardData = this.getAwardData()
-    const nextAwardIndex = awardData.earnedAwardIds.length
-    Log.info(`AwardManager: award: awarding award: ${AWARD_SEQUENCE[nextAwardIndex].name}`)
+    const expectedIndex = awardData.earnedAwardIds.length
 
-    // Check if there are any awards left
-    if (nextAwardIndex >= AWARD_SEQUENCE.length) {
+    // Find the next unearned award (prevents duplicates when sequence is reordered)
+    const result = this.findNextUnearnedAward(expectedIndex)
+    if (!result) {
+      Log.info(`AwardManager: award: all awards have been earned`)
       return null
     }
 
-    const award = AWARD_SEQUENCE[nextAwardIndex]
+    const { award } = result
+    Log.info(`AwardManager: award: awarding award: ${award.name}`)
+
     const updatedData: IAwardData = {
       earnedAwardIds: [...awardData.earnedAwardIds, award.id],
       lastAwardDate: Date.now(),

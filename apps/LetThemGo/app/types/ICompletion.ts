@@ -7,4 +7,5 @@ export interface ICompletion {
   flow: string
   createdAt: number
   email?: string
+  helpful?: boolean | null
 }

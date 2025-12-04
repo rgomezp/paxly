@@ -4,7 +4,9 @@ import {
   MembershipDrawerItem,
   LeaveReviewDrawerItem,
   LogoutDrawerItem,
+  Text,
 } from "@/components"
+import { Alert, TouchableOpacity } from "react-native"
 import type { Theme } from "@/theme"
 import customConfig from "../../customConfig"
 import { useEffect, useState } from "react"
@@ -13,11 +15,17 @@ import UserManager from "@/managers/UserManager"
 import type IUser from "@/types/IUser"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { EventRegister } from "@/utils/EventEmitter"
+import { ganon } from "@/services/ganon/ganon"
+import { MascotNames } from "@/types/MascotName"
 
 export const useHomeDrawerSections = () => {
   const config = customConfig()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userInfo, setUserInfo] = useState<IUser | undefined>(undefined)
+  const mascotName = (ganon.get("mascotName") as MascotNames | null) ?? null
+  const capitalizedMascotName = mascotName
+    ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
+    : "Planty"
 
   useEffect(() => {
     const updateUserInfo = () => {
@@ -152,6 +160,47 @@ export const useHomeDrawerSections = () => {
           containerStyle={themed({ marginBottom: theme.spacing.sm })}
         />,
       ],
+    },
+    {
+      name: "FAQ",
+      data: ({ themed, theme }: { themed: any; theme: Theme }) => {
+        const handleHowToWaterPress = () => {
+          Alert.alert(
+            `How to Water ${capitalizedMascotName}`,
+            `Simply complete a daily task to earn water. Then press the water droplet above ${capitalizedMascotName} to water.`,
+          )
+        }
+
+        const handleWhySadPress = () => {
+          Alert.alert(
+            `Why is ${capitalizedMascotName} Sad?`,
+            `You haven't watered ${capitalizedMascotName} in 3 days or more! Complete a daily task then water ${capitalizedMascotName} to keep healthy and happy!`,
+          )
+        }
+
+        return [
+          <TouchableOpacity
+            key="faq-why-sad"
+            onPress={handleWhySadPress}
+            style={themed({ marginBottom: theme.spacing.sm })}
+          >
+            <Text
+              text={`Why is ${capitalizedMascotName} Sad?`}
+              style={themed({ color: theme.colors.text })}
+            />
+          </TouchableOpacity>,
+          <TouchableOpacity
+            key="faq-how-to-water"
+            onPress={handleHowToWaterPress}
+            style={themed({ marginBottom: theme.spacing.sm })}
+          >
+            <Text
+              text={`How to Water ${capitalizedMascotName}`}
+              style={themed({ color: theme.colors.text })}
+            />
+          </TouchableOpacity>,
+        ]
+      },
     },
   ]
 }

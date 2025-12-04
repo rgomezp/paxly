@@ -2,6 +2,7 @@ import { View } from "react-native"
 import { ReactNode } from "react"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemedFontAwesome5Icon } from "../../ThemedFontAwesome5Icon"
+import { $styles } from "@/theme/styles"
 
 export function LessonCard({
   children,
@@ -19,6 +20,7 @@ export function LessonCard({
         borderRadius: 16,
         padding: theme.spacing.md,
         marginBottom: theme.spacing.sm,
+        ...$styles.dropShadow,
       }))}
     >
       {children}

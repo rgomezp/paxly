@@ -7,14 +7,14 @@ export const AWARD_SEQUENCE: IAward[] = [
     description: "Hey! You found a pair of sneakers!",
   },
   {
-    id: "green-thumb",
-    name: "Green Thumb",
-    description: "Keep taking care of your plant!",
-  },
-  {
     id: "miracle-legumes",
     name: "Miracle Legume",
     description: "You won some magic beans!",
+  },
+  {
+    id: "green-thumb",
+    name: "Green Thumb",
+    description: "Keep taking care of your plant!",
   },
   {
     id: "back-pack",

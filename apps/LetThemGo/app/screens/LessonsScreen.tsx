@@ -303,7 +303,7 @@ const $dailyLessonBanner: ViewStyle = {
   marginTop: 12,
   padding: 12,
   borderRadius: 8,
-  borderWidth: 1,
+  ...$styles.dropShadow,
 }
 
 const $content: ViewStyle = {

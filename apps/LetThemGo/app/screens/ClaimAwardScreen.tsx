@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, ImageStyle, Image, Animated } from "react-native"
-import { Audio } from "expo-av"
+import { createAudioPlayer } from "expo-audio"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -58,39 +58,30 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
       ]).start()
 
       // Play award sparkle sound when award is set
-      const playSparkleSound = async () => {
+      const playSparkleSound = () => {
         try {
-          const { sound } = await Audio.Sound.createAsync(
-            require("../../assets/sounds/award_sparkle.mp3"),
-            {
-              shouldPlay: true,
-              volume: 1.0,
-            },
-          )
+          const sound = createAudioPlayer(require("../../assets/sounds/award_sparkle.mp3"))
+          sound.volume = 1.0
+          sound.play()
 
-          // Set up status listener for auto-cleanup
-          sound.setOnPlaybackStatusUpdate((status) => {
-            if (status.isLoaded && status.didJustFinish) {
-              sound.unloadAsync().catch(() => {
-                // Ignore cleanup errors
-              })
+          // Set up listener for auto-cleanup when playback finishes
+          const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+            if (status.didJustFinish) {
+              sound.remove()
+              removeListener.remove()
             }
           })
 
           // Auto-cleanup after playback completes
           setTimeout(() => {
-            sound
-              .getStatusAsync()
-              .then((status) => {
-                if (status.isLoaded) {
-                  sound.unloadAsync().catch(() => {
-                    // Ignore cleanup errors
-                  })
-                }
-              })
-              .catch(() => {
-                // Sound already unloaded, ignore
-              })
+            try {
+              if (sound.isLoaded) {
+                sound.remove()
+                removeListener.remove()
+              }
+            } catch {
+              // Sound already removed, ignore
+            }
           }, 3000) // 3 second buffer for cleanup
         } catch (error) {
           Log.error("ClaimAwardScreen: Failed to play award sparkle sound:", error)

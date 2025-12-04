@@ -1,8 +1,9 @@
-import { TouchableOpacity, ViewStyle, TextStyle } from "react-native"
+import { useEffect, useRef } from "react"
+import { Animated, Easing, TouchableOpacity, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"
 import PlantyManager from "@/managers/PlantyManager"
-import { Audio } from "expo-av"
+import { createAudioPlayer } from "expo-audio"
 
 interface WaterDropletButtonProps {
   onPress?: () => void
@@ -13,7 +14,35 @@ interface WaterDropletButtonProps {
 export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButtonProps) {
   const { theme } = useAppTheme()
 
-  const handlePress = async () => {
+  const scale = useRef(new Animated.Value(1)).current
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(scale, {
+          toValue: 1.1,
+          duration: 900,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(scale, {
+          toValue: 1,
+          duration: 900,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    )
+
+    animation.start()
+
+    return () => {
+      animation.stop()
+      scale.stopAnimation()
+    }
+  }, [scale])
+
+  const handlePress = () => {
     // Only mark as watered if it's not a demo
     if (!isDemo) {
       PlantyManager.markWateredToday()
@@ -24,34 +53,28 @@ export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButt
 
     try {
       // Always create a fresh sound instance to avoid state issues
-      const { sound } = await Audio.Sound.createAsync(require("../../assets/sounds/droplet.mp3"), {
-        shouldPlay: true,
-        volume: 1.0,
-      })
+      const sound = createAudioPlayer(require("../../assets/sounds/droplet.mp3"))
+      sound.volume = 1.0
+      sound.play()
 
-      // Set up status listener for auto-cleanup
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded && status.didJustFinish) {
-          sound.unloadAsync().catch(() => {
-            // Ignore cleanup errors
-          })
+      // Set up listener for auto-cleanup when playback finishes
+      const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+        if (status.didJustFinish) {
+          sound.remove()
+          removeListener.remove()
         }
       })
 
       // Auto-cleanup after playback completes (sound is ~456ms, give it 1s buffer)
       setTimeout(() => {
-        sound
-          .getStatusAsync()
-          .then((status) => {
-            if (status.isLoaded) {
-              sound.unloadAsync().catch(() => {
-                // Ignore cleanup errors
-              })
-            }
-          })
-          .catch(() => {
-            // Sound already unloaded, ignore
-          })
+        try {
+          if (sound.isLoaded) {
+            sound.remove()
+            removeListener.remove()
+          }
+        } catch {
+          // Sound already removed, ignore
+        }
       }, 1000)
     } catch (error) {
       console.error("WaterDropletButton: Failed to play droplet sound:", error)
@@ -59,16 +82,18 @@ export function WaterDropletButton({ onPress, isDemo = false }: WaterDropletButt
   }
 
   return (
-    <TouchableOpacity
+    <AnimatedTouchableOpacity
       accessibilityRole="button"
       onPress={handlePress}
-      style={[$dropletBtn, { backgroundColor: theme.colors.tint }]}
+      style={[$dropletBtn, { backgroundColor: theme.colors.tint, transform: [{ scale }] }]}
       hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
     >
       <Text text="💧" style={$dropletEmoji} />
-    </TouchableOpacity>
+    </AnimatedTouchableOpacity>
   )
 }
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
 
 const $dropletBtn: ViewStyle = {
   position: "absolute",

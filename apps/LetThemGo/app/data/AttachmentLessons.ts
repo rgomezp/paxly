@@ -16,7 +16,7 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
         name: "tendency",
         kind: "radio",
         label:
-          "Which feels most familiar? (Attachment styles aren't fixed—they're patterns. Most people have a primary style with some flexibility. Choose what resonates most right now)",
+          "Quick snapshot of attachment styles:\n\n• Anxious: Fear of abandonment, strong craving for closeness and reassurance, worry they'll leave.\n• Avoidant: Value independence, pull away or shut down when things get too close or intense.\n• Secure: Generally trust others, feel comfortable with both closeness and space, communicate needs directly.\n• Mixed: You see both anxious and avoidant patterns in yourself, depending on the person or situation.\n\nAttachment styles aren't fixed—they're patterns you learned. Most people have a primary style with some flexibility. Which one feels most familiar right now?",
         options: ["anxious", "avoidant", "secure", "mixed"],
       },
       {

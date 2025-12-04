@@ -27,6 +27,7 @@ const palette = {
   accent300: "#D28468",
   accent400: "#DDA28E",
   accent500: "#E8C1B4",
+  accent600: "#FAF0EC",
 
   angry100: "#F2D6CD",
   angry500: "#C03403",
@@ -61,11 +62,15 @@ export const colors = {
   /**
    * The default color of the screen background.
    */
-  background: palette.neutral100,
+  background: palette.accent600,
+  /**
+   * The default background color of the text input.
+   */
+  textInputBackground: palette.neutral100,
   /**
    * Card/surface background color.
    */
-  card: palette.neutral200,
+  card: palette.neutral100,
   /**
    * The default border color.
    */
@@ -90,4 +95,8 @@ export const colors = {
    * Error Background.
    */
   errorBackground: palette.angry100,
+  /**
+   * The default background color of the daily tasks timeline.
+   */
+  dailyTasksTimelineBackground: palette.neutral100,
 } as const

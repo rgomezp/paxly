@@ -42,7 +42,7 @@ const $row: ThemedStyle<ViewStyle> = () => ({
 
 const $iconContainer: ThemedStyle<ViewStyle> = (theme) => ({
   alignItems: "center",
-  backgroundColor: theme.isDark ? "#191015" : "#F5F5F5",
+  backgroundColor: theme.colors.card,
   borderRadius: 12,
   height: 56,
   justifyContent: "center",
@@ -56,14 +56,14 @@ const $textContainer: ThemedStyle<ViewStyle> = () => ({
 })
 
 const $title: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.isDark ? "#F4F2F1" : "#1A1A1A",
+  color: theme.colors.text,
   fontSize: 18,
   fontWeight: "bold",
   marginBottom: 4,
 })
 
 const $description: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.isDark ? "#B6ACA6" : "#666666",
+  color: theme.colors.textDim,
   fontSize: 15,
   lineHeight: 22,
 })
