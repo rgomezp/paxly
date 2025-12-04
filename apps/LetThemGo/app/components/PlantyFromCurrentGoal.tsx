@@ -9,6 +9,8 @@ import { ganon } from "@/services/ganon/ganon"
 import { MascotNames } from "@/types/MascotName"
 import { useAppTheme } from "@/utils/useAppTheme"
 
+const SAD_BUBBLE_HIDE_TIMEOUT_MS = 10000
+
 interface PlantyFromCurrentGoalProps {
   style?: StyleProp<ImageStyle>
   isWatering?: boolean
@@ -66,7 +68,7 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
     setShowSadBubble(true)
     const timeout = setTimeout(() => {
       setShowSadBubble(false)
-    }, 10000)
+    }, SAD_BUBBLE_HIDE_TIMEOUT_MS)
 
     return () => {
       clearTimeout(timeout)
