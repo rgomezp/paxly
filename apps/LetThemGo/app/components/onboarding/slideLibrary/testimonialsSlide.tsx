@@ -35,7 +35,7 @@ const TestimonialComponent: React.FC = () => {
     },
     {
       name: "Meghan L.",
-      text: "I'm so grateful for this app. It's a daily reminder of how far I've come.",
+      text: "Let Them Go was a godsend when I needed it most. If your on the fence about it just go for it.",
     },
   ]
 
