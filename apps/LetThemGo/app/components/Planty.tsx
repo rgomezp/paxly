@@ -30,6 +30,10 @@ const GOAL_SUFFIX: Record<NoContactGoal, GoalSuffix> = {
   [NoContactGoal.SixMonths]: "6m",
   // For any goal beyond 6 months, reuse 6m assets
   [NoContactGoal.OneYear]: "6m",
+  [NoContactGoal.TwoYears]: "6m",
+  [NoContactGoal.ThreeYears]: "6m",
+  [NoContactGoal.FourYears]: "6m",
+  [NoContactGoal.FiveYears]: "6m",
 }
 
 // Static registry so Metro bundles assets. Folder per goal (e.g., planty/1m/planty.webp)

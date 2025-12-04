@@ -15,6 +15,10 @@ enum NoContactGoal {
   FiveMonths,
   SixMonths,
   OneYear,
+  TwoYears,
+  ThreeYears,
+  FourYears,
+  FiveYears,
 }
 
 export { NoContactGoal }
