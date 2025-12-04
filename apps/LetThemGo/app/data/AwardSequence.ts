@@ -8,7 +8,7 @@ export const AWARD_SEQUENCE: IAward[] = [
   },
   {
     id: "miracle-legumes",
-    name: "Miracle Legume",
+    name: "Miracle Legumes",
     description: "You won some magic beans!",
   },
   {
