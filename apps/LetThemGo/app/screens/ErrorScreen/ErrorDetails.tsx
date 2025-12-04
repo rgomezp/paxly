@@ -1,6 +1,8 @@
 import { ErrorInfo } from "react"
 import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Icon, Screen, Text } from "../../components"
+import { Button, Screen, Text } from "../../components"
+import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
+import { BugIcon } from "phosphor-react-native"
 import type { ThemedStyle } from "@/theme"
 import { useAppTheme } from "@/utils/useAppTheme"
 
@@ -24,7 +26,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
       contentContainerStyle={themed($contentContainer)}
     >
       <View style={$topSection}>
-        <Icon icon="ladybug" size={64} />
+        <ThemedPhosphorIcon Component={BugIcon} size={64} />
         <Text style={themed($heading)} preset="subheading" tx="errorScreen:title" />
         <Text tx="errorScreen:friendlySubtitle" />
       </View>

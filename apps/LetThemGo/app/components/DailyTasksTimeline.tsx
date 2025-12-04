@@ -5,7 +5,8 @@ import { Text } from "@/components"
 import { $styles } from "@/theme/styles"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { getLocalDateKey, msUntilNextLocalMidnight } from "@/utils/date"
-import { Icon } from "@/components"
+import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
+import { CheckIcon, CaretRightIcon } from "phosphor-react-native"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
 import { useStores } from "@/models"
@@ -153,11 +154,19 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
                 },
               ]}
             >
-              {completed && <Icon icon="check" size={12} color={theme.colors.background} />}
+              {completed && (
+                <ThemedPhosphorIcon
+                  Component={CheckIcon}
+                  size={12}
+                  color={theme.colors.background}
+                />
+              )}
             </View>
             <Text text={label} size="xs" style={themed({ color: theme.colors.text })} />
           </View>
-          {!disabled && <Icon icon="caretRight" color={theme.colors.tint} size={12} />}
+          {!disabled && (
+            <ThemedPhosphorIcon Component={CaretRightIcon} color={theme.colors.tint} size={12} />
+          )}
         </View>
       </TouchableOpacity>
     )
