@@ -150,30 +150,48 @@ const AppStack = observer(function AppStack() {
     navigationRef.current = navigation
   }, [isInitialized, rehydrated, navigation])
 
+  // Helper function to execute navigation
+  const executeNavigation = (route?: string, rcOfferingId?: string) => {
+    // Throttle identical offering navigations within 2s window
+    if (rcOfferingId) {
+      const now = Date.now()
+      if (
+        lastPlacementRef.current.value === rcOfferingId &&
+        now - lastPlacementRef.current.ts < 2000
+      ) {
+        return
+      }
+      lastPlacementRef.current = { value: rcOfferingId, ts: now }
+    }
+
+    // Small delay to ensure splash screen is visible briefly
+    setTimeout(() => {
+      try {
+        if (rcOfferingId) {
+          Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${rcOfferingId}`)
+          // @ts-ignore
+          navigationRef.current.navigate("Home", { rc_offering_id: rcOfferingId })
+          return
+        }
+        if (route) {
+          Log.info(`OneSignal: Clicked notification with route: ${route}`)
+          // @ts-ignore
+          navigationRef.current.navigate(route)
+        }
+      } catch (error) {
+        Log.error(`OneSignal: Error navigating: ${error}`)
+      }
+    }, 500)
+  }
+
   // Handle pending navigation once app is initialized
   useEffect(() => {
     if (rehydrated && isInitialized && pendingNavigationRef.current) {
       const pending = pendingNavigationRef.current
       pendingNavigationRef.current = null
-
-      // Small delay to ensure splash screen is visible briefly
-      setTimeout(() => {
-        try {
-          if (pending.rcOfferingId) {
-            Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${pending.rcOfferingId}`)
-            // @ts-ignore
-            navigation.navigate("Home", { rc_offering_id: pending.rcOfferingId })
-          } else if (pending.route) {
-            Log.info(`OneSignal: Clicked notification with route: ${pending.route}`)
-            // @ts-ignore
-            navigation.navigate(pending.route)
-          }
-        } catch (error) {
-          Log.error(`OneSignal: Error navigating: ${error}`)
-        }
-      }, 500)
+      executeNavigation(pending.route, pending.rcOfferingId)
     }
-  }, [rehydrated, isInitialized, navigation])
+  }, [rehydrated, isInitialized])
 
   useEffect(() => {
     const handleNotificationClick = async (event: any) => {
@@ -200,39 +218,17 @@ const AppStack = observer(function AppStack() {
         if (!rehydratedRef.current || !isInitializedRef.current) {
           Log.info("OneSignal: App not initialized, queuing navigation")
           pendingNavigationRef.current = { route, rcOfferingId }
+
+          // Re-check initialization after setting pending navigation to avoid race condition
+          if (rehydratedRef.current && isInitializedRef.current) {
+            executeNavigation(route, rcOfferingId)
+            pendingNavigationRef.current = null
+            return
+          }
           return
         }
 
-        // Throttle identical offering navigations within 2s window
-        if (rcOfferingId) {
-          const now = Date.now()
-          if (
-            lastPlacementRef.current.value === rcOfferingId &&
-            now - lastPlacementRef.current.ts < 2000
-          ) {
-            return
-          }
-          lastPlacementRef.current = { value: rcOfferingId, ts: now }
-        }
-
-        // Small delay to ensure splash screen is visible briefly
-        setTimeout(() => {
-          try {
-            if (rcOfferingId) {
-              Log.info(`OneSignal: Navigating to Home with rc_offering_id: ${rcOfferingId}`)
-              // @ts-ignore
-              navigationRef.current.navigate("Home", { rc_offering_id: rcOfferingId })
-              return
-            }
-            if (route) {
-              Log.info(`OneSignal: Clicked notification with route: ${route}`)
-              // @ts-ignore
-              navigationRef.current.navigate(route)
-            }
-          } catch (error) {
-            Log.error(`OneSignal: Error navigating: ${error}`)
-          }
-        }, 500)
+        executeNavigation(route, rcOfferingId)
       }
     }
 
