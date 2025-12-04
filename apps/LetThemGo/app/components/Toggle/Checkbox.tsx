@@ -1,20 +1,17 @@
-import { useEffect, useRef, useCallback } from "react"
-import { Image, ImageStyle, Animated, StyleProp, View, ViewStyle } from "react-native"
+import { useEffect, useRef, useCallback, ComponentType } from "react"
+import { Animated, StyleProp, View, ViewStyle } from "react-native"
 import { $styles } from "../../theme"
-import { iconRegistry, IconTypes } from "../Icon"
+import { ThemedPhosphorIcon } from "../ThemedPhosphorIcon"
+import { CheckIcon } from "phosphor-react-native"
+import { IconProps } from "phosphor-react-native"
 import { $inputOuterBase, BaseToggleInputProps, ToggleProps, Toggle } from "./Toggle"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-export interface CheckboxToggleProps
-  extends Omit<ToggleProps<CheckboxInputProps>, "ToggleInput" | "inputDetailStyle"> {
-  /**
-   * Optional style prop that affects the Image component.
-   */
-  inputDetailStyle?: Omit<ImageStyle, "transformOrigin"> & { transformOrigin?: string }
+export interface CheckboxToggleProps extends Omit<ToggleProps<CheckboxInputProps>, "ToggleInput"> {
   /**
    * Checkbox-only prop that changes the icon used for the "on" state.
    */
-  icon?: IconTypes
+  icon?: ComponentType<IconProps>
 }
 
 interface CheckboxInputProps extends BaseToggleInputProps<CheckboxToggleProps> {
@@ -39,7 +36,7 @@ function CheckboxInput(props: CheckboxInputProps) {
     on,
     status,
     disabled,
-    icon = "check",
+    icon = CheckIcon,
     outerStyle: $outerStyleOverride,
     innerStyle: $innerStyleOverride,
     detailStyle: $detailStyleOverride,
@@ -100,23 +97,15 @@ function CheckboxInput(props: CheckboxInputProps) {
           { opacity: opacity.current },
         ]}
       >
-        <Image
-          source={icon ? iconRegistry[icon] : iconRegistry.check}
-          style={[
-            $checkboxDetail,
-            !!iconTintColor && { tintColor: iconTintColor },
-            $detailStyleOverride,
-          ]}
+        <ThemedPhosphorIcon
+          Component={icon}
+          size={20}
+          color={iconTintColor}
+          style={$detailStyleOverride}
         />
       </Animated.View>
     </View>
   )
-}
-
-const $checkboxDetail: ImageStyle = {
-  width: 20,
-  height: 20,
-  resizeMode: "contain",
 }
 
 const $inputOuter: StyleProp<ViewStyle> = [$inputOuterBase, { borderRadius: 4 }]
