@@ -57,24 +57,16 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         sound.play()
 
         // Set up listener for auto-cleanup when playback finishes
+        // Use a flag to prevent double cleanup if the listener fires multiple times
+        // (e.g., if both playback status update and setTimeout fire, or listener is triggered twice)
+        let isCleanedUp = false
         const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
-          if (status.didJustFinish) {
+          if (status.didJustFinish && !isCleanedUp) {
+            isCleanedUp = true
             sound.remove()
             removeListener.remove()
           }
         })
-
-        // Auto-cleanup after playback completes
-        setTimeout(() => {
-          try {
-            if (sound.isLoaded) {
-              sound.remove()
-              removeListener.remove()
-            }
-          } catch {
-            // Sound already removed, ignore
-          }
-        }, 3000) // 3 second buffer for cleanup
       } catch (error) {
         Log.error("HomeScreen: Failed to play melancholy chime:", error)
       }
