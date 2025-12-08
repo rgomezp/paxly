@@ -9,19 +9,32 @@ export async function openLinkInBrowser(url: string) {
   try {
     const canOpen = await Linking.canOpenURL(url)
     if (canOpen) {
+      Log.info(`openLinkInBrowser: Opening URL (canOpen=true)`, { url })
       await Linking.openURL(url)
     } else {
-      Log.warn(`Cannot open URL: ${url}`)
-      // On Android, try opening anyway for mailto: links as canOpenURL might be overly restrictive
-      if (Platform.OS === "android" && url.startsWith("mailto:")) {
+      Log.warn(`openLinkInBrowser: canOpenURL returned false, attempting anyway`, { url })
+      // Try opening anyway for certain URL types as canOpenURL might be overly restrictive
+      const shouldTryAnyway = 
+        url.startsWith("mailto:") ||
+        url.includes("apps.apple.com") ||
+        url.includes("play.google.com") ||
+        url.startsWith("https://") ||
+        url.startsWith("http://")
+      
+      if (shouldTryAnyway) {
         try {
           await Linking.openURL(url)
+          Log.info(`openLinkInBrowser: Successfully opened URL despite canOpenURL=false`, { url })
         } catch (error) {
-          Log.error(`Failed to open mailto link: ${error}`)
+          Log.error(`openLinkInBrowser: Failed to open URL: ${error}`, { url })
+          throw error
         }
+      } else {
+        Log.error(`openLinkInBrowser: Cannot open URL and no fallback available`, { url })
       }
     }
   } catch (error) {
-    Log.error(`Error opening URL ${url}: ${error}`)
+    Log.error(`openLinkInBrowser: Error opening URL ${url}: ${error}`)
+    throw error
   }
 }
