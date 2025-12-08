@@ -37,7 +37,7 @@ export default class LessonCompletionManager {
         flow,
         createdAt: Date.now(),
         ...(email && { email }),
-        ...(Object.prototype.hasOwnProperty.call(params, "helpful") && { helpful }),
+        ...("helpful" in params && { helpful }),
       }
 
       // Save to Firestore

@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useCallback } from "react"
-import { Animated, Image, ImageStyle, Platform, StyleProp, View, ViewStyle } from "react-native"
+import { Animated, Platform, StyleProp, TextStyle, View, ViewStyle } from "react-native"
 
 import { $styles } from "@/theme"
-import { iconRegistry } from "@/components/Icon"
+import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
+import { EyeSlashIcon, EyeIcon } from "phosphor-react-native"
 import { $inputOuterBase, BaseToggleInputProps, Toggle, ToggleProps } from "./Toggle"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -211,9 +212,11 @@ function SwitchAccessibilityLabel(props: SwitchInputProps & { role: "on" | "off"
       )}
 
       {accessibilityMode === "icon" && shouldLabelBeVisible && (
-        <Image
-          style={[$switchAccessibilityIcon, { tintColor: color }]}
-          source={role === "off" ? iconRegistry.hidden : iconRegistry.view}
+        <ThemedPhosphorIcon
+          Component={role === "off" ? EyeSlashIcon : EyeIcon}
+          size={16}
+          color={color as string}
+          style={$switchAccessibilityIcon}
         />
       )}
     </View>
@@ -245,10 +248,9 @@ const $switchAccessibility: ViewStyle = {
   alignItems: "center",
 }
 
-const $switchAccessibilityIcon: ImageStyle = {
+const $switchAccessibilityIcon: StyleProp<TextStyle> = {
   width: 14,
   height: 14,
-  resizeMode: "contain",
 }
 
 const $switchAccessibilityLine: ViewStyle = {

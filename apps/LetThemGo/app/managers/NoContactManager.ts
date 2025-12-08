@@ -30,6 +30,10 @@ export default class NoContactManager {
     [NoContactGoal.FiveMonths]: 150 * 24 * 60 * 60 * 1000,
     [NoContactGoal.SixMonths]: 180 * 24 * 60 * 60 * 1000,
     [NoContactGoal.OneYear]: 365 * 24 * 60 * 60 * 1000,
+    [NoContactGoal.TwoYears]: 2 * 365 * 24 * 60 * 60 * 1000,
+    [NoContactGoal.ThreeYears]: 3 * 365 * 24 * 60 * 60 * 1000,
+    [NoContactGoal.FourYears]: 4 * 365 * 24 * 60 * 60 * 1000,
+    [NoContactGoal.FiveYears]: 5 * 365 * 24 * 60 * 60 * 1000,
   }
 
   /**
@@ -70,6 +74,10 @@ export default class NoContactManager {
       NoContactGoal.FiveMonths,
       NoContactGoal.SixMonths,
       NoContactGoal.OneYear,
+      NoContactGoal.TwoYears,
+      NoContactGoal.ThreeYears,
+      NoContactGoal.FourYears,
+      NoContactGoal.FiveYears,
     ]
 
     // Find the smallest goal that is larger than elapsed time
@@ -81,7 +89,7 @@ export default class NoContactManager {
     }
 
     // If elapsed time exceeds all goals, return the largest goal
-    return NoContactGoal.OneYear
+    return NoContactGoal.FiveYears
   }
 
   /**
@@ -128,6 +136,7 @@ export default class NoContactManager {
     const days = timeElapsed / (24 * 60 * 60 * 1000)
     const weeks = timeElapsed / (7 * 24 * 60 * 60 * 1000)
     const months = timeElapsed / (30 * 24 * 60 * 60 * 1000)
+    const years = timeElapsed / (365 * 24 * 60 * 60 * 1000)
 
     // Day is the smallest unit: if less than a day, show 0 days
     if (days < 1) {
@@ -164,17 +173,53 @@ export default class NoContactManager {
       }
     }
 
-    // Show months and remaining days
-    const wholeMonths = Math.floor(months)
-    const remainingDays = Math.floor((months - wholeMonths) * 30)
+    // If less than 335 days (approximately 11.2 months), show months and remaining days
+    // Once we reach 335 days, switch to years to avoid confusing "12 months" displays
+    // This ensures that when approaching 1 year goal, we show years instead of "12 months X days"
+    if (days < 335) {
+      const wholeMonths = Math.floor(months)
+      const remainingDays = Math.floor((months - wholeMonths) * 30)
 
-    const monthsLabel = wholeMonths === 1 ? "month" : "months"
+      const monthsLabel = wholeMonths === 1 ? "month" : "months"
+      const daysLabel = remainingDays === 1 ? "day" : "days"
+
+      return {
+        primary: `${wholeMonths} ${monthsLabel}`,
+        secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
+        primaryLabel: "months",
+        secondaryLabel: remainingDays > 0 ? "days" : undefined,
+      }
+    }
+
+    // Show years and remaining months
+    const wholeYears = Math.floor(years)
+
+    // If we don't have a full year yet (between 335-365 days), show as "11 months X days"
+    // to avoid confusing "12 months" display
+    if (wholeYears === 0) {
+      const cappedMonths = 11
+      const remainingDays = Math.floor(days - cappedMonths * 30)
+      const daysLabel = remainingDays === 1 ? "day" : "days"
+
+      return {
+        primary: `${cappedMonths} months`,
+        secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
+        primaryLabel: "months",
+        secondaryLabel: remainingDays > 0 ? "days" : undefined,
+      }
+    }
+
+    // Calculate remaining days after whole years
+    const daysInWholeYears = wholeYears * 365
+    const remainingDays = Math.floor(days - daysInWholeYears)
+
+    const yearsLabel = wholeYears === 1 ? "year" : "years"
     const daysLabel = remainingDays === 1 ? "day" : "days"
 
     return {
-      primary: `${wholeMonths} ${monthsLabel}`,
+      primary: `${wholeYears} ${yearsLabel}`,
       secondary: remainingDays > 0 ? `${remainingDays} ${daysLabel}` : undefined,
-      primaryLabel: "months",
+      primaryLabel: "years",
       secondaryLabel: remainingDays > 0 ? "days" : undefined,
     }
   }
@@ -277,6 +322,14 @@ export default class NoContactManager {
         return "6 months"
       case NoContactGoal.OneYear:
         return "1 year"
+      case NoContactGoal.TwoYears:
+        return "2 years"
+      case NoContactGoal.ThreeYears:
+        return "3 years"
+      case NoContactGoal.FourYears:
+        return "4 years"
+      case NoContactGoal.FiveYears:
+        return "5 years"
       default:
         return "1 month"
     }

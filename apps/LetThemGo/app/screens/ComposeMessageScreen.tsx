@@ -76,18 +76,6 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
             removeListener.remove()
           }
         })
-
-        // Auto-cleanup after playback completes
-        setTimeout(() => {
-          try {
-            if (sound.isLoaded) {
-              sound.remove()
-              removeListener.remove()
-            }
-          } catch {
-            // Sound already removed, ignore
-          }
-        }, 3000) // 3 second buffer for cleanup
       } catch (error) {
         Log.error("ComposeMessageScreen: Failed to play send sound:", error)
       }

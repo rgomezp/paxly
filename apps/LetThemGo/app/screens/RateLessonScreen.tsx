@@ -30,14 +30,20 @@ export const RateLessonScreen: FC<RateLessonScreenProps> = ({ route, navigation 
         lesson_id: lessonId,
         helpful,
       })
+    } catch {
+      // Error is already logged in LessonCompletionManager
+      // Continue with navigation even if tracking fails
     } finally {
-      // Navigate to the next step in the flow
-      if (awardAvailable) {
-        navigation.navigate("ClaimAward")
-      } else {
-        // Pop RateLesson and SingleLesson to return to the previous screen
-        navigation.pop(2)
-      }
+      setIsSubmitting(false)
+    }
+
+    // Navigate to the next step in the flow
+    // (Navigation happens after error handling to ensure errors don't block the flow)
+    if (awardAvailable) {
+      navigation.navigate("ClaimAward")
+    } else {
+      // Pop RateLesson and SingleLesson to return to the previous screen
+      navigation.pop(2)
     }
   }
 

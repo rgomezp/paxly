@@ -11,9 +11,9 @@ import { MODULE_ICONS } from "@/data/ModuleIcons"
 import { ModuleId } from "@/types/lessons/ModuleId"
 import { navigate } from "@/navigators/navigationUtilities"
 import DailyLessonManager from "@/managers/DailyLessonManager"
-import { Icon } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
+import { CaretRightIcon, CheckIcon } from "phosphor-react-native"
 import { $styles } from "@/theme/styles"
 import { useStores } from "@/models"
 import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
@@ -124,7 +124,7 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                   },
                 ])}
               >
-                <Icon icon="check" size={16} color={theme.colors.tint} />
+                <ThemedPhosphorIcon Component={CheckIcon} size={16} color={theme.colors.tint} />
                 <Text
                   text={`Completed: ${LESSONS[todaysLessonId]?.title || "Daily Lesson"}`}
                   size="sm"
@@ -186,8 +186,8 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                         style={themed({ color: theme.colors.text })}
                       />
                     </View>
-                    <Icon
-                      icon={isExpanded ? "caretRight" : "caretRight"}
+                    <ThemedPhosphorIcon
+                      Component={CaretRightIcon}
                       size={16}
                       color={theme.colors.text}
                       style={themed({ transform: [{ rotate: isExpanded ? "90deg" : "0deg" }] })}
@@ -264,10 +264,14 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                           </View>
                           <View style={themed($lessonItemRight)}>
                             {isCompleted && (
-                              <Icon icon="check" size={20} color={theme.colors.tint} />
+                              <ThemedPhosphorIcon
+                                Component={CheckIcon}
+                                size={20}
+                                color={theme.colors.tint}
+                              />
                             )}
-                            <Icon
-                              icon="caretRight"
+                            <ThemedPhosphorIcon
+                              Component={CaretRightIcon}
                               size={12}
                               color={theme.colors.textDim}
                               style={themed({ marginLeft: 8 })}

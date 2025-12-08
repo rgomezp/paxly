@@ -49,7 +49,7 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
     const awardAvailable = AwardManager.checkAwardAvailability()
 
     // Randomly decide whether to show the RateLesson screen (~50% of completions)
-    if (shouldShowRateLesson()) {
+    if (await shouldShowRateLesson()) {
       navigate("RateLesson", {
         lessonId,
         startedAt,

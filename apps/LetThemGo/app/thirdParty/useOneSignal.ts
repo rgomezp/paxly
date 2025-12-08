@@ -51,7 +51,9 @@ const useOneSignal = (): boolean => {
           if (ganon.get("mascotName")) {
             const mascotName = ganon.get("mascotName") as MascotNames | null
             if (mascotName) {
-              OneSignal.User.addTag("mascot_name", mascotName)
+              const capitalizedMascotName =
+                mascotName.charAt(0).toUpperCase() + mascotName.slice(1).toLowerCase()
+              OneSignal.User.addTag("mascot_name", capitalizedMascotName)
             }
           }
         } catch (error) {

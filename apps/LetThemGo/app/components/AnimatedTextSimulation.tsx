@@ -33,12 +33,14 @@ export function AnimatedTextSimulation({
   const currentTextRef = useRef<string>("")
   const tokensRef = useRef<string[]>([])
   const indexRef = useRef<number>(1)
+  const currentTokensLengthRef = useRef<number>(0)
 
   // Update the ref when onAnimationComplete changes
   useEffect(() => {
     onCompleteRef.current = onAnimationComplete
   }, [onAnimationComplete])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Clear any existing timeout
     if (timeoutRef.current) {
@@ -54,28 +56,52 @@ export function AnimatedTextSimulation({
     if (textChanged) {
       currentTextRef.current = text
       hasStartedRef.current = false
-      indexRef.current = 1
       // Initialize with first token to avoid layout jank
       if (tokens.length > 0) {
         setCurrentTokens([tokens[0]])
+        // Start index at 1 since tokens[0] is already rendered
+        indexRef.current = 1
+        currentTokensLengthRef.current = 1
       } else {
         setCurrentTokens([])
+        indexRef.current = 0
+        currentTokensLengthRef.current = 0
       }
     }
 
-    // Only start animation if shouldStart is true
+    // Reset hasStarted when shouldStart becomes false (e.g., navigating away)
+    // This allows the animation to restart when returning to the slide
     if (!shouldStart) {
+      hasStartedRef.current = false
       return
     }
 
-    // Don't restart if we've already started for this text
-    if (hasStartedRef.current && !textChanged) {
+    // Check if animation is complete by comparing current tokens length with total tokens
+    const isAnimationComplete = currentTokensLengthRef.current >= tokens.length
+
+    // Don't restart if we've already started for this text AND animation is complete
+    if (hasStartedRef.current && !textChanged && isAnimationComplete) {
       return
+    }
+
+    // If animation was interrupted (incomplete), reset state to restart
+    if (hasStartedRef.current && !textChanged && !isAnimationComplete) {
+      hasStartedRef.current = false
+      // Reset to first token if we're restarting an incomplete animation
+      if (tokens.length > 0) {
+        setCurrentTokens([tokens[0]])
+        indexRef.current = 1
+        currentTokensLengthRef.current = 1
+      }
     }
 
     let isMounted = true
     hasStartedRef.current = true
-    indexRef.current = 1 // Reset index when starting animation
+    // Don't reset index here - it's already set correctly above when text changed
+    // If text hasn't changed but animation is starting, ensure index is correct
+    if (!textChanged && tokens.length > 0 && indexRef.current === 0) {
+      indexRef.current = 1
+    }
 
     const addNextToken = () => {
       const currentIndex = indexRef.current
@@ -95,7 +121,9 @@ export function AnimatedTextSimulation({
         setCurrentTokens((prev) => {
           // Ensure we're adding the correct token at the correct index
           const tokenToAdd = currentTokens[currentIndex]
-          return [...prev, tokenToAdd]
+          const newTokens = [...prev, tokenToAdd]
+          currentTokensLengthRef.current = newTokens.length
+          return newTokens
         })
         indexRef.current = currentIndex + 1
         addNextToken()
@@ -111,6 +139,9 @@ export function AnimatedTextSimulation({
         timeoutRef.current = null
       }
     }
+    // We intentionally don't include currentTokens.length to avoid restarting animation on each token update
+    // Instead, we use currentTokensLengthRef to track completion status
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, tokenizer, minDelay, maxDelay, shouldStart])
 
   const $container: ViewStyle = { position: "relative" }

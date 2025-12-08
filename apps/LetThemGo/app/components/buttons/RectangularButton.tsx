@@ -189,12 +189,18 @@ export default function RectangularButton(props: IProps) {
   // Use theme color for selected state shadow
   const selectedShadowColor = props.isSelected ? theme.colors.palette.accent500 : undefined
 
+  // Use width when provided (supports both numeric and percentage strings)
+  // Use minWidth as fallback only when width is not provided
+  const widthStyle = props.width
+    ? { width: props.width }
+    : { minWidth: 200 }
+
   return (
     <TouchableOpacity
       onPress={handleButtonPress}
       style={[
         styles.button,
-        { minWidth: props.width ?? 200, backgroundColor: darkenedBackgroundColor }, // Default width
+        { ...widthStyle, backgroundColor: darkenedBackgroundColor },
         props.isDisabled ? styles.disabled : styles.active,
         props.isSelected && [
           styles.selected,
