@@ -2,7 +2,6 @@ import { FC, useMemo } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, Pressable } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ListView } from "@/components/ListView"
 import { useStores } from "@/models"
@@ -24,7 +23,6 @@ type JournalLogItem = {
 }
 
 export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(function JournalLogsScreen() {
-  const insets = useSafeAreaInsets()
   const { theme, themed } = useAppTheme()
   const { journalStore } = useStores()
 
@@ -73,7 +71,7 @@ export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(function J
   )
 
   return (
-    <View style={[themed($container), { paddingTop: insets.top }]}>
+    <View style={themed($container)}>
       {entries.length === 0 ? (
         <View style={themed($emptyStateWrapper)}>
           <EmptyState

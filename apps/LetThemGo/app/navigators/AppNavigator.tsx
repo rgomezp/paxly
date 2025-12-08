@@ -242,7 +242,15 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        headerTitle: "",
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+        },
+        headerTintColor: theme.colors.text,
+        headerTitleStyle: {
+          color: theme.colors.text,
+        },
         navigationBarColor: theme.colors.background,
         contentStyle: {
           backgroundColor: theme.colors.background,
@@ -250,7 +258,13 @@ const AppStack = observer(function AppStack() {
       }}
       initialRouteName="TabNavigator"
     >
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen
+        name="TabNavigator"
+        component={TabNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
       <Stack.Screen name="Login" component={Screens.LoginScreen} />
       <Stack.Screen name="MoodLogger" component={Screens.MoodLogger} />

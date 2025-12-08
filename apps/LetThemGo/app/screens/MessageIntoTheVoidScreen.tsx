@@ -40,7 +40,7 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> = obser
       navigation.navigate("ComposeMessage")
     }
 
-    const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
+    const $containerInsetStyle = useMemo(() => ({ paddingTop: 16 }), [])
     const $contentInsetStyle = useMemo(
       () => ({ paddingBottom: insets.bottom + 120 }),
       [insets.bottom],

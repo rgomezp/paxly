@@ -13,7 +13,6 @@ import {
 } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ISlide } from "@/types/ISlide"
 import { MOOD_TO_EMOJI, MoodId, MOODS } from "@/types/Moods"
@@ -28,7 +27,6 @@ interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
 
 export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ navigation }) {
   const { width } = useWindowDimensions()
-  const insets = useSafeAreaInsets()
   const { theme } = useAppTheme()
   const scrollX = useRef(new Animated.Value(0)).current
   const pagerRef = useRef<ScrollView>(null)
@@ -90,7 +88,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
 
   return (
     <View
-      style={[$container, { paddingTop: insets.top, backgroundColor: theme.colors.background }]}
+      style={[$container, { backgroundColor: theme.colors.background }]}
     >
       <ProgressBar data={slides} scrollX={scrollX} />
 

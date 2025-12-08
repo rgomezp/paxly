@@ -27,7 +27,6 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
   route,
 }) {
   const { themed, theme } = useAppTheme()
-  const insets = useSafeAreaInsets()
   const [text, setText] = useState(route.params?.initialText ?? "")
   const scrollViewRef = useRef<ScrollView>(null)
   const inputRef = useRef<TextInput>(null)
@@ -87,7 +86,8 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     }
   }
 
-  const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
+  const insets = useSafeAreaInsets()
+  const $containerInsetStyle = useMemo(() => ({ paddingTop: 16 }), [])
   const $contentInsetStyle = useMemo(
     () => ({ paddingBottom: insets.bottom + 120 }),
     [insets.bottom],
