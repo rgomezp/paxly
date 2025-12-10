@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
-    version: "1.1.4",
+    version: "1.1.5",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -74,7 +74,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "23",
+      buildNumber: "24",
       config: {
         usesNonExemptEncryption: false,
       },
