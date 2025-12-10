@@ -87,9 +87,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   const isOnFinalSlide = currentSlideIndex === slides.length - 1
 
   return (
-    <View
-      style={[$container, { backgroundColor: theme.colors.background }]}
-    >
+    <View style={[$container, { backgroundColor: theme.colors.background }]}>
       <ProgressBar data={slides} scrollX={scrollX} />
 
       <Animated.ScrollView
