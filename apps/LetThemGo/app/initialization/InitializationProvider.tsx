@@ -10,7 +10,7 @@ import Log, { LogLevel } from "@/utils/Log"
 import LoginManager from "@/managers/LoginManager"
 import DataInitializationManager from "@/managers/DataInitializationManager"
 
-interface InitializationState {
+export interface InitializationState {
   isInitialized?: boolean
   isOnboardingComplete?: boolean
   isDataInitialized?: boolean
