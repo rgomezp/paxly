@@ -22,7 +22,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "2-Minute Repair",
     goal: "Stabilize after contact/slip",
-    estMinutes: 3,
     format: "practice",
     steps: [
       {
@@ -69,7 +68,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Self-Compassion Reset",
     goal: "Counter the abstinence violation effect with self-kindness",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -120,7 +118,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Understanding the Slip",
     goal: "Use knowledge to interrupt the shame spiral",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -171,7 +168,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Reconnect to Your Values",
     goal: "Ground your recovery in what matters most",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -222,7 +218,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Body Reset",
     goal: "Regulate your nervous system through physical awareness",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -275,7 +270,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Mapping What Happened",
     goal: "Understand the chain of events to prevent future slips",
-    estMinutes: 5,
     format: "practice",
     steps: [
       {
@@ -332,7 +326,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Message From Your Future",
     goal: "Connect with who you're becoming",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -383,7 +376,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Counting Real Progress",
     goal: "See the evidence of your growth",
-    estMinutes: 3,
     format: "practice",
     steps: [
       {
@@ -435,7 +427,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Radical Acceptance",
     goal: "Stop fighting what already happened",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -487,7 +478,6 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Immediate Recommitment",
     goal: "Take concrete action right now",
-    estMinutes: 3,
     format: "practice",
     steps: [
       {

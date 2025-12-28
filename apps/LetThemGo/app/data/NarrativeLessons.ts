@@ -9,7 +9,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Facts → Feelings → Meaning",
     goal: "Write a coherent breakup story",
-    estMinutes: 7,
     format: "journal",
     fields: [
       {
@@ -38,7 +37,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Self-Forgiveness",
     goal: "Reduce self-blame loops",
-    estMinutes: 6,
     format: "card",
     cards: [
       {
@@ -69,7 +67,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Permissions to Grieve",
     goal: "Normalize waves of grief",
-    estMinutes: 5,
     format: "card",
     cards: [
       {
@@ -100,7 +97,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Private Closure Ritual",
     goal: "A symbolic close for this chapter",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -121,7 +117,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Keep the Good, Ditch the Myth",
     goal: "Extract lessons without idealizing",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -150,7 +145,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Rewrite Your Story",
     goal: "Create a new narrative about the relationship",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -173,7 +167,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Radical Acceptance",
     goal: "Accept what happened without judgment",
-    estMinutes: 6,
     format: "practice",
     steps: [
       {
@@ -209,7 +202,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Find Meaning in the Experience",
     goal: "Extract meaning without romanticizing",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -232,7 +224,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Let Go Ritual",
     goal: "Symbolically release the past",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -253,7 +244,6 @@ export const NARRATIVE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "narrative",
     title: "Vision for Your Future",
     goal: "Create a positive vision forward",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {

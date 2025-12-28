@@ -9,7 +9,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Attachment Snapshot",
     goal: "Identify anxious/avoidant patterns",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -34,7 +33,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Protest Behaviors 101",
     goal: "Replace protest with needs",
-    estMinutes: 6,
     format: "card",
     cards: [
       {
@@ -69,7 +67,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Parts Check-In",
     goal: "Reduce shame via parts language",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -92,7 +89,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Acting Secure Today",
     goal: "Practice secure micro-behaviors",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -113,7 +109,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Core Needs Inventory",
     goal: "Identify and name your attachment needs",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -136,7 +131,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Understanding Anxious Attachment",
     goal: "Recognize and interrupt anxious patterns",
-    estMinutes: 18,
     format: "practice",
     steps: [
       // FOUNDATION: What is it?
@@ -273,7 +267,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Recognize Avoidant Patterns",
     goal: "Identify and soften avoidant behaviors",
-    estMinutes: 6,
     format: "card",
     cards: [
       {
@@ -308,7 +301,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Secure Attachment Practices",
     goal: "Build secure attachment skills",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -329,7 +321,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Update Your Internal Working Model",
     goal: "Challenge old beliefs about relationships",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -352,7 +343,6 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Attachment Awareness in Dating",
     goal: "Stay aware of attachment patterns while dating",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {

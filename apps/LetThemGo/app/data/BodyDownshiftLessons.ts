@@ -9,7 +9,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Physiology First Switch",
     goal: "Reduce activation quickly",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -47,7 +46,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Cold Option Menu",
     goal: "Offer fast body downshift options",
-    estMinutes: 4,
     format: "card",
     cards: [
       {
@@ -78,7 +76,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Shake It Out",
     goal: "Discharge stress safely",
-    estMinutes: 15,
     format: "practice",
     steps: [
       // FOUNDATION: The science of trapped activation
@@ -252,7 +249,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Urge Surfing",
     goal: "Learn to ride urges without acting",
-    estMinutes: 16,
     format: "practice",
     steps: [
       // FOUNDATION: What are urges?
@@ -402,7 +398,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "10-Point Body Scan",
     goal: "Increase interoceptive calm",
-    estMinutes: 18,
     format: "practice",
     steps: [
       // FOUNDATION: What is interoception and why it matters
@@ -628,7 +623,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Progressive Muscle Relaxation",
     goal: "Release physical tension systematically",
-    estMinutes: 5,
     format: "practice",
     steps: [
       {
@@ -676,7 +670,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Walking Meditation",
     goal: "Ground through movement",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -713,7 +706,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Grounding Techniques Menu",
     goal: "Build a toolkit of grounding methods",
-    estMinutes: 4,
     format: "card",
     cards: [
       {
@@ -744,7 +736,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Breath Variations Practice",
     goal: "Learn different breathing patterns",
-    estMinutes: 5,
     format: "practice",
     steps: [
       {
@@ -790,7 +781,6 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Tension Release Sequence",
     goal: "Release stored tension",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {

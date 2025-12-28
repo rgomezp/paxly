@@ -9,7 +9,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Lower the Volume",
     goal: "Reduce panic 10–20% and create safety nets",
-    estMinutes: 4,
     format: "card",
     cards: [
       {
@@ -46,7 +45,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Name 5 Things",
     goal: "Interrupt spirals with sensory grounding",
-    estMinutes: 8,
     format: "practice",
     steps: [
       {
@@ -148,7 +146,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "The Power of Sleep",
     goal: "Understand how sleep accelerates heartbreak healing",
-    estMinutes: 8,
     format: "card",
     cards: [
       {
@@ -221,7 +218,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Why Your Brain Is Loud",
     goal: "Normalize breakup panic and reduce fear of feelings",
-    estMinutes: 15,
     format: "card",
     cards: [
       {
@@ -295,7 +291,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Personal SOS Plan",
     goal: "Create a written stepwise crisis plan",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -323,7 +318,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Contact Risk Scan",
     goal: "Identify top relapse triggers",
-    estMinutes: 12,
     format: "journal",
     fields: [
       {
@@ -384,7 +378,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Fuel the System",
     goal: "Stabilize appetite/energy",
-    estMinutes: 3,
     format: "builder",
     sections: [
       {
@@ -416,7 +409,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Text a Safe Person",
     goal: "Activate support, not the ex",
-    estMinutes: 4,
     format: "journal",
     fields: [
       {
@@ -437,7 +429,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Breath Anchor Practice",
     goal: "Create a reliable calming anchor",
-    estMinutes: 18,
     format: "practice",
     steps: [
       {
@@ -519,7 +510,6 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Self-Soothe Kit",
     goal: "Build secure self-soothing options",
-    estMinutes: 10,
     format: "builder",
     sections: [
       {

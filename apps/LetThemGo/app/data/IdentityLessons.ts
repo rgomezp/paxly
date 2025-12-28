@@ -9,7 +9,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Roles Lost/Kept/Gained",
     goal: "Reclaim identity beyond relationship",
-    estMinutes: 7,
     format: "journal",
     fields: [
       {
@@ -38,7 +37,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Values Card Sort",
     goal: "Find top 5 values",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -61,7 +59,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "New Morning Ritual",
     goal: "Anchor mornings to self",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -82,7 +79,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Re-open a Door",
     goal: "Rebuild pro-social ties",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -105,7 +101,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Note to Future-You",
     goal: "Boost agency + hope",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -122,7 +117,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Strengths Inventory",
     goal: "Reconnect with your strengths",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -145,7 +139,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Reconnect with Hobbies",
     goal: "Rediscover activities you enjoy",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -168,7 +161,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Self-Compassion Practice",
     goal: "Treat yourself with kindness",
-    estMinutes: 5,
     format: "practice",
     steps: [
       {
@@ -205,7 +197,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Set Personal Goals",
     goal: "Create goals for yourself",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -228,7 +219,6 @@ export const IDENTITY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "identity",
     title: "Practice Autonomy",
     goal: "Make decisions for yourself",
-    estMinutes: 5,
     format: "card",
     cards: [
       {

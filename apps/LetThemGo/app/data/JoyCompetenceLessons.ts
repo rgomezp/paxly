@@ -9,7 +9,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Move Your Body",
     goal: "Mood up via movement",
-    estMinutes: 6,
     format: "practice",
     steps: [
       {
@@ -50,7 +49,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Mastery Calendar",
     goal: "Rebuild competence via tiny goals",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -70,7 +68,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Social Micro-Exposures",
     goal: "Gentle re-entry socially",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -91,7 +88,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Novelty Dose",
     goal: "Reboot reward system",
-    estMinutes: 5,
     format: "card",
     cards: [
       {
@@ -118,7 +114,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Realistic Gratitude",
     goal: "Ground without toxic positivity",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -135,7 +130,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Micro-Joys Practice",
     goal: "Notice small moments of joy",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -158,7 +152,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Build Competence Through Small Wins",
     goal: "Create a sense of mastery",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -179,7 +172,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Play and Exploration",
     goal: "Rediscover playfulness",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -202,7 +194,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Track Your Achievements",
     goal: "Acknowledge your progress",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -225,7 +216,6 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "joy_competence",
     title: "Find Flow Activities",
     goal: "Discover activities that bring flow",
-    estMinutes: 5,
     format: "card",
     cards: [
       {

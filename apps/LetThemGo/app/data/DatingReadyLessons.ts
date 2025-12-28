@@ -9,7 +9,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Dating Readiness Check",
     goal: "Decide if/when to date",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -39,7 +38,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Pace Plan",
     goal: "Prevent attachment whiplash",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -60,7 +58,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "First 3 Dates Guardrails",
     goal: "Safety + clarity early",
-    estMinutes: 6,
     format: "card",
     cards: [
       {
@@ -91,7 +88,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Post-Date Debrief",
     goal: "Choose based on data, not dopamine",
-    estMinutes: 6,
     format: "journal",
     template: "post_date_debrief",
     fields: [
@@ -122,7 +118,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Values Alignment Check",
     goal: "Spot misalignments early",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -145,7 +140,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Early Red Flags",
     goal: "Recognize warning signs early",
-    estMinutes: 5,
     format: "card",
     cards: [
       {
@@ -176,7 +170,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Maintain Self-Worth While Dating",
     goal: "Keep your sense of self",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -199,7 +192,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Healthy Communication Skills",
     goal: "Practice clear, direct communication",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -222,7 +214,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Self-Care While Dating",
     goal: "Maintain self-care during dating",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -243,7 +234,6 @@ export const DATING_READY_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "dating_ready",
     title: "Dating Boundaries & Expectations",
     goal: "Set clear boundaries and expectations when dating",
-    estMinutes: 7,
     format: "journal",
     fields: [
       {
