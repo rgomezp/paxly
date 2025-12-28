@@ -49,6 +49,10 @@ export const WhyItDidntWorkStoreModel = types
       self.reasons.push(reason)
       this.persist()
     },
+    clear() {
+      self.reasons.replace([])
+      ganon.set("whyItDidntWork", { reasons: [] })
+    },
     persist() {
       try {
         ganon.set("whyItDidntWork", {
