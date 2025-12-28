@@ -105,8 +105,8 @@ export async function updateAverageLessonDurations() {
     console.log(`Total discarded completions (< 10 seconds): ${totalDiscardedCompletions}`);
     console.log(`Total completions processed: ${totalCompletions}`);
 
-    // Filter lessons with at least 20 valid completions for writing
-    const MIN_VALID_COMPLETIONS = 20;
+    // Filter lessons with at least 10 valid completions for writing
+    const MIN_VALID_COMPLETIONS = 10;
     const lessonsToWrite = lessonsWithValidData.filter((r) => r.validCompletions >= MIN_VALID_COMPLETIONS);
 
     console.log(`\n=== Lessons Eligible for Writing (>= ${MIN_VALID_COMPLETIONS} valid completions) ===`);
