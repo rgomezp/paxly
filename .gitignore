@@ -200,3 +200,5 @@ buck-out/
 .expo/
 dist/
 web-build/
+
+credentials/
