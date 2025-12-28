@@ -135,6 +135,7 @@ export const WhyItDidntWorkScreen: FC<WhyItDidntWorkScreenProps> = observer(
                   </View>
 
                   <RectangularButton
+                    isPaidFeature
                     buttonText="Add reason"
                     onClick={() => handleAddReason(section)}
                     width="100%"
