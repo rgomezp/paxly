@@ -100,7 +100,7 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
       }
     }
 
-    const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
+    const $containerInsetStyle = useMemo(() => ({ paddingTop: 16 }), [])
     const $contentInsetStyle = useMemo(
       () => ({ paddingBottom: insets.bottom + 120 }),
       [insets.bottom],

@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { View, ViewStyle, TextStyle, Text as RNText } from "react-native"
+import { View, ViewStyle, TextStyle } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { MoodCategory } from "@/types/MoodCategory"
@@ -35,7 +35,7 @@ export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({
     <View>
       <View style={themed($row)}>
         <View style={[themed($emojiBox), { backgroundColor: theme.colors.card }]}>
-          <RNText style={$emojiText}>{moodEmoji}</RNText>
+          <Text style={$emojiText}>{moodEmoji}</Text>
         </View>
         <View style={$rowContent}>
           <Text style={themed([$lineOneText, { color: theme.colors.text }])}>
@@ -78,6 +78,7 @@ const $emojiBox: ViewStyle = {
 
 const $emojiText: TextStyle = {
   fontSize: 24,
+  lineHeight: 30,
 }
 
 const $rowContent: ViewStyle = {

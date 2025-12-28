@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, Alert, Pressable } from "react-native"
 import { Swipeable } from "react-native-gesture-handler"
 import { AppStackScreenProps } from "@/navigators"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ListView } from "@/components/ListView"
 import { useStores } from "@/models"
@@ -21,7 +20,6 @@ interface MoodLogsScreenProps extends AppStackScreenProps<"MoodLogs"> {}
 type MoodLogListItem = IMoodHistoryItem & { id: string }
 
 export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLogsScreen() {
-  const insets = useSafeAreaInsets()
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
   const swipeableRefs = useRef<Map<string, Swipeable>>(new Map())
@@ -99,7 +97,7 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
   )
 
   return (
-    <View style={[themed($container), { paddingTop: insets.top }]}>
+    <View style={themed($container)}>
       {history.length === 0 ? (
         <View style={themed($emptyStateWrapper)}>
           <EmptyState

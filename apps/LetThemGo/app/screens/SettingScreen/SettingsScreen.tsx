@@ -80,7 +80,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   )
 
   return (
-    <Screen style={themed($root)} preset="scroll">
+    <Screen style={themed($root)} preset="scroll" safeAreaEdges={["bottom", "left", "right"]}>
       <Text
         text={(LANGUAGE_COPY.words as any).settings[Language.current]}
         preset="heading"

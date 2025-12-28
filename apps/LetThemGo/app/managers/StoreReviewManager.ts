@@ -20,23 +20,38 @@ import Log from "@/utils/Log"
 
 export default class StoreReviewManager {
   public static async requestReview(force?: boolean): Promise<boolean> {
-    Log.info("StoreReviewManager: requestReview")
+    Log.info("StoreReviewManager: requestReview", { force })
     if (!force && !(await this.canRequestReview())) {
       Log.info("StoreReviewManager: requestReview - cannot request review at this time")
       return false
     }
 
-    const isSupported = await StoreReview.isAvailableAsync()
-    const canShowReviewPrompt = await StoreReview.hasAction()
+    try {
+      const isSupported = await StoreReview.isAvailableAsync()
+      Log.info("StoreReviewManager: isAvailableAsync", { isSupported })
 
-    if (isSupported && canShowReviewPrompt) {
-      await StoreReview.requestReview()
-      await this.updateReviewBackoffData()
-      const analytics = AnalyticsManager.getInstance()
-      analytics.logEvent("store_review_prompted")
-      return true
+      const canShowReviewPrompt = await StoreReview.hasAction()
+      Log.info("StoreReviewManager: hasAction", { canShowReviewPrompt })
+
+      if (isSupported && canShowReviewPrompt) {
+        Log.info("StoreReviewManager: Calling requestReview()")
+        await StoreReview.requestReview()
+        await this.updateReviewBackoffData()
+        const analytics = AnalyticsManager.getInstance()
+        analytics.logEvent("store_review_prompted")
+        Log.info("StoreReviewManager: Review prompt shown successfully")
+        return true
+      } else {
+        Log.info("StoreReviewManager: Cannot show review prompt", {
+          isSupported,
+          canShowReviewPrompt,
+        })
+        return false
+      }
+    } catch (error) {
+      Log.error("StoreReviewManager: Error in requestReview", error)
+      return false
     }
-    return false
   }
 
   private static async getReviewBackoffData(): Promise<IReviewBackoffData | undefined> {

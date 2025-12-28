@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite"
 import { View, ViewStyle, TextStyle, ImageStyle, ScrollView, Image } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import AwardManager from "@/managers/AwardManager"
 import BadgeManager from "@/managers/BadgeManager"
@@ -14,7 +13,6 @@ import { getAwardImage } from "@/data/AwardImageRegistry"
 interface MyStuffScreenProps extends AppStackScreenProps<"MyStuff"> {}
 
 export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffScreen() {
-  const insets = useSafeAreaInsets()
   const { themed } = useAppTheme()
 
   // Clear badge when user visits My Stuff screen
@@ -71,8 +69,8 @@ export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffSc
   )
 
   return (
-    <Screen preset="scroll" style={themed($container)}>
-      <View style={[themed($headerContainer), { paddingTop: insets.top + 16 }]}>
+    <Screen preset="scroll" style={themed($container)} safeAreaEdges={["bottom", "left", "right"]}>
+      <View style={themed($headerContainer)}>
         <Text text="My Stuff" preset="heading" style={themed($title)} />
         <Text text="Earn rewards by completing lessons!" preset="subheading" />
       </View>
