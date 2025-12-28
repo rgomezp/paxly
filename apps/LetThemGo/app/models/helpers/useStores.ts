@@ -105,4 +105,5 @@ export const reloadAllStores = () => {
   rootStoreSingleton.journalStore.loadFromGanon()
   rootStoreSingleton.messageIntoTheVoidStore.loadFromGanon()
   rootStoreSingleton.lessonStore.loadFromGanon()
+  rootStoreSingleton.letterToMyselfStore.loadFromGanon()
 }

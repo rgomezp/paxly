@@ -3,11 +3,12 @@ import { View, ViewStyle, ScrollView, useWindowDimensions } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
-import { PaperPlaneTiltIcon, XCircleIcon } from "phosphor-react-native"
+import { PaperPlaneTiltIcon, XCircleIcon, EnvelopeIcon } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { ActionCard } from "@/components/buttons/ActionCard"
 import { Text } from "@/components"
 import { observer } from "mobx-react-lite"
+import LetterToMyselfManager from "@/managers/LetterToMyselfManager"
 
 interface BreakupToolsScreenProps extends AppStackScreenProps<"BreakupTools"> {}
 
@@ -16,8 +17,10 @@ export const BreakupToolsScreen: FC<BreakupToolsScreenProps> = observer(
     const contentInsets = useSafeAreaInsetsStyle([])
     const { themed, theme } = useAppTheme()
     const { width } = useWindowDimensions()
+    const hasUnreadLetters = LetterToMyselfManager.hasUnreadLetters()
 
     // Calculate card width and container width for centering
+    // For 3 cards, we'll use a 2-column layout with wrapping
     const gap = 10
     const horizontalPadding = 32
     const cardWidth = (width - horizontalPadding - gap) / 2
@@ -50,6 +53,13 @@ export const BreakupToolsScreen: FC<BreakupToolsScreenProps> = observer(
             label="Why it Didn't Work"
             style={{ width: cardWidth, maxWidth: cardWidth }}
           />
+          <ActionCard
+            onPress={() => navigate("LetterToMyself", undefined)}
+            icon={EnvelopeIcon}
+            label="Letter to Myself"
+            badge={hasUnreadLetters}
+            style={{ width: cardWidth, maxWidth: cardWidth }}
+          />
         </View>
       </ScrollView>
     )
@@ -73,4 +83,3 @@ const $buttonsWrapper: ViewStyle = {
   marginBottom: 34,
   alignSelf: "center",
 }
-

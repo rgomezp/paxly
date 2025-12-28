@@ -4,6 +4,7 @@ import { JournalStoreModel } from "./journal/JournalStore"
 import { MessageIntoTheVoidStoreModel } from "./messageIntoTheVoid/MessageIntoTheVoidStore"
 import { LessonStoreModel } from "./lessons/LessonStore"
 import { WhyItDidntWorkStoreModel } from "./whyItDidntWork/WhyItDidntWorkStore"
+import { LetterToMyselfStoreModel } from "./letterToMyself/LetterToMyselfStore"
 
 /**
  * A RootStore model.
@@ -14,6 +15,7 @@ export const RootStoreModel = types.model("RootStore").props({
   messageIntoTheVoidStore: types.optional(MessageIntoTheVoidStoreModel, {}),
   lessonStore: types.optional(LessonStoreModel, {}),
   whyItDidntWorkStore: types.optional(WhyItDidntWorkStoreModel, {}),
+  letterToMyselfStore: types.optional(LetterToMyselfStoreModel, {}),
 })
 
 /**
