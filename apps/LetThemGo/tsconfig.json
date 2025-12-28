@@ -22,7 +22,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"],
-      "assets/*": ["./assets/*"]
+      "assets/*": ["./assets/*"],
+      "@/shared/*": ["../../shared/*"]
     },
     "typeRoots": [
       "./node_modules/@types",
@@ -41,7 +42,8 @@
     "**/*.tsx",
     "test/**/*.ts",
     "test/**/*.tsx",
-    "types/**/*.d.ts"
+    "types/**/*.d.ts",
+    "../../shared/**/*.ts"
   ],
   "exclude": [
     "node_modules"
