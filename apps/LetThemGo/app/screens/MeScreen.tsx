@@ -11,7 +11,7 @@ import NoContactManager from "@/managers/NoContactManager"
 import BadgeManager from "@/managers/BadgeManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { SmileyIcon, TrophyIcon, BookOpenIcon, PaperPlaneTiltIcon } from "phosphor-react-native"
+import { SmileyIcon, TrophyIcon, BookOpenIcon, WrenchIcon } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { ActionCard } from "@/components/buttons/ActionCard"
 
@@ -74,9 +74,9 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
               <ActionCard
-                onPress={() => navigate("MessageIntoTheVoid", undefined)}
-                icon={PaperPlaneTiltIcon}
-                label="Send to the Void"
+                onPress={() => navigate("BreakupTools", undefined)}
+                icon={WrenchIcon}
+                label="Breakup Tools"
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
               <ActionCard
