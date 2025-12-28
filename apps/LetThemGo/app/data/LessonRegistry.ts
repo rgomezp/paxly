@@ -10,7 +10,7 @@ import { BOUNDARIES_LESSONS } from "./BoundariesLessons"
 import { JOY_COMPETENCE_LESSONS } from "./JoyCompetenceLessons"
 import { DATING_READY_LESSONS } from "./DatingReadyLessons"
 import { MAINTENANCE_LESSONS } from "./MaintenanceLessons"
-import { MINI_INTERVENTIONS_LESSONS } from "./MiniInterventionsLessons"
+import { RELAPSE_LESSONS } from "./RelapseLessons"
 import { SPECIAL_CASES_LESSONS } from "./SpecialCasesLessons"
 
 /**
@@ -30,6 +30,6 @@ export const LESSONS: Record<string, ILessonConfig> = {
   ...JOY_COMPETENCE_LESSONS,
   ...DATING_READY_LESSONS,
   ...MAINTENANCE_LESSONS,
-  ...MINI_INTERVENTIONS_LESSONS,
+  ...RELAPSE_LESSONS,
   ...SPECIAL_CASES_LESSONS,
 }
