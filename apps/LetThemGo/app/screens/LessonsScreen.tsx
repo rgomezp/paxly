@@ -259,7 +259,7 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                               {(() => {
                                 const avgDurationSec = averageDurations[lesson.id]
                                 if (avgDurationSec) {
-                                  const minutes = Math.round(avgDurationSec / 60)
+                                  const minutes = Math.max(1, Math.round(avgDurationSec / 60))
                                   const displayText = minutes > 10 ? "10+ min" : `~${minutes} min`
                                   return (
                                     <Text
