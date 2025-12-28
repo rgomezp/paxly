@@ -1,9 +1,21 @@
 import { ILessonConfig } from "@/types/lessons/ILessonConfig"
 
 /**
- * Relapse recovery lessons for A/B testing
- * These lessons help users stabilize and recommit after breaking no contact
+ * Evidence-Based Relapse Recovery Lessons
+ *
+ * These lessons are grounded in:
+ * - Marlatt & Gordon's Relapse Prevention Model (1985)
+ * - Abstinence Violation Effect (AVE) cognitive restructuring
+ * - Kristin Neff's Self-Compassion research (2023)
+ * - Acceptance and Commitment Therapy (ACT) principles
+ * - Urge Surfing / Mindfulness-Based Relapse Prevention (MBRP)
+ * - Polyvagal Theory and nervous system regulation
+ * - Future Self-Continuity research (Hershfield et al.)
+ *
+ * Each lesson has a distinct therapeutic approach to avoid repetition
+ * and maximize effectiveness for different user needs.
  */
+
 export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
   mini_repair_relapse: {
     id: "mini_repair_relapse",
@@ -39,308 +51,473 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Self-Compassion Reset
+   *
+   * Therapeutic approach: Kristin Neff's Self-Compassion Model
+   * - Self-kindness vs self-judgment
+   * - Common humanity vs isolation
+   * - Mindfulness vs over-identification
+   *
+   * Distinct from other lessons: Focuses on the relational aspect of speaking
+   * to yourself as you would a friend. Uses physical grounding (hand on heart)
+   * and explicit common humanity framing.
+   */
   relapse_self_compassion: {
     id: "relapse_self_compassion",
     moduleId: "mini_interventions",
     title: "Self-Compassion Reset",
-    goal: "Practice kindness after a slip",
+    goal: "Counter the abstinence violation effect with self-kindness",
     estMinutes: 4,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "You're human. Breaking no contact is incredibly hard. The fact that you're here, doing this work, shows your commitment. Let's treat yourself with the same kindness you'd show a friend.",
+        body: "Research shows that how you respond to a slip matters more than the slip itself. Self-criticism actually increases the likelihood of further slips. Self-compassion does the opposite—it helps you get back on track.",
       },
       {
         t: "instruction",
-        body: "Place a hand on your heart. Feel your heartbeat. This is your body, doing its best to keep you safe. You're not broken—you're healing.",
+        body: "Place one hand on your chest. This simple touch activates your body's caregiving system—the same neural circuits that respond to being comforted by someone who cares about you. Keep your hand there as you continue.",
       },
+      {
+        t: "instruction",
+        body: "Acknowledge this moment honestly: 'This is hard. I'm struggling right now.' Not minimizing, not dramatizing—just recognizing what is.",
+      },
+      { t: "timer", seconds: 30, label: "Notice the feeling of your hand on your chest" },
+      {
+        t: "instruction",
+        body: "Now remind yourself: millions of people struggle with this exact challenge. You're not uniquely flawed—you're experiencing something deeply human. Breaking contact is one of the hardest things people do.",
+      },
+      {
+        t: "instruction",
+        body: "Ask yourself: What would I say to a close friend who just texted their ex after weeks of no contact? When you continue to the next step, say those words to yourself, silently or aloud.",
+      },
+      { t: "timer", seconds: 45, label: "Speak to yourself as you would a friend" },
       { t: "breath", pattern: "physiological", rounds: 3 },
       {
-        t: "instruction",
-        body: "Say to yourself: 'This is a moment of struggle. Struggling is part of healing. I'm not alone in this.'",
-      },
-      {
         t: "check",
-        prompt: "I choose self-compassion over self-criticism.",
+        prompt: "I can offer myself the same kindness I'd offer a friend.",
       },
-      {
-        t: "instruction",
-        body: "What would you tell a friend who just broke no contact? You deserve that same gentle voice. Your inner critic doesn't help—your inner supporter does.",
-      },
-      { t: "timer", seconds: 90, label: "Rest in self-compassion" },
     ],
     commitment: { text: "Finish" },
   },
-  relapse_neuroscience: {
-    id: "relapse_neuroscience",
+
+  /**
+   * LESSON: Understanding the Slip
+   *
+   * Therapeutic approach: Marlatt's Abstinence Violation Effect (AVE)
+   * - Reframe slip as learning data, not character flaw
+   * - Understand the difference between lapse and relapse
+   * - Cognitive restructuring of black-and-white thinking
+   *
+   * Distinct from other lessons: Educational/psychoeducation focus.
+   * Provides a concrete framework for understanding what happened
+   * and interrupting the shame spiral with knowledge.
+   */
+  relapse_understanding: {
+    id: "relapse_understanding",
     moduleId: "mini_interventions",
-    title: "The Science of Slips",
-    goal: "Understand what your brain is doing",
-    estMinutes: 3,
+    title: "Understanding the Slip",
+    goal: "Use knowledge to interrupt the shame spiral",
+    estMinutes: 4,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "Your brain has two systems: the old attachment pathway (familiar, automatic) and new healing pathways (what you're building). When you contact them, the old pathway fires—but that doesn't delete the new ones.",
+        body: "When people break a commitment, they often experience what psychologists call the 'Abstinence Violation Effect'—a wave of guilt and shame that whispers 'you've failed completely.' This reaction, not the slip itself, is what often leads to giving up.",
       },
       {
         t: "instruction",
-        body: "Every time you practice a new skill, you strengthen those neural pathways. The old pathway is like a well-worn trail—it's easy to fall back into. But your new pathways are getting stronger with each practice.",
+        body: "Here's what the research shows: a lapse (one contact) is not the same as a relapse (returning to old patterns). The single biggest predictor of whether a lapse becomes a relapse is whether you blame your character or the situation.",
       },
       { t: "breath", pattern: "box", rounds: 2 },
       {
         t: "instruction",
-        body: "This slip activated the old pathway. That's data, not failure. Now you get to consciously choose the new pathway. That choice—right now—is strengthening your healing brain.",
+        body: "Let's look at this slip as data, not judgment. In the next step, you'll have time to think about what happened in the hours before you made contact. Were you tired? Lonely? Had something triggered old memories?",
+      },
+      { t: "timer", seconds: 45, label: "Identify what led to this moment" },
+      {
+        t: "instruction",
+        body: "These situational factors don't excuse the slip—but they explain it. And explanations are actionable. Next time you notice those conditions building, you can intervene earlier.",
       },
       {
         t: "check",
-        prompt: "I understand this is part of my brain's learning process.",
+        prompt: "I can see this as information about my high-risk situations.",
       },
       {
         t: "instruction",
-        body: "Let's do 4 rounds of box breathing to activate your prefrontal cortex—the part that helps you make conscious choices instead of automatic reactions.",
+        body: "The researchers who study this found that people who view slips as 'mistakes in learning' rather than 'proof of weakness' are far more likely to succeed long-term. You're building a skill—and skills involve practice, including imperfect practice.",
       },
-      { t: "breath", pattern: "box", rounds: 4 },
-      { t: "timer", seconds: 60, label: "Notice your brain's capacity to choose" },
+      { t: "breath", pattern: "physiological", rounds: 3 },
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Reconnect to Your Values
+   *
+   * Therapeutic approach: Acceptance and Commitment Therapy (ACT)
+   * - Values clarification
+   * - Committed action despite discomfort
+   * - Defusion from self-critical thoughts
+   *
+   * Distinct from other lessons: Focuses on WHY you're doing this—
+   * connecting to deeper values rather than just avoiding pain.
+   * Uses ACT's emphasis on values-driven behavior.
+   */
   relapse_values: {
     id: "relapse_values",
     moduleId: "mini_interventions",
-    title: "Reconnect to Your Why",
-    goal: "Remember what matters most",
+    title: "Reconnect to Your Values",
+    goal: "Ground your recovery in what matters most",
     estMinutes: 4,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "You chose no contact for a reason. That reason hasn't changed. Let's reconnect to what you're really committed to: your healing, your peace, your future self.",
+        body: "You chose no contact for reasons that mattered to you. This slip doesn't change those reasons—they're still true. Let's reconnect with what you're actually committed to beneath the surface.",
       },
       {
         t: "instruction",
-        body: "Take a moment to remember: Why did you start this journey? What do you want for yourself? What kind of person are you becoming?",
+        body: "Think beyond 'getting over' this person. What kind of person do you want to become? What kind of life do you want to build? What values are you living toward—self-respect, peace, growth, authenticity? Take the next step when you're ready to reflect on this.",
       },
-      { t: "timer", seconds: 60, label: "Reflect on your deeper why" },
+      { t: "timer", seconds: 60, label: "Connect with your deeper why" },
       {
         t: "instruction",
-        body: "This slip doesn't change your values. You still value your healing. You still value your peace. You still value breaking free from patterns that don't serve you.",
+        body: "Values aren't goals you achieve—they're directions you move toward. Even after this slip, you can choose to take your next step in that direction. The slip was one moment; your values are ongoing.",
       },
+      { t: "breath", pattern: "physiological", rounds: 3 },
+      {
+        t: "instruction",
+        body: "Consider: What would someone who truly valued [your value] do right now, in this moment after a slip? Not someone perfect—someone committed despite imperfection.",
+      },
+      { t: "timer", seconds: 30, label: "Let that answer emerge" },
       {
         t: "check",
-        prompt: "I'm recommitting to my values and my healing journey.",
+        prompt: "I'm choosing to take my next action based on my values, not my shame.",
       },
       {
         t: "instruction",
-        body: "Let's take 5 deep breaths, and with each exhale, recommit to what you truly want: freedom, peace, and a life that's truly yours.",
+        body: "Research on behavior change shows that people who connect to their values—rather than focusing only on what they're avoiding—are more resilient after setbacks. Your values haven't changed. Your next action can reflect them.",
       },
-      { t: "breath", pattern: "physiological", rounds: 5 },
-      { t: "timer", seconds: 45, label: "Feel your recommitment" },
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Body Reset
+   *
+   * Therapeutic approach: Polyvagal Theory / Somatic Regulation
+   * - Activating the ventral vagal (social engagement) system
+   * - Physical discharge of stress energy
+   * - Interoceptive awareness
+   *
+   * Distinct from other lessons: Purely body-based, minimal cognitive content.
+   * For users who are too activated to think clearly and need to
+   * regulate their nervous system first.
+   */
   relapse_somatic: {
     id: "relapse_somatic",
     moduleId: "mini_interventions",
     title: "Body Reset",
-    goal: "Release tension and reset your system",
+    goal: "Regulate your nervous system through physical awareness",
     estMinutes: 4,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "After contact, your body is likely holding tension, anxiety, or activation. Let's release that physically. Your body stores what your mind processes.",
+        body: "Your nervous system is probably activated right now—heart racing, tension in your body, maybe a pit in your stomach. This is your body's stress response, and it's running the show. Before we can think clearly, we need to help your body feel safer.",
       },
       {
         t: "instruction",
-        body: "Stand up if you can. Shake your hands and arms. Let your shoulders drop. Roll your neck gently. Your body needs to move the energy through.",
+        body: "If you can, stand up. When you continue to the next step, shake your hands vigorously—let your wrists go loose. This simple movement helps discharge some of the stress energy your body is holding.",
       },
-      { t: "timer", seconds: 60, label: "Move and release tension" },
+      { t: "timer", seconds: 15, label: "Shake out your hands" },
       {
         t: "instruction",
-        body: "Now sit or lie down. Place your hands on your belly. Breathe into your belly, feeling it rise and fall. This activates your parasympathetic nervous system—the rest and digest mode.",
+        body: "Next, you'll roll your shoulders slowly—up toward your ears, back, and down. Do this three times during the timer. Your shoulders often hold tension you're not even aware of.",
+      },
+      { t: "timer", seconds: 20, label: "Roll your shoulders slowly" },
+      {
+        t: "instruction",
+        body: "Sit or stand comfortably. Place both feet flat on the ground. Feel the floor beneath you—the pressure, the temperature, the stability. You are supported.",
       },
       { t: "breath", pattern: "physiological", rounds: 4 },
       {
         t: "instruction",
-        body: "Scan your body from head to toe. Where do you feel tension? Breathe into those spots. You're not trying to fix anything—just noticing and allowing.",
+        body: "In the next step, scan from your head down to your toes. Where do you notice tension? Just notice—don't try to fix it. Awareness itself begins to shift things.",
       },
-      { t: "timer", seconds: 90, label: "Body scan and release" },
-    ],
-    commitment: { text: "Finish" },
-  },
-  relapse_cognitive: {
-    id: "relapse_cognitive",
-    moduleId: "mini_interventions",
-    title: "Reframe the Story",
-    goal: "Shift from shame to learning",
-    estMinutes: 3,
-    format: "practice",
-    steps: [
+      { t: "timer", seconds: 45, label: "Scan your body with curiosity" },
       {
         t: "instruction",
-        body: "The story you tell yourself about this slip matters. 'I failed' keeps you stuck. 'I'm learning' helps you move forward. Let's reframe what happened.",
-      },
-      {
-        t: "instruction",
-        body: "Instead of 'I'm back at square one,' try: 'I had a slip, and I'm immediately getting back on track.' Instead of 'I can't do this,' try: 'This is hard, and I'm doing it anyway.'",
-      },
-      { t: "breath", pattern: "box", rounds: 2 },
-      {
-        t: "instruction",
-        body: "What did you learn from this slip? What triggered it? What can you do differently next time? Every slip is data that makes you stronger.",
-      },
-      { t: "timer", seconds: 60, label: "Identify what you learned" },
-      {
-        t: "check",
-        prompt: "I'm choosing to see this as learning, not failure.",
-      },
-      {
-        t: "instruction",
-        body: "Take 3 more breaths, and with each one, let go of the old story and breathe in the new one: you're learning, growing, and healing.",
+        body: "Breathe into any tight areas. Imagine your breath flowing to that spot. As you exhale, let gravity do the work—let the tension soften, even just slightly.",
       },
       { t: "breath", pattern: "physiological", rounds: 3 },
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Mapping What Happened
+   *
+   * Therapeutic approach: Marlatt's High-Risk Situation Analysis
+   * - Functional analysis of the relapse chain
+   * - Identifying triggers, warning signs, and decision points
+   * - Building a "relapse road map" for prevention
+   *
+   * Distinct from other lessons: Analytical and future-prevention focused.
+   * Helps users understand the chain of events that led to the slip
+   * so they can intervene earlier next time.
+   */
+  relapse_chain_analysis: {
+    id: "relapse_chain_analysis",
+    moduleId: "mini_interventions",
+    title: "Mapping What Happened",
+    goal: "Understand the chain of events to prevent future slips",
+    estMinutes: 5,
+    format: "practice",
+    steps: [
+      {
+        t: "instruction",
+        body: "Relapse researchers have found that slips don't happen out of nowhere—they follow a chain of events. By mapping this chain, you can identify earlier warning signs and create 'off-ramps' for next time.",
+      },
+      { t: "breath", pattern: "physiological", rounds: 2 },
+      {
+        t: "instruction",
+        body: "Let's work backward from the moment of contact. In the next step, reflect on: What were you doing immediately before you reached out? Where were you? What time was it? Were you alone?",
+      },
+      { t: "timer", seconds: 30, label: "Recall the immediate moment before" },
+      {
+        t: "instruction",
+        body: "Now go back further—an hour or two before. During the next step, consider: What was your emotional state? Were you feeling lonely, bored, anxious, nostalgic? Had something triggered memories of them?",
+      },
+      { t: "timer", seconds: 30, label: "Identify your emotional state" },
+      {
+        t: "instruction",
+        body: "Go back even further—earlier that day or the night before. During the next step, ask yourself: Were you tired? Had you been isolating? Skipped meals or self-care? Had you been ruminating about them?",
+      },
+      { t: "timer", seconds: 30, label: "Look for earlier warning signs" },
+      {
+        t: "instruction",
+        body: "You've just mapped your high-risk chain: life circumstances → emotional state → immediate trigger → contact. Somewhere in that chain, there was a point where a different choice was still possible.",
+      },
+      {
+        t: "check",
+        prompt: "I can identify at least one point in the chain where I could intervene next time.",
+      },
+      {
+        t: "instruction",
+        body: "This isn't about blame—it's about building an early warning system. Next time you notice the beginning of that chain (fatigue, isolation, a specific trigger), that's your cue to use a coping skill before the urge peaks.",
+      },
+      { t: "breath", pattern: "box", rounds: 3 },
+    ],
+    commitment: { text: "Finish" },
+  },
+
+  /**
+   * LESSON: Your Future Self
+   *
+   * Therapeutic approach: Future Self-Continuity research
+   * - Hershfield's work on connecting with future self
+   * - Visualization of best possible self
+   * - Identity-based motivation
+   *
+   * Distinct from other lessons: Forward-looking rather than processing
+   * the past. Uses visualization and temporal perspective-taking
+   * to create motivation through connection to future identity.
+   */
   relapse_future_self: {
     id: "relapse_future_self",
     moduleId: "mini_interventions",
-    title: "Your Future Self",
+    title: "Message From Your Future",
     goal: "Connect with who you're becoming",
     estMinutes: 4,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "Close your eyes and imagine yourself 6 months from now. You've been consistently practicing no contact. How do you feel? What's different? What's possible for you?",
-      },
-      { t: "timer", seconds: 90, label: "Visualize your future self" },
-      {
-        t: "instruction",
-        body: "Your future self knows that this slip was just one moment. They know you kept going. They're proud of you for getting back up right now, in this moment.",
+        body: "Research shows that people who feel connected to their future selves make better decisions in the present. When your future self feels real—not like a stranger—you're more likely to act in ways that benefit them.",
       },
       {
         t: "instruction",
-        body: "What would your future self say to you right now? They'd probably say: 'Keep going. This moment doesn't define you. I'm proof that you can do this.'",
+        body: "Close your eyes and imagine yourself six months from now. You've been building new patterns. You've gotten through hard days. In the next step, visualize: What does your morning feel like? What's different about how you carry yourself?",
+      },
+      { t: "timer", seconds: 60, label: "Visualize your future self in detail" },
+      {
+        t: "instruction",
+        body: "This future version of you knows that today happened. They know you slipped. And they also know what you did next—how you got back up. In the next step, listen: What would they want to tell you right now?",
+      },
+      { t: "timer", seconds: 45, label: "Listen for their message" },
+      { t: "breath", pattern: "physiological", rounds: 3 },
+      {
+        t: "instruction",
+        body: "Here's something the research reveals: feeling similar to your future self can actually reduce motivation, because there's no gap to close. The fact that you're not there yet is exactly why taking action matters.",
       },
       {
         t: "check",
-        prompt: "I'm choosing to act like my future self would act.",
+        prompt: "I can act now in a way that helps my future self.",
       },
       {
         t: "instruction",
-        body: "Take 5 deep breaths, and with each one, feel yourself moving toward that future self. You're not there yet, but you're on the path. This slip is just a step on that path.",
+        body: "Your future self is built one choice at a time. This moment—right now—is one of those choices. Not the only one, but a real one.",
       },
-      { t: "breath", pattern: "physiological", rounds: 5 },
-      { t: "timer", seconds: 45, label: "Feel the connection to your future" },
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Counting Real Progress
+   *
+   * Therapeutic approach: Self-efficacy enhancement
+   * - Bandura's work on self-efficacy
+   * - Evidence-based reflection on actual progress
+   * - Countering all-or-nothing thinking with data
+   *
+   * Distinct from other lessons: Concrete, specific, evidence-focused.
+   * For users who respond to data and tangible proof rather than
+   * emotional or somatic approaches.
+   */
   relapse_progress: {
     id: "relapse_progress",
     moduleId: "mini_interventions",
-    title: "Count Your Wins",
-    goal: "Remember your progress",
+    title: "Counting Real Progress",
+    goal: "See the evidence of your growth",
     estMinutes: 3,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "Before this slip, how many days of no contact did you have? Every single one of those days mattered. Every day built new neural pathways. Every day strengthened your capacity to heal.",
+        body: "Your mind is probably doing something called 'all-or-nothing thinking' right now—telling you that this slip erased everything. Let's look at actual evidence instead of feelings about evidence.",
       },
       {
         t: "instruction",
-        body: "Think about what you've learned since you started: new coping skills, new ways of thinking, new understanding of yourself. None of that disappears because of one moment.",
+        body: "How many days of no contact did you have before this? That's not zero now. Those days existed. Whatever coping skills you used during those days—you still have them. Take a moment in the next step to acknowledge that.",
       },
-      { t: "timer", seconds: 60, label: "Remember your progress" },
+      { t: "timer", seconds: 30, label: "Acknowledge your streak" },
       {
         t: "instruction",
-        body: "You've done hard things. You've practiced. You've grown. This slip doesn't erase any of that. In fact, how you handle this slip right now is another opportunity to practice and grow.",
+        body: "In the next step, think of one moment in the past few weeks when you felt an urge to reach out and didn't. What did you do instead? That's a skill you demonstrated. You own that.",
+      },
+      { t: "timer", seconds: 30, label: "Recall one time you resisted" },
+      { t: "breath", pattern: "box", rounds: 2 },
+      {
+        t: "instruction",
+        body: "Self-efficacy—your belief that you can succeed—is built on evidence. Not perfection, but evidence. You have evidence. One slip doesn't delete it; it just adds complexity to the story.",
       },
       {
         t: "check",
-        prompt: "I acknowledge my progress and my capacity to continue.",
+        prompt: "I can acknowledge my real progress alongside this setback.",
       },
       {
         t: "instruction",
-        body: "Let's take 4 breaths to ground yourself in your progress. You're not starting over—you're continuing forward with more wisdom than before.",
+        body: "The research is clear: people who can hold both truths—'I slipped' and 'I've also grown'—are more resilient than those who collapse into either denial or despair.",
       },
-      { t: "breath", pattern: "physiological", rounds: 4 },
-      { t: "timer", seconds: 60, label: "Feel your accumulated strength" },
+      { t: "breath", pattern: "physiological", rounds: 3 },
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Radical Acceptance
+   *
+   * Therapeutic approach: DBT Radical Acceptance
+   * - Accepting reality as it is, not as we wish it were
+   * - Reducing suffering caused by fighting reality
+   * - Moving from 'why' to 'what now'
+   *
+   * Distinct from other lessons: Focuses specifically on acceptance
+   * as a prerequisite to change. For users stuck in rumination
+   * or self-punishment loops.
+   */
   relapse_acceptance: {
     id: "relapse_acceptance",
     moduleId: "mini_interventions",
     title: "Radical Acceptance",
-    goal: "Accept what is, then move forward",
+    goal: "Stop fighting what already happened",
     estMinutes: 4,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "What happened, happened. Fighting it, denying it, or beating yourself up won't change it. Radical acceptance means: this is what is. Now, what's next?",
+        body: "Radical acceptance doesn't mean approving of what happened or giving up. It means stopping the war with reality. You contacted them. That's done. The energy you spend wishing it hadn't happened is energy that can't go toward what's next.",
       },
       {
         t: "instruction",
-        body: "Say it out loud or in your mind: 'I contacted them. This happened. I can't change it. I accept it.' Notice how acceptance feels different from resistance.",
+        body: "Notice if there's a part of you that keeps replaying it, arguing with it, punishing yourself for it. That's your mind trying to change something that can't be changed. It's exhausting, and it doesn't work.",
       },
       { t: "breath", pattern: "physiological", rounds: 3 },
       {
         t: "instruction",
-        body: "Acceptance isn't giving up—it's acknowledging reality so you can make a clear choice about what to do next. You can't change the past, but you can choose your next action.",
+        body: "In the next step, try saying this silently or aloud: 'I reached out to them. This happened. I can't undo it.' Feel the difference between that and 'I can't believe I did that' or 'I'm so stupid.'",
       },
+      { t: "timer", seconds: 30, label: "Practice stating the fact without judgment" },
+      {
+        t: "instruction",
+        body: "Acceptance creates space. When you stop fighting what is, you have room to choose what's next. This isn't resignation—it's clearing the ground so you can build something new.",
+      },
+      { t: "breath", pattern: "box", rounds: 3 },
       {
         t: "check",
-        prompt: "I accept what happened and choose to move forward.",
+        prompt: "I accept that this happened. I'm ready to focus on what's next.",
       },
       {
         t: "instruction",
-        body: "Now that you've accepted what is, what do you choose? You choose to continue. You choose to recommit. You choose healing. Take 5 breaths to feel that choice in your body.",
+        body: "From this place of acceptance, your next choice becomes clearer. Not clouded by shame or denial, just honest: what do you want to do now?",
       },
-      { t: "breath", pattern: "physiological", rounds: 5 },
-      { t: "timer", seconds: 60, label: "Rest in acceptance and choice" },
+      { t: "timer", seconds: 30, label: "Let clarity emerge" },
     ],
     commitment: { text: "Finish" },
   },
+
+  /**
+   * LESSON: Immediate Recommitment
+   *
+   * Therapeutic approach: Behavioral Activation / Implementation Intentions
+   * - Concrete action planning
+   * - Reducing the gap between intention and behavior
+   * - Environmental modification
+   *
+   * Distinct from other lessons: Entirely action-focused. Minimal
+   * processing, maximum momentum. For users who need to DO
+   * something rather than feel something.
+   */
   relapse_action: {
     id: "relapse_action",
     moduleId: "mini_interventions",
     title: "Immediate Recommitment",
-    goal: "Take action to get back on track",
+    goal: "Take concrete action right now",
     estMinutes: 3,
     format: "practice",
     steps: [
       {
         t: "instruction",
-        body: "The best time to recommit is right now. Not tomorrow, not after you feel better—right now. Action creates momentum. Let's take immediate steps to get back on track.",
+        body: "The best time to recommit is immediately after a slip—not tomorrow, not when you feel ready, but now. Research on behavior change shows that the faster you take a concrete action, the more likely you are to get back on track.",
       },
+      { t: "breath", pattern: "physiological", rounds: 2 },
       {
         t: "instruction",
-        body: "First, stabilize your nervous system. Take 3 deep breaths: in through your nose, out through your mouth. This signals safety to your body.",
+        body: "First: recommit out loud. When you continue to the next step, say 'I am continuing my no-contact commitment, starting this moment.' Speaking it makes it real in a way that thinking it doesn't.",
       },
-      { t: "breath", pattern: "physiological", rounds: 3 },
+      { t: "timer", seconds: 10, label: "Say your recommitment aloud" },
       {
         t: "instruction",
-        body: "Now, make a clear commitment. Say it out loud or write it down: 'I'm recommitting to no contact right now, starting this moment.' Clarity creates power.",
+        body: "Second: take one environmental action during the next step. Delete the message thread. Block their number (again, if needed). Log out of the app where you contacted them. Move your phone to another room. Do something physical that makes the next slip harder.",
       },
+      { t: "timer", seconds: 45, label: "Take one concrete action" },
       {
         t: "check",
-        prompt: "I'm recommitting to no contact starting now.",
+        prompt: "I've taken at least one concrete action to support my recommitment.",
       },
       {
         t: "instruction",
-        body: "What's one concrete action you can take in the next hour to support your recommitment? Maybe delete their number, block them, or reach out to a support person.",
+        body: "Third: tell someone. Text a friend, call a family member, post in a support group. 'I slipped today and I'm recommitting.' Accountability isn't about shame—it's about not doing this alone.",
       },
-      { t: "timer", seconds: 60, label: "Identify your next action" },
       {
         t: "instruction",
-        body: "You've recommitted. You've stabilized. You've planned your next action. You're back on track. Take 3 more breaths to anchor this moment.",
+        body: "You've stabilized. You've recommitted. You've taken action. That's not nothing—that's everything. This moment right here is you getting back up.",
       },
-      { t: "breath", pattern: "physiological", rounds: 3 },
+      { t: "breath", pattern: "physiological", rounds: 2 },
     ],
     commitment: { text: "Finish" },
   },
@@ -348,3 +525,30 @@ export const RELAPSE_LESSONS: Record<string, ILessonConfig> = {
 
 // Array of all relapse lesson IDs for random selection
 export const RELAPSE_LESSON_IDS = Object.keys(RELAPSE_LESSONS)
+
+/**
+ * LESSON DIFFERENTIATION SUMMARY
+ *
+ * Each lesson now has a distinct therapeutic approach:
+ *
+ * 1. mini_repair_relapse - Quick stabilization (unchanged)
+ * 2. relapse_self_compassion - Neff's self-compassion (kindness, common humanity)
+ * 3. relapse_understanding - Marlatt's AVE psychoeducation (lapse vs relapse)
+ * 4. relapse_values - ACT values clarification (why you're doing this)
+ * 5. relapse_somatic - Polyvagal body regulation (nervous system reset)
+ * 6. relapse_chain_analysis - Marlatt's high-risk situation mapping (prevention-focused)
+ * 7. relapse_future_self - Future self-continuity research (temporal connection)
+ * 8. relapse_progress - Self-efficacy / evidence-based (data over feelings)
+ * 9. relapse_acceptance - DBT radical acceptance (stop fighting reality)
+ * 10. relapse_action - Behavioral activation (concrete immediate steps)
+ *
+ * KEY IMPROVEMENTS:
+ * - Removed generic platitudes
+ * - Added research citations/grounding in instructions
+ * - Each lesson has distinct structure (not all: instruction → breath → timer)
+ * - Affirmations reworded as capabilities, not forced feelings
+ * - Timer steps have specific, actionable purposes
+ * - Replaced neuroscience lesson with accurate AVE psychoeducation
+ * - Added chain analysis lesson for understanding what led to the slip
+ * - Reduced repetitive breathing across lessons
+ */
