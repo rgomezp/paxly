@@ -97,11 +97,9 @@ export const WhyItDidntWorkScreen: FC<WhyItDidntWorkScreenProps> = observer(
             <Text text="Why It Didn't Work" preset="heading" style={themed($title)} />
             <Text text={HEADER_COPY} style={themed($headerCopy)} />
 
-            {hasReasons && (
-              <View style={themed($explanationBox)}>
-                <Text text={EXPLANATION_COPY} style={themed($explanationText)} />
-              </View>
-            )}
+            <View style={themed($explanationBox)}>
+              <Text text={EXPLANATION_COPY} style={themed($explanationText)} />
+            </View>
 
             {!hasReasons && (
               <View style={themed($emptyState)}>
