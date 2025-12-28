@@ -14,6 +14,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import { SmileyIcon, TrophyIcon, BookOpenIcon, WrenchIcon } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { ActionCard } from "@/components/buttons/ActionCard"
+import { BadgeType } from "@/types/IBadgeData"
 
 interface MeScreenProps extends AppStackScreenProps<"Me"> {}
 
@@ -32,7 +33,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   const containerWidth = 2 * cardWidth + gap
 
   // State for badge visibility (updates when screen is focused)
-  const [shouldShowBadge, setShouldShowBadge] = useState(() => BadgeManager.shouldShowBadge())
+  const [badgeToShow, setBadgeToShow] = useState(() => BadgeManager.shouldShowBadgeWithType())
 
   useEffect(() => {
     NoContactManager.initializeNoContactData()
@@ -41,7 +42,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
   // Update badge state when screen is focused
   useFocusEffect(
     useCallback(() => {
-      setShouldShowBadge(BadgeManager.shouldShowBadge())
+      setBadgeToShow(BadgeManager.shouldShowBadgeWithType())
     }, []),
   )
 
@@ -78,12 +79,13 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 icon={WrenchIcon}
                 label="Breakup Tools"
                 style={{ width: cardWidth, maxWidth: cardWidth }}
+                badge={badgeToShow === BadgeType.LETTER_TO_MYSELF}
               />
               <ActionCard
                 onPress={() => navigate("MyStuff", undefined)}
                 icon={TrophyIcon}
                 label="My Stuff"
-                badge={shouldShowBadge}
+                badge={badgeToShow === BadgeType.MY_STUFF}
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
             </View>

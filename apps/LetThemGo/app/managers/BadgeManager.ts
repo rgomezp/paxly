@@ -6,7 +6,7 @@
 
 import { ganon } from "@/services/ganon/ganon"
 import Log from "@/utils/Log"
-import { IBadgeData } from "@/types/IBadgeData"
+import { BadgeType, IBadgeData } from "@/types/IBadgeData"
 
 const TTL_MS = 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
 
@@ -28,35 +28,37 @@ export default class BadgeManager {
   /**
    * Sets the badge to show (called when an award is claimed)
    */
-  static setBadge(): void {
+  static setBadge(badgeType: BadgeType): void {
     const badgeData: IBadgeData = {
       shouldShow: true,
       timestamp: Date.now(),
+      badgeType,
     }
     this.saveBadgeData(badgeData)
     Log.info("BadgeManager: Badge set for Me tab")
   }
 
   /**
-   * Clears the badge (called when user visits My Stuff screen)
+   * Clears the badge (called when user visits a screen that clears the badge)
    */
-  static clearBadge(): void {
-    const badgeData: IBadgeData = {
-      shouldShow: false,
-      timestamp: Date.now(),
+  static clearBadge(badgeType: BadgeType): void {
+    const badgeData = this.getBadgeData()
+    if (badgeData?.badgeType === badgeType) {
+      badgeData.shouldShow = false
+      badgeData.timestamp = Date.now()
+      this.saveBadgeData(badgeData)
+      Log.info("BadgeManager: Badge cleared for Me tab")
     }
-    this.saveBadgeData(badgeData)
-    Log.info("BadgeManager: Badge cleared for Me tab")
   }
 
   /**
    * Checks if the badge should be displayed
    * Returns true if badge is set and hasn't expired (TTL check)
    */
-  static shouldShowBadge(): boolean {
+  static shouldShowBadgeWithType(): BadgeType | null {
     const badgeData = this.getBadgeData()
     if (!badgeData || !badgeData.shouldShow) {
-      return false
+      return null
     }
 
     // Check if badge has expired (TTL check)
@@ -64,11 +66,13 @@ export default class BadgeManager {
     const timeSinceSet = now - badgeData.timestamp
     if (timeSinceSet >= TTL_MS) {
       // Badge has expired, clear it
-      this.clearBadge()
+      if (badgeData.badgeType) {
+        this.clearBadge(badgeData.badgeType)
+      }
       Log.info("BadgeManager: Badge expired and cleared")
-      return false
+      return null
     }
 
-    return true
+    return badgeData.badgeType ?? null
   }
 }
