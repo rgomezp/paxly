@@ -1,5 +1,5 @@
-import { FC, useState, useEffect, useRef } from "react"
-import { View, TextInput, ViewStyle, TextStyle, KeyboardAvoidingView, Platform } from "react-native"
+import { FC, useState, useEffect } from "react"
+import { View, TextInput, ViewStyle, TextStyle } from "react-native"
 import BottomModal from "./BottomModal"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -57,17 +57,12 @@ const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
 }) {
   const { themed, theme } = useAppTheme()
   const [text, setText] = useState("")
-  const inputRef = useRef<TextInput>(null)
   const sectionInfo = SECTION_INFO[section]
 
   useEffect(() => {
     if (visible) {
       // Reset form when modal opens
       setText("")
-      // Focus input after a short delay
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 300)
     }
   }, [visible])
 
@@ -83,66 +78,55 @@ const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
 
   return (
     <BottomModal visible={visible} onClose={onClose} maxHeight="90%">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-        style={themed($keyboardAvoidingView)}
-      >
-        <View style={themed($container)}>
-          <Text text={`Add to ${sectionInfo.title}`} preset="heading" style={themed($title)} />
-          <Text
-            text={`Keep it short, factual, and non-judgmental. Example: "${sectionInfo.example}"`}
-            size="sm"
-            style={themed($helperText)}
-          />
+      <View style={themed($container)}>
+        <Text text={`Add to ${sectionInfo.title}`} preset="heading" style={themed($title)} />
+        <Text
+          text={`Keep it short, factual, and non-judgmental. Example: "${sectionInfo.example}"`}
+          size="sm"
+          style={themed($helperText)}
+        />
 
-          <View style={themed($inputContainer)}>
-            <Text text="Your reason" preset="formLabel" style={themed($label)} />
-            <View style={themed($inputWrapper)}>
-              <TextInput
-                ref={inputRef}
-                placeholder={sectionInfo.placeholder}
-                placeholderTextColor={theme.colors.textDim}
-                value={text}
-                onChangeText={setText}
-                multiline
-                style={themed($input)}
-                textAlignVertical="top"
-                maxLength={200}
-              />
-            </View>
-            <Text text={`${text.length}/200`} size="xs" style={themed($charCount)} />
+        <View style={themed($inputContainer)}>
+          <Text text="Your reason" preset="formLabel" style={themed($label)} />
+          <View style={themed($inputWrapper)}>
+            <TextInput
+              placeholder={sectionInfo.placeholder}
+              placeholderTextColor={theme.colors.textDim}
+              value={text}
+              onChangeText={setText}
+              multiline
+              style={themed($input)}
+              textAlignVertical="top"
+              maxLength={200}
+            />
           </View>
+          <Text text={`${text.length}/200`} size="xs" style={themed($charCount)} />
+        </View>
 
-          <View style={themed($buttonRow)}>
-            <View style={themed($cancelButtonWrapper)}>
-              <RectangularButton
-                buttonText="Cancel"
-                onClick={onClose}
-                lightBackground
-                customStyles={themed($buttonStyle)}
-              />
-            </View>
-            <View style={themed($addButtonWrapper)}>
-              <RectangularButton
-                buttonText="Add"
-                onClick={handleSave}
-                isDisabled={!isValid}
-                customStyles={themed($buttonStyle)}
-              />
-            </View>
+        <View style={themed($buttonRow)}>
+          <View style={themed($cancelButtonWrapper)}>
+            <RectangularButton
+              buttonText="Cancel"
+              onClick={onClose}
+              lightBackground
+              customStyles={themed($buttonStyle)}
+            />
+          </View>
+          <View style={themed($addButtonWrapper)}>
+            <RectangularButton
+              buttonText="Add"
+              onClick={handleSave}
+              isDisabled={!isValid}
+              customStyles={themed($buttonStyle)}
+            />
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </BottomModal>
   )
 }
 
 export default AddReasonModal
-
-const $keyboardAvoidingView: ThemedStyle<ViewStyle> = () => ({
-  flex: 1,
-})
 
 const $container: ThemedStyle<ViewStyle> = () => ({
   flex: 1,

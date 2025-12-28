@@ -1,5 +1,6 @@
-import { ViewStyle, View, ScrollView, DimensionValue } from "react-native"
+import { ViewStyle, View, DimensionValue } from "react-native"
 import Modal from "react-native-modal"
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import { useAppTheme } from "@/utils/useAppTheme"
 
 interface BottomModalProps {
@@ -29,13 +30,14 @@ export default function BottomModal({
       useNativeDriverForBackdrop={true}
     >
       <View style={[$content, { backgroundColor: theme.colors.background, maxHeight }]}>
-        <ScrollView
+        <KeyboardAwareScrollView
           showsVerticalScrollIndicator={true}
           contentContainerStyle={$scrollContent}
           keyboardShouldPersistTaps="handled"
+          bottomOffset={0}
         >
           {children}
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     </Modal>
   )
