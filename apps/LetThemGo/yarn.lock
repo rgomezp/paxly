@@ -8072,10 +8072,10 @@ react-native-modal@^14.0.0-rc.1:
   dependencies:
     react-native-animatable "1.4.0"
 
-react-native-onesignal@^5.2.9:
-  version "5.2.14"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-5.2.14.tgz#8a39b2b82fe1be721091c894f825a249f8cd3a4b"
-  integrity sha512-wVnV3oQ62fCa6tJYqAjLVHym2jspu5h7hdKC03/tlUria7Z8qpYtykpX2GhB5iXrtk36+w1ZxyiFSSo2W2/dVA==
+react-native-onesignal@5.3.0-beta-01:
+  version "5.3.0-beta-01"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-5.3.0-beta-01.tgz#33d1446f8803e9c4f75daecca84fc5e6df3d6051"
+  integrity sha512-tyETN+fR4YvTNEfQMnV5KXi0H0ZslpQtBtuCaRaHgjTgWjpSIUchOLnffmf5fltk70bgx99zFt7J1QS+rjODqw==
   dependencies:
     invariant "^2.2.2"
 
