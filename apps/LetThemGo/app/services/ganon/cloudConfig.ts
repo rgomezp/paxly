@@ -38,6 +38,9 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   utils: {
     docKeys: ["lastRunMigration"],
   },
+  tools: {
+    subcollectionKeys: ["whyItDidntWork"],
+  },
 }
 
 export default CLOUD_BACKUP_CONFIG

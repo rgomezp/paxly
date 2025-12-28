@@ -12,4 +12,3 @@ export interface IWhyItDidntWorkReason {
   createdAt: number
   isLocked: boolean // Once locked, cannot be edited
 }
-
