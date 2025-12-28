@@ -24,6 +24,7 @@ export const useAverageLessonDurations = (): UseAverageLessonDurationsResult => 
 
   useEffect(() => {
     const fetchDurations = async () => {
+      Log.info("Fetching average lesson durations")
       try {
         const db = getFirestore()
         const collectionRef = collection(db, "average_lesson_durations")
