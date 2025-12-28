@@ -52,16 +52,16 @@ export async function compileLessonRatings() {
         helpfulCount: stats.helpful,
         unhelpfulPercentage: stats.total > 0 ? (stats.unhelpful / stats.total) * 100 : 0,
       }))
-      // Sort by unhelpful count (descending), then by unhelpful percentage
+      // Sort by unhelpful percentage (descending), then by unhelpful count
       .sort((a, b) => {
-        if (b.unhelpfulCount !== a.unhelpfulCount) {
-          return b.unhelpfulCount - a.unhelpfulCount;
+        if (b.unhelpfulPercentage !== a.unhelpfulPercentage) {
+          return b.unhelpfulPercentage - a.unhelpfulPercentage;
         }
-        return b.unhelpfulPercentage - a.unhelpfulPercentage;
+        return b.unhelpfulCount - a.unhelpfulCount;
       });
 
     console.log('\n=== Lessons with Most Unhelpful Ratings ===\n');
-    console.log('Sorted by number of unhelpful ratings (then by percentage):\n');
+    console.log('Sorted by unhelpful percentage (then by number of unhelpful ratings):\n');
 
     if (results.length === 0) {
       console.log('No lessons with ratings found.');
