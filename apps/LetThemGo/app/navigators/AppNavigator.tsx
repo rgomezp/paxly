@@ -20,7 +20,7 @@ import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
 import { useContext, useMemo, ComponentProps, useRef, useState, useEffect } from "react"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
-import { HouseIcon, UserIcon, BooksIcon } from "phosphor-react-native"
+import { HouseIcon, UserIcon, BooksIcon, XCircleIcon } from "phosphor-react-native"
 import Log from "@/utils/Log"
 import BadgeManager from "@/managers/BadgeManager"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
@@ -120,6 +120,20 @@ const TabNavigator = observer(function TabNavigator() {
           tabBarBadgeStyle: {
             backgroundColor: theme.colors.palette.accent100,
           },
+        }}
+      />
+      <Tab.Screen
+        name="WhyItDidntWork"
+        component={Screens.WhyItDidntWorkScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={XCircleIcon}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -280,6 +294,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="MyStuff" component={Screens.MyStuffScreen} />
       <Stack.Screen name="ClaimAward" component={Screens.ClaimAwardScreen} />
       <Stack.Screen name="RateLesson" component={Screens.RateLessonScreen} />
+      <Stack.Screen name="WhyItDidntWork" component={Screens.WhyItDidntWorkScreen} />
     </Stack.Navigator>
   )
 })

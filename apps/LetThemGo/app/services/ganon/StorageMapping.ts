@@ -25,6 +25,7 @@ import { IFlags } from "@/types/IFlags"
 import { ILessonResponses } from "@/types/ILessonResponses"
 import { IAwardData } from "@/types/IAwardData"
 import { IBadgeData } from "@/types/IBadgeData"
+import { IWhyItDidntWorkReason } from "@/types/IWhyItDidntWorkReason"
 
 // Storage key constants
 export const STORAGE_KEYS = {
@@ -80,6 +81,7 @@ interface StorageMapping {
   lessonResponses: ILessonResponses
   awardData: IAwardData
   meTabBadgeData: IBadgeData | null
+  whyItDidntWork: { reasons: IWhyItDidntWorkReason[] } | null
 }
 
 export default StorageMapping

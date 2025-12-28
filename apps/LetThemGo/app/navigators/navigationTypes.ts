@@ -41,6 +41,7 @@ export type AppStackParamList = {
     flow: string
     awardAvailable: boolean
   }
+  WhyItDidntWork: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

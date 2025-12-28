@@ -1,4 +1,4 @@
-import { ViewStyle, View, ScrollView } from "react-native"
+import { ViewStyle, View, ScrollView, DimensionValue } from "react-native"
 import Modal from "react-native-modal"
 import { useAppTheme } from "@/utils/useAppTheme"
 
@@ -6,9 +6,15 @@ interface BottomModalProps {
   children: React.ReactNode
   visible: boolean
   onClose?: () => void
+  maxHeight?: DimensionValue
 }
 
-export default function BottomModal({ children, visible, onClose }: BottomModalProps) {
+export default function BottomModal({
+  children,
+  visible,
+  onClose,
+  maxHeight = "60%",
+}: BottomModalProps) {
   const { theme } = useAppTheme()
 
   return (
@@ -19,9 +25,15 @@ export default function BottomModal({ children, visible, onClose }: BottomModalP
       onSwipeComplete={onClose}
       swipeDirection={["down"]}
       style={$view}
+      avoidKeyboard={true}
+      useNativeDriverForBackdrop={true}
     >
-      <View style={[$content, { backgroundColor: theme.colors.background }]}>
-        <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={$scrollContent}>
+      <View style={[$content, { backgroundColor: theme.colors.background, maxHeight }]}>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          contentContainerStyle={$scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
           {children}
         </ScrollView>
       </View>
@@ -36,7 +48,6 @@ const $view: ViewStyle = {
 
 const $content: ViewStyle = {
   borderRadius: 10,
-  maxHeight: "60%",
   overflow: "hidden",
 }
 
