@@ -15,7 +15,7 @@ export interface MenuItemProps extends Omit<TextProps, "onPress"> {
   /**
    * Optional parameters to pass to the route
    */
-  params?: any
+  params?: AppStackParamList[keyof AppStackParamList]
   /**
    * Optional style override for the container
    */
@@ -24,6 +24,25 @@ export interface MenuItemProps extends Omit<TextProps, "onPress"> {
    * Optional style override for the text
    */
   textStyle?: StyleProp<TextStyle>
+}
+
+/**
+ * Type-safe navigation helper that handles dynamic route navigation
+ * This is needed because TypeScript can't verify params match the route at compile time
+ */
+function navigateSafely(
+  navigation: NavigationProp,
+  route: keyof AppStackParamList,
+  params?: AppStackParamList[keyof AppStackParamList],
+): void {
+  // TypeScript requires this assertion because route is a union type
+  // and params is a union type, so it can't verify they match at compile time
+  // This is safe because the component interface ensures route is a valid key
+  const nav = navigation.navigate as (
+    name: keyof AppStackParamList,
+    params?: AppStackParamList[keyof AppStackParamList],
+  ) => void
+  nav(route, params)
 }
 
 export const MenuItem: FC<MenuItemProps> = ({
@@ -36,7 +55,12 @@ export const MenuItem: FC<MenuItemProps> = ({
   const navigation = useNavigation<NavigationProp>()
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(route, params)} style={containerStyle}>
+    <TouchableOpacity
+      onPress={() => {
+        navigateSafely(navigation, route, params)
+      }}
+      style={containerStyle}
+    >
       <Text {...textProps} style={textStyle} />
     </TouchableOpacity>
   )
