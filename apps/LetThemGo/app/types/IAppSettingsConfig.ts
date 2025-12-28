@@ -1,0 +1,43 @@
+import type { ReactElement } from "react"
+
+interface IAppSettingsConfigBase {
+  title: string
+  iconType: string
+  iconName: string
+  getValue: () => string
+  // Optional: marks special/dangerous actions (e.g., Delete account)
+  danger?: boolean
+}
+
+export interface IAppSettingsBinaryConfig extends IAppSettingsConfigBase {
+  toggleBinarySetting: (value: boolean) => void
+}
+
+export interface IAppSettingsModalConfig extends IAppSettingsConfigBase {
+  modalContent: ReactElement | ((onClose: () => void) => ReactElement) | null
+  onPress?: () => void
+}
+
+export interface IAppSettingsThemeConfig extends IAppSettingsConfigBase {
+  toggleTheme: () => void
+}
+
+// predicates
+export const isBinaryConfig = (config: IAppSettingsConfig): config is IAppSettingsBinaryConfig => {
+  return (config as IAppSettingsBinaryConfig).toggleBinarySetting !== undefined
+}
+
+export const isModalConfig = (config: IAppSettingsConfig): config is IAppSettingsModalConfig => {
+  return (config as IAppSettingsModalConfig).modalContent !== undefined
+}
+
+export const isThemeConfig = (config: IAppSettingsConfig): config is IAppSettingsThemeConfig => {
+  return (config as IAppSettingsThemeConfig).toggleTheme !== undefined
+}
+
+type IAppSettingsConfig =
+  | IAppSettingsBinaryConfig
+  | IAppSettingsModalConfig
+  | IAppSettingsThemeConfig
+
+export default IAppSettingsConfig

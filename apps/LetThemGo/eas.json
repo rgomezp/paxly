@@ -1,0 +1,62 @@
+{
+  "cli": {
+    "version": ">= 3.15.1"
+  },
+  "build": {
+    "development": {
+      "extends": "production",
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug",
+        "buildType": "apk"
+      },
+      "ios": {
+        "buildConfiguration": "Debug",
+        "simulator": true
+      }
+    },
+    "development:device": {
+      "extends": "development",
+      "distribution": "internal",
+      "ios": {
+        "buildConfiguration": "Debug",
+        "simulator": false
+      }
+    },
+    "preview": {
+      "developmentClient": false,
+      "distribution": "internal",
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "production": {
+      "autoIncrement": false,
+      "ios": {
+        "image": "macos-sequoia-15.5-xcode-16.4"
+      }
+    },
+    "preview:device": {
+      "extends": "preview",
+      "ios": { "simulator": false }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "track": "production",
+        "serviceAccountKeyPath": "./googleServices/google-play-submitter.json"
+      },
+      "ios": {
+        "appleId": "rogomezpalacio@protonmail.com",
+        "ascAppId": "6754750980"
+      }
+    },
+    "preview": {
+      "android": {
+        "track": "internal",
+        "serviceAccountKeyPath": "./googleServices/google-play-submitter.json"
+      }
+    }
+  }
+}

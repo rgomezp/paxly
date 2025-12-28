@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Navigate to the directory containing the files
+cd ./googleServices
+
+# Check if submitter.json exists
+if [ ! -f "./submitter.json" ]; then
+    echo "File submitter.json does not exist in the current directory."
+    exit 1
+fi
+
+# Encode the submitter.json file to base64
+GOOGLE_SERVICES_SUBMITTER_BASE64=$(base64 < "./submitter.json")
+
+# Copy the encoded string to the clipboard
+# For macOS, you can use pbcopy directly:
+echo "$GOOGLE_SERVICES_SUBMITTER_BASE64" | pbcopy
+
+# For Linux with xclip installed, use the following instead of pbcopy:
+# echo "$GOOGLE_SERVICES_SUBMITTER_BASE64" | xclip -selection clipboard
+
+# For Linux with xsel installed, use the following instead of pbcopy:
+# echo "$GOOGLE_SERVICES_SUBMITTER_BASE64" | xsel --clipboard --input
+
+echo "Encoded submitter.json has been copied to the clipboard."
