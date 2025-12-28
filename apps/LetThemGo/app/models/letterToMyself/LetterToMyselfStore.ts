@@ -73,6 +73,12 @@ export const LetterToMyselfStoreModel = types
       self.draft = null
       ganon.set("letterToMyselfDraft", null)
     },
+    clear() {
+      self.letters.replace([])
+      self.draft = null
+      ganon.set("letterToMyself", { letters: [] })
+      ganon.set("letterToMyselfDraft", null)
+    },
     persist() {
       try {
         ganon.set("letterToMyself", {

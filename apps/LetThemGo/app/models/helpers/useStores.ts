@@ -94,6 +94,7 @@ export const clearAllStores = () => {
   rootStoreSingleton.journalStore.clearAll()
   rootStoreSingleton.messageIntoTheVoidStore.clearDraft()
   rootStoreSingleton.lessonStore.clear()
+  rootStoreSingleton.letterToMyselfStore.clear()
 }
 
 /**
