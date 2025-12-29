@@ -61,7 +61,9 @@ export function mascotNameSlide({ onSelection, refreshMascotName }: MascotNameSl
 
     // Tag OneSignal user with mascot name
     try {
-      OneSignal.User.addTag("mascot_name", selectedMascotName)
+      const capitalizedSelectedMascotName =
+        selectedMascotName.charAt(0).toUpperCase() + selectedMascotName.slice(1).toLowerCase()
+      OneSignal.User.addTag("mascot_name", capitalizedSelectedMascotName)
       Log.info(`MascotNameSlide: Added OneSignal tag: mascot_name=${selectedMascotName}`)
     } catch (e) {
       Log.error(`MascotNameSlide: Error adding OneSignal tag: ${e}`)
