@@ -138,5 +138,5 @@
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
-  "referenceBuildSize": 16
+  "referenceBuildSize": 17
 }
