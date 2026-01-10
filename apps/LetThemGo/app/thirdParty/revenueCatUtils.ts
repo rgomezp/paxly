@@ -3,7 +3,7 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui"
 import Log from "@/utils/Log"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import Purchases from "react-native-purchases"
-import { handlePurchaseCompletion } from "@/utils/paywallUtils"
+import { handlePurchaseCompletion, fetchPlacementOffering } from "@/utils/paywallUtils"
 
 // Memory cache for configuration state
 type ConfigState = {
@@ -159,6 +159,10 @@ const executePaywallSafely = async <T>(
 
 /**
  * Safely presents the RevenueCat paywall on the main thread
+ * 
+ * Uses age-based placement to ensure consistent pricing throughout the app.
+ * If an offeringId is provided (e.g., from deep links), it will be used instead.
+ * Falls back to default offering if placement lookup fails.
  */
 export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL_RESULT> => {
   try {
@@ -166,7 +170,21 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
     await ensureRevenueCatConfigured()
 
     const offerings = await Purchases.getOfferings()
-    const offering = offeringId ? offerings.all[offeringId] : offerings.current
+    let offering
+
+    if (offeringId) {
+      // Use explicit offering ID if provided (e.g., from deep links)
+      offering = offerings.all[offeringId]
+      if (!offering) {
+        Log.warn(`Offering ${offeringId} not found, falling back to age-based placement`)
+      }
+    }
+
+    // If no explicit offering ID or it wasn't found, use age-based placement
+    // This ensures consistent pricing throughout the app (same as onboarding)
+    if (!offering) {
+      offering = await fetchPlacementOffering()
+    }
 
     let result: PAYWALL_RESULT
 
@@ -179,6 +197,8 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
         "Error presenting paywall",
       )
     } else {
+      // Last resort: use RevenueCat's default paywall
+      Log.warn("No offering available (neither explicit ID nor age-based placement), using RevenueCat default")
       result = await executePaywallSafely(
         () => RevenueCatUI.presentPaywall(),
         "Error presenting paywall",
