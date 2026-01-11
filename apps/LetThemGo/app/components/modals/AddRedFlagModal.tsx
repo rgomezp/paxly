@@ -6,6 +6,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import RedFlagsManager from "@/managers/RedFlagsManager"
+import StoreReviewManager from "@/managers/StoreReviewManager"
 
 interface AddRedFlagModalProps {
   visible: boolean
@@ -32,10 +33,11 @@ const AddRedFlagModal: FC<AddRedFlagModalProps> = function AddRedFlagModal({
   const trimmedText = text.trim()
   const isValid = trimmedText.length > 0
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!isValid) return
 
     RedFlagsManager.addFlag(trimmedText)
+    StoreReviewManager.requestReview()
     onClose()
   }
 

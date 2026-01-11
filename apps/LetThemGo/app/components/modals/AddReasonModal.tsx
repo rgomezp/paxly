@@ -7,6 +7,7 @@ import type { ThemedStyle } from "@/theme"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import WhyItDidntWorkManager from "@/managers/WhyItDidntWorkManager"
 import { WhyItDidntWorkSection } from "@/types/IWhyItDidntWorkReason"
+import StoreReviewManager from "@/managers/StoreReviewManager"
 
 interface AddReasonModalProps {
   visible: boolean
@@ -69,10 +70,11 @@ const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
   const trimmedText = text.trim()
   const isValid = trimmedText.length > 0
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!isValid) return
 
     WhyItDidntWorkManager.addReason(section, trimmedText)
+    StoreReviewManager.requestReview()
     onClose()
   }
 
