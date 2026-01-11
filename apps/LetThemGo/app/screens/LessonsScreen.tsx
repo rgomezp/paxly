@@ -95,6 +95,8 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
 
     // Check paygate for free users before starting a new lesson
     // Allow access if lesson is already completed (can review)
+    // The taskLimit comes from the task_limit_free_users feature flag, which controls
+    // how many lessons free users can complete before hitting the paywall
     if (
       !hasPremium &&
       !isCompleted &&

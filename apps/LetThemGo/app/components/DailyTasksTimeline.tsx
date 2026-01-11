@@ -102,6 +102,8 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
       const hasPremium = hasFeatureAccess(FEATURES.PREMIUM_FEATURES)
 
       // If not premium, check free user limits for specific tasks using feature flag limit
+      // The taskLimit comes from the task_limit_free_users feature flag, which controls
+      // how many tasks free users can complete before hitting the paywall
       if (!hasPremium && taskType) {
         if (taskType === "mood" && FreeUserUsageManager.hasReachedMoodLogLimit(taskLimit)) {
           await presentPaywallSafely()
