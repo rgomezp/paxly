@@ -2,7 +2,6 @@
 // markdown file and add links from here
 
 import { Platform } from "react-native"
-import customConfig from "../../customConfig"
 import {
   SpaceGrotesk_300Light as spaceGroteskLight,
   SpaceGrotesk_400Regular as spaceGroteskRegular,
@@ -11,48 +10,14 @@ import {
   SpaceGrotesk_700Bold as spaceGroteskBold,
 } from "@expo-google-fonts/space-grotesk"
 
-// import inter, poppins, and roboto
-import {
-  Inter_400Regular as interRegular,
-  Inter_400Regular_Italic as interItalic,
-  Inter_500Medium as interMedium,
-  Inter_600SemiBold as interSemiBold,
-  Inter_700Bold as interBold,
-} from "@expo-google-fonts/inter"
-import {
-  Poppins_400Regular as poppinsRegular,
-  Poppins_400Regular_Italic as poppinsItalic,
-  Poppins_500Medium as poppinsMedium,
-  Poppins_600SemiBold as poppinsSemiBold,
-  Poppins_700Bold as poppinsBold,
-} from "@expo-google-fonts/poppins"
-import {
-  Roboto_400Regular as robotoRegular,
-  Roboto_400Regular_Italic as robotoItalic,
-  Roboto_500Medium as robotoMedium,
-  Roboto_700Bold as robotoBold,
-} from "@expo-google-fonts/roboto"
-
+// Only loading Space Grotesk font to reduce app size
+// Removed unused fonts: Inter, Poppins, Roboto (saves ~2-4MB)
 export const customFontsToLoad = {
   spaceGroteskLight,
   spaceGroteskRegular,
   spaceGroteskMedium,
   spaceGroteskSemiBold,
   spaceGroteskBold,
-  interRegular,
-  interItalic,
-  interMedium,
-  interSemiBold,
-  interBold,
-  poppinsRegular,
-  poppinsItalic,
-  poppinsMedium,
-  poppinsSemiBold,
-  poppinsBold,
-  robotoRegular,
-  robotoItalic,
-  robotoMedium,
-  robotoBold,
 }
 
 const fonts = {
@@ -86,44 +51,11 @@ const fonts = {
     // Android only font.
     normal: "monospace",
   },
-  inter: {
-    normal: "interRegular",
-    italic: "interItalic",
-    medium: "interMedium",
-    semiBold: "interSemiBold",
-    bold: "interBold",
-  },
-  poppins: {
-    normal: "poppinsRegular",
-    italic: "poppinsItalic",
-    medium: "poppinsMedium",
-    semiBold: "poppinsSemiBold",
-    bold: "poppinsBold",
-  },
-  roboto: {
-    normal: "robotoRegular",
-    italic: "robotoItalic",
-    medium: "robotoMedium",
-    bold: "robotoBold",
-  },
 }
 
-// Helper function to get the primary font based on custom config
+// Primary font is now always Space Grotesk (removed other font options to reduce app size)
 const getPrimaryFont = () => {
-  const config = customConfig()
-  const fontName = config.primaryFont || "poppins"
-
-  switch (fontName) {
-    case "inter":
-      return fonts.inter
-    case "roboto":
-      return fonts.roboto
-    case "spaceGrotesk":
-      return fonts.spaceGrotesk
-    case "poppins":
-    default:
-      return fonts.poppins
-  }
+  return fonts.spaceGrotesk
 }
 
 export const typography = {
