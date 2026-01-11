@@ -68,7 +68,6 @@ export const RedFlagsScreen: FC<RedFlagsScreenProps> = observer(function RedFlag
 
           <View style={themed($sectionContainer)}>
             <RectangularButton
-              isPaidFeature
               buttonText="Add red flag"
               onClick={handleAddFlag}
               width="100%"

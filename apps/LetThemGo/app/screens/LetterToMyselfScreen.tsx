@@ -129,7 +129,6 @@ export const LetterToMyselfScreen: FC<LetterToMyselfScreenProps> = observer(
                 onClick={handleStartWriting}
                 width="100%"
                 icon={hasDraft ? "edit" : "edit"}
-                isPaidFeature
               />
             </View>
           </ScrollView>

@@ -35,7 +35,7 @@ export const BreakupToolsScreen: FC<BreakupToolsScreenProps> = observer(
       <ScrollView style={[themed($container), contentInsets]}>
         <View style={themed($headerSection)}>
           <Text
-            text="Breakup Tools"
+            text="Healing Tools"
             preset="heading"
             style={themed({
               color: theme.colors.text,
