@@ -79,6 +79,7 @@ interface StorageMapping {
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   strugglePreference: StrugglePreference | null
+  lowContact: boolean
   flagOverrides: Partial<IFlags>
   dailyLesson: IDailyLessonState | null
   completedLessons: CompletedLessonsState

@@ -25,6 +25,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "awardData",
       "moodReminderFrequency",
       "strugglePreference",
+      "lowContact",
       "trialStatus",
     ],
     subcollectionKeys: ["moodHistory", "journalEntries"],

@@ -3,4 +3,5 @@ export {
   useDeleteAccountSettingConfig,
   useMoodReminderFrequencySettingConfig,
   useStrugglePreferenceSettingConfig,
+  useLowContactSettingConfig,
 } from "./settingsConfigs"
