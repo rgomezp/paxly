@@ -1,5 +1,6 @@
 import { rootStoreSingleton } from "@/models/helpers/useStores"
 import { IRedFlag } from "@/types/IRedFlag"
+import AnalyticsManager from "./AnalyticsManager"
 
 export default class RedFlagsManager {
   static addFlag(text: string): IRedFlag {
@@ -12,6 +13,7 @@ export default class RedFlagsManager {
 
     // Update both ganon and the store for reactivity
     rootStoreSingleton.redFlagsStore.addFlag(flag)
+    AnalyticsManager.getInstance().logEvent("red_flag_added")
     return flag
   }
 
