@@ -48,7 +48,13 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     },
     newArchEnabled: false,
     jsEngine: "hermes",
-    assetBundlePatterns: ["**/*"],
+    assetBundlePatterns: [
+      "assets/images/**/*",
+      "assets/sounds/**/*",
+      "assets/animations/**/*",
+      "assets/logos/**/*",
+      "assets/notifIcons/**/*",
+    ],
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.letthemgo",
