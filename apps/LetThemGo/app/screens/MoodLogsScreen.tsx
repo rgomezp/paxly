@@ -11,6 +11,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Text } from "@/components/Text"
 import { EmptyState } from "@/components/EmptyState"
 import { MoodLogItem } from "@/components/MoodLogItem"
+import { MoodGrid } from "@/components/MoodGrid"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import type { ThemedStyle } from "@/theme"
 import type { ViewStyle as RNViewStyle } from "react-native"
@@ -93,6 +94,7 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
   const renderHeader = () => (
     <View style={themed($headerContainer)}>
       <Text text="Mood Logs" preset="heading" style={themed($title)} />
+      <MoodGrid />
     </View>
   )
 
