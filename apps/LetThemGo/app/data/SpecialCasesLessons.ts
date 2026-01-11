@@ -9,7 +9,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Social Media Boundaries",
     goal: "Prevent doom-scroll/contact",
-    estMinutes: 18,
     format: "practice",
     steps: [
       // FOUNDATION: The neuroscience of social media stalking
@@ -179,7 +178,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Anniversary/Trigger Calendar",
     goal: "Pre-plan hard dates",
-    estMinutes: 16,
     format: "practice",
     steps: [
       // FOUNDATION: Why dates hit so hard
@@ -331,7 +329,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Substance Risk Check",
     goal: "Safer coping choices",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -361,7 +358,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "If You Work Together",
     goal: "Professional & safe contact plan",
-    estMinutes: 6,
     format: "builder",
     sections: [
       {
@@ -382,7 +378,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Shared Custody Communication",
     goal: "Low-conflict co-parenting",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -403,7 +398,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Long-Distance Breakup",
     goal: "Navigate distance-specific challenges",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -426,7 +420,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Navigating Mutual Friends",
     goal: "Handle shared social circles",
-    estMinutes: 15,
     format: "practice",
     steps: [
       // FOUNDATION: Why mutual friends complicate everything
@@ -618,7 +611,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Financial Entanglements",
     goal: "Handle shared finances",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -639,7 +631,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "Safety Planning",
     goal: "Create a safety plan if needed",
-    estMinutes: 6,
     format: "builder",
     sections: [
       {
@@ -660,7 +651,6 @@ export const SPECIAL_CASES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "special_cases",
     title: "High-Conflict Breakup",
     goal: "Manage breakups with high conflict or manipulation",
-    estMinutes: 7,
     format: "builder",
     sections: [
       {

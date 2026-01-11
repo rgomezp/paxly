@@ -6,6 +6,7 @@ import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import AwardManager from "@/managers/AwardManager"
 import BadgeManager from "@/managers/BadgeManager"
+import { BadgeType } from "@/types/IBadgeData"
 import { IAward } from "@/types/IAward"
 import type { ThemedStyle } from "@/theme"
 import { getAwardImage } from "@/data/AwardImageRegistry"
@@ -17,7 +18,7 @@ export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffSc
 
   // Clear badge when user visits My Stuff screen
   useEffect(() => {
-    BadgeManager.clearBadge()
+    BadgeManager.clearBadge(BadgeType.MY_STUFF)
   }, [])
 
   const allAwards = AwardManager.getAllAwards()

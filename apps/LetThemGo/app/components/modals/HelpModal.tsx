@@ -6,6 +6,7 @@ import RectangularButton from "../buttons/RectangularButton"
 import { useNavigation } from "@react-navigation/native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
 import { URGE_LESSONS } from "@/data/UrgeLessons"
+import { RELAPSE_LESSON_IDS } from "@/data/RelapseLessons"
 
 interface HelpModalProps {
   visible: boolean
@@ -22,17 +23,16 @@ type ButtonProps = {
   icon?: string
 }
 
-const BUTTON_TO_LESSON_MAP: Record<string, string> = {
-  sleep_poorly: "mini_sleep_rescue",
-  feeling_down: "w6_move_body",
-  ruminating: "d9_rumination_cap",
-  i_contacted: "mini_repair_relapse",
-}
-
 // Helper function to randomly select an urge lesson
 const getRandomUrgeLesson = (): string => {
   const randomIndex = Math.floor(Math.random() * URGE_LESSONS.length)
   return URGE_LESSONS[randomIndex]
+}
+
+// Helper function to randomly select a relapse lesson
+const getRandomRelapseLesson = (): string => {
+  const randomIndex = Math.floor(Math.random() * RELAPSE_LESSON_IDS.length)
+  return RELAPSE_LESSON_IDS[randomIndex]
 }
 
 export default function HelpModal({
@@ -61,39 +61,13 @@ export default function HelpModal({
         navigation.navigate("SingleLesson", { lessonId: randomLessonId })
       },
     },
-    /* {
-      id: "sleep_poorly",
-      buttonText: "I'm having trouble sleeping",
-      icon: "bed",
-      onClick: () => {
-        handleOptionPress(onLessonActivated)
-        navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["sleep_poorly"] })
-      },
-    },
-    {
-      id: "feeling_down",
-      buttonText: "I'm feeling down",
-      icon: "sad-tear",
-      onClick: () => {
-        handleOptionPress(onLessonActivated)
-        navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["feeling_down"] })
-      },
-    },
-    {
-      id: "ruminating",
-      buttonText: "I'm ruminating",
-      icon: "brain",
-      onClick: () => {
-        handleOptionPress(onLessonActivated)
-        navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["ruminating"] })
-      },
-    }, */
     {
       id: "i_contacted",
       buttonText: "I contacted",
       onClick: () => {
         handleOptionPress(onIContacted)
-        navigation.navigate("SingleLesson", { lessonId: BUTTON_TO_LESSON_MAP["i_contacted"] })
+        const randomRelapseLessonId = getRandomRelapseLesson()
+        navigation.navigate("SingleLesson", { lessonId: randomRelapseLessonId })
       },
     },
   ]

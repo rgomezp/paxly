@@ -1230,10 +1230,10 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/space-grotesk/-/space-grotesk-0.2.3.tgz#f2d4fdc167d4d659b2a0d91d608e27ef9a7602f3"
   integrity sha512-UYEMIrzegR02pauH7gVMI7j6cUroTtJug6dH/aQFjMNz0UwZe6GUcrEtJDmsUHJjEZdxbYgHhaiIwswWVo0CMA==
 
-"@expo/cli@0.24.22":
-  version "0.24.22"
-  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.24.22.tgz#75bef7ce8df0e239b489b70a396e9ddf9833bad1"
-  integrity sha512-cEg6/F8ZWjoVkEwm0rXKReWbsCUROFbLFBYht+d5RzHnDwJoTX4QWJKx4m+TGNDPamRUIGw36U4z41Fvev0XmA==
+"@expo/cli@0.24.23":
+  version "0.24.23"
+  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.24.23.tgz#5e25c76a6a94a9fa8309b2f1309d993a95fa4860"
+  integrity sha512-uIlgadw38yVOczYOm9BeW0wkWdC5rtcSP0+NHqOS31DAh2KNzOPRt9dnNuP0ErS+QJM3ymZSjZgo4hUvyFQ7Kw==
   dependencies:
     "@0no-co/graphql.web" "^1.0.8"
     "@babel/runtime" "^7.20.0"
@@ -1244,7 +1244,7 @@
     "@expo/env" "~1.0.7"
     "@expo/image-utils" "^0.7.6"
     "@expo/json-file" "^9.1.5"
-    "@expo/metro-config" "~0.20.17"
+    "@expo/metro-config" "~0.20.18"
     "@expo/osascript" "^2.2.5"
     "@expo/package-manager" "^1.8.6"
     "@expo/plist" "^0.3.5"
@@ -1436,16 +1436,16 @@
     "@babel/code-frame" "~7.10.4"
     json5 "^2.2.3"
 
-"@expo/metro-config@0.20.17", "@expo/metro-config@~0.20.17":
-  version "0.20.17"
-  resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.20.17.tgz#3be75fd6b93081c8a9f0022dcfa9e5b767334902"
-  integrity sha512-lpntF2UZn5bTwrPK6guUv00Xv3X9mkN3YYla+IhEHiYXWyG7WKOtDU0U4KR8h3ubkZ6SPH3snDyRyAzMsWtZFA==
+"@expo/metro-config@0.20.18", "@expo/metro-config@~0.20.18":
+  version "0.20.18"
+  resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.20.18.tgz#8006a505978a014597d9d55f33bb09cfcb81bed1"
+  integrity sha512-qPYq3Cq61KQO1CppqtmxA1NGKpzFOmdiL7WxwLhEVnz73LPSgneW7dV/3RZwVFkjThzjA41qB4a9pxDqtpepPg==
   dependencies:
     "@babel/core" "^7.20.0"
     "@babel/generator" "^7.20.5"
     "@babel/parser" "^7.20.0"
     "@babel/types" "^7.20.0"
-    "@expo/config" "~11.0.12"
+    "@expo/config" "~11.0.13"
     "@expo/env" "~1.0.7"
     "@expo/json-file" "~9.1.5"
     "@expo/spawn-async" "^1.7.2"
@@ -4958,6 +4958,14 @@ expo-constants@~17.1.7:
     "@expo/config" "~11.0.12"
     "@expo/env" "~1.0.7"
 
+expo-constants@~17.1.8:
+  version "17.1.8"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-17.1.8.tgz#6a59142b9967350bdded3f44859886ec34961aa4"
+  integrity sha512-sOCeMN/BWLA7hBP6lMwoEQzFNgTopk6YY03sBAmwT216IHyL54TjNseg8CRU1IQQ/+qinJ2fYWCl7blx2TiNcA==
+  dependencies:
+    "@expo/config" "~11.0.13"
+    "@expo/env" "~1.0.7"
+
 expo-file-system@~18.1.11:
   version "18.1.11"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-18.1.11.tgz#a563c715c4bb5c18729d6d104e8c6cdfbd383e69"
@@ -5043,21 +5051,21 @@ expo-system-ui@~5.0.11:
     "@react-native/normalize-colors" "0.79.6"
     debug "^4.3.2"
 
-expo@~53.0.24:
-  version "53.0.24"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-53.0.24.tgz#df703c5013177692067938b76eff0a24a6c26ee6"
-  integrity sha512-kSjICDHQnU5QpuvSr1MHSyYpn/q2vzHuTKvzxB9fdQhbFYQgh31nebe+jj9+M/tt4tNvoUpV5isxCwua4jsceA==
+expo@~53.0.25:
+  version "53.0.25"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-53.0.25.tgz#3d05566bd26c24e04e1daa01e2fbb0fd62857547"
+  integrity sha512-KMaIMAd0vKl2ooiDB9XMKTuRAhSmrLdPOEON8Ck9mPmSrJB1FHBs6gb63d5IJTQAE1jBZLZj0JBg6rqRBOrTjg==
   dependencies:
     "@babel/runtime" "^7.20.0"
-    "@expo/cli" "0.24.22"
+    "@expo/cli" "0.24.23"
     "@expo/config" "~11.0.13"
     "@expo/config-plugins" "~10.1.2"
     "@expo/fingerprint" "0.13.4"
-    "@expo/metro-config" "0.20.17"
+    "@expo/metro-config" "0.20.18"
     "@expo/vector-icons" "^14.0.0"
     babel-preset-expo "~13.2.4"
     expo-asset "~11.1.7"
-    expo-constants "~17.1.7"
+    expo-constants "~17.1.8"
     expo-file-system "~18.1.11"
     expo-font "~13.3.2"
     expo-keep-awake "~14.1.4"
@@ -6283,10 +6291,10 @@ jest-environment-node@^29.7.0:
     jest-mock "^29.7.0"
     jest-util "^29.7.0"
 
-jest-expo@~53.0.11:
-  version "53.0.11"
-  resolved "https://registry.yarnpkg.com/jest-expo/-/jest-expo-53.0.11.tgz#5aa44fd8a7040a9d6572498660d54661971d10c2"
-  integrity sha512-rfv62zUIQcImP6J7bZnkoNuYjaMH8/42RuIXXkwZqPs2srq9MbZ3Q5xet6NDN6Wab3z/gol9h5YPyJNZ77aJXQ==
+jest-expo@~53.0.13:
+  version "53.0.13"
+  resolved "https://registry.yarnpkg.com/jest-expo/-/jest-expo-53.0.13.tgz#179af8bf5f74a06aff7cb29e7b6de687515d2fd7"
+  integrity sha512-+WB4l0g2xZTlykNBOi00AGUjZUbkgUX1agD03p0Ul8vtRQhghd9VfcHbQoLMnIruObUEGmXbgpbYMLEYMjvFQQ==
   dependencies:
     "@expo/config" "~11.0.13"
     "@expo/json-file" "^9.1.5"
@@ -8072,10 +8080,10 @@ react-native-modal@^14.0.0-rc.1:
   dependencies:
     react-native-animatable "1.4.0"
 
-react-native-onesignal@^5.2.9:
-  version "5.2.14"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-5.2.14.tgz#8a39b2b82fe1be721091c894f825a249f8cd3a4b"
-  integrity sha512-wVnV3oQ62fCa6tJYqAjLVHym2jspu5h7hdKC03/tlUria7Z8qpYtykpX2GhB5iXrtk36+w1ZxyiFSSo2W2/dVA==
+react-native-onesignal@5.3.0-beta-01:
+  version "5.3.0-beta-01"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-5.3.0-beta-01.tgz#33d1446f8803e9c4f75daecca84fc5e6df3d6051"
+  integrity sha512-tyETN+fR4YvTNEfQMnV5KXi0H0ZslpQtBtuCaRaHgjTgWjpSIUchOLnffmf5fltk70bgx99zFt7J1QS+rjODqw==
   dependencies:
     invariant "^2.2.2"
 

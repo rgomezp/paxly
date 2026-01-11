@@ -79,7 +79,11 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
   }
 
   return (
-    <Screen preset="fixed" contentContainerStyle={$contentContainer} safeAreaEdges={["bottom", "left", "right"]}>
+    <Screen
+      preset="fixed"
+      contentContainerStyle={$contentContainer}
+      safeAreaEdges={["bottom", "left", "right"]}
+    >
       <LessonPlayer lessonId={lessonId} onComplete={handleComplete} />
     </Screen>
   )

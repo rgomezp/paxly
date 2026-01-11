@@ -21,6 +21,7 @@ import { useEntitlements } from "@/entitlements/useEntitlements"
 import { FEATURES } from "@/entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
+import { useAverageLessonDurations } from "@/hooks/useAverageLessonDurations"
 
 interface LessonsScreenProps extends AppStackScreenProps<"Lessons"> {}
 
@@ -30,6 +31,7 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
   const completedLessons = lessonStore.getCompletedLessons()
   const todaysLessonId = DailyLessonManager.getTodaysLesson()
   const { hasFeatureAccess } = useEntitlements()
+  const { durations: averageDurations } = useAverageLessonDurations()
   const flagContext = useContext(FlagContext)
   if (!flagContext) {
     throw new Error("LessonsScreen must be used within a FlagProvider")
@@ -254,12 +256,21 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                                 size="xs"
                                 style={themed({ color: theme.colors.textDim, marginTop: 2 })}
                               />
-                              {/* Temporarily hidden duration */}
-                              {/* <Text
-                                text={`${lesson.estMinutes} min`}
-                                size="xs"
-                                style={themed({ color: theme.colors.textDim, marginTop: 4 })}
-                              /> */}
+                              {(() => {
+                                const avgDurationSec = averageDurations[lesson.id]
+                                if (avgDurationSec) {
+                                  const minutes = Math.max(1, Math.round(avgDurationSec / 60))
+                                  const displayText = minutes > 10 ? "10+ min" : `~${minutes} min`
+                                  return (
+                                    <Text
+                                      text={displayText}
+                                      size="xs"
+                                      style={themed({ color: theme.colors.textDim, marginTop: 4 })}
+                                    />
+                                  )
+                                }
+                                return null
+                              })()}
                             </View>
                           </View>
                           <View style={themed($lessonItemRight)}>

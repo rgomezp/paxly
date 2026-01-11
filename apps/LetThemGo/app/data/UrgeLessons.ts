@@ -10,7 +10,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Wait 90 Seconds",
     goal: "Create space before acting",
-    estMinutes: 3,
     format: "practice",
     steps: [
       { t: "instruction", body: "It's normal to feel this way..." },
@@ -31,7 +30,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "5-4-3-2-1 Grounding",
     goal: "Anchor yourself in the present moment",
-    estMinutes: 3,
     format: "practice",
     steps: [
       { t: "instruction", body: "When urges hit, grounding helps. Let's use your senses." },
@@ -57,7 +55,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Box Breathing for Urges",
     goal: "Calm your nervous system",
-    estMinutes: 4,
     format: "practice",
     steps: [
       { t: "instruction", body: "Box breathing helps regulate your body's stress response." },
@@ -76,7 +73,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Why No Contact Matters",
     goal: "Reconnect with your reasons",
-    estMinutes: 3,
     format: "card",
     cards: [
       {
@@ -103,7 +99,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Redirect Your Energy",
     goal: "Channel the urge into something else",
-    estMinutes: 3,
     format: "practice",
     steps: [
       { t: "instruction", body: "That energy wanting to contact them? Let's redirect it." },
@@ -123,7 +118,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Body Scan for Urges",
     goal: "Observe without acting",
-    estMinutes: 4,
     format: "practice",
     steps: [
       { t: "instruction", body: "Close your eyes. Notice where you feel the urge in your body." },
@@ -145,7 +139,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Reframe the Urge",
     goal: "Shift your perspective",
-    estMinutes: 3,
     format: "card",
     cards: [
       {
@@ -172,7 +165,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Express Without Sending",
     goal: "Process your feelings",
-    estMinutes: 3,
     format: "card",
     cards: [
       {
@@ -203,7 +195,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Renew Your Commitment",
     goal: "Reaffirm your choice",
-    estMinutes: 3,
     format: "practice",
     steps: [
       { t: "instruction", body: "Take a deep breath. Remember why you chose no contact." },
@@ -229,7 +220,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "60-Second Reset",
     goal: "Quick intervention for strong urges",
-    estMinutes: 3,
     format: "practice",
     steps: [
       { t: "instruction", body: "Stop. Take a breath. You don't need to act right now." },
@@ -246,7 +236,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Talk to Future You",
     goal: "Gain perspective from your future self",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -280,7 +269,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Reality Check",
     goal: "Examine what contact actually means",
-    estMinutes: 4,
     format: "card",
     cards: [
       {
@@ -312,7 +300,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Cold Water Reset",
     goal: "Use temperature to interrupt the urge",
-    estMinutes: 3,
     format: "practice",
     steps: [
       {
@@ -342,7 +329,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Remember Why You're Here",
     goal: "Recall the evidence for no contact",
-    estMinutes: 4,
     format: "practice",
     steps: [
       {
@@ -376,7 +362,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     moduleId: "mini_interventions",
     title: "Boundary with Self-Compassion",
     goal: "Hold the boundary while being kind to yourself",
-    estMinutes: 4,
     format: "card",
     cards: [
       {

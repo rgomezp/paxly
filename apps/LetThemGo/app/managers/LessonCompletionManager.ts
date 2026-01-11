@@ -1,6 +1,6 @@
 import { getFirestore, collection, addDoc } from "@react-native-firebase/firestore"
 import { ganon } from "@/services/ganon/ganon"
-import { ICompletion } from "@/types/ICompletion"
+import { ICompletion } from "@/shared/types/ICompletion"
 import Log from "@/utils/Log"
 import Constants from "expo-constants"
 

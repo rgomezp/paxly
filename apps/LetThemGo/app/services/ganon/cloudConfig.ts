@@ -9,7 +9,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "entitlementId",
       "dailyTasks",
       "noContactData",
-      "messageIntoTheVoidDraft",
       "finishedOnboarding",
       "lastWateredData",
       "goals",
@@ -37,6 +36,10 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   },
   utils: {
     docKeys: ["lastRunMigration"],
+  },
+  tools: {
+    docKeys: ["letterToMyselfDraft", "messageIntoTheVoidDraft"],
+    subcollectionKeys: ["whyItDidntWork", "letterToMyself"],
   },
 }
 

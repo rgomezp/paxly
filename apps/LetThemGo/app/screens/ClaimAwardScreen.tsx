@@ -7,6 +7,7 @@ import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import AwardManager from "@/managers/AwardManager"
 import BadgeManager from "@/managers/BadgeManager"
+import { BadgeType } from "@/types/IBadgeData"
 import { IAward } from "@/types/IAward"
 import type { ThemedStyle } from "@/theme"
 import RectangularButton from "@/components/buttons/RectangularButton"
@@ -88,7 +89,7 @@ export const ClaimAwardScreen: FC<ClaimAwardScreenProps> = observer(function Cla
 
     if (awarded) {
       // Set badge on Me tab to indicate a new award was claimed
-      BadgeManager.setBadge()
+      BadgeManager.setBadge(BadgeType.MY_STUFF)
 
       // Reset navigation stack to TabNavigator, removing SingleLesson and ClaimAward from the stack
       navigation.reset({

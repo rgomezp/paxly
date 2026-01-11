@@ -25,6 +25,8 @@ import { IFlags } from "@/types/IFlags"
 import { ILessonResponses } from "@/types/ILessonResponses"
 import { IAwardData } from "@/types/IAwardData"
 import { IBadgeData } from "@/types/IBadgeData"
+import { IWhyItDidntWorkReason } from "@/types/IWhyItDidntWorkReason"
+import { ILetterToMyself } from "@/types/ILetterToMyself"
 
 // Storage key constants
 export const STORAGE_KEYS = {
@@ -80,6 +82,9 @@ interface StorageMapping {
   lessonResponses: ILessonResponses
   awardData: IAwardData
   meTabBadgeData: IBadgeData | null
+  whyItDidntWork: { reasons: IWhyItDidntWorkReason[] } | null
+  letterToMyself: { letters: ILetterToMyself[] } | null
+  letterToMyselfDraft: { text: string; deliveryTimeMonths: 1 | 3 | 12 } | null
 }
 
 export default StorageMapping

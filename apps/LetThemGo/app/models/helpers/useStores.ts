@@ -94,6 +94,8 @@ export const clearAllStores = () => {
   rootStoreSingleton.journalStore.clearAll()
   rootStoreSingleton.messageIntoTheVoidStore.clearDraft()
   rootStoreSingleton.lessonStore.clear()
+  rootStoreSingleton.letterToMyselfStore.clear()
+  rootStoreSingleton.whyItDidntWorkStore.clear()
 }
 
 /**
@@ -105,4 +107,6 @@ export const reloadAllStores = () => {
   rootStoreSingleton.journalStore.loadFromGanon()
   rootStoreSingleton.messageIntoTheVoidStore.loadFromGanon()
   rootStoreSingleton.lessonStore.loadFromGanon()
+  rootStoreSingleton.letterToMyselfStore.loadFromGanon()
+  rootStoreSingleton.whyItDidntWorkStore.loadFromGanon()
 }

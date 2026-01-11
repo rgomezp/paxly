@@ -38,7 +38,14 @@ const setImperativeTheming = (theme: Theme) => {
   SystemUI.setBackgroundColorAsync(theme.colors.background)
 }
 
-export const useThemeProvider = (initialTheme?: ThemeContexts) => {
+type UseThemeProviderReturn = {
+  themeScheme: Exclude<ThemeContexts, "auto">
+  navigationTheme: typeof DefaultTheme
+  setThemeContextOverride: (newTheme: ThemeContexts) => void
+  ThemeProvider: typeof ThemeContext.Provider
+}
+
+export const useThemeProvider = (initialTheme?: ThemeContexts): UseThemeProviderReturn => {
   const colorScheme = useColorScheme()
   // Initialize from persisted preference, falling back to provided initialTheme, then config
   const [overrideTheme, setTheme] = useState<Exclude<ThemeContexts, "auto"> | undefined>(() => {

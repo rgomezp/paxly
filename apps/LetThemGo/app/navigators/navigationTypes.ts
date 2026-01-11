@@ -41,6 +41,12 @@ export type AppStackParamList = {
     flow: string
     awardAvailable: boolean
   }
+  WhyItDidntWork: undefined
+  BreakupTools: undefined
+  LetterToMyself: undefined
+  ComposeLetter: undefined
+  LetterInbox: undefined
+  LetterReader: { letterId: string }
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

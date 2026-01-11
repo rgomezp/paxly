@@ -9,7 +9,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Why No Contact Works",
     goal: "Understand the science and psychology of NC",
-    estMinutes: 16,
     format: "card",
     cards: [
       // HOOK: Why this matters
@@ -157,7 +156,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Block & Filter Walkthrough",
     goal: "Close top contact routes",
-    estMinutes: 5,
     format: "builder",
     sections: [
       {
@@ -190,7 +188,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Message I Won't Send",
     goal: "Process unsent communications",
-    estMinutes: 6,
     format: "journal",
     template: "unsent_letter",
     fields: [
@@ -220,7 +217,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Trigger Map",
     goal: "Know when/why urges spike",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -243,7 +239,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "If I Slip…",
     goal: "Pre-commit non-shame reset steps",
-    estMinutes: 18,
     format: "practice",
     steps: [
       // HOOK: Why this matters
@@ -481,7 +476,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Urge Response Plan",
     goal: "Create a plan for when urges hit",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -502,7 +496,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Digital Cleanup",
     goal: "Remove digital reminders",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -523,7 +516,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Physical Space Cleanup",
     goal: "Remove physical reminders",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -544,7 +536,6 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Boundary Communication",
     goal: "Learn to communicate boundaries clearly",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {

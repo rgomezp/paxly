@@ -6,7 +6,6 @@ export interface BaseLessonConfig {
   moduleId: ModuleId
   title: string
   goal: string
-  estMinutes: number
   format: LessonFormat
   gating?: { minHoursBeforeNext?: number; requires?: string[] }
   commitment?: { text: string; duration?: "today" | "week" | "custom" }

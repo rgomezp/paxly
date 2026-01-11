@@ -9,7 +9,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "30-Day Check-In",
     goal: "Review progress + risks",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -38,7 +37,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "60-Day Check-In",
     goal: "Solidify habits",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -61,7 +59,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "90-Day Letter",
     goal: "Send Future-You encouragement",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -78,7 +75,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Craving Protocol",
     goal: "One-page emergency plan",
-    estMinutes: 5,
     format: "card",
     cards: [
       {
@@ -105,7 +101,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Relapse Review (Non-Shame)",
     goal: "Turn slip into data",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -134,7 +129,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Habit Tracking",
     goal: "Track your progress",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -157,7 +151,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Ongoing Trigger Awareness",
     goal: "Stay aware of triggers",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -180,7 +173,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Maintain Your Support System",
     goal: "Keep connections strong",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -201,7 +193,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Celebrate Milestones",
     goal: "Acknowledge your progress",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -224,7 +215,6 @@ export const MAINTENANCE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "maintenance",
     title: "Ongoing Self-Care Plan",
     goal: "Maintain self-care practices",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {

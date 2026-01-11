@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
@@ -18,10 +19,12 @@
     ],
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "rootDir": "../..",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"],
-      "assets/*": ["./assets/*"]
+      "assets/*": ["./assets/*"],
+      "@/shared/*": ["../../shared/*"]
     },
     "typeRoots": [
       "./node_modules/@types",
@@ -40,7 +43,8 @@
     "**/*.tsx",
     "test/**/*.ts",
     "test/**/*.tsx",
-    "types/**/*.d.ts"
+    "types/**/*.d.ts",
+    "../../shared/**/*.ts"
   ],
   "exclude": [
     "node_modules"

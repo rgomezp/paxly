@@ -9,3 +9,4 @@ export interface ICompletion {
   email?: string
   helpful?: boolean | null
 }
+

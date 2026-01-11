@@ -92,7 +92,9 @@ export default class LoginManager extends Subscribable<FirebaseAuthTypes.User | 
    * @returns
    */
   onAuthStateChanged = async (user: FirebaseAuthTypes.User | null, _override?: boolean) => {
-    Log.info(`LoginManager: onAuthStateChanged: ${JSON.stringify(user)}`)
+    Log.info(
+      `LoginManager: onAuthStateChanged: ${user ? `uid: ${user.uid}, email: ${user.email || "null"}` : "null"}`,
+    )
     // Wait for migrations to complete
     if (MigrationManager.getInstance().isRunningMigrations()) {
       Log.info("LoginManager: onAuthStateChanged: migrations are running")

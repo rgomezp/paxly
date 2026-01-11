@@ -9,7 +9,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Ruminations Cap",
     goal: "Contain worry to a window",
-    estMinutes: 6,
     format: "practice",
     steps: [
       {
@@ -63,7 +62,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Recognize Thought Traps",
     goal: "Identify and challenge cognitive distortions",
-    estMinutes: 14,
     format: "card",
     cards: [
       // FOUNDATION
@@ -182,7 +180,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "CBT Thought Record",
     goal: "Reframe the loudest thought",
-    estMinutes: 8,
     format: "journal",
     template: "cbt_5col",
     fields: [
@@ -227,7 +224,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Reframe in 3 Lines",
     goal: "Create believable alternative thoughts",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -256,7 +252,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Catastrophe Ladder",
     goal: "Reduce worst-case spirals",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -285,7 +280,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Evidence Check",
     goal: "Challenge thoughts with facts",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -319,7 +313,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Perspective Shift",
     goal: "See the situation from different angles",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -347,7 +340,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Challenge All-or-Nothing Thinking",
     goal: "Find the gray areas",
-    estMinutes: 5,
     format: "card",
     cards: [
       {
@@ -382,7 +374,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Replace 'Should' Statements",
     goal: "Reduce self-criticism and pressure",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -405,7 +396,6 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "Cognitive Restructuring Practice",
     goal: "Systematically challenge and reframe thoughts",
-    estMinutes: 8,
     format: "journal",
     fields: [
       {

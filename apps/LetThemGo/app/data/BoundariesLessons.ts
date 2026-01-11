@@ -9,7 +9,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Standards Inventory",
     goal: "Define personal standards",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -32,7 +31,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Red/Green Flags",
     goal: "Operationalize patterns",
-    estMinutes: 6,
     format: "card",
     cards: [
       {
@@ -63,7 +61,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Boundary Scripts",
     goal: "Practice scripts for calls/text/IRL",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -87,7 +84,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Item Exchange Plan",
     goal: "Low-drama logistics",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -108,7 +104,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Co-Parenting Mode",
     goal: "Low-conflict communication",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -131,7 +126,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Assertiveness Practice",
     goal: "Practice saying no and setting limits",
-    estMinutes: 6,
     format: "journal",
     fields: [
       {
@@ -154,7 +148,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Emotional Boundaries",
     goal: "Protect your emotional energy",
-    estMinutes: 5,
     format: "card",
     cards: [
       {
@@ -185,7 +178,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Time Boundaries",
     goal: "Protect your time and energy",
-    estMinutes: 4,
     format: "builder",
     sections: [
       {
@@ -205,7 +197,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Physical Boundaries",
     goal: "Define your physical space needs",
-    estMinutes: 5,
     format: "journal",
     fields: [
       {
@@ -228,7 +219,6 @@ export const BOUNDARIES_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "boundaries",
     title: "Boundaries as Self-Respect",
     goal: "See boundaries as self-care",
-    estMinutes: 5,
     format: "card",
     cards: [
       {

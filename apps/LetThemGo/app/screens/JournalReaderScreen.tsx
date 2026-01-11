@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite"
 import { View, ScrollView, Alert, Pressable } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import type { TextStyle, ViewStyle } from "react-native"
@@ -12,13 +11,13 @@ import { useStores } from "@/models"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { isAlive } from "mobx-state-tree"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
+import { useHeader } from "@/utils/useHeader"
 
 interface JournalReaderScreenProps extends AppStackScreenProps<"JournalReader"> {}
 
 export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(
   function JournalReaderScreen({ route, navigation }) {
     const { themed, theme } = useAppTheme()
-    const insets = useSafeAreaInsets()
     const date = route.params?.date
     const { journalStore } = useStores()
 
@@ -45,42 +44,57 @@ export const JournalReaderScreen: FC<JournalReaderScreenProps> = observer(
       }
     }, [isEntryAlive, entry])
 
-    const $deleteButtonInsetStyle = useMemo(() => ({ top: insets.top + 8 }), [insets.top])
+    const handleDelete = () => {
+      if (!isEntryAlive || !entry) return
+      const dateToDelete = entry.date
+      Alert.alert("Delete entry", "Are you sure you want to delete this journal entry?", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            journalStore.deleteByDate(dateToDelete)
+            navigation.goBack()
+          },
+        },
+      ])
+    }
 
-    const $containerInsetStyle = useMemo(() => ({ paddingTop: insets.top + 16 }), [insets.top])
-    const $contentInsetStyle = useMemo(
-      () => ({ paddingBottom: insets.bottom + 96 }),
-      [insets.bottom],
-    )
-
-    return (
-      <View style={[themed($container), $containerInsetStyle]}>
-        {isEntryAlive ? (
+    useHeader(
+      {
+        title: "Journal Entry",
+        LeftActionComponent: (
           <Pressable
             accessibilityRole="button"
-            onPress={() => {
-              const dateToDelete = entry!.date
-              Alert.alert("Delete entry", "Are you sure you want to delete this journal entry?", [
-                { text: "Cancel", style: "cancel" },
-                {
-                  text: "Delete",
-                  style: "destructive",
-                  onPress: () => {
-                    journalStore.deleteByDate(dateToDelete)
-                    navigation.goBack()
-                  },
-                },
-              ])
-            }}
-            style={[themed($topRightAction), $deleteButtonInsetStyle]}
+            onPress={() => navigation.goBack()}
+            style={themed($headerAction)}
+          >
+            <ThemedFontAwesome5Icon name="chevron-left" color={theme.colors.text} size={18} solid />
+          </Pressable>
+        ),
+        RightActionComponent: isEntryAlive ? (
+          <Pressable
+            accessibilityRole="button"
+            onPress={handleDelete}
+            style={themed($headerAction)}
           >
             <ThemedFontAwesome5Icon name="trash" color={theme.colors.text} size={18} solid />
           </Pressable>
-        ) : null}
-        <ScrollView style={themed($scroll)} contentContainerStyle={$contentInsetStyle}>
-          <Text text="Journal Entry" preset="heading" style={themed($title)} />
+        ) : undefined,
+      },
+      [isEntryAlive, entry, theme.colors.text, navigation],
+    )
+
+    return (
+      <View style={themed($container)}>
+        <ScrollView style={themed($scroll)} contentContainerStyle={themed($contentContainer)}>
           {formattedDate ? (
-            <Text preset="subheading" style={themed($dateSubheading)} text={formattedDate} />
+            <Text
+              size="sm"
+              preset="subheading"
+              style={themed($dateSubheading)}
+              text={formattedDate}
+            />
           ) : null}
           {displayedPrompt ? (
             <Text preset="subheading" style={themed($promptSubheading)} text={displayedPrompt} />
@@ -111,18 +125,13 @@ const $scroll: ThemedStyle<ViewStyle> = () => ({
   paddingHorizontal: 24,
 })
 
-const $title: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.colors.text,
-  marginBottom: 12,
-})
-
 const $dateSubheading: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.textDim,
   marginBottom: 12,
 })
 
 const $promptSubheading: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.colors.text,
+  color: theme.colors.tint,
   marginBottom: 12,
   fontStyle: "italic",
 })
@@ -133,11 +142,12 @@ const $body: ThemedStyle<TextStyle> = (theme) => ({
   lineHeight: 22,
 })
 
-const $topRightAction: ThemedStyle<ViewStyle> = () => ({
-  position: "absolute",
-  right: 12,
+const $headerAction: ThemedStyle<ViewStyle> = () => ({
   padding: 8,
-  zIndex: 1,
+})
+
+const $contentContainer: ThemedStyle<ViewStyle> = () => ({
+  paddingBottom: 96,
 })
 
 export default JournalReaderScreen

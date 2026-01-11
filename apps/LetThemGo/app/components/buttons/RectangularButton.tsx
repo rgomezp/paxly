@@ -191,9 +191,7 @@ export default function RectangularButton(props: IProps) {
 
   // Use width when provided (supports both numeric and percentage strings)
   // Use minWidth as fallback only when width is not provided
-  const widthStyle = props.width
-    ? { width: props.width }
-    : { minWidth: 200 }
+  const widthStyle = props.width ? { width: props.width } : { minWidth: 200 }
 
   return (
     <TouchableOpacity
