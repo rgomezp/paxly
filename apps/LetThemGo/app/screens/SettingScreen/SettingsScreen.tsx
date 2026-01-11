@@ -1,4 +1,4 @@
-import { FC, useMemo, useState, useEffect } from "react"
+import { FC, useMemo, useState, useEffect, useCallback, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle, TextStyle, Alert } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
@@ -10,19 +10,26 @@ import {
   useThemeSettingConfig,
   useDeleteAccountSettingConfig,
   useMoodReminderFrequencySettingConfig,
+  useStrugglePreferenceSettingConfig,
 } from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import LoadingModal from "@/components/modals/LoadingModal"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
+import { useFocusEffect } from "@react-navigation/native"
 
 interface SettingsScreenProps extends AppStackScreenProps<"Settings"> {}
 
-export const SettingsScreen: FC<SettingsScreenProps> = observer(function SettingsScreen() {
+export const SettingsScreen: FC<SettingsScreenProps> = observer(function SettingsScreen({
+  route,
+  navigation,
+}) {
   const { themed } = useAppTheme()
   const [isDeleting, setIsDeleting] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [modalToOpen, setModalToOpen] = useState<string | null>(null)
+  const hasProcessedParamsRef = useRef<string | null>(null)
 
   // Listen for UPDATE_ALL event to refresh settings
   useEffect(() => {
@@ -40,7 +47,37 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   // Get setting configurations
   const themeSetting = useThemeSettingConfig()
   const moodReminderFrequencySetting = useMoodReminderFrequencySettingConfig()
+  const strugglePreferenceSetting = useStrugglePreferenceSettingConfig()
   const deleteAccountSetting = useDeleteAccountSettingConfig()
+
+  // Check route params for opening a specific modal - only once per param value
+  useFocusEffect(
+    useCallback(() => {
+      const params = route.params
+      const openModal = params?.openModal
+
+      // Only process if we have a param and haven't processed this specific value yet
+      if (openModal && hasProcessedParamsRef.current !== openModal) {
+        hasProcessedParamsRef.current = openModal
+
+        // Delay to ensure component is fully rendered
+        const timer = setTimeout(() => {
+          setModalToOpen(openModal)
+          // Clear the param after processing to prevent reopening
+          navigation.setParams({ openModal: undefined })
+        }, 300)
+
+        return () => clearTimeout(timer)
+      }
+      return undefined
+    }, [route.params, navigation]),
+  )
+
+  // Reset when modal closes
+  const handleModalClose = useCallback(() => {
+    setModalToOpen(null)
+    hasProcessedParamsRef.current = null
+  }, [])
 
   // Wrap delete onPress with confirm + loading modal
   const deleteSettingWithConfirm = useMemo(() => {
@@ -74,9 +111,20 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
   const settings = useMemo(
-    () => [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm],
+    () => [
+      themeSetting,
+      moodReminderFrequencySetting,
+      strugglePreferenceSetting,
+      deleteSettingWithConfirm,
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm, refreshKey],
+    [
+      themeSetting,
+      moodReminderFrequencySetting,
+      strugglePreferenceSetting,
+      deleteSettingWithConfirm,
+      refreshKey,
+    ],
   )
 
   return (
@@ -87,7 +135,13 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
         style={themed($heading)}
       />
       {settings.map((setting) => (
-        <SettingRow key={setting.title} config={setting} value={setting.getValue()} />
+        <SettingRow
+          key={setting.title}
+          config={setting}
+          value={setting.getValue()}
+          autoOpen={modalToOpen === "strugglePreference" && setting.title === "Main struggle"}
+          onModalClose={handleModalClose}
+        />
       ))}
       <LoadingModal visible={isDeleting} text="Deleting account..." />
     </Screen>

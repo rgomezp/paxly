@@ -18,7 +18,7 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   Home: { rc_offering_id?: string } | undefined
   Me: undefined
-  Settings: undefined
+  Settings: { openModal?: string } | undefined
   TabNavigator: undefined
   Login: undefined
   Onboarding: undefined
