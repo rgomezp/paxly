@@ -14,6 +14,9 @@ import { ActionCard } from "@/components/buttons/ActionCard"
 import { Text } from "@/components"
 import { observer } from "mobx-react-lite"
 import LetterToMyselfManager from "@/managers/LetterToMyselfManager"
+import Planty from "@/components/Planty"
+import NoContactManager from "@/managers/NoContactManager"
+import { NoContactGoal } from "@/types/INoContactData"
 
 interface BreakupToolsScreenProps extends AppStackScreenProps<"BreakupTools"> {}
 
@@ -24,6 +27,10 @@ export const BreakupToolsScreen: FC<BreakupToolsScreenProps> = observer(
     const { width } = useWindowDimensions()
     const hasUnreadLetters = LetterToMyselfManager.hasUnreadLetters()
 
+    // Get Planty goal for correct image
+    const progressData = NoContactManager.calculateDisplay()
+    const goal = progressData?.currentGoal ?? NoContactGoal.OneDay
+
     // Calculate card width and container width for centering
     // For 3 cards, we'll use a 2-column layout with wrapping
     const gap = 10
@@ -33,6 +40,14 @@ export const BreakupToolsScreen: FC<BreakupToolsScreenProps> = observer(
 
     return (
       <ScrollView style={[themed($container), contentInsets]}>
+        <View style={themed($plantyContainer)}>
+          <Planty
+            goal={goal}
+            wateredToday={true}
+            isSad={false}
+            style={themed(() => ({ width: 72, height: 72 }))}
+          />
+        </View>
         <View style={themed($headerSection)}>
           <Text
             text="Healing Tools"
@@ -81,8 +96,14 @@ const $container: ViewStyle = {
   flex: 1,
 }
 
+const $plantyContainer: ViewStyle = {
+  alignItems: "center",
+  marginTop: 24,
+  marginBottom: 20,
+}
+
 const $headerSection: ViewStyle = {
-  marginVertical: 24,
+  marginBottom: 24,
   paddingHorizontal: 20,
 }
 
