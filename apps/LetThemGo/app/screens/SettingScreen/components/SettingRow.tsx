@@ -17,7 +17,12 @@ interface SettingRowProps {
   onModalClose?: () => void
 }
 
-const SettingRow: React.FC<SettingRowProps> = ({ config, value, autoOpen = false, onModalClose }) => {
+const SettingRow: React.FC<SettingRowProps> = ({
+  config,
+  value,
+  autoOpen = false,
+  onModalClose,
+}) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const { themed } = useAppTheme()
   const hasAutoOpenedRef = useRef(false)
@@ -32,6 +37,7 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value, autoOpen = false
       }, 100)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [autoOpen, config])
 
   // Reset the ref when modal closes
