@@ -39,7 +39,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   },
   tools: {
     docKeys: ["letterToMyselfDraft", "messageIntoTheVoidDraft"],
-    subcollectionKeys: ["whyItDidntWork", "letterToMyself"],
+    subcollectionKeys: ["whyItDidntWork", "redFlags", "letterToMyself"],
   },
 }
 

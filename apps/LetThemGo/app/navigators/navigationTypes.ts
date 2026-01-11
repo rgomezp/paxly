@@ -42,6 +42,7 @@ export type AppStackParamList = {
     awardAvailable: boolean
   }
   WhyItDidntWork: undefined
+  RedFlags: undefined
   BreakupTools: undefined
   LetterToMyself: undefined
   ComposeLetter: undefined

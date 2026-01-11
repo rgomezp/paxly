@@ -3,7 +3,12 @@ import { View, ViewStyle, ScrollView, useWindowDimensions } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
-import { PaperPlaneTiltIcon, XCircleIcon, EnvelopeIcon } from "phosphor-react-native"
+import {
+  PaperPlaneTiltIcon,
+  XCircleIcon,
+  EnvelopeIcon,
+  FlagPennantIcon,
+} from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { ActionCard } from "@/components/buttons/ActionCard"
 import { Text } from "@/components"
@@ -51,6 +56,12 @@ export const BreakupToolsScreen: FC<BreakupToolsScreenProps> = observer(
             onPress={() => navigate("WhyItDidntWork", undefined)}
             icon={XCircleIcon}
             label="Why it Didn't Work"
+            style={{ width: cardWidth, maxWidth: cardWidth }}
+          />
+          <ActionCard
+            onPress={() => navigate("RedFlags", undefined)}
+            icon={FlagPennantIcon}
+            label="Red Flags"
             style={{ width: cardWidth, maxWidth: cardWidth }}
           />
           <ActionCard
