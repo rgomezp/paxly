@@ -8,6 +8,7 @@ import LoginManager from "@/managers/LoginManager"
 import DataInitializationManager from "@/managers/DataInitializationManager"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
+import { reloadAllStores } from "@/models/helpers/useStores"
 import {
   MoodReminderFrequency,
   MoodReminderFrequencyShorthand,
@@ -15,7 +16,7 @@ import {
 import { MoodReminderFrequencyModal } from "@/components/settings/MoodReminderFrequencyModal"
 import { StrugglePreferenceModal } from "@/components/settings/StrugglePreferenceModal"
 import { LowContactModal } from "@/components/settings/LowContactModal"
-import { StrugglePreference, StrugglePreferenceLabels } from "@/types/StrugglePreference"
+import { StrugglePreferenceLabels } from "@/types/StrugglePreference"
 import { createElement } from "react"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
@@ -113,6 +114,8 @@ export const useDeleteAccountSettingConfig = (): IAppSettingsModalConfig => {
     }
     ganon.clearAllData()
     await DataInitializationManager.initializeData()
+    // Reload stores from ganon to ensure UI reflects cleared state
+    reloadAllStores()
     EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
   }
 
