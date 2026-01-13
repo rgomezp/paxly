@@ -18,6 +18,9 @@ import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
+import { ganon } from "@/services/ganon/ganon"
+import EventRegister from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -41,6 +44,24 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   }, [])
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
+  const [isLowContact, setIsLowContact] = useState(ganon.get("lowContact") ?? false)
+
+  // Listen for setting updates
+  useEffect(() => {
+    const handleUpdate = () => {
+      const lowContact = ganon.get("lowContact") ?? false
+      setIsLowContact(lowContact)
+    }
+
+    EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
+    handleUpdate() // Initial load
+
+    return () => {
+      EventRegister.off(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
+    }
+  }, [])
+
+  const contactText = isLowContact ? "low contact" : "no contact"
 
   // Play melancholy chime only once per session
   useEffect(() => {
@@ -110,7 +131,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         </View>
         <View style={themed($headerSection)}>
           <Text
-            text={`${name}, you've been no contact for:`}
+            text={`${name}, you've been ${contactText} for:`}
             preset="heading"
             style={themed({
               color: theme.colors.text,

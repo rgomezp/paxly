@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "let-them-go",
     scheme: "myapp",
     owner: "honeywolf",
-    version: "1.2.0",
+    version: "1.2.1",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -48,11 +48,17 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     },
     newArchEnabled: false,
     jsEngine: "hermes",
-    assetBundlePatterns: ["**/*"],
+    assetBundlePatterns: [
+      "assets/images/**/*",
+      "assets/sounds/**/*",
+      "assets/animations/**/*",
+      "assets/logos/**/*",
+      "assets/notifIcons/**/*",
+    ],
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.letthemgo",
-      versionCode: 50,
+      versionCode: 52,
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
@@ -74,7 +80,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.letthemgo",
-      buildNumber: "25",
+      buildNumber: "26",
       config: {
         usesNonExemptEncryption: false,
       },

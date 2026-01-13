@@ -2,7 +2,7 @@ import { isBinaryConfig, isModalConfig, isThemeConfig } from "@/types/IAppSettin
 import { IAppSettingsModalConfig } from "@/types/IAppSettingsConfig"
 import { IAppSettingsBinaryConfig } from "@/types/IAppSettingsConfig"
 import { IAppSettingsThemeConfig } from "@/types/IAppSettingsConfig"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { Text } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
@@ -13,11 +13,44 @@ import type { ThemedStyle } from "@/theme"
 interface SettingRowProps {
   config: IAppSettingsBinaryConfig | IAppSettingsModalConfig | IAppSettingsThemeConfig
   value: string
+  autoOpen?: boolean
+  onModalClose?: () => void
 }
 
-const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
+const SettingRow: React.FC<SettingRowProps> = ({
+  config,
+  value,
+  autoOpen = false,
+  onModalClose,
+}) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const { themed } = useAppTheme()
+  const hasAutoOpenedRef = useRef(false)
+
+  // Auto-open modal if autoOpen prop is true
+  useEffect(() => {
+    if (autoOpen && isModalConfig(config) && !config.onPress && !hasAutoOpenedRef.current) {
+      // Small delay to ensure component is mounted
+      const timer = setTimeout(() => {
+        setModalVisible(true)
+        hasAutoOpenedRef.current = true
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+    return undefined
+  }, [autoOpen, config])
+
+  // Reset the ref when modal closes
+  useEffect(() => {
+    if (!isModalVisible && hasAutoOpenedRef.current) {
+      hasAutoOpenedRef.current = false
+    }
+  }, [isModalVisible])
+
+  const handleClose = () => {
+    setModalVisible(false)
+    onModalClose?.()
+  }
 
   const handlePress = () => {
     if (isModalConfig(config) && config.onPress) {
@@ -54,9 +87,9 @@ const SettingRow: React.FC<SettingRowProps> = ({ config, value }) => {
         </Text>
       </TouchableOpacity>
       {isModalConfig(config) && !config.onPress && (
-        <BottomModal visible={isModalVisible} onClose={() => setModalVisible(false)}>
+        <BottomModal visible={isModalVisible} onClose={handleClose}>
           {typeof config.modalContent === "function"
-            ? config.modalContent(() => setModalVisible(false))
+            ? config.modalContent(handleClose)
             : config.modalContent}
         </BottomModal>
       )}

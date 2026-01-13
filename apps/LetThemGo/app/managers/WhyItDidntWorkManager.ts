@@ -1,6 +1,7 @@
 import { ganon } from "@/services/ganon/ganon"
 import { rootStoreSingleton } from "@/models/helpers/useStores"
 import { IWhyItDidntWorkReason, WhyItDidntWorkSection } from "@/types/IWhyItDidntWorkReason"
+import AnalyticsManager from "./AnalyticsManager"
 
 export default class WhyItDidntWorkManager {
   static addReason(section: WhyItDidntWorkSection, text: string): IWhyItDidntWorkReason {
@@ -14,6 +15,9 @@ export default class WhyItDidntWorkManager {
 
     // Update both ganon and the store for reactivity
     rootStoreSingleton.whyItDidntWorkStore.addReason(reason)
+    AnalyticsManager.getInstance().logEvent("why_it_didnt_work_reason_added", {
+      section,
+    })
     return reason
   }
 

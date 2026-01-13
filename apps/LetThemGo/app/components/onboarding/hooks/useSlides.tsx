@@ -16,6 +16,7 @@ import { isFirstBreakupSlide } from "../slideLibrary/isFirstBreakupSlide"
 import { noContactReasonSlide } from "../slideLibrary/noContactReasonSlide"
 import { checkSocialMediaSlide } from "../slideLibrary/checkSocialMediaSlide"
 import { contactTemptationSituationsSlide } from "../slideLibrary/contactTemptationSituationsSlide"
+import { strugglePreferenceSlide } from "../slideLibrary/strugglePreferenceSlide"
 import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
@@ -110,6 +111,7 @@ export const useSlides = (onSelection?: () => void) => {
       testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 
       // Setup slides
+      strugglePreferenceSlide({ onSelection }),
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
 

@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react"
+import { FC, useMemo, useState, useEffect, useRef, useCallback } from "react"
 import { observer } from "mobx-react-lite"
 import {
   View,
@@ -9,6 +9,8 @@ import {
   TextStyle,
   ImageStyle,
   Image,
+  AppState,
+  AppStateStatus,
 } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
@@ -22,6 +24,8 @@ import { Pressable } from "react-native"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
 import { EnvelopeIcon, EnvelopeOpenIcon } from "phosphor-react-native"
+import { OneSignal } from "react-native-onesignal"
+import Log from "@/utils/Log"
 
 // Conditionally import expo-image for animated WebP support
 let ExpoImage: any = null
@@ -42,6 +46,76 @@ export const LetterToMyselfScreen: FC<LetterToMyselfScreenProps> = observer(
     const hasDeliveredLetters = letterToMyselfStore.hasDeliveredLetters
     const hasUnreadLetters = letterToMyselfStore.hasUnreadLetters
     const hasDraft = letterToMyselfStore.hasDraft
+
+    const [hasPermission, setHasPermission] = useState<boolean | null>(null)
+    const [isRequestingPermission, setIsRequestingPermission] = useState(false)
+    const appState = useRef(AppState.currentState)
+
+    const checkPermission = useCallback(async () => {
+      try {
+        const permissionStatus = await OneSignal.Notifications.getPermissionAsync()
+
+        // getPermissionAsync returns a boolean indicating if permission is granted
+        const isGranted = Boolean(permissionStatus)
+
+        setHasPermission(isGranted)
+        setIsRequestingPermission(false)
+      } catch (error) {
+        Log.error(`LetterToMyselfScreen: Error checking permission: ${error}`)
+        setHasPermission(false)
+        setIsRequestingPermission(false)
+      }
+    }, [])
+
+    // Check permission status on mount
+    useEffect(() => {
+      checkPermission()
+    }, [checkPermission])
+
+    // Listen for app state changes to re-check permission when app comes back to foreground
+    useEffect(() => {
+      const subscription = AppState.addEventListener("change", (nextAppState: AppStateStatus) => {
+        if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+          // App has come to the foreground - re-check permission
+          Log.info("LetterToMyselfScreen: App came to foreground, re-checking permission")
+          checkPermission()
+        }
+        appState.current = nextAppState
+      })
+
+      return () => {
+        subscription.remove()
+      }
+    }, [checkPermission])
+
+    const handleRequestPermission = async () => {
+      try {
+        setIsRequestingPermission(true)
+
+        // Add timeout to prevent infinite loading if requestPermission hangs
+        const timeoutPromise = new Promise<boolean>((resolve) => {
+          setTimeout(() => {
+            resolve(false)
+          }, 10000) // 10 second timeout
+        })
+
+        const permissionPromise = OneSignal.Notifications.requestPermission(true)
+
+        // Race between permission request and timeout
+        await Promise.race([permissionPromise, timeoutPromise])
+
+        // Re-check permission status after request to get accurate state
+        const updatedPermissionStatus = await OneSignal.Notifications.getPermissionAsync()
+        const isGrantedAfterRequest = Boolean(updatedPermissionStatus)
+
+        setHasPermission(isGrantedAfterRequest)
+        setIsRequestingPermission(false)
+      } catch (error) {
+        Log.error(`LetterToMyselfScreen: Error requesting permission: ${error}`)
+        setHasPermission(false)
+        setIsRequestingPermission(false)
+      }
+    }
 
     const handleStartWriting = () => {
       navigation.navigate("ComposeLetter")
@@ -89,6 +163,83 @@ export const LetterToMyselfScreen: FC<LetterToMyselfScreenProps> = observer(
       [hasDeliveredLetters, hasUnreadLetters],
     )
 
+    // Show loading state while checking permission (initial check only)
+    if (hasPermission === null) {
+      return (
+        <KeyboardAvoidingView
+          style={themed($container)}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+        >
+          <View style={[themed($innerContainer), $containerInsetStyle]}>
+            <View style={themed($permissionContainer)}>
+              <Text style={themed($loadingText)}>Checking notification permissions...</Text>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      )
+    }
+
+    // Show permission request UI if permission is not granted
+    if (!hasPermission) {
+      return (
+        <KeyboardAvoidingView
+          style={themed($container)}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+        >
+          <View style={[themed($innerContainer), $containerInsetStyle]}>
+            <ScrollView
+              style={themed($scroll)}
+              contentContainerStyle={$contentInsetStyle}
+              keyboardShouldPersistTaps="handled"
+              keyboardDismissMode="interactive"
+              showsVerticalScrollIndicator={true}
+            >
+              <Text text="Letter to Myself" preset="heading" style={themed($title)} />
+              <View style={$graphicContainer}>
+                {ExpoImage ? (
+                  <ExpoImage
+                    source={require("../../assets/images/letter_to_myself_graphic.png")}
+                    style={$graphic}
+                    contentFit="contain"
+                    transition={0}
+                    cachePolicy="memory"
+                  />
+                ) : (
+                  <Image
+                    source={require("../../assets/images/letter_to_myself_graphic.png")}
+                    style={$graphic}
+                    resizeMode="contain"
+                  />
+                )}
+              </View>
+              <View style={themed($permissionContainer)}>
+                <Text style={themed($permissionText)}>
+                  Notification permission is required to receive your letter.
+                </Text>
+                <Text style={themed($permissionHelpText)}>
+                  Tap the button below to enable notifications, or enable it manually in your device
+                  settings.
+                </Text>
+                <View style={themed($buttonContainer)}>
+                  <RectangularButton
+                    buttonText="Enable Notifications"
+                    onClick={handleRequestPermission}
+                    isDisabled={isRequestingPermission}
+                    width="100%"
+                  />
+                </View>
+                {isRequestingPermission && (
+                  <Text style={themed($loadingText)}>Requesting notification permission...</Text>
+                )}
+              </View>
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+      )
+    }
+
     return (
       <KeyboardAvoidingView
         style={themed($container)}
@@ -129,7 +280,6 @@ export const LetterToMyselfScreen: FC<LetterToMyselfScreenProps> = observer(
                 onClick={handleStartWriting}
                 width="100%"
                 icon={hasDraft ? "edit" : "edit"}
-                isPaidFeature
               />
             </View>
           </ScrollView>
@@ -204,4 +354,38 @@ const $badge: ThemedStyle<ViewStyle> = (theme) => ({
   borderRadius: 9,
   backgroundColor: theme.colors.palette.accent100,
   zIndex: 1,
+})
+
+const $permissionContainer: ThemedStyle<ViewStyle> = (_theme) => ({
+  width: "100%",
+  alignItems: "center",
+  paddingVertical: 20,
+})
+
+const $permissionText: ThemedStyle<TextStyle> = (theme) => ({
+  textAlign: "center",
+  marginBottom: 12,
+  fontSize: 16,
+  color: theme.colors.text,
+})
+
+const $permissionHelpText: ThemedStyle<TextStyle> = (theme) => ({
+  textAlign: "center",
+  marginBottom: 24,
+  fontSize: 14,
+  color: theme.colors.textDim,
+  paddingHorizontal: 20,
+})
+
+const $buttonContainer: ThemedStyle<ViewStyle> = (_theme) => ({
+  alignItems: "center",
+  marginTop: 8,
+  width: "100%",
+})
+
+const $loadingText: ThemedStyle<TextStyle> = (theme) => ({
+  textAlign: "center",
+  fontSize: 16,
+  color: theme.colors.text,
+  marginTop: 12,
 })

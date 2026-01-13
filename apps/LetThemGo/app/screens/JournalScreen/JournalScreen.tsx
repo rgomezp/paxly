@@ -41,6 +41,59 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
     ? trimmedText.length > 0 && trimmedText !== initialTrimmed
     : trimmedText.length > 0
 
+  // Length thresholds for the indicator
+  const MEDIUM_THRESHOLD = 150
+  const LONG_THRESHOLD = 300
+
+  // Calculate progress for each segment of the progress bar
+  const getProgressBarData = () => {
+    const length = text.length
+
+    // First segment (negative): 0 to MEDIUM_THRESHOLD
+    const negativeProgress = Math.min(length / MEDIUM_THRESHOLD, 1)
+
+    // Second segment (neutral): MEDIUM_THRESHOLD to LONG_THRESHOLD
+    const neutralProgress =
+      length < MEDIUM_THRESHOLD
+        ? 0
+        : Math.min((length - MEDIUM_THRESHOLD) / (LONG_THRESHOLD - MEDIUM_THRESHOLD), 1)
+
+    // Third segment (positive): LONG_THRESHOLD onwards
+    const positiveProgress =
+      length < LONG_THRESHOLD ? 0 : Math.min((length - LONG_THRESHOLD) / 100, 1)
+
+    return {
+      negative: negativeProgress,
+      neutral: neutralProgress,
+      positive: positiveProgress,
+    }
+  }
+
+  const progressData = getProgressBarData()
+  const hasReachedPositive = text.length >= LONG_THRESHOLD
+
+  // Calculate segment colors and widths
+  const segmentStyles = useMemo(() => {
+    const positiveColor = theme.colors.palette.positive
+    return {
+      negative: {
+        backgroundColor: hasReachedPositive ? positiveColor : theme.colors.palette.negative,
+        width: (hasReachedPositive ? "100%" : `${progressData.negative * 100}%`) as string,
+        backgroundBg: hasReachedPositive ? positiveColor : theme.colors.palette.negative,
+      },
+      neutral: {
+        backgroundColor: hasReachedPositive ? positiveColor : theme.colors.palette.neutral,
+        width: (hasReachedPositive ? "100%" : `${progressData.neutral * 100}%`) as string,
+        backgroundBg: hasReachedPositive ? positiveColor : theme.colors.palette.neutral,
+      },
+      positive: {
+        backgroundColor: positiveColor,
+        width: (hasReachedPositive ? "100%" : `${progressData.positive * 100}%`) as string,
+        backgroundBg: positiveColor,
+      },
+    }
+  }, [hasReachedPositive, progressData, theme])
+
   // Load saved prompt when editing
   const editDate = route.params?.date
   useEffect(() => {
@@ -138,6 +191,64 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
               autoCorrect={true}
               autoCapitalize="sentences"
             />
+            <View style={themed($indicatorContainer)}>
+              <View style={themed($progressBar)}>
+                {/* Negative segment */}
+                <View style={themed($progressSegmentContainer)}>
+                  <View
+                    style={[
+                      themed($progressSegmentBackgroundNegative),
+                      { backgroundColor: segmentStyles.negative.backgroundBg },
+                    ]}
+                  />
+                  <View
+                    style={[
+                      themed($progressSegmentFill),
+                      {
+                        width: segmentStyles.negative.width as any,
+                        backgroundColor: segmentStyles.negative.backgroundColor,
+                      },
+                    ]}
+                  />
+                </View>
+                {/* Neutral segment */}
+                <View style={themed($progressSegmentContainer)}>
+                  <View
+                    style={[
+                      themed($progressSegmentBackgroundNeutral),
+                      { backgroundColor: segmentStyles.neutral.backgroundBg },
+                    ]}
+                  />
+                  <View
+                    style={[
+                      themed($progressSegmentFill),
+                      {
+                        width: segmentStyles.neutral.width as any,
+                        backgroundColor: segmentStyles.neutral.backgroundColor,
+                      },
+                    ]}
+                  />
+                </View>
+                {/* Positive segment */}
+                <View style={themed($progressSegmentContainer)}>
+                  <View
+                    style={[
+                      themed($progressSegmentBackgroundPositive),
+                      { backgroundColor: segmentStyles.positive.backgroundBg },
+                    ]}
+                  />
+                  <View
+                    style={[
+                      themed($progressSegmentFill),
+                      {
+                        width: segmentStyles.positive.width as any,
+                        backgroundColor: segmentStyles.positive.backgroundColor,
+                      },
+                    ]}
+                  />
+                </View>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -173,6 +284,65 @@ const $inputWrapper: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
   minHeight: 180,
   marginTop: 12,
+})
+
+const $indicatorContainer: ThemedStyle<ViewStyle> = () => ({
+  alignItems: "flex-end",
+  marginTop: 6,
+  paddingRight: 4,
+})
+
+const $progressBar: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 4,
+})
+
+const $progressSegmentContainer: ThemedStyle<ViewStyle> = () => ({
+  width: 20,
+  height: 3,
+  borderRadius: 1.5,
+  overflow: "hidden",
+  position: "relative",
+})
+
+const $progressSegmentBackgroundNegative: ThemedStyle<ViewStyle> = () => ({
+  width: "100%",
+  height: "100%",
+  borderRadius: 1.5,
+  opacity: 0.15,
+  position: "absolute",
+  left: 0,
+  top: 0,
+})
+
+const $progressSegmentBackgroundNeutral: ThemedStyle<ViewStyle> = () => ({
+  width: "100%",
+  height: "100%",
+  borderRadius: 1.5,
+  opacity: 0.15,
+  position: "absolute",
+  left: 0,
+  top: 0,
+})
+
+const $progressSegmentBackgroundPositive: ThemedStyle<ViewStyle> = () => ({
+  width: "100%",
+  height: "100%",
+  borderRadius: 1.5,
+  opacity: 0.15,
+  position: "absolute",
+  left: 0,
+  top: 0,
+})
+
+const $progressSegmentFill: ThemedStyle<ViewStyle> = () => ({
+  height: "100%",
+  borderRadius: 1.5,
+  position: "absolute",
+  left: 0,
+  top: 0,
+  zIndex: 1,
 })
 
 const $input: ThemedStyle<TextStyle> = (theme) => ({

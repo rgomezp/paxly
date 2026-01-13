@@ -5,60 +5,23 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
 import RectangularButton from "@/components/buttons/RectangularButton"
-import WhyItDidntWorkManager from "@/managers/WhyItDidntWorkManager"
-import { WhyItDidntWorkSection } from "@/types/IWhyItDidntWorkReason"
+import RedFlagsManager from "@/managers/RedFlagsManager"
 import StoreReviewManager from "@/managers/StoreReviewManager"
 
-interface AddReasonModalProps {
+interface AddRedFlagModalProps {
   visible: boolean
   onClose: () => void
-  section: WhyItDidntWorkSection
 }
 
-const SECTION_INFO: Record<
-  WhyItDidntWorkSection,
-  { title: string; description: string; example: string; placeholder: string }
-> = {
-  needsNotMet: {
-    title: "Needs that weren't met",
-    description: "What you needed but didn't receive",
-    example: "I needed consistency. They were hot and cold.",
-    placeholder: "I needed consistency. They were hot and cold.",
-  },
-  valuesDidntAlign: {
-    title: "Values that didn't align",
-    description: "Core beliefs that were incompatible",
-    example: "I value honesty. They often lied about small things.",
-    placeholder: "I value honesty. They often lied about small things.",
-  },
-  repeatedConflicts: {
-    title: "Repeated conflicts",
-    description: "Patterns that kept resurfacing",
-    example: "We kept fighting about the same issues every week.",
-    placeholder: "We kept fighting about the same issues every week.",
-  },
-  thingsIKeptExcusing: {
-    title: "Things I kept excusing",
-    description: "Behaviors you overlooked but shouldn't have",
-    example: "I excused their disrespectful comments to my friends.",
-    placeholder: "I excused their disrespectful comments to my friends.",
-  },
-  howIFeltMostOfTheTime: {
-    title: "How I felt most of the time",
-    description: "Your emotional experience in the relationship",
-    example: "I felt anxious and on edge most of the time.",
-    placeholder: "I felt anxious and on edge most of the time.",
-  },
-}
+const EXAMPLE = "They dismissed my feelings when I tried to communicate."
+const PLACEHOLDER = "They dismissed my feelings when I tried to communicate."
 
-const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
+const AddRedFlagModal: FC<AddRedFlagModalProps> = function AddRedFlagModal({
   visible,
   onClose,
-  section,
 }) {
   const { themed, theme } = useAppTheme()
   const [text, setText] = useState("")
-  const sectionInfo = SECTION_INFO[section]
 
   useEffect(() => {
     if (visible) {
@@ -73,7 +36,7 @@ const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
   const handleSave = async () => {
     if (!isValid) return
 
-    WhyItDidntWorkManager.addReason(section, trimmedText)
+    RedFlagsManager.addFlag(trimmedText)
     StoreReviewManager.requestReview()
     onClose()
   }
@@ -81,18 +44,18 @@ const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
   return (
     <BottomModal visible={visible} onClose={onClose} maxHeight="90%">
       <View style={themed($container)}>
-        <Text text={`Add to ${sectionInfo.title}`} preset="heading" style={themed($title)} />
+        <Text text="Add Red Flag" preset="heading" style={themed($title)} />
         <Text
-          text={`Keep it short, factual, and non-judgmental. Example: "${sectionInfo.example}"`}
+          text={`Keep it short, factual, and non-judgmental. Example: "${EXAMPLE}"`}
           size="sm"
           style={themed($helperText)}
         />
 
         <View style={themed($inputContainer)}>
-          <Text text="Your reason" preset="formLabel" style={themed($label)} />
+          <Text text="Your red flag" preset="formLabel" style={themed($label)} />
           <View style={themed($inputWrapper)}>
             <TextInput
-              placeholder={sectionInfo.placeholder}
+              placeholder={PLACEHOLDER}
               placeholderTextColor={theme.colors.textDim}
               value={text}
               onChangeText={setText}
@@ -128,7 +91,7 @@ const AddReasonModal: FC<AddReasonModalProps> = function AddReasonModal({
   )
 }
 
-export default AddReasonModal
+export default AddRedFlagModal
 
 const $container: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
@@ -195,3 +158,4 @@ const $buttonStyle: ThemedStyle<ViewStyle> = () => ({
   margin: 0,
   minWidth: 0,
 })
+

@@ -179,6 +179,7 @@ export const NoContactProgressWheel: FC<NoContactProgressWheelProps> = ({
                   setIsWatering(false)
                 }}
                 showName={true}
+                showSadBubble={true}
               />
               {progressData.timeDisplay.secondary ? (
                 <>

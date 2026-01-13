@@ -13,6 +13,7 @@ import SendMessageConfirmationModal from "@/components/modals/SendMessageConfirm
 import { createAudioPlayer } from "expo-audio"
 import Log from "@/utils/Log"
 import { useStores } from "@/models"
+import StoreReviewManager from "@/managers/StoreReviewManager"
 
 interface ComposeMessageScreenProps extends AppStackScreenProps<"ComposeMessage"> {}
 
@@ -62,7 +63,7 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
       setIsSendModalVisible(true)
     }
 
-    const handleConfirmSend = () => {
+    const handleConfirmSend = async () => {
       // Play send sound effect
       try {
         const sound = createAudioPlayer(require("../../assets/sounds/transition.m4a"))
@@ -81,6 +82,7 @@ export const ComposeMessageScreen: FC<ComposeMessageScreenProps> = observer(
       }
 
       MessageIntoTheVoidManager.sendMessage(text.trim())
+      StoreReviewManager.requestReview()
       setIsSendModalVisible(false)
       // Reset navigation stack to TabNavigator to properly return to Home screen
       // This prevents creating a new navigation stack and remounting components

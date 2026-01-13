@@ -86,7 +86,6 @@ export const MessageIntoTheVoidScreen: FC<MessageIntoTheVoidScreenProps> = obser
                 onClick={handleStartEditing}
                 width="100%"
                 icon={hasDraft ? "edit" : "plus"}
-                isPaidFeature={true}
               />
             </View>
           </ScrollView>

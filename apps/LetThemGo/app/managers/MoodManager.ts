@@ -3,6 +3,7 @@ import { rootStoreSingleton } from "@/models"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Activity, ALL_ACTIVITIES } from "@/types/Activities"
 import { ALL_MOODS, MOODS, MoodId } from "@/types/Moods"
+import { MoodCategory } from "@/types/MoodCategory"
 import DailyTaskManager from "@/managers/DailyTaskManager"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import Log from "@/utils/Log"
@@ -86,6 +87,49 @@ export default class MoodManager {
     }
 
     return Object.entries(byDay).map(([date, count]) => ({ date, count }))
+  }
+
+  /**
+   * Returns the top mood category for a specific date based on the most frequent mood category logged that day.
+   * Returns null if no moods were logged on that date.
+   */
+  static getTopMoodCategoryForDate(date: Date): MoodCategory | null {
+    const dateKey = date.toISOString().slice(0, 10)
+    const history = MoodManager.getHistory()
+
+    // Filter moods for the given date
+    const moodsOnDate = history.filter((item) => {
+      const itemKey = new Date(item.date).toISOString().slice(0, 10)
+      return itemKey === dateKey
+    })
+
+    if (moodsOnDate.length === 0) {
+      return null
+    }
+
+    // Count by category
+    const categoryCounts: Record<MoodCategory, number> = {
+      [MoodCategory.Positive]: 0,
+      [MoodCategory.Negative]: 0,
+      [MoodCategory.Neutral]: 0,
+    }
+
+    for (const item of moodsOnDate) {
+      categoryCounts[item.mood.category] += 1
+    }
+
+    // Find the category with the highest count
+    let topCategory: MoodCategory = MoodCategory.Neutral
+    let maxCount = 0
+
+    for (const [category, count] of Object.entries(categoryCounts)) {
+      if (count > maxCount) {
+        maxCount = count
+        topCategory = Number(category) as MoodCategory
+      }
+    }
+
+    return topCategory
   }
 
   private static resolveMoodId(item: IMoodHistoryItem): MoodId | undefined {

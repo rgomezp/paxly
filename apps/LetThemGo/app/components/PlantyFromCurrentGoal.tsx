@@ -17,6 +17,7 @@ interface PlantyFromCurrentGoalProps {
   onDrinkFinished?: () => void
   loopMs?: number
   showName?: boolean
+  showSadBubble?: boolean
 }
 
 const PlantySadBubble: FC = () => {
@@ -49,9 +50,10 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
   onDrinkFinished,
   loopMs,
   showName = false,
+  showSadBubble = false,
 }) => {
   const { theme } = useAppTheme()
-  const [showSadBubble, setShowSadBubble] = useState(false)
+  const [isBubbleVisible, setIsBubbleVisible] = useState(false)
 
   // Get current goal to determine which planty image to show
   const progressData = NoContactManager.calculateDisplay()
@@ -60,20 +62,20 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
   const isSad = PlantyManager.hasNotWateredIn3Days()
 
   useEffect(() => {
-    if (!isSad) {
-      setShowSadBubble(false)
+    if (!isSad || !showSadBubble) {
+      setIsBubbleVisible(false)
       return
     }
 
-    setShowSadBubble(true)
+    setIsBubbleVisible(true)
     const timeout = setTimeout(() => {
-      setShowSadBubble(false)
+      setIsBubbleVisible(false)
     }, SAD_BUBBLE_HIDE_TIMEOUT_MS)
 
     return () => {
       clearTimeout(timeout)
     }
-  }, [isSad])
+  }, [isSad, showSadBubble])
 
   // Get mascot name if showName is true
   const mascotName = showName ? (ganon.get("mascotName") as MascotNames | null) : null
@@ -83,7 +85,6 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
 
   return (
     <View style={$container}>
-      {isSad && showSadBubble && <PlantySadBubble />}
       <Planty
         goal={goal}
         wateredToday={watered}
@@ -93,6 +94,7 @@ export const PlantyFromCurrentGoal: FC<PlantyFromCurrentGoalProps> = ({
         onDrinkFinished={onDrinkFinished}
         loopMs={loopMs}
       />
+      {isSad && showSadBubble && isBubbleVisible && <PlantySadBubble />}
       {showName && (
         <Text
           style={[$mascotNameText, { color: theme.colors.textDim }]}
@@ -131,6 +133,7 @@ const $speechBubble: ViewStyle = {
   elevation: 2,
   position: "absolute",
   top: -60,
+  zIndex: 10,
 }
 
 const $speechBubbleText: TextStyle = {

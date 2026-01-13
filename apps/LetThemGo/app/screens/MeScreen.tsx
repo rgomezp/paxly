@@ -77,7 +77,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
               <ActionCard
                 onPress={() => navigate("BreakupTools", undefined)}
                 icon={WrenchIcon}
-                label="Breakup Tools"
+                label="Healing Tools"
                 style={{ width: cardWidth, maxWidth: cardWidth }}
                 badge={badgeToShow === BadgeType.LETTER_TO_MYSELF}
               />

@@ -283,6 +283,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="ClaimAward" component={Screens.ClaimAwardScreen} />
       <Stack.Screen name="RateLesson" component={Screens.RateLessonScreen} />
       <Stack.Screen name="WhyItDidntWork" component={Screens.WhyItDidntWorkScreen} />
+      <Stack.Screen name="RedFlags" component={Screens.RedFlagsScreen} />
       <Stack.Screen name="BreakupTools" component={Screens.BreakupToolsScreen} />
       <Stack.Screen name="LetterToMyself" component={Screens.LetterToMyselfScreen} />
       <Stack.Screen name="ComposeLetter" component={Screens.ComposeLetterScreen} />

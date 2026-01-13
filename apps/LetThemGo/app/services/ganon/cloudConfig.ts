@@ -24,6 +24,8 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "appMainGoal",
       "awardData",
       "moodReminderFrequency",
+      "strugglePreference",
+      "lowContact",
       "trialStatus",
     ],
     subcollectionKeys: ["moodHistory", "journalEntries"],
@@ -39,7 +41,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   },
   tools: {
     docKeys: ["letterToMyselfDraft", "messageIntoTheVoidDraft"],
-    subcollectionKeys: ["whyItDidntWork", "letterToMyself"],
+    subcollectionKeys: ["whyItDidntWork", "redFlags", "letterToMyself"],
   },
 }
 
