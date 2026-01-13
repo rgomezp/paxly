@@ -6,13 +6,30 @@ import { renderHook } from "@testing-library/react-native"
 import { useSlides } from "./useSlides"
 import { FlagContext } from "@/hooks/useFlags"
 import UserManager from "@/managers/UserManager"
+import { YesNoChoices } from "@/types/YesNo"
+
+// Mock ganon
+const mockGanonStorage: Record<string, any> = {
+  checkSocialMedia: YesNoChoices.YES, // Set to YES so strugglePreference slide is included
+}
+
+jest.mock("@/services/ganon/ganon", () => {
+  return {
+    ganon: {
+      get: jest.fn((key: string) => mockGanonStorage[key]),
+      set: jest.fn((key: string, value: any) => {
+        mockGanonStorage[key] = value
+      }),
+    },
+  }
+})
 
 /**
  * This test ensures that whenever the onboarding slides array changes
  * (order or length), the ONBOARDING_VERSION constant must be updated.
  *
  * Expected slide order and IDs - update this when slides change:
- * Last updated for ONBOARDING_VERSION: 1.2
+ * Last updated for ONBOARDING_VERSION: 1.4
  * Note: freeToTrySlide and reminderBellSlide are conditional (leadup_slides flag)
  */
 const EXPECTED_SLIDE_IDS = [
@@ -28,12 +45,12 @@ const EXPECTED_SLIDE_IDS = [
   "isFirstBreakup",
   "noContactReason",
   "checkSocialMedia",
+  "strugglePreference",
   "contactTemptationSituation",
   "whoEndedIt",
   "mascotName",
   "mascotIntro",
   "testimonials",
-  "strugglePreference",
   "moodTrackingIntro",
   "moodReminderFrequency",
   "referralSource",
@@ -132,6 +149,9 @@ describe("useSlides - leadup slides feature", () => {
     jest.spyOn(UserManager, "getUser").mockReturnValue({
       nickname: "TestUser",
     } as any)
+
+    // Ensure checkSocialMedia is set to YES so strugglePreference slide is included
+    mockGanonStorage.checkSocialMedia = YesNoChoices.YES
   })
 
   afterEach(() => {
