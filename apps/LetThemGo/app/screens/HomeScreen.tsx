@@ -21,6 +21,7 @@ import { OneSignal } from "react-native-onesignal"
 import { ganon } from "@/services/ganon/ganon"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
+import { StrugglePreference } from "@/types/StrugglePreference"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -45,12 +46,17 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
   const [isLowContact, setIsLowContact] = useState(ganon.get("lowContact") ?? false)
+  const [strugglePreference, setStrugglePreference] = useState<StrugglePreference>(
+    ganon.get("strugglePreference") ?? StrugglePreference.CONTACT,
+  )
 
   // Listen for setting updates
   useEffect(() => {
     const handleUpdate = () => {
       const lowContact = ganon.get("lowContact") ?? false
       setIsLowContact(lowContact)
+      const preference = ganon.get("strugglePreference") ?? StrugglePreference.CONTACT
+      setStrugglePreference(preference)
     }
 
     EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
@@ -61,7 +67,15 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
     }
   }, [])
 
-  const contactText = isLowContact ? "low contact" : "no contact"
+  // Generate header text based on struggle preference
+  const getHeaderText = () => {
+    if (strugglePreference === StrugglePreference.CHECK_SOCIALS) {
+      return `${name}, you haven't checked their socials for:`
+    }
+    // For CONTACT preference
+    const contactText = isLowContact ? "low contact" : "no contact"
+    return `${name}, you've been ${contactText} for:`
+  }
 
   // Play melancholy chime only once per session
   useEffect(() => {
@@ -131,7 +145,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         </View>
         <View style={themed($headerSection)}>
           <Text
-            text={`${name}, you've been ${contactText} for:`}
+            text={getHeaderText()}
             preset="heading"
             style={themed({
               color: theme.colors.text,

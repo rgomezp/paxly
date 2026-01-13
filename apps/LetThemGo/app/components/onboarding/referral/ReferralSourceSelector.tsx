@@ -102,9 +102,9 @@ const ReferralSourceSelector = ({ showTitle = true, onSelection }: ReferralSourc
 
   const sources: ReferralSourceType[] = [
     ReferralSource.APP_STORE,
-    ReferralSource.REDDIT,
     ReferralSource.FRIENDS_OR_FAMILY,
     ReferralSource.TIKTOK,
+    ReferralSource.REDDIT,
     ReferralSource.INSTAGRAM,
     ReferralSource.FACEBOOK,
     ReferralSource.YOUTUBE,

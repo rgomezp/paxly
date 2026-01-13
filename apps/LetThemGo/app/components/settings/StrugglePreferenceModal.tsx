@@ -58,7 +58,7 @@ export function StrugglePreferenceModal({ onClose }: StrugglePreferenceModalProp
     <View style={themed($container)}>
       <Text
         style={themed($descriptionText)}
-        text="This setting helps us personalize the language in the Help modal on your home screen. Choose what you struggle with most."
+        text="This determines what you're tracking on your home screen and the language we use throughout the app. Choose what you want to focus on."
       />
       <MultipleChoiceSelector
         options={options}

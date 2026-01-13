@@ -79,7 +79,7 @@ export const useStrugglePreferenceSettingConfig = (): IAppSettingsModalConfig =>
   }
 
   return {
-    title: "Main struggle",
+    title: "Tracking",
     iconName: "heart",
     iconType: "font-awesome",
     getValue,

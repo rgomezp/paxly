@@ -28,6 +28,7 @@ import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
 import { FlagContext } from "@/hooks/useFlags"
 import { MascotNames } from "@/types/MascotName"
 import { ganon } from "@/services/ganon/ganon"
+import { YesNoChoices } from "@/types/YesNo"
 
 export const useSlides = (onSelection?: () => void) => {
   const flagContext = useContext(FlagContext)
@@ -37,6 +38,9 @@ export const useSlides = (onSelection?: () => void) => {
   const { useFeatureFlags } = flagContext
   const [nickname, setNickname] = useState<string | null>(null)
   const [mascotName, setMascotName] = useState<MascotNames | null>(null)
+  const [checkSocialMedia, setCheckSocialMedia] = useState<YesNoChoices | null>(
+    (ganon.get("checkSocialMedia") as YesNoChoices | null) ?? null,
+  )
 
   const { leadup_slides } = useFeatureFlags()
 
@@ -63,6 +67,18 @@ export const useSlides = (onSelection?: () => void) => {
     loadNickname()
     loadMascotName()
   }, [])
+
+  // Poll for checkSocialMedia changes (since there's no event system for ganon changes)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentValue = ganon.get("checkSocialMedia") as YesNoChoices | null
+      if (currentValue !== checkSocialMedia) {
+        setCheckSocialMedia(currentValue ?? null)
+      }
+    }, 100) // Check every 100ms
+
+    return () => clearInterval(interval)
+  }, [checkSocialMedia])
 
   // Helper function to refresh nickname after it's saved
   const refreshNickname = async () => {
@@ -103,6 +119,7 @@ export const useSlides = (onSelection?: () => void) => {
       isFirstBreakupSlide({ onSelection }),
       noContactReasonSlide({ onSelection }),
       checkSocialMediaSlide({ onSelection }),
+      ...(checkSocialMedia === YesNoChoices.YES ? [strugglePreferenceSlide({ onSelection })] : []),
       contactTemptationSituationsSlide({ onSelection }),
       whoEndedItSlide({ onSelection }),
 
@@ -111,7 +128,6 @@ export const useSlides = (onSelection?: () => void) => {
       testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 
       // Setup slides
-      strugglePreferenceSlide({ onSelection }),
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
 
@@ -122,7 +138,7 @@ export const useSlides = (onSelection?: () => void) => {
         ? [freeToTrySlide({ onSelection }), reminderBellSlide({ onSelection })]
         : []),
     ],
-    [onSelection, leadup_slides, mascotName],
+    [onSelection, leadup_slides, mascotName, checkSocialMedia],
   )
 
   return { slides, nickname }

@@ -59,9 +59,9 @@ export function strugglePreferenceSlide({ onSelection }: StrugglePreferenceSlide
 
   return {
     id: "strugglePreference",
-    title: "What do you struggle with most?",
+    title: "What do you want to track?",
     description:
-      "This helps us personalize the language in your Help modal. Choose what you find most challenging.",
+      "This determines what you're tracking on your home screen and the language we use throughout the app. Choose what you want to focus on.",
     component: (
       <MultipleChoiceSelector
         options={options}

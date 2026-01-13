@@ -143,7 +143,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
           key={setting.title}
           config={setting}
           value={setting.getValue()}
-          autoOpen={modalToOpen === "strugglePreference" && setting.title === "Main struggle"}
+          autoOpen={modalToOpen === "strugglePreference" && setting.title === "Tracking"}
           onModalClose={handleModalClose}
         />
       ))}

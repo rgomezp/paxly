@@ -4,6 +4,6 @@ export enum StrugglePreference {
 }
 
 export const StrugglePreferenceLabels: Record<StrugglePreference, string> = {
-  [StrugglePreference.CONTACT]: "Contact",
-  [StrugglePreference.CHECK_SOCIALS]: "Check Socials",
+  [StrugglePreference.CONTACT]: "No contact",
+  [StrugglePreference.CHECK_SOCIALS]: "Checking socials",
 }
