@@ -90,6 +90,7 @@ interface StorageMapping {
   redFlags: { flags: IRedFlag[] } | null
   letterToMyself: { letters: ILetterToMyself[] } | null
   letterToMyselfDraft: { text: string; deliveryTimeMonths: 1 | 3 | 12 } | null
+  lessonsEncouragementDismissed: boolean
 }
 
 export default StorageMapping

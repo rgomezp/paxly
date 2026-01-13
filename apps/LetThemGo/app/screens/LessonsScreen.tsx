@@ -13,7 +13,7 @@ import { navigate } from "@/navigators/navigationUtilities"
 import DailyLessonManager from "@/managers/DailyLessonManager"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
-import { CaretRightIcon, CheckIcon } from "phosphor-react-native"
+import { CaretRightIcon, CheckIcon, XIcon } from "phosphor-react-native"
 import { $styles } from "@/theme/styles"
 import { useStores } from "@/models"
 import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
@@ -22,6 +22,7 @@ import { FEATURES } from "@/entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
 import { useAverageLessonDurations } from "@/hooks/useAverageLessonDurations"
+import { ganon } from "@/services/ganon/ganon"
 
 interface LessonsScreenProps extends AppStackScreenProps<"Lessons"> {}
 
@@ -45,6 +46,16 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
   const [expandedModules, setExpandedModules] = useState<Set<ModuleId>>(() => {
     return new Set<ModuleId>()
   })
+
+  // Initialize encouragement card dismiss state from ganon
+  const [isEncouragementDismissed, setIsEncouragementDismissed] = useState(() => {
+    return ganon.get("lessonsEncouragementDismissed") ?? false
+  })
+
+  const handleDismissEncouragement = () => {
+    setIsEncouragementDismissed(true)
+    ganon.set("lessonsEncouragementDismissed", true)
+  }
 
   // Group lessons by module
   const lessonsByModule = useMemo(() => {
@@ -160,6 +171,32 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
       </View>
 
       <ScrollView style={themed($content)} showsVerticalScrollIndicator={false}>
+        {!isEncouragementDismissed && (
+          <View
+            style={themed([
+              $encouragementCard,
+              {
+                backgroundColor: theme.colors.card,
+              },
+              $styles.borderRadius,
+            ])}
+          >
+            <View style={themed($encouragementCardContent)}>
+              <Text
+                text="Feel free to jump around and complete multiple lessons as needed. There's no required order—explore what resonates with you."
+                size="sm"
+                style={themed({ color: theme.colors.text, flex: 1 })}
+              />
+              <TouchableOpacity
+                onPress={handleDismissEncouragement}
+                style={themed($dismissButton)}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <ThemedPhosphorIcon Component={XIcon} size={16} color={theme.colors.textDim} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
         {MODULE_ORDER.map((moduleId) => {
           const lessons = lessonsByModule[moduleId] || []
           if (lessons.length === 0) return null
@@ -326,6 +363,24 @@ const $dailyLessonBanner: ViewStyle = {
 const $content: ViewStyle = {
   flex: 1,
   paddingHorizontal: 20,
+}
+
+const $encouragementCard: ViewStyle = {
+  padding: 16,
+  marginBottom: 16,
+  ...$styles.dropShadow,
+}
+
+const $encouragementCardContent: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "flex-start",
+  gap: 12,
+}
+
+const $dismissButton: ViewStyle = {
+  padding: 4,
+  marginTop: -4,
+  marginRight: -4,
 }
 
 const $moduleContainer: ViewStyle = {
