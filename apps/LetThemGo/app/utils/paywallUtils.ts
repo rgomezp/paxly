@@ -8,7 +8,7 @@ import Purchases from "react-native-purchases"
 
 /**
  * Mapping of age ranges to paywall placement identifiers
- * 
+ *
  * NOTE: Placement names are misnomers - they are named "onboarding_placement" but are used
  * throughout the entire app (not just onboarding) to ensure consistent age-based pricing.
  * This ensures users see the same price they saw during onboarding when they encounter
@@ -196,7 +196,7 @@ export const getAgeRange = (): AgeRanges | null => {
 
 /**
  * Gets the placement ID based on age range, with fallback
- * 
+ *
  * NOTE: Despite the name "onboarding_placement", this placement is used throughout
  * the entire app to ensure consistent age-based pricing across all paywalls.
  */
@@ -449,11 +449,11 @@ export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
 
 /**
  * Fetches offering with placement logic
- * 
+ *
  * This function is used throughout the app (not just onboarding) to ensure consistent
  * age-based pricing. Despite placement names containing "onboarding", they are used
  * everywhere to maintain price consistency.
- * 
+ *
  * Robust fallback chain to handle missing placements or offerings gracefully:
  * 1. Try placement offering (if valid)
  * 2. If placement returns current offering, try age-based offering
