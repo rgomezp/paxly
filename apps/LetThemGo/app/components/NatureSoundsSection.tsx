@@ -5,6 +5,7 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import Log from "@/utils/Log"
+import AnalyticsManager from "@/managers/AnalyticsManager"
 
 // Singleton to persist nature sounds state across component remounts
 class NatureSoundsManager {
@@ -103,6 +104,7 @@ export const NatureSoundsSection: FC = function NatureSoundsSection() {
         }
       } else {
         // Play the sound
+        AnalyticsManager.getInstance().logEvent("nature_sounds_play")
         let sound = soundRef.current || manager.getSound()
         if (!sound) {
           manager.setIsLoading(true)
