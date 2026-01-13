@@ -43,10 +43,16 @@ export const AGE_TO_ABANDONMENT_PLACEMENT_ID: Record<AgeRanges, string> = {
 }
 
 /**
+ * @deprecated This is a fallback mechanism. Use placements instead.
+ *
  * Mapping of age ranges to onboarding paywall offering identifiers
  * Used as a fallback when placement returns the current offering instead of the age-specific offering
  * This ensures we get the correct offering (e.g., default_offering_old for old age ranges)
  * even if the placement isn't properly configured in RevenueCat
+ *
+ * NOTE: This fallback is necessary due to RevenueCat's getCurrentOfferingForPlacement() sometimes
+ * returning the current offering instead of the placement-specific offering. Once placements are
+ * fully working and experiments are properly configured, this fallback can be removed.
  */
 export const AGE_TO_OFFERING_ID: Record<AgeRanges, string | null> = {
   [AgeRanges.SEVENTEEN_OR_UNDER]: "default_offering_young",
@@ -397,6 +403,8 @@ export const getAgeBasedAbandonmentOffering = (
 }
 
 /**
+ * @deprecated Use placements instead. This is a fallback mechanism.
+ *
  * Gets the onboarding paywall offering based on age range by looking up offering IDs directly
  * Used as a fallback when placement returns the current offering instead of the age-specific offering
  *
@@ -517,22 +525,35 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
       offerings.current && placementOffering.identifier === offerings.current.identifier
 
     if (isSameAsCurrent) {
-      Log.warn(
-        `Placement ${placementId} returned current offering (${placementOffering.identifier}). This suggests the placement may not be configured in the active RevenueCat experiment variant, or the user isn't assigned to the variant with placement mappings.`,
-      )
-      // Fallback to age-based offering lookup
-      const ageBasedOffering = getAgeBasedOffering(offerings, ageRange)
-      if (ageBasedOffering) {
+      // Only warn if this age range has a specific offering mapped (not null)
+      // For age ranges with null (EIGHTEEN_TO_TWENTY_FIVE, TWENTY_SIX_TO_THIRTY_FIVE),
+      // it's expected that the placement returns the current/default offering
+      const hasSpecificOffering = ageRange && AGE_TO_OFFERING_ID[ageRange] !== null
+
+      if (hasSpecificOffering) {
         Log.warn(
-          `Placement ${placementId} returned current offering (${placementOffering.identifier}); using age-based offering instead: ${ageBasedOffering.identifier}`,
+          `Placement ${placementId} returned current offering (${placementOffering.identifier}) for age range ${ageRange}. This suggests the placement may not be configured in the active RevenueCat experiment variant, or the user isn't assigned to the variant with placement mappings.`,
         )
-        paywallAnalytics.placementLoaded(ageBasedOffering.identifier, placementId, ageRange)
-        return ageBasedOffering
+        // Fallback to age-based offering lookup
+        const ageBasedOffering = getAgeBasedOffering(offerings, ageRange)
+        if (ageBasedOffering) {
+          Log.warn(
+            `Placement ${placementId} returned current offering (${placementOffering.identifier}); using age-based offering instead: ${ageBasedOffering.identifier}`,
+          )
+          paywallAnalytics.placementLoaded(ageBasedOffering.identifier, placementId, ageRange)
+          return ageBasedOffering
+        }
+        // If age-based offering doesn't exist, continue with placement offering
+        Log.warn(
+          `Placement ${placementId} returned current offering, but age-based offering not found. Using placement offering: ${placementOffering.identifier}`,
+        )
+      } else {
+        // For age ranges without a specific offering (null in AGE_TO_OFFERING_ID),
+        // it's expected that the placement returns the current/default offering
+        Log.info(
+          `Placement ${placementId} returned current offering (${placementOffering.identifier}) for age range ${ageRange}. This is expected since this age range uses the default offering.`,
+        )
       }
-      // If age-based offering doesn't exist, continue with placement offering
-      Log.warn(
-        `Placement ${placementId} returned current offering, but age-based offering not found. Using placement offering: ${placementOffering.identifier}`,
-      )
     }
 
     Log.info(`Using ${placementId} offering for A/B testing: ${placementOffering.identifier}`)
