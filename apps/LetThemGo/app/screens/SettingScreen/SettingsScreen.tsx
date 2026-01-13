@@ -19,6 +19,8 @@ import LoadingModal from "@/components/modals/LoadingModal"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { useFocusEffect } from "@react-navigation/native"
+import { ganon } from "@/services/ganon/ganon"
+import { StrugglePreference } from "@/types/StrugglePreference"
 
 interface SettingsScreenProps extends AppStackScreenProps<"Settings"> {}
 
@@ -113,13 +115,25 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
   const settings = useMemo(
-    () => [
-      themeSetting,
-      moodReminderFrequencySetting,
-      strugglePreferenceSetting,
-      lowContactSetting,
-      deleteSettingWithConfirm,
-    ],
+    () => {
+      // Check struggle preference to conditionally show low contact setting
+      const strugglePreference = ganon.get("strugglePreference") as StrugglePreference | null
+      const shouldShowLowContact = strugglePreference === StrugglePreference.CONTACT
+
+      const baseSettings = [
+        themeSetting,
+        moodReminderFrequencySetting,
+        strugglePreferenceSetting,
+        deleteSettingWithConfirm,
+      ]
+
+      // Only include low contact setting if tracking "No contact"
+      if (shouldShowLowContact) {
+        baseSettings.splice(3, 0, lowContactSetting) // Insert after strugglePreferenceSetting
+      }
+
+      return baseSettings
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       themeSetting,
