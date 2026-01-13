@@ -706,27 +706,65 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "body_downshift",
     title: "Grounding Techniques Menu",
     goal: "Build a toolkit of grounding methods",
-    format: "card",
-    cards: [
+    format: "practice",
+    steps: [
       {
-        type: "text",
+        t: "instruction",
         body: "When you're activated, you're either in the past (ruminating) or the future (worrying). Grounding brings you back to the present moment using your five senses.",
       },
       {
-        type: "text",
+        t: "instruction",
         body: "Grounding works because it activates your prefrontal cortex—the part of your brain that can observe and name things. This calms the amygdala's alarm by shifting your attention from threat to sensation.",
       },
       {
-        type: "text",
-        body: "Here are proven methods:\n\n• 5-4-3-2-1: Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste\n• Cold water: Splash face or hold wrists under cold tap\n• Bare feet: Feel the floor, grass, or ground directly\n• Weighted object: Hold something with weight and notice its texture",
+        t: "instruction",
+        body: "Let's practice the 5-4-3-2-1 technique. This is one of the most effective grounding methods because it uses multiple senses and gives your mind a clear task.",
       },
       {
-        type: "tip",
-        body: "The key is using your senses to anchor in the present. When you're naming what you see or feel, you can't simultaneously be lost in anxious thoughts.",
+        t: "instruction",
+        body: "First, look around slowly. Name 5 things you see. Be specific—not just 'wall' but 'cream-colored wall with a small crack near the corner.'",
+      },
+      { t: "timer", seconds: 45, label: "Name 5 things you see" },
+      {
+        t: "instruction",
+        body: "Good. Now, notice 4 things you can physically feel. The pressure of your feet on the floor. The texture of your clothing. The temperature of the air. The weight of your body in the chair.",
+      },
+      { t: "timer", seconds: 40, label: "Notice 4 things you feel" },
+      {
+        t: "instruction",
+        body: "Now, listen for 3 sounds. Include the subtle ones—the hum of electronics, distant traffic, your own breathing. Your nervous system is constantly monitoring these; making them conscious creates safety.",
+      },
+      { t: "timer", seconds: 35, label: "Identify 3 sounds" },
+      {
+        t: "instruction",
+        body: "Notice 2 things you can smell. Even if subtle—the scent of your laundry detergent, coffee from this morning, the neutral smell of your space.",
+      },
+      { t: "timer", seconds: 30, label: "Notice 2 things you smell" },
+      {
+        t: "instruction",
+        body: "Finally, notice 1 thing you can taste. The lingering taste of coffee, toothpaste, or just the neutral taste in your mouth.",
+      },
+      { t: "timer", seconds: 20, label: "Notice 1 thing you taste" },
+      {
+        t: "instruction",
+        body: "Notice how you feel now. Did the activation shift at all? Even slightly? That's the grounding working. You brought yourself back to the present moment.",
       },
       {
-        type: "text",
+        t: "instruction",
+        body: "Other quick grounding methods you can try:\n\n• Cold water: Splash face or hold wrists under cold tap\n• Bare feet: Feel the floor, grass, or ground directly\n• Weighted object: Hold something with weight and notice its texture\n• Progressive muscle relaxation: Tense and release each muscle group",
+      },
+      {
+        t: "instruction",
         body: "Practice 2-3 methods regularly so they become automatic. When panic hits, you want tools you can access without thinking. Muscle memory matters.",
+      },
+      {
+        t: "textInput",
+        prompt: "Which grounding method will you practice this week?",
+        placeholder: "e.g., 5-4-3-2-1, cold water, bare feet",
+      },
+      {
+        t: "check",
+        prompt: "I have grounding techniques I can use when I'm activated",
       },
     ],
     commitment: { text: "Finish" },

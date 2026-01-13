@@ -291,24 +291,71 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Personal SOS Plan",
     goal: "Create a written stepwise crisis plan",
-    format: "builder",
-    sections: [
+    format: "practice",
+    steps: [
       {
-        title:
-          "Name the people who can anchor you when a crisis hits (research shows that social support is one of the strongest predictors of recovery)",
-        items: [
-          { label: "Add primary support", kind: "shortText" },
-          { label: "Add secondary support", kind: "shortText" },
-          { label: "Add backup support", kind: "shortText" },
-        ],
+        t: "instruction",
+        body: "When crisis hits, your prefrontal cortex (the thinking, planning part of your brain) goes offline. You can't think clearly. That's why having a written plan matters—it's already there when you need it.",
       },
       {
-        title: "What do these people mean to you (in 2-3 sentences)?",
-        items: [
-          { label: "Primary support meaning", kind: "shortText" },
-          { label: "Secondary support meaning", kind: "shortText" },
-          { label: "Backup support meaning", kind: "shortText" },
-        ],
+        t: "instruction",
+        body: "Studies show that having a pre-written crisis plan significantly reduces the likelihood of acting on urges. When your prefrontal cortex shuts down, the plan takes over. It's like having a fire escape route—you don't think about it in the moment, you just follow it.",
+      },
+      {
+        t: "instruction",
+        body: "Let's build your crisis plan. First, identify your support network. Think about who in your life can anchor you when things get hard. These should be people who understand what you're going through, who won't minimize your pain or enable contact with your ex.",
+      },
+      { t: "timer", seconds: 45, label: "Think about your support people" },
+      {
+        t: "textInput",
+        prompt: "Who is your primary support person? (Name and relationship)",
+        placeholder: "e.g., Sarah, my sister",
+      },
+      {
+        t: "textInput",
+        prompt: "Who is your secondary support person?",
+        placeholder: "e.g., Alex, my best friend",
+      },
+      {
+        t: "textInput",
+        prompt: "Who is your backup support person?",
+        placeholder: "e.g., Mom, or a therapist",
+      },
+      {
+        t: "instruction",
+        body: "Now, why do these people matter to you? What do they represent? Connecting to the meaning helps anchor you when you reach out. It reminds you why you're choosing support over isolation.",
+      },
+      {
+        t: "textInput",
+        prompt: "What does your primary support person mean to you? (2-3 sentences)",
+        placeholder: "e.g., 'She's always been there, never judges, sees my strength'",
+      },
+      {
+        t: "textInput",
+        prompt: "What does your secondary support person mean to you?",
+        placeholder: "e.g., 'He understands what I'm going through'",
+      },
+      {
+        t: "textInput",
+        prompt: "What does your backup support person mean to you?",
+        placeholder: "e.g., 'She provides professional support and perspective'",
+      },
+      {
+        t: "instruction",
+        body: "Now, let's add one more layer: What will you do BEFORE reaching out? Sometimes the urge to contact your ex is actually a need for regulation. What can you do first?",
+      },
+      {
+        t: "textInput",
+        prompt: "What will you do first when crisis hits? (Before reaching out to support)",
+        placeholder: "e.g., 'Take 3 breaths, do 5-4-3-2-1 grounding, wait 10 minutes'",
+      },
+      {
+        t: "instruction",
+        body: "Perfect. You now have a crisis plan: 1) Do your regulation technique, 2) Reach out to primary support, 3) If they're unavailable, reach out to secondary, 4) If needed, reach out to backup. This plan is here when you need it.",
+      },
+      {
+        t: "check",
+        prompt: "I have a crisis plan I can use when things get hard",
       },
     ],
     commitment: { text: "Finish" },
@@ -409,17 +456,38 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "stabilize",
     title: "Text a Safe Person",
     goal: "Activate support, not the ex",
-    format: "journal",
-    fields: [
+    format: "practice",
+    steps: [
       {
-        name: "recipient",
-        kind: "shortText",
-        label: "Who is someone you can text right now if you need support? Name them.",
+        t: "instruction",
+        body: "Right now, in this moment, your attachment system is probably pulling you toward your ex. That's normal—your brain wants the familiar, even when the familiar is the source of your pain. But you have a choice: reach for the person who hurt you, or reach for someone who can actually help.",
       },
       {
-        name: "message",
-        kind: "longText",
-        label: "Draft your message. Even if you don't send it, it's helpful to have it ready.",
+        t: "instruction",
+        body: "Think about one person in your life who gets it. Someone who won't judge you for struggling. Someone who won't tell you to 'just move on.' Someone who can hold space for your pain without trying to fix it or minimize it.",
+      },
+      { t: "timer", seconds: 15, label: "Identify your safe person" },
+      {
+        t: "textInput",
+        prompt: "Who is your safe person? (Name them)",
+        placeholder: "e.g., Sarah, my sister, my friend Alex",
+      },
+      {
+        t: "instruction",
+        body: "Now, text them directly. Open your messages and send them something. The key is being direct about what you need. Examples:\n\n• 'I'm having a hard day. Can you check in with me later?'\n• 'I'm feeling the urge to contact them. Can we talk?'\n• 'I need some support right now. Are you available?'",
+      },
+      {
+        t: "instruction",
+        body: "Don't overthink it. Just send it. The act of reaching out—even if they don't respond immediately—is you building a new pathway: 'When I'm in pain, I reach for safe support.'",
+      },
+      { t: "timer", seconds: 60, label: "Text your safe person now" },
+      {
+        t: "instruction",
+        body: "Notice how it feels to have reached out. Even if they haven't responded yet, you've done something different. You've interrupted the automatic pull toward your ex. You've chosen a different pathway—one that leads toward healing, not back to the pain.",
+      },
+      {
+        t: "check",
+        prompt: "I have a safe person I can reach out to when I need support",
       },
     ],
     commitment: { text: "Finish" },

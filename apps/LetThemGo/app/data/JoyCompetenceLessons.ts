@@ -13,11 +13,11 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     steps: [
       {
         t: "instruction",
-        body: "Movement is one of the most effective mood regulators. When you're depressed or anxious, your body produces fewer feel-good chemicals. Exercise increases endorphins, dopamine, and serotonin—the same neurotransmitters that help regulate mood.",
+        body: "When you're depressed or anxious, your body produces fewer feel-good chemicals. Movement is one of the fastest ways to shift this—it increases endorphins, dopamine, and serotonin within minutes.",
       },
       {
         t: "instruction",
-        body: "You don't need to run a marathon. Even 10 minutes of movement can shift your state. The goal isn't to 'fix' your mood—it's to give your body a different signal: 'We're moving, we're alive, we're capable.'",
+        body: "You don't need to run a marathon or hit the gym. Even 5 minutes of movement can shift your state. The goal isn't to 'fix' your mood—it's to give your body a different signal: 'We're moving, we're alive, we're capable.'",
       },
       {
         t: "instruction",
@@ -26,20 +26,34 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
       { t: "timer", seconds: 30, label: "Check in with yourself" },
       {
         t: "instruction",
-        body: "Now let's move for 10 minutes. You don't need to feel motivated—you just need to start. Movement creates motivation, not the other way around.",
+        body: "Now, pick ONE movement that feels doable right now. You don't need to feel motivated—you just need to start. Movement creates motivation, not the other way around.",
       },
       {
         t: "instruction",
-        body: "Here are some options:\n\n• Walk outside (even around the block)\n• Gentle yoga or stretching\n• Dance to one song\n• Climb stairs\n• Do jumping jacks\n\nPick whatever feels most doable right now.",
+        body: "Options (pick one):\n\n• Walk outside (even 2 minutes around the block)\n• Stretch for 5 minutes (reach for the sky, touch your toes)\n• Dance to one song (2-3 minutes)\n• Climb stairs (up and down 3 times)\n• Do 20 jumping jacks\n• March in place for 2 minutes\n\nWhatever feels least overwhelming.",
       },
-      { t: "timer", seconds: 600, label: "Move your body—10 minutes" },
+      { t: "timer", seconds: 30, label: "Choose your movement" },
       {
         t: "instruction",
-        body: "Notice how you feel now versus before. Even a small shift counts. You moved your body when you didn't feel like it. That's competence. That's self-care.",
+        body: "Now, do it. Start small. Even 2-3 minutes counts. The timer will help you stay present—you don't have to think, just move.",
+      },
+      { t: "timer", seconds: 180, label: "Move your body—3 minutes (or longer if you want)" },
+      {
+        t: "instruction",
+        body: "Notice how you feel now versus before. Even a tiny shift counts. You moved your body when you didn't feel like it. That's competence. That's self-care.",
+      },
+      {
+        t: "textInput",
+        prompt: "How do you feel now? (Even a small shift counts)",
+        placeholder: "e.g., slightly better, more awake, still down but did it",
+      },
+      {
+        t: "instruction",
+        body: "Remember: You don't have to feel great to benefit. The act of moving—even when you don't want to—is the practice. It teaches your body and mind: 'I can do hard things, even when I don't feel like it.'",
       },
       {
         t: "check",
-        prompt: "I can use movement to shift my mood when I'm down",
+        prompt: "I can use movement to shift my mood, even when I don't feel motivated",
       },
     ],
     commitment: { text: "Finish" },
@@ -242,3 +256,4 @@ export const JOY_COMPETENCE_LESSONS: Record<string, ILessonConfig> = {
     commitment: { text: "Finish" },
   },
 }
+

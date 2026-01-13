@@ -536,19 +536,54 @@ export const NO_CONTACT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "no_contact",
     title: "Boundary Communication",
     goal: "Learn to communicate boundaries clearly",
-    format: "journal",
-    fields: [
+    format: "practice",
+    steps: [
       {
-        name: "boundary",
-        kind: "longText",
-        label:
-          "What boundary do you need to set? (Be specific: What behavior needs to stop? What do you need? Examples: 'I need you to stop texting me,' 'I'm not ready to be friends')",
+        t: "instruction",
+        body: "Boundaries aren't about controlling others—they're about protecting yourself. When you set a boundary, you're saying: 'This is what I need to feel safe and heal.'",
       },
       {
-        name: "message",
-        kind: "longText",
-        label:
-          "How will you communicate it? (Keep it brief, clear, and firm. No explanations or justifications needed. Example: 'I need space to heal. Please don't contact me.' You don't owe them a long explanation)",
+        t: "instruction",
+        body: "Many people struggle with boundaries because they feel mean or selfish. But boundaries are actually an act of self-respect. You're not asking for permission—you're stating what you need.",
+      },
+      {
+        t: "instruction",
+        body: "The key to effective boundaries: Keep them brief, clear, and firm. No explanations. No justifications. No apologies. You don't owe them a long explanation—you owe yourself clarity.",
+      },
+      {
+        t: "instruction",
+        body: "Examples of clear boundaries:\n\n• 'I need space to heal. Please don't contact me.'\n• 'I'm not ready to be friends. I'll reach out if that changes.'\n• 'I need you to stop texting me. I'll let you know if I want to reconnect.'",
+      },
+      {
+        t: "instruction",
+        body: "What NOT to do:\n\n❌ 'I'm sorry, but I think maybe we should...'\n❌ 'I know this might hurt you, but...'\n❌ Long explanations about why\n\n✅ 'I need X. Please respect that.'",
+      },
+      {
+        t: "instruction",
+        body: "Now, think about what boundary you need to set. Be specific: What behavior needs to stop? What do you need?",
+      },
+      { t: "timer", seconds: 45, label: "Identify your boundary" },
+      {
+        t: "textInput",
+        prompt: "What boundary do you need to set?",
+        placeholder: "e.g., 'I need you to stop texting me'",
+      },
+      {
+        t: "instruction",
+        body: "Now, draft your message. Keep it to 1-2 sentences. No explanations. Just the boundary. You can write it here—you don't have to send it right now.",
+      },
+      {
+        t: "textInput",
+        prompt: "Draft your boundary message (1-2 sentences, clear and firm)",
+        placeholder: "e.g., 'I need space to heal. Please don't contact me.'",
+      },
+      {
+        t: "instruction",
+        body: "Notice how it feels to have this written down. Having it ready means if they contact you, you have a clear response. You don't have to figure it out in the moment when emotions are high.",
+      },
+      {
+        t: "check",
+        prompt: "I can communicate my boundaries clearly and firmly",
       },
     ],
     commitment: { text: "Finish" },

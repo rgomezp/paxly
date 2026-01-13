@@ -9,21 +9,85 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Attachment Snapshot",
     goal: "Identify anxious/avoidant patterns",
-    format: "journal",
-    fields: [
+    format: "practice",
+    steps: [
       {
-        name: "tendency",
-        kind: "radio",
-        label: "Which attachment style feels most familiar right now?",
-        helpText:
-          "Quick snapshot of attachment styles:\n\n• Anxious: Fear of abandonment, strong craving for closeness and reassurance, worry they'll leave.\n• Avoidant: Value independence, pull away or shut down when things get too close or intense.\n• Secure: Generally trust others, feel comfortable with both closeness and space, communicate needs directly.\n• Mixed: You see both anxious and avoidant patterns in yourself, depending on the person or situation.\n\nAttachment styles aren't fixed—they're patterns you learned. Most people have a primary style with some flexibility.",
-        options: ["anxious", "avoidant", "secure", "mixed"],
+        t: "instruction",
+        body: "Attachment styles aren't fixed—they're patterns you learned in childhood to get your needs met. Understanding your pattern helps you recognize it when it activates, so you can choose differently.",
       },
       {
-        name: "pattern",
-        kind: "longText",
-        label:
-          "Describe one pattern (Be specific: What do you do when you feel insecure? Examples: 'I text repeatedly when they don't respond,' 'I withdraw and shut down,' 'I need constant reassurance')",
+        t: "instruction",
+        body: "Here's a quick overview of attachment styles. Let's go through them one by one.",
+      },
+      {
+        t: "instruction",
+        body: "Anxious attachment: Fear of abandonment, strong craving for closeness and reassurance, worry they'll leave. When anxious, you might text repeatedly, need constant reassurance, or feel panic when they pull back even slightly.",
+      },
+      {
+        t: "instruction",
+        body: "Avoidant attachment: Value independence, pull away or shut down when things get too close or intense. When avoidant, you might find flaws, create distance, or minimize your needs to avoid vulnerability.",
+      },
+      {
+        t: "instruction",
+        body: "Secure attachment: Generally trust others, feel comfortable with both closeness and space, communicate needs directly. Secure people can ask for what they need without drama or withdrawal.",
+      },
+      {
+        t: "instruction",
+        body: "Mixed attachment: You see both anxious and avoidant patterns in yourself, depending on the person or situation. This is common—most people have a primary style with some flexibility.",
+      },
+      {
+        t: "instruction",
+        body: "The goal isn't to label yourself—it's to recognize patterns so you can work with them. Most people have a primary style with some flexibility.",
+      },
+      {
+        t: "instruction",
+        body: "Which attachment style feels most familiar right now? Think about your recent relationship. What patterns did you notice?",
+      },
+      { t: "timer", seconds: 45, label: "Reflect on your patterns" },
+      {
+        t: "textInput",
+        prompt: "Which attachment style feels most familiar? (anxious, avoidant, secure, mixed)",
+        placeholder: "e.g., anxious",
+      },
+      {
+        t: "instruction",
+        body: "Now, be specific: What do you do when you feel insecure? What's the actual behavior? Examples:\n\n• 'I text repeatedly when they don't respond'\n• 'I withdraw and shut down'\n• 'I need constant reassurance'\n• 'I find flaws and pull away'\n\nBe honest—this is about awareness, not judgment.",
+      },
+      {
+        t: "textInput",
+        prompt: "Describe one specific pattern (What do you do when you feel insecure?)",
+        placeholder: "e.g., 'I text repeatedly when they don't respond'",
+      },
+      {
+        t: "instruction",
+        body: "Good. Now, what's the need underneath this pattern? What are you really trying to get? Reassurance? Safety? Control? Space?",
+      },
+      {
+        t: "textInput",
+        prompt: "What's the need underneath this pattern?",
+        placeholder: "e.g., 'I need reassurance that they still care'",
+      },
+      {
+        t: "instruction",
+        body: "The insight: Your attachment pattern is an attempt to meet a need. The behavior might not be working, but the need is valid. Once you know the need, you can find healthier ways to meet it.",
+      },
+      {
+        t: "instruction",
+        body: "What's one way you could meet this need more directly? Instead of the pattern, what would secure behavior look like?",
+      },
+      {
+        t: "textInput",
+        prompt:
+          "What would secure behavior look like? (How could you meet this need more directly?)",
+        placeholder: "e.g., 'I could ask directly for reassurance instead of texting repeatedly'",
+      },
+      {
+        t: "instruction",
+        body: "Remember: Attachment styles aren't fixed. You can develop more secure patterns through awareness and practice. This snapshot is just the starting point.",
+      },
+      {
+        t: "check",
+        prompt: "I can recognize my attachment patterns and choose more secure behaviors",
       },
     ],
     commitment: { text: "Finish" },
@@ -33,31 +97,67 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Protest Behaviors 101",
     goal: "Replace protest with needs",
-    format: "card",
-    cards: [
+    format: "practice",
+    steps: [
       {
-        type: "text",
+        t: "instruction",
         body: "Protest behaviors are indirect attempts to get connection. Instead of saying 'I need reassurance,' you might act distant to make them chase you. Instead of saying 'I'm hurt,' you might pick a fight.",
       },
       {
-        type: "text",
-        body: "These behaviors developed because directly asking for needs felt unsafe or was met with rejection. So you learned to get attention through drama, withdrawal, or manipulation.",
+        t: "instruction",
+        body: "These behaviors developed because directly asking for needs felt unsafe or was met with rejection. So you learned to get attention through drama, withdrawal, or manipulation. This isn't a flaw—it's an adaptation that made sense at the time.",
       },
       {
-        type: "text",
+        t: "instruction",
         body: "The problem: Protest behaviors push people away. They create drama instead of intimacy. They make your partner feel confused and defensive rather than connected.",
       },
       {
-        type: "tip",
+        t: "instruction",
+        body: "Think about a recent time you used a protest behavior. Maybe you acted distant when you wanted closeness. Maybe you picked a fight when you needed reassurance. What were you really trying to get?",
+      },
+      { t: "timer", seconds: 45, label: "Identify a recent protest behavior" },
+      {
+        t: "textInput",
+        prompt: "What protest behavior did you use?",
+        placeholder: "e.g., 'I acted distant when I wanted closeness'",
+      },
+      {
+        t: "instruction",
+        body: "Now, what was the need underneath? What were you really trying to get? Reassurance? Closeness? Clarity? Validation?",
+      },
+      {
+        t: "textInput",
+        prompt: "What was the need underneath?",
+        placeholder: "e.g., 'I needed reassurance that they still care'",
+      },
+      {
+        t: "instruction",
         body: "The secure alternative: Name the need directly. 'I'm feeling insecure and need reassurance.' 'I'm hurt and need to talk about it.' 'I'm anxious and need clarity.'",
       },
       {
-        type: "text",
+        t: "instruction",
         body: "This feels vulnerable because it is. But vulnerability creates connection. When you can say what you need, you give others the chance to meet you there—or to be honest if they can't.",
       },
       {
-        type: "tip",
+        t: "instruction",
+        body: "Now, practice naming that need directly. How would you express it if you were being secure?",
+      },
+      {
+        t: "textInput",
+        prompt: "How would you express this need directly? (Practice the secure way)",
+        placeholder: "e.g., 'I'm feeling insecure and need reassurance'",
+      },
+      {
+        t: "instruction",
+        body: "Notice how different this feels from the protest behavior. One creates drama and distance. The other creates clarity and possibility for connection.",
+      },
+      {
+        t: "instruction",
         body: "Practice: When you feel the urge to protest (act out, withdraw, create drama), pause and ask: 'What do I actually need right now?' Then name it directly, even if just to yourself first.",
+      },
+      {
+        t: "check",
+        prompt: "I can identify my needs and express them directly instead of protesting",
       },
     ],
     commitment: { text: "Finish" },
@@ -89,17 +189,49 @@ export const ATTACHMENT_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "attachment",
     title: "Acting Secure Today",
     goal: "Practice secure micro-behaviors",
-    format: "builder",
-    sections: [
+    format: "practice",
+    steps: [
       {
-        title:
-          "Micro-behaviors: Practice secure attachment (You can't think your way into secure attachment—you have to practice it. These small behaviors rewire your patterns. Start with one or two)",
-        items: [
-          { label: "Slow replies (no urgency spiral)", kind: "check" },
-          { label: "Direct ask instead of hinting", kind: "check" },
-          { label: "Self-soothe before texting", kind: "check" },
-        ],
-        minRequired: 2,
+        t: "instruction",
+        body: "You can't think your way into secure attachment—you have to practice it. Your nervous system learns through repetition. Every time you choose a secure behavior, you're literally rewiring your brain.",
+      },
+      {
+        t: "instruction",
+        body: "These aren't about being perfect. They're micro-experiments: 'What happens if I respond slowly instead of immediately? What happens if I ask directly instead of hinting?'",
+      },
+      {
+        t: "instruction",
+        body: "Let's identify which secure behaviors feel most doable for you today. We'll start with one or two—not all of them. Small, consistent practice beats perfect attempts.",
+      },
+      {
+        t: "instruction",
+        body: "Option 1: Slow replies (no urgency spiral)\n\nWhen you feel the urge to respond immediately, wait. Set a timer for 30 minutes. Notice the anxiety that comes up—and that you can survive it. This teaches your nervous system: 'I don't need immediate response to feel safe.'",
+      },
+      {
+        t: "instruction",
+        body: "Option 2: Direct ask instead of hinting\n\nInstead of 'I guess you're busy' (hint), try 'I'm feeling insecure. Can you reassure me?' (direct). This feels vulnerable, but it creates clarity instead of drama.",
+      },
+      {
+        t: "instruction",
+        body: "Option 3: Self-soothe before texting\n\nBefore sending any message, take 3 breaths. Ask: 'What do I actually need right now?' Sometimes the answer is self-soothing, not contact.",
+      },
+      {
+        t: "instruction",
+        body: "Which one feels most doable today? Pick one to practice. You can try others later—but start with one.",
+      },
+      { t: "timer", seconds: 30, label: "Choose your practice" },
+      {
+        t: "textInput",
+        prompt: "Which secure behavior will you practice today?",
+        placeholder: "e.g., slow replies, direct asks, self-soothing",
+      },
+      {
+        t: "instruction",
+        body: "Now, commit to practicing this ONE behavior today. Notice what happens. Does it feel different? Scary? Freeing? All of the above? That's normal. You're building new patterns.",
+      },
+      {
+        t: "check",
+        prompt: "I'll practice one secure behavior today and notice what happens",
       },
     ],
     commitment: { text: "Finish" },

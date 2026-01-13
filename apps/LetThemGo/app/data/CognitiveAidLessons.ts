@@ -180,44 +180,82 @@ export const COGNITIVE_AID_LESSONS: Record<string, ILessonConfig> = {
     moduleId: "cognitive_aid",
     title: "CBT Thought Record",
     goal: "Reframe the loudest thought",
-    format: "journal",
-    template: "cbt_5col",
-    fields: [
+    format: "practice",
+    steps: [
       {
-        name: "situation",
-        kind: "longText",
-        label: "Situation (What happened? Be specific—just the facts, not your interpretation)",
+        t: "instruction",
+        body: "Your thoughts create your feelings. When you're in distress, your brain generates automatic thoughts—often negative, often exaggerated. Cognitive Behavioral Therapy (CBT) helps you catch these thoughts and examine them with curiosity instead of accepting them as truth.",
       },
       {
-        name: "thought",
-        kind: "longText",
-        label:
-          "Hot Thought (What's the automatic thought that popped up? The one that feels most intense)",
+        t: "instruction",
+        body: "The goal isn't to force positive thinking. It's to find more balanced, realistic thoughts. Thoughts that acknowledge both the difficulty AND the possibility. Thoughts you can actually believe.",
       },
       {
-        name: "emotion",
-        kind: "radio",
-        label: "Main Emotion (What emotion does this thought create?)",
-        options: ["sad", "angry", "fear", "shame", "other"],
+        t: "instruction",
+        body: "Let's start with a situation that's bothering you right now. It could be something that happened, something you're worried about, or a thought that keeps looping.",
+      },
+      { t: "timer", seconds: 30, label: "Think of a situation" },
+      {
+        t: "textInput",
+        prompt: "What's the situation? (Just the facts—what actually happened?)",
+        placeholder: "e.g., 'They didn't respond to my text'",
       },
       {
-        name: "evidence_for",
-        kind: "longText",
-        label: "Evidence For (What facts support this thought? Be honest—what's actually true?)",
+        t: "instruction",
+        body: "Now, what's the automatic thought that popped up? The one that feels most intense, most true? This is your 'hot thought'—the one driving your distress.",
       },
       {
-        name: "evidence_against",
-        kind: "longText",
-        label:
-          "Evidence Against (What facts contradict this thought? What's another way to see this?)",
+        t: "textInput",
+        prompt: "What's your hot thought? (The automatic thought that feels most intense)",
+        placeholder: "e.g., 'They don't care about me anymore'",
       },
       {
-        name: "alternative",
-        kind: "longText",
-        label: "Balanced Alternative (A more realistic, nuanced thought that considers both sides)",
+        t: "instruction",
+        body: "What emotion does this thought create? Name it.",
+      },
+      {
+        t: "textInput",
+        prompt: "What emotion? (sad, angry, fear, shame, etc.)",
+        placeholder: "e.g., sad",
+      },
+      {
+        t: "instruction",
+        body: "Now, let's examine the evidence. First: What facts actually support this thought? Be honest—what's really true?",
+      },
+      {
+        t: "textInput",
+        prompt: "Evidence FOR this thought (What facts support it?)",
+        placeholder: "e.g., 'They haven't responded in 2 days'",
+      },
+      {
+        t: "instruction",
+        body: "Now, what facts contradict this thought? What's another way to see this? What else could be true?",
+      },
+      {
+        t: "textInput",
+        prompt: "Evidence AGAINST this thought (What contradicts it? What else could be true?)",
+        placeholder: "e.g., 'They might be busy, processing, or respecting my space'",
+      },
+      {
+        t: "instruction",
+        body: "Now, create a balanced alternative thought. Not toxic positivity—something realistic that considers BOTH sides. Use 'AND' to hold complexity.",
+      },
+      {
+        t: "textInput",
+        prompt: "Balanced alternative thought (Realistic, considers both sides)",
+        placeholder:
+          "e.g., 'They haven't responded AND that doesn't necessarily mean they don't care'",
+      },
+      {
+        t: "instruction",
+        body: "Notice how the balanced thought feels compared to the hot thought. It's probably less intense, more nuanced. That's the goal—not to eliminate difficult feelings, but to have thoughts that serve you better.",
+      },
+      {
+        t: "check",
+        prompt: "I can examine my thoughts and find more balanced alternatives",
       },
     ],
-    autosaveTag: "cbt",
+    commitment: { text: "Finish" },
   },
   d8_reframe_script: {
     id: "d8_reframe_script",

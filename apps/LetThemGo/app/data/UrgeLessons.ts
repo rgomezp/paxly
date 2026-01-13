@@ -120,17 +120,61 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     goal: "Observe without acting",
     format: "practice",
     steps: [
-      { t: "instruction", body: "Close your eyes. Notice where you feel the urge in your body." },
-      { t: "instruction", body: "Is it in your chest? Your stomach? Your hands?" },
-      { t: "timer", seconds: 30, label: "Scan your body" },
       {
         t: "instruction",
-        body: "Describe the sensation without judgment. Is it tight? Hot? Restless?",
+        body: "Urges don't just exist in your mind—they live in your body. When you want to contact them, you feel it physically: tightness, restlessness, a pull. Learning to observe these sensations without acting on them is a crucial skill.",
       },
-      { t: "timer", seconds: 30, label: "Describe it" },
-      { t: "instruction", body: "Breathe into that space. Notice how it shifts, even slightly." },
+      {
+        t: "instruction",
+        body: "This practice is called 'urge surfing'—you're riding the wave of the urge without being swept away by it. Urges are temporary. They peak and then subside, usually within 20-30 minutes if you don't act on them.",
+      },
+      {
+        t: "instruction",
+        body: "Let's start by bringing awareness to your body. Close your eyes or soften your gaze. Take a breath. Now, scan your body from head to toe.",
+      },
+      { t: "timer", seconds: 20, label: "Scan from head to toe" },
+      {
+        t: "instruction",
+        body: "Where do you feel the urge most strongly? Common places:\n\n• Chest (tightness, pressure)\n• Stomach (churning, butterflies)\n• Throat (constriction, lump)\n• Hands (restlessness, urge to reach for phone)\n• Jaw (clenching)\n\nJust notice without trying to change it.",
+      },
+      { t: "timer", seconds: 30, label: "Locate where you feel it" },
+      {
+        t: "textInput",
+        prompt: "Where do you feel the urge? (Be specific)",
+        placeholder: "e.g., 'tight chest and restless hands'",
+      },
+      {
+        t: "instruction",
+        body: "Now, describe the sensation without judgment. Is it tight? Hot? Cold? Restless? Pulsing? Dull? Sharp? Just observe it like a scientist studying a phenomenon.",
+      },
+      { t: "timer", seconds: 30, label: "Describe the sensation" },
+      {
+        t: "textInput",
+        prompt: "What does it feel like? (Describe the physical sensation)",
+        placeholder: "e.g., 'tight and hot'",
+      },
+      {
+        t: "instruction",
+        body: "Now, breathe into that space. Imagine your breath traveling to that area. You're not trying to make it go away—you're just bringing awareness and maybe a little space.",
+      },
       { t: "breath", pattern: "physiological", rounds: 3 },
-      { t: "instruction", body: "You're observing the urge, not being controlled by it." },
+      {
+        t: "instruction",
+        body: "Notice: Did the sensation shift at all? Even slightly? Sometimes it intensifies before it subsides. That's normal. You're observing it, not being controlled by it.",
+      },
+      { t: "timer", seconds: 30, label: "Notice any shifts" },
+      {
+        t: "instruction",
+        body: "The key insight: The urge is a sensation in your body. It's not a command. You can feel it without acting on it. You're bigger than the urge.",
+      },
+      {
+        t: "instruction",
+        body: "If the urge is still strong, that's okay. Urges are temporary. They peak and then subside. Your job is to ride it out, not eliminate it.",
+      },
+      {
+        t: "check",
+        prompt: "I can observe urges in my body without being controlled by them",
+      },
     ],
     commitment: { text: "Finish" },
   },
