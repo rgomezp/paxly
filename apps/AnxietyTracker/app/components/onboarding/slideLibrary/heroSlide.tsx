@@ -31,7 +31,7 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
 const benefits: Benefit[] = [
   {
     icon: "user-slash",
-    title: "Finally let them go",
+    title: "Track your anxiety",
     description: "Moving on can be tough, but we're here to help!",
   },
   {

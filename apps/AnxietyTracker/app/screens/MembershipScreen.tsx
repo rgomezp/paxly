@@ -114,13 +114,13 @@ export const MembershipScreen: FC<MembershipScreenProps> = function MembershipSc
         // Android: Open Google Play Store subscription management
         // This URL format should work for most cases
         const url =
-          "https://play.google.com/store/account/subscriptions?package=com.honeywolf.letthemgo&sku="
+          "https://play.google.com/store/account/subscriptions?package=com.honeywolf.anxietytracker&sku="
         const canOpen = await Linking.canOpenURL(url)
         if (canOpen) {
           await Linking.openURL(url)
         } else {
           // Fallback to Play Store app
-          const playStoreUrl = "market://details?id=com.honeywolf.letthemgo"
+          const playStoreUrl = "market://details?id=com.honeywolf.anxietytracker"
           const canOpenPlayStore = await Linking.canOpenURL(playStoreUrl)
           if (canOpenPlayStore) {
             await Linking.openURL(playStoreUrl)

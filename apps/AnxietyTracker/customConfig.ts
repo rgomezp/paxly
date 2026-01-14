@@ -44,16 +44,16 @@ interface CustomConfig {
 
 export default function customConfig(): CustomConfig {
   return {
-    termsOfServiceUrl: "https://terms-and-conditions-letthemgo.carrd.co/",
-    privacyPolicyUrl: "https://letthemgo-privacy.carrd.co",
+    termsOfServiceUrl: "https://terms-and-conditions-anxietytracker.carrd.co/",
+    privacyPolicyUrl: "https://anxietytracker-privacy.carrd.co",
     includeLoginScreen: true,
     includeSettingsScreen: true,
     startingTheme: "auto", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
     oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
-    iosAppStoreUrl: "https://apps.apple.com/us/app/no-contact-tracker-letthemgo/id6754750980",
-    androidAppStoreUrl: "https://play.google.com/store/apps/details?id=com.honeywolf.letthemgo",
+    iosAppStoreUrl: "https://apps.apple.com/us/app/anxiety-tracker/id6754750980",
+    androidAppStoreUrl: "https://play.google.com/store/apps/details?id=com.honeywolf.anxietytracker",
     useReferrals: false,
-    supportEmail: "team@tryletthemgo.com",
+    supportEmail: "team@anxietytracker.com",
   }
 }
