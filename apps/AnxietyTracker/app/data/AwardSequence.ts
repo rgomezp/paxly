@@ -2,14 +2,14 @@ import { IAward } from "@/types/IAward"
 
 export const AWARD_SEQUENCE: IAward[] = [
   {
-    id: "sneakers",
-    name: "Sneakers",
-    description: "Hey! You found a pair of sneakers!",
-  },
-  {
     id: "miracle-legumes",
     name: "Miracle Legumes",
     description: "You won some magic beans!",
+  },
+  {
+    id: "sneakers",
+    name: "Sneakers",
+    description: "Hey! You found a pair of sneakers!",
   },
   {
     id: "green-thumb",

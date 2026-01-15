@@ -3,7 +3,6 @@ import Constants from "expo-constants"
 import { OneSignal, LogLevel as OneSignalLogLevel } from "react-native-onesignal"
 import Log from "../utils/Log"
 import { ganon } from "@/services/ganon/ganon"
-import { MascotNames } from "@/types/MascotName"
 
 const useOneSignal = (): boolean => {
   const [isOneSignalSetup, setIsOneSignalSetup] = useState(false)
@@ -45,16 +44,6 @@ const useOneSignal = (): boolean => {
 
           if (ganon.get("finishedOnboarding") === true) {
             OneSignal.User.addTag("onboarding_status", "completed")
-          }
-          // temporary: some users don't have a mascot name yet, so we add it here
-          // remove after 2026-02-01
-          if (ganon.get("mascotName")) {
-            const mascotName = ganon.get("mascotName") as MascotNames | null
-            if (mascotName) {
-              const capitalizedMascotName =
-                mascotName.charAt(0).toUpperCase() + mascotName.slice(1).toLowerCase()
-              OneSignal.User.addTag("mascot_name", capitalizedMascotName)
-            }
           }
         } catch (error) {
           Log.error(JSON.stringify(error))

@@ -24,8 +24,8 @@ export function problemSolutionSlide({
 }: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
-    title: "Understand your triggers",
-    description: "Tracking your anxiety patterns can help you understand your triggers",
+    title: "Don't know what to do?",
+    description: "We help you find calm through tracking, games, lessons, and tools.",
     component: <ProblemSolutionComponent />,
     textPlacement: "bottom",
     textAlignment: "left",

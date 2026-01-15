@@ -6,7 +6,7 @@ import type { ViewStyle, ImageStyle } from "react-native"
 import type { ThemedStyle } from "@/theme"
 import { IconTextItem } from "../shared/IconTextItem"
 
-const logoImage: ImageRequireSource = require("../../../../assets/images/onboarding/joyful_girl.png")
+const logoImage: ImageRequireSource = require("../../../../assets/images/onboarding/button_press.png")
 
 type HeroSlideProps = {
   onSelection?: () => void
@@ -22,7 +22,7 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
   return {
     id: "hero",
     title: "We're here to help.",
-    description: "Understanding your anxiety patterns is the first step toward managing them.",
+    description: "Find comfort knowing you're not alone.",
     component: <HeroComponent />,
     textPlacement: "top",
   }
@@ -30,14 +30,19 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
 
 const benefits: Benefit[] = [
   {
-    icon: "chart-line",
-    title: "Track your anxiety",
-    description: "Log your daily mood and anxiety levels to identify patterns",
+    icon: "exclamation-triangle",
+    title: "Help button",
+    description: "Get help when you need it.",
+  },
+  {
+    icon: "brain",
+    title: "Anxiety reduction exercises",
+    description: "Get instant access to calming tools and resources",
   },
   {
     icon: "first-aid",
-    title: "Find help when panic hits",
-    description: "Get instant access to calming tools and resources",
+    title: "Having a panic attack?",
+    description: "We've got you covered.",
   },
 ]
 
@@ -82,8 +87,8 @@ const $mockupContainer: ThemedStyle<ViewStyle> = () => ({
 })
 
 const $logoImage: ThemedStyle<ImageStyle> = () => ({
-  height: 140,
-  width: 140,
+  height: 180,
+  width: 180,
   maxHeight: "90%",
   maxWidth: "90%",
 })

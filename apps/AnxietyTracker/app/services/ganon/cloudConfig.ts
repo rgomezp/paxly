@@ -14,7 +14,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "ageRange",
       "anxietySeverity",
       "anxietyDuration",
-      "mascotName",
       "anxietyTriggerSituation",
       "appMainGoal",
       "awardData",

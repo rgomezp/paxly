@@ -18,6 +18,7 @@ import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
+import { congratulationsAwardSlide } from "../slideLibrary/congratulationsAwardSlide"
 import { FlagContext } from "@/hooks/useFlags"
 
 export const useSlides = (onSelection?: () => void) => {
@@ -58,8 +59,8 @@ export const useSlides = (onSelection?: () => void) => {
     () => [
       // First 5 screens: Wow moment and key principles
       wowMomentSlide({ onSelection }), // Reciprocity (valuable insight) + Authority (research-backed) - WOW MOMENT
-      heroSlide({ onSelection }), // Authority (research mention) + Unity ("we're here")
       problemSolutionSlide({ onSelection }), // Unity ("we've all been there", "together")
+      heroSlide({ onSelection }), // Authority (research mention) + Unity ("we're here")
       howItWorksSlide({ onSelection }), // Social Proof ("join thousands")
 
       // Commitment/Consistency - Getting user commitments
@@ -71,6 +72,8 @@ export const useSlides = (onSelection?: () => void) => {
       anxietySeveritySlide({ onSelection }),
       anxietyTriggersSlide({ onSelection }),
       anxietyDurationSlide({ onSelection }),
+
+      congratulationsAwardSlide({ onSelection }), // Award first award
 
       testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 

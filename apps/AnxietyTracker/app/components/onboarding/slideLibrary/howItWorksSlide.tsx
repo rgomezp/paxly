@@ -16,17 +16,18 @@ const steps: IconTextData[] = [
   {
     icon: "chart-line",
     title: "Track Daily",
-    description: "Log your anxiety levels and mood each day",
+    description: "Log your anxiety levels and mood each day.",
   },
   {
     icon: "book",
-    title: "Reflect & Learn",
-    description: "Journal your thoughts and identify patterns",
+    title: "Learn from 100 unique lessons",
+    description:
+      "Our lessons use proven science-backed techniques to help you manage your anxiety.",
   },
   {
-    icon: "seedling",
-    title: "Find Relief",
-    description: "Get instant access to calming tools and resources",
+    icon: "heart",
+    title: "Find relief",
+    description: "Tools to help you manage your anxiety.",
   },
 ]
 
