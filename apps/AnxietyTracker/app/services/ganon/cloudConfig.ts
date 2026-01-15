@@ -19,7 +19,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "mascotName",
       "isFirstBreakup",
       "noContactReason",
-      "checkSocialMedia",
       "contactTemptationSituation",
       "appMainGoal",
       "awardData",

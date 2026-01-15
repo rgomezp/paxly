@@ -9,9 +9,7 @@ import UserManager from "@/managers/UserManager"
 import { YesNoChoices } from "@/types/YesNo"
 
 // Mock ganon
-const mockGanonStorage: Record<string, any> = {
-  checkSocialMedia: YesNoChoices.YES, // Set to YES so strugglePreference slide is included
-}
+const mockGanonStorage: Record<string, any> = {}
 
 jest.mock("@/services/ganon/ganon", () => {
   return {
@@ -38,14 +36,11 @@ const EXPECTED_SLIDE_IDS = [
   "problem_solution",
   "howItWorks",
   "name_input",
-  "lastContactDate",
   "gender",
   "ageRange",
   "relationshipDuration",
   "isFirstBreakup",
   "noContactReason",
-  "checkSocialMedia",
-  "strugglePreference",
   "contactTemptationSituation",
   "whoEndedIt",
   "mascotName",
@@ -90,16 +85,13 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       mascotNameSlide: "mascotName",
       mascotIntroSlide: "mascotIntro",
       testimonialsSlide: "testimonials",
-      lastContactSlide: "lastContactDate",
       genderSlide: "gender",
       ageSlide: "ageRange",
-      relationshipDurationSlide: "relationshipDuration",
-      isFirstBreakupSlide: "isFirstBreakup",
-      noContactReasonSlide: "noContactReason",
-      checkSocialMediaSlide: "checkSocialMedia",
-      contactTemptationSituationsSlide: "contactTemptationSituation",
-      whoEndedItSlide: "whoEndedIt",
-      strugglePreferenceSlide: "strugglePreference",
+      anxietySeveritySlide: "relationshipDuration",
+      isFirstTimeTrackingSlide: "isFirstBreakup",
+      trackingGoalSlide: "noContactReason",
+      anxietyTriggersSlide: "contactTemptationSituation",
+      anxietyDurationSlide: "whoEndedIt",
       moodTrackingIntroSlide: "moodTrackingIntro",
       moodReminderFrequencySlide: "moodReminderFrequency",
       referralSourceSlide: "referralSource",
@@ -150,8 +142,6 @@ describe("useSlides - leadup slides feature", () => {
       nickname: "TestUser",
     } as any)
 
-    // Ensure checkSocialMedia is set to YES so strugglePreference slide is included
-    mockGanonStorage.checkSocialMedia = YesNoChoices.YES
   })
 
   afterEach(() => {

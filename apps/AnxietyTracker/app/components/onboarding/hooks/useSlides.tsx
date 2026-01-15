@@ -8,16 +8,13 @@ import { heroSlide } from "../slideLibrary/heroSlide"
 import { problemSolutionSlide } from "../slideLibrary/problemSolutionSlide"
 import { referralSourceSlide } from "../slideLibrary/referralSourceSlide"
 import { howItWorksSlide } from "../slideLibrary/howItWorksSlide"
-import { lastContactSlide } from "../slideLibrary/lastContactSlide"
 import { genderSlide } from "../slideLibrary/genderSlide"
 import { ageSlide } from "../slideLibrary/ageSlide"
-import { relationshipDurationSlide } from "../slideLibrary/relationshipDurationSlide"
-import { isFirstBreakupSlide } from "../slideLibrary/isFirstBreakupSlide"
-import { noContactReasonSlide } from "../slideLibrary/noContactReasonSlide"
-import { checkSocialMediaSlide } from "../slideLibrary/checkSocialMediaSlide"
-import { contactTemptationSituationsSlide } from "../slideLibrary/contactTemptationSituationsSlide"
-import { strugglePreferenceSlide } from "../slideLibrary/strugglePreferenceSlide"
-import { whoEndedItSlide } from "../slideLibrary/whoEndedItSlide"
+import { anxietySeveritySlide } from "../slideLibrary/anxietySeveritySlide"
+import { isFirstTimeTrackingSlide } from "../slideLibrary/isFirstTimeTrackingSlide"
+import { trackingGoalSlide } from "../slideLibrary/trackingGoalSlide"
+import { anxietyTriggersSlide } from "../slideLibrary/anxietyTriggersSlide"
+import { anxietyDurationSlide } from "../slideLibrary/anxietyDurationSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
 import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
@@ -28,7 +25,6 @@ import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
 import { FlagContext } from "@/hooks/useFlags"
 import { MascotNames } from "@/types/MascotName"
 import { ganon } from "@/services/ganon/ganon"
-import { YesNoChoices } from "@/types/YesNo"
 
 export const useSlides = (onSelection?: () => void) => {
   const flagContext = useContext(FlagContext)
@@ -38,9 +34,6 @@ export const useSlides = (onSelection?: () => void) => {
   const { useFeatureFlags } = flagContext
   const [nickname, setNickname] = useState<string | null>(null)
   const [mascotName, setMascotName] = useState<MascotNames | null>(null)
-  const [checkSocialMedia, setCheckSocialMedia] = useState<YesNoChoices | null>(
-    (ganon.get("checkSocialMedia") as YesNoChoices | null) ?? null,
-  )
 
   const { leadup_slides } = useFeatureFlags()
 
@@ -67,18 +60,6 @@ export const useSlides = (onSelection?: () => void) => {
     loadNickname()
     loadMascotName()
   }, [])
-
-  // Poll for checkSocialMedia changes (since there's no event system for ganon changes)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const currentValue = ganon.get("checkSocialMedia") as YesNoChoices | null
-      if (currentValue !== checkSocialMedia) {
-        setCheckSocialMedia(currentValue ?? null)
-      }
-    }, 100) // Check every 100ms
-
-    return () => clearInterval(interval)
-  }, [checkSocialMedia])
 
   // Helper function to refresh nickname after it's saved
   const refreshNickname = async () => {
@@ -112,16 +93,13 @@ export const useSlides = (onSelection?: () => void) => {
       nicknameSlide({ onSelection, refreshNickname }), // Commitment (name)
 
       // Data collection slides
-      lastContactSlide({ onSelection }),
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
-      relationshipDurationSlide({ onSelection }),
-      isFirstBreakupSlide({ onSelection }),
-      noContactReasonSlide({ onSelection }),
-      checkSocialMediaSlide({ onSelection }),
-      ...(checkSocialMedia === YesNoChoices.YES ? [strugglePreferenceSlide({ onSelection })] : []),
-      contactTemptationSituationsSlide({ onSelection }),
-      whoEndedItSlide({ onSelection }),
+      anxietySeveritySlide({ onSelection }),
+      isFirstTimeTrackingSlide({ onSelection }),
+      trackingGoalSlide({ onSelection }),
+      anxietyTriggersSlide({ onSelection }),
+      anxietyDurationSlide({ onSelection }),
 
       mascotNameSlide({ onSelection, refreshMascotName }), // Commitment (mascot name)
       mascotIntroSlide({ onSelection, mascotName }), // Liking (personalized interaction)
@@ -138,7 +116,7 @@ export const useSlides = (onSelection?: () => void) => {
         ? [freeToTrySlide({ onSelection }), reminderBellSlide({ onSelection })]
         : []),
     ],
-    [onSelection, leadup_slides, mascotName, checkSocialMedia],
+    [onSelection, leadup_slides, mascotName],
   )
 
   return { slides, nickname }

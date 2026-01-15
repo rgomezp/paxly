@@ -74,7 +74,6 @@ interface StorageMapping {
   mascotName: MascotNames | null
   isFirstBreakup: YesNoChoices | null
   noContactReason: NoContactReasonChoices | null
-  checkSocialMedia: YesNoChoices | null
   contactTemptationSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null

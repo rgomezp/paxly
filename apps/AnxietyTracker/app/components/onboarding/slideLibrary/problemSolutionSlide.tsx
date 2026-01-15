@@ -25,8 +25,7 @@ export function problemSolutionSlide({
   return {
     id: "problem_solution",
     title: "Understand your anxiety",
-    description:
-      "Tracking your anxiety patterns can help you understand your triggers",
+    description: "Tracking your anxiety patterns can help you understand your triggers",
     component: <ProblemSolutionComponent />,
     textPlacement: "bottom",
     textAlignment: "left",
