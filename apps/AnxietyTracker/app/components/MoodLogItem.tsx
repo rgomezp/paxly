@@ -49,11 +49,8 @@ export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({
           {!!item.notes && (
             <Text style={themed([$notesText, { color: theme.colors.text }])}>{item.notes}</Text>
           )}
-          <View style={$timeRow}>
-            <Text style={themed([$timeText, { color: theme.colors.textDim }])}>
-              {formatRelativeTime(item.date)}
-            </Text>
-            {item.anxietyRating !== undefined && (
+          {item.anxietyRating !== undefined && (
+            <View style={$anxietyRow}>
               <View style={$anxietyIndicator}>
                 {[1, 2, 3, 4, 5].map((level) => {
                   const anxietyRating = item.anxietyRating!
@@ -74,8 +71,11 @@ export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({
                   )
                 })}
               </View>
-            )}
-          </View>
+            </View>
+          )}
+          <Text style={themed([$timeText, { color: theme.colors.textDim }])}>
+            {formatRelativeTime(item.date)}
+          </Text>
         </View>
       </View>
       {showDivider && (
@@ -122,15 +122,13 @@ const $notesText: TextStyle = {
   opacity: 0.7,
 }
 
-const $timeRow: ViewStyle = {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
+const $timeText: TextStyle = {
   marginTop: 6,
+  fontSize: 14,
 }
 
-const $timeText: TextStyle = {
-  fontSize: 14,
+const $anxietyRow: ViewStyle = {
+  marginTop: 8,
 }
 
 const $anxietyIndicator: ViewStyle = {
