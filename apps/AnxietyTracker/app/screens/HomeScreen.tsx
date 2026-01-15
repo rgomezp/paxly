@@ -6,7 +6,6 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import UserManager from "@/managers/UserManager"
-import { NoContactProgressWheel } from "@/components/NoContactProgressWheel"
 import NoContactManager from "@/managers/NoContactManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import DailyTasksTimeline from "@/components/DailyTasksTimeline"
@@ -18,10 +17,6 @@ import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
-import { ganon } from "@/services/ganon/ganon"
-import EventRegister from "@/utils/EventEmitter"
-import { GLOBAL_EVENTS } from "@/constants/events"
-import { StrugglePreference } from "@/types/StrugglePreference"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -45,36 +40,19 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   }, [])
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
-  const [isLowContact, setIsLowContact] = useState(ganon.get("lowContact") ?? false)
-  const [strugglePreference, setStrugglePreference] = useState<StrugglePreference>(
-    ganon.get("strugglePreference") ?? StrugglePreference.CONTACT,
-  )
-
-  // Listen for setting updates
-  useEffect(() => {
-    const handleUpdate = () => {
-      const lowContact = ganon.get("lowContact") ?? false
-      setIsLowContact(lowContact)
-      const preference = ganon.get("strugglePreference") ?? StrugglePreference.CONTACT
-      setStrugglePreference(preference)
-    }
-
-    EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
-    handleUpdate() // Initial load
-
-    return () => {
-      EventRegister.off(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
-    }
-  }, [])
 
   // Generate header text based on struggle preference
   const getHeaderText = () => {
-    if (strugglePreference === StrugglePreference.CHECK_SOCIALS) {
-      return `${name}, you haven't checked their socials for:`
+    const timeOfDay = new Date().getHours()
+    let greeting = ""
+    if (timeOfDay < 12) {
+      greeting = "Good morning"
+    } else if (timeOfDay < 18) {
+      greeting = "Good afternoon"
+    } else {
+      greeting = "Good evening"
     }
-    // For CONTACT preference
-    const contactText = isLowContact ? "low contact" : "no contact"
-    return `${name}, you've been ${contactText} for:`
+    return `${greeting}, ${name}`
   }
 
   // Play melancholy chime only once per session
@@ -155,7 +133,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
             })}
           />
         </View>
-        <NoContactProgressWheel refreshTrigger={refreshTrigger} />
         <View style={$resetButtonContainer}>
           <RectangularButton
             buttonText="Help"
