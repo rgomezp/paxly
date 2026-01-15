@@ -19,21 +19,21 @@ const options: MultipleChoiceOption<RelationshipDurations>[] = [
 ]
 
 export function anxietySeveritySlide({ onSelection }: AnxietySeveritySlideProps): ISlide {
-  // Read saved relationshipDuration from ganon (keeping old key for data compatibility)
-  const savedDuration = ganon.get("relationshipDuration") as RelationshipDurations | null
-  const initialSelected = savedDuration ? [savedDuration] : []
+  // Read saved anxietySeverity from ganon
+  const savedSeverity = ganon.get("anxietySeverity") as RelationshipDurations | null
+  const initialSelected = savedSeverity ? [savedSeverity] : []
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`AnxietySeveritySlide: buttonPressed: ${optionId}`)
 
-    const selectedDuration = optionId as RelationshipDurations
+    const selectedSeverity = optionId as RelationshipDurations
 
-    // Save to ganon (keeping old key for data compatibility)
+    // Save to ganon with new key
     try {
-      ganon.set("relationshipDuration", selectedDuration)
-      Log.info(`AnxietySeveritySlide: Saved relationshipDuration: ${selectedDuration}`)
+      ganon.set("anxietySeverity", selectedSeverity)
+      Log.info(`AnxietySeveritySlide: Saved anxietySeverity: ${selectedSeverity}`)
     } catch (e) {
-      Log.error(`AnxietySeveritySlide: Error saving relationshipDuration: ${e}`)
+      Log.error(`AnxietySeveritySlide: Error saving anxietySeverity: ${e}`)
     }
 
     // Auto-advance when shouldAutoAdvance is true
@@ -43,7 +43,7 @@ export function anxietySeveritySlide({ onSelection }: AnxietySeveritySlideProps)
   }
 
   return {
-    id: "relationshipDuration", // Keeping old ID for compatibility
+    id: "anxietySeverity",
     title: "How would you describe your anxiety?",
     description: "This helps us understand your experience",
     component: (

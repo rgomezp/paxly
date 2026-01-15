@@ -18,21 +18,21 @@ const options: MultipleChoiceOption<WhoEndedItChoices>[] = [
 ]
 
 export function anxietyDurationSlide({ onSelection }: AnxietyDurationSlideProps): ISlide {
-  // Read saved whoEndedIt from ganon (keeping old key for data compatibility)
-  const savedChoice = ganon.get("whoEndedIt") as WhoEndedItChoices | null
-  const initialSelected = savedChoice ? [savedChoice] : []
+  // Read saved anxietyDuration from ganon
+  const savedDuration = ganon.get("anxietyDuration") as WhoEndedItChoices | null
+  const initialSelected = savedDuration ? [savedDuration] : []
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`AnxietyDurationSlide: buttonPressed: ${optionId}`)
 
-    const selectedChoice = optionId as WhoEndedItChoices
+    const selectedDuration = optionId as WhoEndedItChoices
 
-    // Save to ganon (keeping old key for data compatibility)
+    // Save to ganon with new key
     try {
-      ganon.set("whoEndedIt", selectedChoice)
-      Log.info(`AnxietyDurationSlide: Saved whoEndedIt: ${selectedChoice}`)
+      ganon.set("anxietyDuration", selectedDuration)
+      Log.info(`AnxietyDurationSlide: Saved anxietyDuration: ${selectedDuration}`)
     } catch (e) {
-      Log.error(`AnxietyDurationSlide: Error saving whoEndedIt: ${e}`)
+      Log.error(`AnxietyDurationSlide: Error saving anxietyDuration: ${e}`)
     }
 
     // Auto-advance when shouldAutoAdvance is true
@@ -42,7 +42,7 @@ export function anxietyDurationSlide({ onSelection }: AnxietyDurationSlideProps)
   }
 
   return {
-    id: "whoEndedIt", // Keeping old ID for compatibility
+    id: "anxietyDuration",
     title: "How long have you been dealing with anxiety?",
     description: "This helps us understand your journey",
     component: (

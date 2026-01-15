@@ -22,25 +22,23 @@ const options: MultipleChoiceOption<ContactTemptationSituationsChoices>[] = [
 export function anxietyTriggersSlide({
   onSelection,
 }: AnxietyTriggersSlideProps): ISlide {
-  // Read saved contactTemptationSituation from ganon (keeping old key for data compatibility)
-  const savedSituation = ganon.get(
-    "contactTemptationSituation",
-  ) as ContactTemptationSituationsChoices | null
-  const initialSelected = savedSituation ? [savedSituation] : []
+  // Read saved anxietyTriggerSituation from ganon
+  const savedTrigger = ganon.get("anxietyTriggerSituation") as ContactTemptationSituationsChoices | null
+  const initialSelected = savedTrigger ? [savedTrigger] : []
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`AnxietyTriggersSlide: buttonPressed: ${optionId}`)
 
-    const selectedSituation = optionId as ContactTemptationSituationsChoices
+    const selectedTrigger = optionId as ContactTemptationSituationsChoices
 
-    // Save to ganon (keeping old key for data compatibility)
+    // Save to ganon with new key
     try {
-      ganon.set("contactTemptationSituation", selectedSituation)
+      ganon.set("anxietyTriggerSituation", selectedTrigger)
       Log.info(
-        `AnxietyTriggersSlide: Saved contactTemptationSituation: ${selectedSituation}`,
+        `AnxietyTriggersSlide: Saved anxietyTriggerSituation: ${selectedTrigger}`,
       )
     } catch (e) {
-      Log.error(`AnxietyTriggersSlide: Error saving contactTemptationSituation: ${e}`)
+      Log.error(`AnxietyTriggersSlide: Error saving anxietyTriggerSituation: ${e}`)
     }
 
     // Auto-advance when shouldAutoAdvance is true
@@ -50,7 +48,7 @@ export function anxietyTriggersSlide({
   }
 
   return {
-    id: "contactTemptationSituation", // Keeping old ID for compatibility
+    id: "anxietyTriggerSituation",
     title: "When do you experience anxiety most?",
     component: (
       <MultipleChoiceSelector

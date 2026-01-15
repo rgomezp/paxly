@@ -19,21 +19,21 @@ const options: MultipleChoiceOption<NoContactReasonChoices>[] = [
 ]
 
 export function trackingGoalSlide({ onSelection }: TrackingGoalSlideProps): ISlide {
-  // Read saved noContactReason from ganon (keeping old key for data compatibility)
-  const savedReason = ganon.get("noContactReason") as NoContactReasonChoices | null
-  const initialSelected = savedReason ? [savedReason] : []
+  // Read saved trackingGoal from ganon
+  const savedGoal = ganon.get("trackingGoal") as NoContactReasonChoices | null
+  const initialSelected = savedGoal ? [savedGoal] : []
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`TrackingGoalSlide: buttonPressed: ${optionId}`)
 
-    const selectedReason = optionId as NoContactReasonChoices
+    const selectedGoal = optionId as NoContactReasonChoices
 
-    // Save to ganon (keeping old key for data compatibility)
+    // Save to ganon with new key
     try {
-      ganon.set("noContactReason", selectedReason)
-      Log.info(`TrackingGoalSlide: Saved noContactReason: ${selectedReason}`)
+      ganon.set("trackingGoal", selectedGoal)
+      Log.info(`TrackingGoalSlide: Saved trackingGoal: ${selectedGoal}`)
     } catch (e) {
-      Log.error(`TrackingGoalSlide: Error saving noContactReason: ${e}`)
+      Log.error(`TrackingGoalSlide: Error saving trackingGoal: ${e}`)
     }
 
     // Auto-advance when shouldAutoAdvance is true
@@ -43,7 +43,7 @@ export function trackingGoalSlide({ onSelection }: TrackingGoalSlideProps): ISli
   }
 
   return {
-    id: "noContactReason", // Keeping old ID for compatibility
+    id: "trackingGoal",
     title: "What's your main goal with tracking?",
     description: "This helps us understand what you want to achieve",
     component: (

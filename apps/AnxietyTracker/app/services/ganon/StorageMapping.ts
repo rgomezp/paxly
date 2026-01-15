@@ -69,12 +69,12 @@ interface StorageMapping {
   goals: GoalChoices[]
   gender: Genders | null
   ageRange: AgeRanges | null
-  relationshipDuration: RelationshipDurations | null
-  whoEndedIt: WhoEndedItChoices | null
+  anxietySeverity: RelationshipDurations | null
+  anxietyDuration: WhoEndedItChoices | null
   mascotName: MascotNames | null
-  isFirstBreakup: YesNoChoices | null
-  noContactReason: NoContactReasonChoices | null
-  contactTemptationSituation: ContactTemptationSituationsChoices | null
+  isFirstTimeTracking: YesNoChoices | null
+  trackingGoal: NoContactReasonChoices | null
+  anxietyTriggerSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   strugglePreference: StrugglePreference | null
