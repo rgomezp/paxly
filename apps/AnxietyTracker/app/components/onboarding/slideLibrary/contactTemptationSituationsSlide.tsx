@@ -9,14 +9,14 @@ type ContactTemptationSituationsSlideProps = {
 }
 
 const options: MultipleChoiceOption<ContactTemptationSituationsChoices>[] = [
-  { id: ContactTemptationSituationsChoices.WHEN_LONELY, label: "When I'm lonely" },
-  { id: ContactTemptationSituationsChoices.WHEN_SAD, label: "When I'm sad" },
+  { id: ContactTemptationSituationsChoices.WHEN_LONELY, label: "In social situations" },
+  { id: ContactTemptationSituationsChoices.WHEN_SAD, label: "When I'm stressed" },
   {
     id: ContactTemptationSituationsChoices.WHEN_SEEING_THEIR_POSTS,
-    label: "When seeing their posts",
+    label: "At work or school",
   },
-  { id: ContactTemptationSituationsChoices.ON_SPECIAL_DATES, label: "On special dates" },
-  { id: ContactTemptationSituationsChoices.WHEN_DRUNK, label: "When I'm drunk" },
+  { id: ContactTemptationSituationsChoices.ON_SPECIAL_DATES, label: "In the morning" },
+  { id: ContactTemptationSituationsChoices.WHEN_DRUNK, label: "Before bed" },
 ]
 
 export function contactTemptationSituationsSlide({
@@ -51,7 +51,7 @@ export function contactTemptationSituationsSlide({
 
   return {
     id: "contactTemptationSituation",
-    title: "In which situations do you most want to contact your ex?",
+    title: "When do you experience anxiety most?",
     component: (
       <MultipleChoiceSelector
         options={options}

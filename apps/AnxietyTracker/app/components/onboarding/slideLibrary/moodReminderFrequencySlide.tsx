@@ -216,8 +216,8 @@ export function moodReminderFrequencySlide({
 }: MoodReminderFrequencySlideProps): ISlide {
   return {
     id: "moodReminderFrequency",
-    title: "How often would you like mood reminders?",
-    description: "We'll send you gentle reminders to log your mood",
+    title: "How often would you like tracking reminders?",
+    description: "We'll send you gentle reminders to log your mood and anxiety",
     component: <MoodReminderFrequencyComponent onSelection={onSelection} />,
   }
 }

@@ -42,8 +42,8 @@ export function isFirstBreakupSlide({ onSelection }: IsFirstBreakupSlideProps): 
 
   return {
     id: "isFirstBreakup",
-    title: "Is this your first break up together?",
-    description: "This helps us understand your situation",
+    title: "Is this your first time tracking anxiety?",
+    description: "This helps us personalize your experience",
     component: (
       <MultipleChoiceSelector
         options={options}

@@ -27,7 +27,7 @@ function LastContactComponent({ onSelection }: LastContactSlideProps) {
         />
       </View>
       <RectangularButton
-        buttonText="Set last contact date"
+        buttonText="Set start date"
         onClick={() => setIsPickerVisible(true)}
         width={260}
         fontSize={18}
@@ -46,8 +46,8 @@ function LastContactComponent({ onSelection }: LastContactSlideProps) {
 export function lastContactSlide({ onSelection }: LastContactSlideProps): ISlide {
   return {
     id: "lastContactDate",
-    title: "When was your last contact?",
-    description: "We'll start your streak from that date",
+    title: "When did you start tracking?",
+    description: "We'll start your tracking journey from that date",
     component: <LastContactComponent onSelection={onSelection} />,
   }
 }

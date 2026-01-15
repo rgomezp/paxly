@@ -53,7 +53,7 @@ const TestimonialComponent: React.FC = () => {
         />
       </View>
       <View style={themed($socialProofHeader)}>
-        <Text style={themed($userCountText)}>Join 10,000+ people on their healing journey</Text>
+        <Text style={themed($userCountText)}>Join 10,000+ people tracking their anxiety</Text>
         <Text style={themed($ratingHelpText)}>
           Your rating helps us reach more people who need support
         </Text>

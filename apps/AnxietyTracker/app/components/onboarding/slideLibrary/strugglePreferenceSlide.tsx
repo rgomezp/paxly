@@ -59,9 +59,9 @@ export function strugglePreferenceSlide({ onSelection }: StrugglePreferenceSlide
 
   return {
     id: "strugglePreference",
-    title: "What do you want to track?",
+    title: "What do you want to focus on?",
     description:
-      "This determines what you're tracking on your home screen and the language we use throughout the app. Choose what you want to focus on.",
+      "This helps us personalize your tracking experience and the language we use throughout the app.",
     component: (
       <MultipleChoiceSelector
         options={options}

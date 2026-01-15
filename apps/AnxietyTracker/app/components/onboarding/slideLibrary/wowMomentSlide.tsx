@@ -14,8 +14,8 @@ type WowMomentSlideProps = {
 export function wowMomentSlide({ onSelection: _onSelection }: WowMomentSlideProps): ISlide {
   return {
     id: "wowMoment",
-    title: "Breakups are tough 💔",
-    description: "Research shows heartbreak activates the same brain regions as physical pain.",
+    title: "Anxiety is real 🧠",
+    description: "Research shows anxiety affects millions of people, and tracking your patterns can help you understand and manage it better.",
     component: <WowMomentComponent />,
     textPlacement: "bottom",
     textAlignment: "center",

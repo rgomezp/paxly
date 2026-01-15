@@ -38,7 +38,7 @@ function MoodTrackingIntroComponent({ onSelection: _onSelection }: MoodTrackingI
       {/* Explanation text */}
       <View style={themed($explanationContainer)}>
         <RNText style={themed([$explanationText])}>
-          We&apos;ll send you gentle reminders to help you stay consistent.
+          We&apos;ll send you gentle reminders to help you build a consistent tracking habit.
         </RNText>
       </View>
     </View>
@@ -50,8 +50,8 @@ export function moodTrackingIntroSlide({
 }: MoodTrackingIntroSlideProps): ISlide {
   return {
     id: "moodTrackingIntro",
-    title: "Track your mood and watch yourself heal",
-    description: "See your progress over time with daily mood tracking",
+    title: "Track your anxiety and build awareness",
+    description: "See your patterns over time with daily mood and anxiety tracking",
     component: <MoodTrackingIntroComponent onSelection={_onSelection} />,
     textPlacement: "top",
   }

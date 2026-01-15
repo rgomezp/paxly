@@ -12,11 +12,11 @@ type ProblemSolutionSlideProps = {
 const solutionImage: ImageRequireSource = require("../../../../assets/images/onboarding/peaceful_girl.png")
 
 const quotes: string[] = [
-  "My brain keeps trying to convince me to text him, even though I know it probably wouldn't help.",
-  "I just feel this intense pull toward him, like I'm craving his presence or hoping he'll somehow give me comfort.",
-  "It's been two weeks of no contact and trust me it is heartbreaking how much I still want to text my ex.",
-  "I've blocked his number and social media but sometimes I can't resist calling or crying to him... I can't stop myself from wanting him back or from reaching out.",
-  "It has been almost a month and I have the most extreme urge to but he doesn't care about me and nor should I care about him but I do still.",
+  "I feel anxious all the time but I don't know what triggers it or when it happens most.",
+  "My anxiety comes in waves and I wish I could understand the patterns better.",
+  "I want to track my anxiety but I don't know where to start or how to make it a habit.",
+  "Sometimes I feel fine, other times I'm overwhelmed - I need to see the bigger picture.",
+  "I know tracking would help but I keep forgetting to do it or don't know what to track.",
 ]
 
 export function problemSolutionSlide({
@@ -24,9 +24,9 @@ export function problemSolutionSlide({
 }: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
-    title: "Can't stop checking or reaching out?",
+    title: "Understand your anxiety",
     description:
-      "No contact has been shown to be one of the most effective ways to heal from a breakup.",
+      "Tracking your anxiety patterns can help you understand your triggers",
     component: <ProblemSolutionComponent />,
     textPlacement: "bottom",
     textAlignment: "left",

@@ -42,8 +42,8 @@ export function checkSocialMediaSlide({ onSelection }: CheckSocialMediaSlideProp
 
   return {
     id: "checkSocialMedia",
-    title: "Do you check your ex's social media?",
-    description: "Be honest - we're here to help",
+    title: "Do you want to track anxiety triggers?",
+    description: "This helps us personalize your tracking experience",
     component: (
       <MultipleChoiceSelector
         options={options}

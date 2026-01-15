@@ -12,10 +12,10 @@ type NoContactReasonSlideProps = {
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
 
 const options: MultipleChoiceOption<NoContactReasonChoices>[] = [
-  { id: NoContactReasonChoices.TAKE_BACK_CONTROL, label: "Take back control of my life" },
-  { id: NoContactReasonChoices.GET_EX_BACK, label: "Try to get my ex back" },
-  { id: NoContactReasonChoices.MOVE_ON, label: "To move on" },
-  { id: NoContactReasonChoices.DONT_KNOW, label: "I don't know" },
+  { id: NoContactReasonChoices.TAKE_BACK_CONTROL, label: "Understand my anxiety patterns" },
+  { id: NoContactReasonChoices.GET_EX_BACK, label: "Reduce my anxiety levels" },
+  { id: NoContactReasonChoices.MOVE_ON, label: "Build better coping strategies" },
+  { id: NoContactReasonChoices.DONT_KNOW, label: "I'm not sure yet" },
 ]
 
 export function noContactReasonSlide({ onSelection }: NoContactReasonSlideProps): ISlide {
@@ -44,8 +44,8 @@ export function noContactReasonSlide({ onSelection }: NoContactReasonSlideProps)
 
   return {
     id: "noContactReason",
-    title: "Why did you decide to start no contact?",
-    description: "This helps us understand your motivation",
+    title: "What's your main goal with tracking?",
+    description: "This helps us understand what you want to achieve",
     component: (
       <MultipleChoiceSelector
         options={options}

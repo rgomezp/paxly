@@ -22,7 +22,7 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
   return {
     id: "hero",
     title: "We're here to help.",
-    description: "It takes about 3 months on average to heal from a breakup.",
+    description: "Understanding your anxiety patterns is the first step toward managing them.",
     component: <HeroComponent />,
     textPlacement: "top",
   }
@@ -30,14 +30,14 @@ export function heroSlide({ onSelection: _onSelection }: HeroSlideProps): ISlide
 
 const benefits: Benefit[] = [
   {
-    icon: "user-slash",
+    icon: "chart-line",
     title: "Track your anxiety",
-    description: "Moving on can be tough, but we're here to help!",
+    description: "Log your daily mood and anxiety levels to identify patterns",
   },
   {
-    icon: "seedling",
-    title: "Grow acceptance",
-    description: "Acceptance is the key to healing",
+    icon: "first-aid",
+    title: "Find help when panic hits",
+    description: "Get instant access to calming tools and resources",
   },
 ]
 

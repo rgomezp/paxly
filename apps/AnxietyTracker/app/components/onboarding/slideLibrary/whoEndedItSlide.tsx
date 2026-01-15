@@ -12,9 +12,9 @@ type WhoEndedItSlideProps = {
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/4m/planty.webp")
 
 const options: MultipleChoiceOption<WhoEndedItChoices>[] = [
-  { id: WhoEndedItChoices.ME, label: "Me" },
-  { id: WhoEndedItChoices.THEM, label: "Them" },
-  { id: WhoEndedItChoices.MUTUAL, label: "Mutual" },
+  { id: WhoEndedItChoices.ME, label: "Less than 6 months" },
+  { id: WhoEndedItChoices.THEM, label: "6 months to 2 years" },
+  { id: WhoEndedItChoices.MUTUAL, label: "More than 2 years" },
 ]
 
 export function whoEndedItSlide({ onSelection }: WhoEndedItSlideProps): ISlide {
@@ -43,8 +43,8 @@ export function whoEndedItSlide({ onSelection }: WhoEndedItSlideProps): ISlide {
 
   return {
     id: "whoEndedIt",
-    title: "Who ended it?",
-    description: "This helps us understand your situation",
+    title: "How long have you been dealing with anxiety?",
+    description: "This helps us understand your journey",
     component: (
       <MultipleChoiceSelector
         options={options}

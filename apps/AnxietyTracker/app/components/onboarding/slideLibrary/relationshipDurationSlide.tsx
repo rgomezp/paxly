@@ -12,10 +12,10 @@ type RelationshipDurationSlideProps = {
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/2m/planty.webp")
 
 const options: MultipleChoiceOption<RelationshipDurations>[] = [
-  { id: RelationshipDurations.ZERO_TO_SIX_MONTHS, label: "0-6 months" },
-  { id: RelationshipDurations.SIX_TO_TWELVE_MONTHS, label: "6-12 months" },
-  { id: RelationshipDurations.ONE_TO_THREE_YEARS, label: "1-3 years" },
-  { id: RelationshipDurations.OVER_THREE_YEARS, label: "Over 3 years" },
+  { id: RelationshipDurations.ZERO_TO_SIX_MONTHS, label: "Mild - occasional worry" },
+  { id: RelationshipDurations.SIX_TO_TWELVE_MONTHS, label: "Moderate - regular anxiety" },
+  { id: RelationshipDurations.ONE_TO_THREE_YEARS, label: "Severe - frequent episodes" },
+  { id: RelationshipDurations.OVER_THREE_YEARS, label: "Very severe - constant anxiety" },
 ]
 
 export function relationshipDurationSlide({ onSelection }: RelationshipDurationSlideProps): ISlide {
@@ -44,8 +44,8 @@ export function relationshipDurationSlide({ onSelection }: RelationshipDurationS
 
   return {
     id: "relationshipDuration",
-    title: "How long were you together for?",
-    description: "This helps us understand your journey",
+    title: "How would you describe your anxiety?",
+    description: "This helps us understand your experience",
     component: (
       <MultipleChoiceSelector
         options={options}

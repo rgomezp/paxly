@@ -14,19 +14,19 @@ type HowItWorksSlideProps = {
 
 const steps: IconTextData[] = [
   {
-    icon: "sad-tear",
-    title: "Set No Contact",
-    description: "Decide your intention and start your streak",
+    icon: "chart-line",
+    title: "Track Daily",
+    description: "Log your anxiety levels and mood each day",
   },
   {
-    icon: "heart",
-    title: "Check In Daily",
-    description: "Track mood and reflect in a quick journal",
+    icon: "book",
+    title: "Reflect & Learn",
+    description: "Journal your thoughts and identify patterns",
   },
   {
-    icon: "smile",
-    title: "Watch Healing Grow",
-    description: "Grow out of your pain one day at a time",
+    icon: "seedling",
+    title: "Find Relief",
+    description: "Get instant access to calming tools and resources",
   },
 ]
 
@@ -34,7 +34,7 @@ export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlidePr
   return {
     id: "howItWorks",
     title: "Start your journey today",
-    description: "Join thousands who've found healing. In 60 days, you'll be well on your way.",
+    description: "Join thousands who are building awareness and managing their anxiety better.",
     component: <HowItWorksComponent />,
   }
 }
