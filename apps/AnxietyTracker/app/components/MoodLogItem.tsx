@@ -63,7 +63,7 @@ export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({
                         isActive ? $anxietyDotActive : $anxietyDotInactive,
                         {
                           backgroundColor: isActive
-                            ? theme.colors.palette.primary500
+                            ? theme.colors.palette.negative
                             : theme.colors.separator,
                         },
                       ]}

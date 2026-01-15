@@ -32,7 +32,7 @@ export const AnxietyGraph: FC<AnxietyGraphProps> = observer(function AnxietyGrap
   chartHeight,
   containerStyle,
 }) {
-  const { theme } = useAppTheme()
+  const { theme, themeContext } = useAppTheme()
   const { moodStore } = useStores()
 
   const buckets: DayBucket[] =
@@ -97,14 +97,27 @@ export const AnxietyGraph: FC<AnxietyGraphProps> = observer(function AnxietyGrap
       return Object.values(map)
     })()
 
-  // 5 shades of primary color: lightest (level 1) at top, darkest (level 5) at bottom
-  const colors = {
-    level1: theme.colors.palette.primary100,
-    level2: theme.colors.palette.primary200,
-    level3: theme.colors.palette.primary300,
-    level4: theme.colors.palette.primary400,
-    level5: theme.colors.palette.primary600,
-  }
+  // In light mode: accent100 is lightest, accent500 is darkest
+  // In dark mode: accent100 is darkest, accent600 is lightest (reversed)
+  // We want level 1 (lowest anxiety) to be lightest, level 5 (highest anxiety) to be darkest
+  const colors =
+    themeContext === "dark"
+      ? {
+          // Dark mode: reversed order - darkest for highest anxiety
+          level1: theme.colors.palette.accent600,
+          level2: theme.colors.palette.accent500,
+          level3: theme.colors.palette.accent400,
+          level4: theme.colors.palette.accent300,
+          level5: theme.colors.palette.accent100,
+        }
+      : {
+          // Light mode: normal order - darkest for highest anxiety
+          level1: theme.colors.palette.accent100,
+          level2: theme.colors.palette.accent200,
+          level3: theme.colors.palette.accent300,
+          level4: theme.colors.palette.accent400,
+          level5: theme.colors.palette.accent500,
+        }
 
   // Transform DayBucket data to BarData format
   // Order: level1 at top (displayed first), level5 at bottom (displayed last)
@@ -143,4 +156,3 @@ export const AnxietyGraph: FC<AnxietyGraphProps> = observer(function AnxietyGrap
 })
 
 export default AnxietyGraph
-

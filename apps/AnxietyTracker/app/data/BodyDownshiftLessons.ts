@@ -31,7 +31,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       { t: "timer", seconds: 30, label: "Rest with the shift" },
       {
         t: "instruction",
-        body: "This is your emergency brake. Use it anytime you feel panic rising or an urge to contact them. Two rounds can shift your state enough to make a clearer choice.",
+        body: "This is your emergency brake. Use it anytime you feel panic rising or anxiety spiking. Two rounds can shift your state enough to make a clearer choice.",
       },
       {
         t: "check",
@@ -81,7 +81,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // FOUNDATION: The science of trapped activation
       {
         t: "instruction",
-        body: "Your body right now is holding the physical residue of every stressful moment since the breakup. Every time you saw their name, every wave of panic, every sleepless night—it's all stored in your muscles.",
+        body: "Your body right now is holding the physical residue of every stressful moment. Every wave of anxiety, every panic attack, every sleepless night—it's all stored in your muscles.",
       },
       {
         t: "instruction",
@@ -105,7 +105,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // PERSONAL RECOGNITION
       {
         t: "instruction",
-        body: "Think about the last time you felt intense emotion about your ex. Where did that energy go? Did your muscles tense? Did you clench your fists? Hold your breath?",
+        body: "Think about the last time you felt intense anxiety. Where did that energy go? Did your muscles tense? Did you clench your fists? Hold your breath?",
       },
       {
         t: "timer",
@@ -254,21 +254,21 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // FOUNDATION: What are urges?
       {
         t: "instruction",
-        body: "Urges to contact your ex feel overwhelming because they ARE overwhelming—neurologically speaking.",
+        body: "Anxiety urges feel overwhelming because they ARE overwhelming—neurologically speaking.",
       },
       {
         t: "instruction",
-        body: "When you think about contacting them, your brain releases dopamine in anticipation. It's the same system that drives craving in addiction.",
+        body: "When you think about avoiding or escaping anxiety, your brain releases stress hormones. It's the same system that drives fight-or-flight responses.",
       },
       {
         t: "instruction",
-        body: "Your brain thinks: 'If I just text them, I'll feel better.' And in the very short term, you might. But you're reinforcing the cycle, making the next urge stronger.",
+        body: "Your brain thinks: 'If I just avoid this, I'll feel better.' And in the very short term, you might. But you're reinforcing the cycle, making the next anxiety spike stronger.",
       },
 
       // THE WAVE METAPHOR
       {
         t: "instruction",
-        body: "Here's what research shows: Urges follow a predictable pattern. They rise, peak, and fall—like a wave.",
+        body: "Here's what research shows: Anxiety follows a predictable pattern. It rises, peaks, and falls—like a wave.",
       },
       {
         t: "instruction",
@@ -276,27 +276,27 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "If you can ride the wave without acting, it WILL crest and fall. Every time you do this, you're rewiring your brain. You're teaching it: 'I can feel this and survive it.'",
+        body: "If you can ride the wave without avoiding, it WILL crest and fall. Every time you do this, you're rewiring your brain. You're teaching it: 'I can feel this and survive it.'",
       },
 
       // COMMON MISTAKES
       {
         t: "instruction",
-        body: "Most people make one of two mistakes:\n\n1. They try to FIGHT the urge ('I shouldn't feel this!')\n2. They try to DISTRACT from it immediately\n\nBoth can work short-term, but they don't build the skill of being WITH discomfort.",
+        body: "Most people make one of two mistakes:\n\n1. They try to FIGHT the anxiety ('I shouldn't feel this!')\n2. They try to DISTRACT from it immediately\n\nBoth can work short-term, but they don't build the skill of being WITH discomfort.",
       },
       {
         t: "instruction",
-        body: "Urge surfing is different. You're not fighting or fleeing. You're observing with curiosity, like a scientist studying a phenomenon.",
+        body: "Anxiety surfing is different. You're not fighting or fleeing. You're observing with curiosity, like a scientist studying a phenomenon.",
       },
 
       // SETUP: Current state assessment
       {
         t: "instruction",
-        body: "Let's practice right now. First, check in: How strong is your urge to contact them at this moment?",
+        body: "Let's practice right now. First, check in: How strong is your anxiety at this moment?",
       },
       {
         t: "slider",
-        prompt: "Rate your current urge:",
+        prompt: "Rate your current anxiety:",
         min: 0,
         max: 10,
       },
@@ -304,11 +304,11 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // SOMATIC AWARENESS
       {
         t: "instruction",
-        body: "Now, instead of pushing the urge away, we're going to get curious about it. Where do you feel it in your body?",
+        body: "Now, instead of pushing the anxiety away, we're going to get curious about it. Where do you feel it in your body?",
       },
       {
         t: "instruction",
-        body: "Common locations:\n• Chest (tightness, ache)\n• Stomach (churning, emptiness)\n• Throat (lump, constriction)\n• Hands (restlessness, reaching)\n• Head (spinning thoughts)",
+        body: "Common locations:\n• Chest (tightness, ache)\n• Stomach (churning, emptiness)\n• Throat (lump, constriction)\n• Hands (restlessness, shaking)\n• Head (spinning thoughts)",
       },
       { t: "timer", seconds: 30, label: "Locate the sensation" },
       {
@@ -320,14 +320,14 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // QUALITY EXPLORATION
       {
         t: "instruction",
-        body: "Now describe the quality. Not the story ('I miss them'), but the physical sensation.\n\nIs it:\n\n• Hot or cold?\n• Sharp or dull?\n• Tight or loose?\n• Moving or still?\n• Heavy or light?",
+        body: "Now describe the quality. Not the story ('I'm going to panic'), but the physical sensation.\n\nIs it:\n\n• Hot or cold?\n• Sharp or dull?\n• Tight or loose?\n• Moving or still?\n• Heavy or light?",
       },
       { t: "timer", seconds: 15, label: "Observe the quality" },
 
       // THE SURF
       {
         t: "instruction",
-        body: "Here comes the wave. For the next 90 seconds, you're going to stay with the urge without trying to change it or act on it.",
+        body: "Here comes the wave. For the next 90 seconds, you're going to stay with the anxiety without trying to change it or avoid it.",
       },
       {
         t: "instruction",
@@ -346,7 +346,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "slider",
-        prompt: "Check in: Rate your urge now (0-10)",
+        prompt: "Check in: Rate your anxiety now (0-10)",
         min: 0,
         max: 10,
       },
@@ -365,25 +365,25 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // INTEGRATION: What you learned
       {
         t: "instruction",
-        body: "Here's what just happened: You experienced an urge, didn't act on it, and it changed. This is evidence that urges are temporary.",
+        body: "Here's what just happened: You experienced anxiety, didn't avoid it, and it changed. This is evidence that anxiety is temporary.",
       },
       {
         t: "instruction",
-        body: "Every time you surf an urge successfully, you're building:\n\n• Distress tolerance\n• Emotional regulation\n• Self-trust\n• Evidence that you can handle discomfort",
+        body: "Every time you surf anxiety successfully, you're building:\n\n• Distress tolerance\n• Emotional regulation\n• Self-trust\n• Evidence that you can handle discomfort",
       },
       {
         t: "instruction",
-        body: "The urge will come back. That's normal. But each time you practice, you're strengthening new neural pathways. You're literally changing your brain.",
+        body: "The anxiety will come back. That's normal. But each time you practice, you're strengthening new neural pathways. You're literally changing your brain.",
       },
 
       // PROTOCOL FOR FUTURE
       {
         t: "instruction",
-        body: "Use this protocol any time an urge hits:\n\n1. RATE: 0-10 intensity\n2. LOCATE: Where in your body?\n3. DESCRIBE: What's the quality?\n4. SURF: 90 seconds of observation\n5. BREATHE: 2-3 rounds to regulate\n6. RE-RATE: Notice the change",
+        body: "Use this protocol any time anxiety spikes:\n\n1. RATE: 0-10 intensity\n2. LOCATE: Where in your body?\n3. DESCRIBE: What's the quality?\n4. SURF: 90 seconds of observation\n5. BREATHE: 2-3 rounds to regulate\n6. RE-RATE: Notice the change",
       },
       {
         t: "check",
-        prompt: "I commit to surfing urges >6/10 before any contact decision",
+        prompt: "I commit to surfing anxiety >6/10 before making decisions",
       },
     ],
     haptics: true,
@@ -403,7 +403,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       // FOUNDATION: What is interoception and why it matters
       {
         t: "instruction",
-        body: "Your ability to sense what's happening inside your body is called interoception. It's your eighth sense—and after a breakup, it's often completely offline.",
+        body: "Your ability to sense what's happening inside your body is called interoception. It's your eighth sense—and when you're anxious, it's often completely offline.",
       },
       {
         t: "instruction",
@@ -692,7 +692,7 @@ export const BODY_DOWNSHIFT_LESSONS: Record<string, ILessonConfig> = {
       { t: "timer", seconds: 120, label: "Continue walking with expanded awareness" },
       {
         t: "instruction",
-        body: "If your mind wanders to thoughts about your ex or the breakup, gently return to the sensation of walking. Each return is the practice.",
+        body: "If your mind wanders to anxious thoughts or worries, gently return to the sensation of walking. Each return is the practice.",
       },
       {
         t: "instruction",

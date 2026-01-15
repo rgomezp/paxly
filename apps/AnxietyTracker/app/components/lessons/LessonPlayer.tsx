@@ -1,5 +1,5 @@
 import { LESSONS } from "@/data/LessonRegistry"
-import { URGE_LESSON_DEFINITIONS } from "@/data/UrgeLessons"
+import { IM_ANXIOUS_LESSON_DEFINITIONS } from "@/data/ImAnxiousLessons"
 import { CardLesson } from "./CardLesson"
 import { PracticeLesson } from "./PracticeLesson"
 import { JournalLesson } from "./JournalLesson"
@@ -18,7 +18,7 @@ export function LessonPlayer({
   onComplete?: () => void
 }) {
   // Check both regular lessons and urge lessons
-  const cfg = LESSONS[lessonId] || URGE_LESSON_DEFINITIONS[lessonId]
+  const cfg = LESSONS[lessonId] || IM_ANXIOUS_LESSON_DEFINITIONS[lessonId]
   if (!cfg) return <Text>Unknown lesson: {lessonId}</Text>
   switch (cfg.format) {
     case "card":

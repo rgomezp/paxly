@@ -26,12 +26,12 @@ const palette = {
   secondary100: "#45B2C3",
 
   // Accent - warm coral/salmon (warm, inviting, friendly in dark)
-  accent600: "#FFC3B1",
-  accent500: "#FF967D",
-  accent400: "#FF7A5C",
-  accent300: "#E66A4A",
-  accent200: "#CC5A38",
-  accent100: "#B34A26",
+  accent600: "#FFF5F2",
+  accent500: "#FFEBE5",
+  accent400: "#FFD7CB",
+  accent300: "#FFC3B1",
+  accent200: "#FF967D",
+  accent100: "#FF7A5C",
 
   // Error - soft coral (gentle, not jarring)
   angry100: "#FEE2E2",

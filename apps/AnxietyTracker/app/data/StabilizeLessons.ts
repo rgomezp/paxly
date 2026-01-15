@@ -13,11 +13,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     cards: [
       {
         type: "text",
-        body: "Right now, your nervous system is in overdrive. Breakups yank away predictability, and your brain fires alarms trying to regain certainty.",
+        body: "Right now, your nervous system is in overdrive. Anxiety yanks away predictability, and your brain fires alarms trying to regain certainty.",
       },
       {
         type: "text",
-        body: "This panic isn't a flaw—it's your attachment system responding to loss. Your body is treating this separation as a threat, flooding you with stress hormones.",
+        body: "This panic isn't a flaw—it's your threat detection system responding to perceived danger. Your body is treating uncertainty as a threat, flooding you with stress hormones.",
       },
       {
         type: "tip",
@@ -33,7 +33,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "tip",
-        body: "When panic hits, say: 'This is my nervous system responding to loss. It's intense, and it will pass. I have tools.'",
+        body: "When panic hits, say: 'This is my nervous system responding to anxiety. It's intense, and it will pass. I have tools.'",
       },
     ],
     commitment: { text: "Finish" },
@@ -128,7 +128,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "Use 5-4-3-2-1 when: Your mind races to worst-case scenarios. You feel disconnected or 'floaty.' Contact urges spike. Before sleep to quiet mental loops.",
+        body: "Use 5-4-3-2-1 when: Your mind races to worst-case scenarios. You feel disconnected or 'floaty.' Anxiety spikes. Before sleep to quiet mental loops.",
       },
       {
         t: "check",
@@ -150,7 +150,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     cards: [
       {
         type: "text",
-        body: "Right now, your brain is working overtime processing loss. Every thought about your ex, every wave of panic, every moment of grief—your nervous system is trying to make sense of it all.",
+        body: "Right now, your brain is working overtime processing anxiety. Every worry, every wave of panic, every moment of stress—your nervous system is trying to make sense of it all.",
       },
       {
         type: "text",
@@ -158,11 +158,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Research shows that sleep deprivation after emotional trauma makes recovery significantly harder. Without adequate sleep, your amygdala (fear center) becomes hyperactive, your prefrontal cortex (rational thinking) weakens, and emotional regulation becomes nearly impossible.",
+        body: "Research shows that sleep deprivation makes anxiety significantly worse. Without adequate sleep, your amygdala (fear center) becomes hyperactive, your prefrontal cortex (rational thinking) weakens, and emotional regulation becomes nearly impossible.",
       },
       {
         type: "tip",
-        body: "Key insight: Sleep is when your brain processes and integrates the breakup. It's not avoiding the pain—it's actively working through it at a neurological level.",
+        body: "Key insight: Sleep is when your brain processes and integrates stress. It's not avoiding the anxiety—it's actively working through it at a neurological level.",
       },
       {
         type: "text",
@@ -170,11 +170,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "When you're sleep-deprived, cortisol stays elevated, making you more reactive, more anxious, and more likely to reach out to your ex. Good sleep lowers cortisol and increases your capacity to handle difficult emotions.",
+        body: "When you're sleep-deprived, cortisol stays elevated, making you more reactive, more anxious, and less able to cope. Good sleep lowers cortisol and increases your capacity to handle difficult emotions.",
       },
       {
         type: "qa",
-        question: "How has your sleep been since the breakup?",
+        question: "How has your sleep been lately?",
         options: [
           "Completely disrupted",
           "Trouble falling/staying asleep",
@@ -184,11 +184,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Sleep also supports neuroplasticity—your brain's ability to form new neural pathways. Every night you sleep well, you're literally rewiring your brain away from the attachment patterns that keep you stuck.",
+        body: "Sleep also supports neuroplasticity—your brain's ability to form new neural pathways. Every night you sleep well, you're literally rewiring your brain away from anxious patterns that keep you stuck.",
       },
       {
         type: "text",
-        body: "Your immune system needs sleep to function properly. Heartbreak creates physical stress, and without sleep, your body can't repair itself. This is why you might feel physically exhausted even when you're not doing much.",
+        body: "Your immune system needs sleep to function properly. Anxiety creates physical stress, and without sleep, your body can't repair itself. This is why you might feel physically exhausted even when you're not doing much.",
       },
       {
         type: "tip",
@@ -204,7 +204,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Remember: Sleep is not a luxury during heartbreak—it's essential medicine. Every hour of quality sleep is an investment in your recovery. Your future self will thank you for prioritizing rest.",
+        body: "Remember: Sleep is not a luxury when managing anxiety—it's essential medicine. Every hour of quality sleep is an investment in your recovery. Your future self will thank you for prioritizing rest.",
       },
       {
         type: "tip",
@@ -222,23 +222,23 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     cards: [
       {
         type: "text",
-        body: "Your brain is screaming right now because it's wired to treat separation as life-threatening. This isn't metaphorical—it's neurobiological reality.",
+        body: "Your brain is screaming right now because it's wired to treat uncertainty as life-threatening. This isn't metaphorical—it's neurobiological reality.",
       },
       {
         type: "text",
-        body: "When you were an infant, separation from caregivers meant death. Your attachment system developed to keep you close to safety. That same system is firing now, treating your ex like oxygen.",
+        body: "When you were an infant, uncertainty meant danger. Your threat detection system developed to keep you safe by alerting you to potential threats. That same system is firing now, treating anxiety triggers like real danger.",
       },
       {
         type: "text",
-        body: "Three alarm systems are active simultaneously: Your amygdala (threat detector) sees unpredictability as danger. Your anterior cingulate cortex (pain center) processes emotional pain like physical injury. Your hypothalamus floods you with stress hormones.",
+        body: "Three alarm systems are active simultaneously: Your amygdala (threat detector) sees unpredictability as danger. Your anterior cingulate cortex (pain center) processes emotional distress like physical injury. Your hypothalamus floods you with stress hormones.",
       },
       {
         type: "text",
-        body: "Research shows that rejection activates the same brain regions as physical pain. When people say heartbreak 'hurts,' they're describing literal neural activation in pain centers.",
+        body: "Research shows that anxiety activates the same brain regions as physical pain. When people say anxiety 'hurts,' they're describing literal neural activation in pain centers.",
       },
       {
         type: "tip",
-        body: "Take 30 seconds right now. Place your hand on your chest. Notice any tightness, aching, or pressure. This is your attachment system's physical signature.",
+        body: "Take 30 seconds right now. Place your hand on your chest. Notice any tightness, aching, or pressure. This is your anxiety's physical signature.",
       },
       {
         type: "qa",
@@ -247,7 +247,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Your nervous system has three states: Ventral vagal (safe/social), sympathetic (fight/flight), and dorsal vagal (freeze/shutdown). Breakups often trigger rapid cycling between all three.",
+        body: "Your nervous system has three states: Ventral vagal (safe/social), sympathetic (fight/flight), and dorsal vagal (freeze/shutdown). Anxiety often triggers rapid cycling between all three.",
       },
       {
         type: "text",
@@ -259,11 +259,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Your brain is also experiencing dopamine withdrawal. Every text, call, or thought about your ex triggered dopamine. Now that supply is cut off, creating genuine withdrawal symptoms.",
+        body: "Your brain is also experiencing stress hormone overload. Every worry, every trigger, every anxious thought releases stress hormones. This creates a cycle where anxiety feeds more anxiety.",
       },
       {
         type: "text",
-        body: "This is why contact urges feel so intense—your brain is seeking its dopamine fix. Intermittent reinforcement (unpredictable contact) makes this worse, creating addiction-like patterns.",
+        body: "This is why anxiety can feel so intense—your brain is stuck in a stress response loop. The more you worry, the more your body releases stress hormones, which makes you worry more.",
       },
       {
         type: "qa",
@@ -272,7 +272,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Here's what helps: Name it. Studies show that labeling emotions ('This is panic') activates your prefrontal cortex and calms the amygdala. Say out loud: 'This is my attachment alarm.'",
+        body: "Here's what helps: Name it. Studies show that labeling emotions ('This is panic') activates your prefrontal cortex and calms the amygdala. Say out loud: 'This is my anxiety alarm.'",
       },
       {
         type: "text",
@@ -299,11 +299,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "Studies show that having a pre-written crisis plan significantly reduces the likelihood of acting on urges. When your prefrontal cortex shuts down, the plan takes over. It's like having a fire escape route—you don't think about it in the moment, you just follow it.",
+        body: "Studies show that having a pre-written crisis plan significantly reduces the likelihood of being overwhelmed by anxiety. When your prefrontal cortex shuts down, the plan takes over. It's like having a fire escape route—you don't think about it in the moment, you just follow it.",
       },
       {
         t: "instruction",
-        body: "Let's build your crisis plan. First, identify your support network. Think about who in your life can anchor you when things get hard. These should be people who understand what you're going through, who won't minimize your pain or enable contact with your ex.",
+        body: "Let's build your crisis plan. First, identify your support network. Think about who in your life can anchor you when things get hard. These should be people who understand what you're going through, who won't minimize your anxiety or tell you to 'just relax.'",
       },
       { t: "timer", seconds: 45, label: "Think about your support people" },
       {
@@ -342,7 +342,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "Now, let's add one more layer: What will you do BEFORE reaching out? Sometimes the urge to contact your ex is actually a need for regulation. What can you do first?",
+        body: "Now, let's add one more layer: What will you do FIRST when anxiety spikes? Sometimes anxiety makes you want to act immediately, but regulation comes first. What can you do to ground yourself?",
       },
       {
         t: "textInput",
@@ -360,53 +360,53 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     ],
     commitment: { text: "Finish" },
   },
-  d3_contact_risk_scan: {
-    id: "d3_contact_risk_scan",
+  d3_anxiety_trigger_scan: {
+    id: "d3_anxiety_trigger_scan",
     moduleId: "stabilize",
-    title: "Contact Risk Scan",
-    goal: "Identify top relapse triggers",
+    title: "Anxiety Trigger Scan",
+    goal: "Identify top anxiety triggers",
     format: "journal",
     fields: [
       {
         name: "understanding",
         kind: "longText",
         label:
-          "First, let's understand why contact feels so urgent. Your brain treats your ex like a drug—literally.\n\nWhat specific feeling does contact promise to fix? (loneliness, anxiety, emptiness, fear?)",
+          "First, let's understand what triggers your anxiety. Your brain treats certain situations, thoughts, or sensations as threats—even when they're not.\n\nWhat specific feeling does your anxiety promise to protect you from? (uncertainty, failure, rejection, loss of control?)",
       },
       {
         name: "physical_cues",
         kind: "longText",
         label:
-          "What physical sensations arise right before you want to reach out? (chest tightness, stomach drop, skin crawling, restlessness?)\n\nName them.",
+          "What physical sensations arise right before or during anxiety? (chest tightness, stomach drop, skin crawling, restlessness, racing heart?)\n\nName them.",
       },
       {
         name: "triggers",
         kind: "longText",
         label:
-          "What are your top 3 contact triggers? Be specific: certain times (late night, Sunday mornings)? Places (your apartment, their neighborhood)? States (after drinking, when lonely)?",
+          "What are your top 3 anxiety triggers? Be specific: certain times (late night, Sunday mornings)? Places (work, social situations)? Situations (conflict, uncertainty, crowds)?",
       },
       {
-        name: "routes",
+        name: "patterns",
         kind: "longText",
         label:
-          "How do you typically initiate contact? List all routes: direct text, Instagram story views, 'accidental' calls, mutual friends, checking their Spotify?",
+          "How does your anxiety typically show up? List all patterns: physical symptoms, thought spirals, avoidance behaviors, reassurance seeking?",
       },
       {
         name: "justifications",
         kind: "longText",
         label:
-          "What stories does your brain tell to justify contact? ('Just to check they're okay,' 'For closure,' 'To return their things,' 'They might have changed')",
+          "What stories does your brain tell to justify the anxiety? ('I need to worry to be prepared,' 'If I don't think about this, something bad will happen,' 'This feeling means danger')",
       },
       {
         name: "aftermath",
         kind: "longText",
         label:
-          "What typically happens AFTER you make contact? How do you feel 2 hours later? 24 hours later? (Be honest)",
+          "What typically happens AFTER an anxiety episode? How do you feel 2 hours later? 24 hours later? (Be honest—does the anxiety actually help, or does it make things worse?)",
       },
       {
         name: "risk",
         kind: "slider",
-        label: "Current contact urge intensity",
+        label: "Current anxiety intensity",
         min: 0,
         max: 10,
       },
@@ -414,7 +414,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
         name: "protection",
         kind: "longText",
         label:
-          "What would need to change to drop this risk by 2 points? (block number, delete photos, tell a friend, remove apps?)",
+          "What would need to change to drop this anxiety by 2 points? (better sleep, regular meals, grounding techniques, support system, therapy?)",
         minWords: 15,
       },
     ],
@@ -460,11 +460,11 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
     steps: [
       {
         t: "instruction",
-        body: "Right now, in this moment, your attachment system is probably pulling you toward your ex. That's normal—your brain wants the familiar, even when the familiar is the source of your pain. But you have a choice: reach for the person who hurt you, or reach for someone who can actually help.",
+        body: "Right now, in this moment, your anxiety might be making you want to isolate or avoid. That's normal—your brain wants to protect you, but isolation often makes anxiety worse. You have a choice: stay alone with your anxiety, or reach for someone who can actually help.",
       },
       {
         t: "instruction",
-        body: "Think about one person in your life who gets it. Someone who won't judge you for struggling. Someone who won't tell you to 'just move on.' Someone who can hold space for your pain without trying to fix it or minimize it.",
+        body: "Think about one person in your life who gets it. Someone who won't judge you for struggling. Someone who won't tell you to 'just relax.' Someone who can hold space for your anxiety without trying to fix it or minimize it.",
       },
       { t: "timer", seconds: 15, label: "Identify your safe person" },
       {
@@ -474,16 +474,16 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "Now, text them directly. Open your messages and send them something. The key is being direct about what you need. Examples:\n\n• 'I'm having a hard day. Can you check in with me later?'\n• 'I'm feeling the urge to contact them. Can we talk?'\n• 'I need some support right now. Are you available?'",
+        body: "Now, text them directly. Open your messages and send them something. The key is being direct about what you need. Examples:\n\n• 'I'm having a hard day with anxiety. Can you check in with me later?'\n• 'I'm feeling really anxious right now. Can we talk?'\n• 'I need some support right now. Are you available?'",
       },
       {
         t: "instruction",
-        body: "Don't overthink it. Just send it. The act of reaching out—even if they don't respond immediately—is you building a new pathway: 'When I'm in pain, I reach for safe support.'",
+        body: "Don't overthink it. Just send it. The act of reaching out—even if they don't respond immediately—is you building a new pathway: 'When I'm anxious, I reach for safe support.'",
       },
       { t: "timer", seconds: 60, label: "Text your safe person now" },
       {
         t: "instruction",
-        body: "Notice how it feels to have reached out. Even if they haven't responded yet, you've done something different. You've interrupted the automatic pull toward your ex. You've chosen a different pathway—one that leads toward healing, not back to the pain.",
+        body: "Notice how it feels to have reached out. Even if they haven't responded yet, you've done something different. You've interrupted the automatic pull toward isolation. You've chosen a different pathway—one that leads toward connection and support, not deeper into anxiety.",
       },
       {
         t: "check",
@@ -556,7 +556,7 @@ export const STABILIZE_LESSONS: Record<string, ILessonConfig> = {
       },
       {
         t: "instruction",
-        body: "Your chosen pattern becomes your anchor. Use it when: contact urges spike, panic rises, before difficult conversations, or when you can't sleep.",
+        body: "Your chosen pattern becomes your anchor. Use it when: anxiety spikes, panic rises, before difficult conversations, or when you can't sleep.",
       },
       {
         t: "instruction",
