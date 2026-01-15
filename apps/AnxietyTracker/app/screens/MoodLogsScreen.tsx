@@ -11,7 +11,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { Text } from "@/components/Text"
 import { EmptyState } from "@/components/EmptyState"
 import { MoodLogItem } from "@/components/MoodLogItem"
-import { MoodGrid } from "@/components/MoodGrid"
+import { MoodGrid, AnxietyGrid } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import type { ThemedStyle } from "@/theme"
 import type { ViewStyle as RNViewStyle } from "react-native"
@@ -94,7 +94,10 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
   const renderHeader = () => (
     <View style={themed($headerContainer)}>
       <Text text="My Logs" preset="heading" style={themed($title)} />
+      <Text text="Moods" preset="subheading" style={themed([$title, $moodsSubtitle])} />
       <MoodGrid />
+      <Text text="Anxiety" preset="subheading" style={themed($title)} />
+      <AnxietyGrid />
     </View>
   )
 
@@ -137,6 +140,10 @@ const $headerContainer: ViewStyle = {
 const $title: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.text,
 })
+
+const $moodsSubtitle: ViewStyle = {
+  marginTop: 16,
+}
 
 const $itemWrapper: ViewStyle = {
   paddingHorizontal: 16,
