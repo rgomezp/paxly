@@ -33,7 +33,7 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
   const { journalStore } = useStores()
 
   const isEdit = route.params?.mode === "edit" && typeof route.params?.date === "number"
-  const DEFAULT_PROMPT = "What's on your heart today?"
+  const DEFAULT_PROMPT = "What's on your mind today?"
 
   const trimmedText = text.trim()
   const initialTrimmed = (route.params?.initialText ?? "").trim()

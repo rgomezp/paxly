@@ -92,6 +92,7 @@ const $container: ThemedStyle<ViewStyle> = (theme) => ({
 
 const $headerContainer: ViewStyle = {
   paddingHorizontal: 20,
+  paddingTop: 16,
   paddingBottom: 24,
 }
 
