@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { View, ViewStyle, ScrollView as RNScrollView, useWindowDimensions } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import { AppStackScreenProps } from "@/navigators"
-import { MoodGraph, Quote } from "@/components"
+import { MoodGraph, AnxietyGraph, Quote } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme, ThemedStyle } from "@/theme"
 import { useHomeDrawerSections } from "./HomeDrawerSections"
@@ -56,6 +56,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
         }) => (
           <RNScrollView style={[themedDrawer($container), contentInsets]}>
             <MoodGraph />
+            <AnxietyGraph containerStyle={themed($anxietyGraphStyle)} />
             <View style={[themed($buttonsWrapper), { width: containerWidth, gap }]}>
               <ActionCard
                 onPress={() => navigate("MoodLogs", undefined)}
@@ -104,6 +105,10 @@ const $buttonsWrapper: ViewStyle = {
   marginTop: 62,
   marginBottom: 34,
   alignSelf: "center",
+}
+
+const $anxietyGraphStyle: ViewStyle = {
+  marginTop: 32,
 }
 
 const $bottomSpacing: ThemedStyle<ViewStyle> = ({ spacing }) => ({
