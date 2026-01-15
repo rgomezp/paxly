@@ -187,11 +187,11 @@ const $graphButtonsRow: ViewStyle = {
   paddingHorizontal: 16,
   gap: 8,
   marginBottom: 16,
+  justifyContent: "flex-end",
 }
 
 const $graphButton: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
-  flex: 1,
-  paddingVertical: spacing.sm,
+  paddingVertical: 6,
   paddingHorizontal: spacing.md,
   borderRadius: 8,
   borderWidth: 1,
