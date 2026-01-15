@@ -172,29 +172,15 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         body: "What's the loudest anxious thought in your mind right now? Say it or think it exactly as it shows up—no editing.",
       },
       {
-        t: "textInput",
-        prompt: "Write the hot thought exactly as it appears:",
-        placeholder: "e.g., 'I'm going to mess this up completely'",
-      },
-      {
         t: "instruction",
         body: "Now, reality check: What evidence *for* this thought can you see if you're honest? And what evidence *against* it?",
       },
       { t: "timer", seconds: 45, label: "Consider evidence for and against" },
       {
-        t: "textInput",
-        prompt: "What's one piece of evidence that goes against this thought?",
-        placeholder: "e.g., 'I've handled similar situations before'",
-      },
-      {
         t: "instruction",
         body: "Based on the evidence, what's a more realistic, balanced version of this thought? It doesn't have to be positive—just more accurate.",
       },
-      {
-        t: "textInput",
-        prompt: "Write a more balanced thought:",
-        placeholder: "e.g., 'This is challenging AND I have skills to handle it'",
-      },
+      { t: "timer", seconds: 30, label: "Formulate a more balanced thought" },
       {
         t: "instruction",
         body: "If your mind argues back, that's okay—you're practicing seeing thoughts, not winning debates.",
@@ -234,13 +220,11 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       { t: "timer", seconds: 20, label: "Name the feeling in your own words" },
       {
         t: "instruction",
-        body: "Now place this sentence after it: “…and I’m willing to feel this while I take one small step that matters to me.”",
+        body: 'Now place this sentence after it: "…and I\'m willing to feel this while I take one small step that matters to me."',
       },
       {
-        t: "textInput",
-        prompt:
-          "What tiny action (under 2 minutes) could you take right now that matters to you, even a little?",
-        placeholder: "e.g., reply to one email, drink water, stand outside for 1 minute",
+        t: "instruction",
+        body: "Think of one tiny action (under 2 minutes) you could take right now that matters to you, even a little—like replying to one email, drinking water, or standing outside for 1 minute.",
       },
       { t: "timer", seconds: 60, label: "Do your tiny action, with anxiety along for the ride" },
       {
@@ -315,13 +299,8 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       { t: "timer", seconds: 60, label: "Scan down your body with curiosity" },
       {
-        t: "textInput",
-        prompt: "Where do you feel anxiety most right now?",
-        placeholder: "e.g., tight chest, clenched jaw, heavy stomach",
-      },
-      {
         t: "instruction",
-        body: "Imagine gently breathing *around* that area, not forcing it to relax, just giving it space.",
+        body: "Notice where you feel anxiety most—maybe in your chest, jaw, or stomach. Imagine gently breathing *around* that area, not forcing it to relax, just giving it space.",
       },
       { t: "breath", pattern: "physiological", rounds: 2 },
       {
@@ -397,30 +376,17 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         t: "instruction",
         body: "Name one thing anxiety is telling you to avoid right now: a task, a place, a conversation, a situation.",
       },
-      {
-        t: "textInput",
-        prompt: "What are you avoiding?",
-        placeholder: "e.g., making a phone call, going to a store, starting a project",
-      },
+      { t: "timer", seconds: 20, label: "Identify what you're avoiding" },
       {
         t: "instruction",
-        body: "Now shrink it: What is the tiniest version of this you could do in under 2 minutes? Make it so small it feels almost silly.",
+        body: "Now shrink it: What is the tiniest version of this you could do in under 2 minutes? Make it so small it feels almost silly—like just dialing the number and hanging up, or walking to the store entrance.",
       },
-      {
-        t: "textInput",
-        prompt: "What's the tiny version?",
-        placeholder:
-          "e.g., 'just dial the number and hang up', 'walk to the store entrance', 'write one sentence'",
-      },
+      { t: "timer", seconds: 20, label: "Shrink it to a tiny version" },
       {
         t: "instruction",
         body: "Before you do it, predict: How anxious do you expect to feel (0–10) when you try this?",
       },
-      {
-        t: "textInput",
-        prompt: "Predicted anxiety (0–10):",
-        placeholder: "e.g., 7",
-      },
+      { t: "timer", seconds: 10, label: "Rate your predicted anxiety (0–10)" },
       {
         t: "instruction",
         body: "Now do your tiny version. You can feel anxious—that's okay. The goal is to do it *with* anxiety, not without it.",
@@ -434,11 +400,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         t: "instruction",
         body: "How anxious did you actually feel (0–10)? Often, the reality is lower than the prediction. And even if it wasn't, you did it—that's the win.",
       },
-      {
-        t: "textInput",
-        prompt: "Actual anxiety (0–10):",
-        placeholder: "e.g., 5",
-      },
+      { t: "timer", seconds: 10, label: "Rate your actual anxiety (0–10)" },
       {
         t: "check",
         prompt: "I can take tiny steps toward what I'm avoiding, even when anxiety is present.",
@@ -469,13 +431,8 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       { t: "timer", seconds: 15, label: "Choose your person" },
       {
-        t: "textInput",
-        prompt: "Who are you choosing to ping?",
-        placeholder: "e.g., my friend Sam, my sibling, a coworker",
-      },
-      {
         t: "instruction",
-        body: "Now send a simple, honest message. Examples:\n\n“Hey, I’m feeling anxious and could use a quick check‑in.”\n“Can you send me a meme? Today is rough.”\n“Just saying hi, my anxiety is loud today.”",
+        body: 'Now send a simple, honest message. Examples:\n\n"Hey, I\'m feeling anxious and could use a quick check‑in."\n"Can you send me a meme? Today is rough."\n"Just saying hi, my anxiety is loud today."',
       },
       { t: "timer", seconds: 60, label: "Send your support ping" },
       {
