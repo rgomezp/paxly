@@ -1,7 +1,7 @@
 import { StyleSheet, View, Linking, Text, TouchableOpacity } from "react-native"
-import { Image } from "expo-image"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useEffect, useRef, useState } from "react"
+import LottieView from "lottie-react-native"
 import LoginComponent from "../login/LoginComponent"
 import { useAppTheme } from "@/utils/useAppTheme"
 import customConfig from "../../../customConfig"
@@ -16,6 +16,12 @@ const OnboardingLoginScreen: React.FC = () => {
   const { completeOnboarding, step, isLoggedIn } = useOnboardingState()
   const hasCompletedOnboardingRef = useRef(false)
   const [restoreFinished, setRestoreFinished] = useState(false)
+  const lottieRef = useRef<LottieView>(null)
+
+  // Start Lottie animation when component mounts
+  useEffect(() => {
+    lottieRef.current?.play()
+  }, [])
 
   // Listen for restore completion
   useEffect(() => {
@@ -75,12 +81,13 @@ const OnboardingLoginScreen: React.FC = () => {
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.contentContainer}>
-          {/* Image container - takes up 1/2 of the screen */}
+          {/* Animation container - takes up 1/2 of the screen */}
           <View style={styles.imageContainer}>
-            <Image
-              source={require("../../../assets/images/planty/6m/planty.webp")}
+            <LottieView
+              ref={lottieRef}
+              source={require("../../../assets/animations/blob.json")}
+              loop
               style={styles.logo}
-              contentFit="contain"
             />
           </View>
 

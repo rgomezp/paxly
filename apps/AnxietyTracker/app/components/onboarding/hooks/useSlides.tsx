@@ -29,7 +29,7 @@ export const useSlides = (onSelection?: () => void) => {
   const { useFeatureFlags } = flagContext
   const [nickname, setNickname] = useState<string | null>(null)
 
-  const { leadup_slides } = useFeatureFlags()
+  const { leadup_slides, testimonials_slide } = useFeatureFlags()
 
   // Load nickname when component mounts
   useEffect(() => {
@@ -73,13 +73,12 @@ export const useSlides = (onSelection?: () => void) => {
       anxietyTriggersSlide({ onSelection }),
       anxietyDurationSlide({ onSelection }),
 
-      congratulationsAwardSlide({ onSelection }), // Award first award
-
-      testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
-
       // Setup slides
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
+
+      congratulationsAwardSlide({ onSelection }), // Award first award
+      ...(testimonials_slide ? [testimonialsSlide({ onSelection })] : []), // Social Proof (user testimonials, 10k+ users)
 
       // Final slides
       referralSourceSlide({ onSelection }),
@@ -88,7 +87,7 @@ export const useSlides = (onSelection?: () => void) => {
         ? [freeToTrySlide({ onSelection }), reminderBellSlide({ onSelection })]
         : []),
     ],
-    [onSelection, leadup_slides],
+    [onSelection, leadup_slides, testimonials_slide],
   )
 
   return { slides, nickname }
