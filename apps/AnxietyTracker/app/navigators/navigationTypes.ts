@@ -28,8 +28,6 @@ export type AppStackParamList = {
   Lessons: undefined
   SingleLesson: { lessonId: string }
   Membership: undefined
-  MessageIntoTheVoid: undefined
-  ComposeMessage: undefined
   MoodLogs: undefined
   JournalLogs: undefined
   MyStuff: undefined
@@ -41,7 +39,6 @@ export type AppStackParamList = {
     flow: string
     awardAvailable: boolean
   }
-  BreakupTools: undefined
   LetterToMyself: undefined
   ComposeLetter: undefined
   LetterInbox: undefined

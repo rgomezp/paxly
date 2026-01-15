@@ -1,7 +1,6 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { MoodStoreModel } from "./mood/MoodStore"
 import { JournalStoreModel } from "./journal/JournalStore"
-import { MessageIntoTheVoidStoreModel } from "./messageIntoTheVoid/MessageIntoTheVoidStore"
 import { LessonStoreModel } from "./lessons/LessonStore"
 import { LetterToMyselfStoreModel } from "./letterToMyself/LetterToMyselfStore"
 
@@ -11,7 +10,6 @@ import { LetterToMyselfStoreModel } from "./letterToMyself/LetterToMyselfStore"
 export const RootStoreModel = types.model("RootStore").props({
   moodStore: types.optional(MoodStoreModel, {}),
   journalStore: types.optional(JournalStoreModel, {}),
-  messageIntoTheVoidStore: types.optional(MessageIntoTheVoidStoreModel, {}),
   lessonStore: types.optional(LessonStoreModel, {}),
   letterToMyselfStore: types.optional(LetterToMyselfStoreModel, {}),
 })

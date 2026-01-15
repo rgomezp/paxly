@@ -54,7 +54,6 @@ describe("useStores", () => {
       const clearedStoreNames = [
         "moodStore",
         "journalStore",
-        "messageIntoTheVoidStore",
         "lessonStore",
         "letterToMyselfStore",
       ]
@@ -114,7 +113,6 @@ describe("useStores", () => {
       const reloadedStoreNames = [
         "moodStore",
         "journalStore",
-        "messageIntoTheVoidStore",
         "lessonStore",
         "letterToMyselfStore",
       ]

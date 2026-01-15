@@ -275,14 +275,11 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="Lessons" component={Screens.LessonsScreen} />
       <Stack.Screen name="SingleLesson" component={Screens.SingleLessonScreen} />
       <Stack.Screen name="Membership" component={Screens.MembershipScreen} />
-      <Stack.Screen name="MessageIntoTheVoid" component={Screens.MessageIntoTheVoidScreen} />
-      <Stack.Screen name="ComposeMessage" component={Screens.ComposeMessageScreen} />
       <Stack.Screen name="MoodLogs" component={Screens.MoodLogsScreen} />
       <Stack.Screen name="JournalLogs" component={Screens.JournalLogsScreen} />
       <Stack.Screen name="MyStuff" component={Screens.MyStuffScreen} />
       <Stack.Screen name="ClaimAward" component={Screens.ClaimAwardScreen} />
       <Stack.Screen name="RateLesson" component={Screens.RateLessonScreen} />
-      <Stack.Screen name="BreakupTools" component={Screens.BreakupToolsScreen} />
       <Stack.Screen name="LetterToMyself" component={Screens.LetterToMyselfScreen} />
       <Stack.Screen name="ComposeLetter" component={Screens.ComposeLetterScreen} />
       <Stack.Screen name="LetterInbox" component={Screens.LetterInboxScreen} />

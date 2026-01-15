@@ -10,7 +10,7 @@ import { useHomeDrawerSections } from "./HomeDrawerSections"
 import BadgeManager from "@/managers/BadgeManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { SmileyIcon, TrophyIcon, BookOpenIcon, WrenchIcon } from "phosphor-react-native"
+import { SmileyIcon, TrophyIcon, BookOpenIcon, EnvelopeIcon } from "phosphor-react-native"
 import { navigate } from "@/navigators/navigationUtilities"
 import { ActionCard } from "@/components/buttons/ActionCard"
 import { BadgeType } from "@/types/IBadgeData"
@@ -60,7 +60,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
               <ActionCard
                 onPress={() => navigate("MoodLogs", undefined)}
                 icon={SmileyIcon}
-                label="Mood logs"
+                label="My logs"
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
               <ActionCard
@@ -70,9 +70,9 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
               <ActionCard
-                onPress={() => navigate("BreakupTools", undefined)}
-                icon={WrenchIcon}
-                label="Healing Tools"
+                onPress={() => navigate("LetterToMyself", undefined)}
+                icon={EnvelopeIcon}
+                label="Letter to Myself"
                 style={{ width: cardWidth, maxWidth: cardWidth }}
                 badge={badgeToShow === BadgeType.LETTER_TO_MYSELF}
               />

@@ -56,7 +56,6 @@ interface StorageMapping {
   moodHistory: IMoodHistoryItem[]
   dailyTasks: IDailyTasks
   journalEntries: IJournalEntry[]
-  messageIntoTheVoidDraft: string | null
   goals: GoalChoices[]
   gender: Genders | null
   ageRange: AgeRanges | null

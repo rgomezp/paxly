@@ -10,7 +10,6 @@ import {
   useThemeSettingConfig,
   useDeleteAccountSettingConfig,
   useMoodReminderFrequencySettingConfig,
-  useLowContactSettingConfig,
 } from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -47,7 +46,6 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   // Get setting configurations
   const themeSetting = useThemeSettingConfig()
   const moodReminderFrequencySetting = useMoodReminderFrequencySettingConfig()
-  const lowContactSetting = useLowContactSettingConfig()
   const deleteAccountSetting = useDeleteAccountSettingConfig()
 
   // Check route params for opening a specific modal - only once per param value
@@ -111,20 +109,9 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
   const settings = useMemo(
-    () => [
-      themeSetting,
-      moodReminderFrequencySetting,
-      lowContactSetting,
-      deleteSettingWithConfirm,
-    ],
+    () => [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      themeSetting,
-      moodReminderFrequencySetting,
-      lowContactSetting,
-      deleteSettingWithConfirm,
-      refreshKey,
-    ],
+    [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm, refreshKey],
   )
 
   return (
@@ -139,7 +126,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
           key={setting.title}
           config={setting}
           value={setting.getValue()}
-          autoOpen={false}
+          autoOpen={modalToOpen === setting.title}
           onModalClose={handleModalClose}
         />
       ))}

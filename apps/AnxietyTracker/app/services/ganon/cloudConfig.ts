@@ -34,7 +34,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
     docKeys: ["lastRunMigration"],
   },
   tools: {
-    docKeys: ["letterToMyselfDraft", "messageIntoTheVoidDraft"],
+    docKeys: ["letterToMyselfDraft"],
     subcollectionKeys: ["letterToMyself"],
   },
 }

@@ -224,10 +224,6 @@ export const URGE_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
         body: "Consider writing it down privately, or just saying it out loud to yourself. You don't need their response to process your feelings.",
       },
       {
-        type: "tip",
-        body: "Consider using the 'Send to the Void' feature to process your feelings.",
-      },
-      {
         type: "text",
         body: "Your feelings are real, and you can honor them without breaking no contact.",
       },
