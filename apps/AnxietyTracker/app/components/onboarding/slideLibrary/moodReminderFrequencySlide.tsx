@@ -1,4 +1,3 @@
-import { ImageRequireSource } from "react-native"
 import { useEffect, useState, useRef, useCallback } from "react"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
@@ -15,8 +14,6 @@ import RectangularButton from "@/components/buttons/RectangularButton"
 type MoodReminderFrequencySlideProps = {
   onSelection?: () => void
 }
-
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1w/planty.webp")
 
 const options: MultipleChoiceOption<MoodReminderFrequency>[] = [
   {
@@ -202,7 +199,6 @@ function MoodReminderFrequencyComponent({ onSelection }: MoodReminderFrequencySl
   return (
     <MultipleChoiceSelector
       options={options}
-      heroImage={heroImage}
       onSelection={buttonPressed}
       allowMultiple={false}
       initialSelectedOptions={initialSelected}

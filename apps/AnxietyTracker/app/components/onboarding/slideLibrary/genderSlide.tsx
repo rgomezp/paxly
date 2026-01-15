@@ -1,4 +1,3 @@
-import { ImageRequireSource } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
@@ -9,8 +8,6 @@ import { OneSignal } from "react-native-onesignal"
 type GenderSlideProps = {
   onSelection?: () => void
 }
-
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1w/planty.webp")
 
 const options: MultipleChoiceOption<Genders>[] = [
   { id: Genders.FEMALE, label: "Female" },
@@ -57,7 +54,6 @@ export function genderSlide({ onSelection }: GenderSlideProps): ISlide {
     component: (
       <MultipleChoiceSelector
         options={options}
-        heroImage={heroImage}
         onSelection={buttonPressed}
         allowMultiple={false}
         initialSelectedOptions={initialSelected}

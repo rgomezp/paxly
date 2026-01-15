@@ -2,12 +2,10 @@ import RectangularButton from "@/components/buttons/RectangularButton"
 import {
   View,
   StyleSheet,
-  ImageRequireSource,
   TextStyle,
   ScrollView,
   ViewStyle,
 } from "react-native"
-import { Image as ExpoImage } from "expo-image"
 import { useState, useEffect } from "react"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -20,7 +18,6 @@ export interface MultipleChoiceOption<T extends string = string> {
 
 interface MultipleChoiceSelectorProps<T extends string = string> {
   options: MultipleChoiceOption<T>[]
-  heroImage?: ImageRequireSource
   maxOptions?: number
   onSelection?: (optionId: T, shouldAutoAdvance?: boolean) => void
   allowMultiple?: boolean
@@ -31,7 +28,6 @@ interface MultipleChoiceSelectorProps<T extends string = string> {
 
 export function MultipleChoiceSelector<T extends string = string>({
   options,
-  heroImage,
   maxOptions = 4,
   onSelection,
   allowMultiple = false,
@@ -127,12 +123,6 @@ export function MultipleChoiceSelector<T extends string = string>({
 
   return (
     <View style={styles.container}>
-      {heroImage && (
-        <View style={styles.imageContainer}>
-          <ExpoImage source={heroImage} style={styles.heroImage} contentFit="contain" />
-        </View>
-      )}
-
       {isMaxSelectionsReached && maxSelections && (
         <View style={styles.limitContainerTop}>
           <Text style={themed($limitText)}>
@@ -181,18 +171,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingHorizontal: 20,
     paddingTop: 20,
-  },
-  heroImage: {
-    height: 140,
-    maxHeight: "90%",
-    maxWidth: "90%",
-    width: 140,
-  },
-  imageContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-    width: "100%",
   },
   limitContainerTop: {
     alignItems: "center",

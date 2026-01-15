@@ -1,4 +1,3 @@
-import { ImageRequireSource } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
@@ -8,8 +7,6 @@ import { ganon } from "@/services/ganon/ganon"
 type AnxietySeveritySlideProps = {
   onSelection?: () => void
 }
-
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/2m/planty.webp")
 
 const options: MultipleChoiceOption<RelationshipDurations>[] = [
   { id: RelationshipDurations.ZERO_TO_SIX_MONTHS, label: "Mild - occasional worry" },
@@ -49,7 +46,6 @@ export function anxietySeveritySlide({ onSelection }: AnxietySeveritySlideProps)
     component: (
       <MultipleChoiceSelector
         options={options}
-        heroImage={heroImage}
         onSelection={buttonPressed}
         allowMultiple={false}
         initialSelectedOptions={initialSelected}

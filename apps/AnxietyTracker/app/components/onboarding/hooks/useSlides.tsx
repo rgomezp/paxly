@@ -13,16 +13,12 @@ import { ageSlide } from "../slideLibrary/ageSlide"
 import { anxietySeveritySlide } from "../slideLibrary/anxietySeveritySlide"
 import { anxietyTriggersSlide } from "../slideLibrary/anxietyTriggersSlide"
 import { anxietyDurationSlide } from "../slideLibrary/anxietyDurationSlide"
-import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
-import { mascotIntroSlide } from "../slideLibrary/mascotIntroSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
 import { FlagContext } from "@/hooks/useFlags"
-import { MascotNames } from "@/types/MascotName"
-import { ganon } from "@/services/ganon/ganon"
 
 export const useSlides = (onSelection?: () => void) => {
   const flagContext = useContext(FlagContext)
@@ -31,7 +27,6 @@ export const useSlides = (onSelection?: () => void) => {
   }
   const { useFeatureFlags } = flagContext
   const [nickname, setNickname] = useState<string | null>(null)
-  const [mascotName, setMascotName] = useState<MascotNames | null>(null)
 
   const { leadup_slides } = useFeatureFlags()
 
@@ -46,17 +41,7 @@ export const useSlides = (onSelection?: () => void) => {
       }
     }
 
-    const loadMascotName = async () => {
-      try {
-        const storedMascotName = ganon.get("mascotName") as MascotNames | null
-        setMascotName(storedMascotName || null)
-      } catch (error) {
-        Log.error(`Error loading mascot name: ${error}`)
-      }
-    }
-
     loadNickname()
-    loadMascotName()
   }, [])
 
   // Helper function to refresh nickname after it's saved
@@ -66,16 +51,6 @@ export const useSlides = (onSelection?: () => void) => {
       setNickname(user?.nickname || null)
     } catch (error) {
       Log.error(`Error refreshing nickname: ${error}`)
-    }
-  }
-
-  // Helper function to refresh mascot name after it's saved
-  const refreshMascotName = async () => {
-    try {
-      const storedMascotName = ganon.get("mascotName") as MascotNames | null
-      setMascotName(storedMascotName || null)
-    } catch (error) {
-      Log.error(`Error refreshing mascot name: ${error}`)
     }
   }
 
@@ -97,8 +72,6 @@ export const useSlides = (onSelection?: () => void) => {
       anxietyTriggersSlide({ onSelection }),
       anxietyDurationSlide({ onSelection }),
 
-      mascotNameSlide({ onSelection, refreshMascotName }), // Commitment (mascot name)
-      mascotIntroSlide({ onSelection, mascotName }), // Liking (personalized interaction)
       testimonialsSlide({ onSelection }), // Social Proof (user testimonials, 10k+ users)
 
       // Setup slides
@@ -112,7 +85,7 @@ export const useSlides = (onSelection?: () => void) => {
         ? [freeToTrySlide({ onSelection }), reminderBellSlide({ onSelection })]
         : []),
     ],
-    [onSelection, leadup_slides, mascotName],
+    [onSelection, leadup_slides],
   )
 
   return { slides, nickname }

@@ -24,7 +24,7 @@ export function problemSolutionSlide({
 }: ProblemSolutionSlideProps): ISlide {
   return {
     id: "problem_solution",
-    title: "Understand your anxiety",
+    title: "Understand your triggers",
     description: "Tracking your anxiety patterns can help you understand your triggers",
     component: <ProblemSolutionComponent />,
     textPlacement: "bottom",

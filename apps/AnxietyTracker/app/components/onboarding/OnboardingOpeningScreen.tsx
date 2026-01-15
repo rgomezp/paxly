@@ -1,6 +1,7 @@
+import { useEffect, useRef } from "react"
 import { StyleSheet, View } from "react-native"
-import { Image as ExpoImage } from "expo-image"
 import { SafeAreaView } from "react-native-safe-area-context"
+import LottieView from "lottie-react-native"
 import RectangularButton from "../buttons/RectangularButton"
 import { Text } from "../Text"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -15,6 +16,11 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
   onIHaveAccount,
 }) => {
   const { theme } = useAppTheme()
+  const lottieRef = useRef<LottieView>(null)
+
+  useEffect(() => {
+    lottieRef.current?.play()
+  }, [])
 
   return (
     <View style={[styles.view, { backgroundColor: theme.colors.background }]}>
@@ -31,10 +37,11 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
             Anxiety Tracker
           </Text>
           <View style={styles.logoContainer}>
-            <ExpoImage
-              source={require("../../../assets/images/planty/6m/planty.webp")}
+            <LottieView
+              ref={lottieRef}
+              source={require("../../../assets/animations/blob.json")}
+              loop
               style={styles.logo}
-              contentFit="contain"
             />
           </View>
           <View style={styles.buttonContainer}>
@@ -82,7 +89,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 140,
-    resizeMode: "contain",
     width: 300,
   },
   logoContainer: {

@@ -1,4 +1,3 @@
-import { ImageRequireSource } from "react-native"
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
@@ -9,8 +8,6 @@ import { OneSignal } from "react-native-onesignal"
 type AgeSlideProps = {
   onSelection?: () => void
 }
-
-const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1m/planty.webp")
 
 const options: MultipleChoiceOption<AgeRanges>[] = [
   { id: AgeRanges.SEVENTEEN_OR_UNDER, label: "17 or under" },
@@ -60,7 +57,6 @@ export function ageSlide({ onSelection }: AgeSlideProps): ISlide {
     component: (
       <MultipleChoiceSelector
         options={options}
-        heroImage={heroImage}
         onSelection={buttonPressed}
         allowMultiple={false}
         maxOptions={6}
