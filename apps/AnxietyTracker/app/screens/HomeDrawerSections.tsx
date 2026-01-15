@@ -25,7 +25,7 @@ export const useHomeDrawerSections = () => {
   const mascotName = (ganon.get("mascotName") as MascotNames | null) ?? null
   const capitalizedMascotName = mascotName
     ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
-    : "Planty"
+    : "your friend"
 
   useEffect(() => {
     const updateUserInfo = () => {
@@ -164,42 +164,7 @@ export const useHomeDrawerSections = () => {
     {
       name: "FAQ",
       data: ({ themed, theme }: { themed: any; theme: Theme }) => {
-        const handleHowToWaterPress = () => {
-          Alert.alert(
-            `How to Water ${capitalizedMascotName}`,
-            `Simply complete a daily task to earn water. Then press the water droplet above ${capitalizedMascotName} to water.`,
-          )
-        }
-
-        const handleWhySadPress = () => {
-          Alert.alert(
-            `Why is ${capitalizedMascotName} Sad?`,
-            `You haven't watered ${capitalizedMascotName} in 3 days or more! Complete a daily task then water ${capitalizedMascotName} to keep healthy and happy!`,
-          )
-        }
-
-        return [
-          <TouchableOpacity
-            key="faq-why-sad"
-            onPress={handleWhySadPress}
-            style={themed({ marginBottom: theme.spacing.sm })}
-          >
-            <Text
-              text={`Why is ${capitalizedMascotName} Sad?`}
-              style={themed({ color: theme.colors.text })}
-            />
-          </TouchableOpacity>,
-          <TouchableOpacity
-            key="faq-how-to-water"
-            onPress={handleHowToWaterPress}
-            style={themed({ marginBottom: theme.spacing.sm })}
-          >
-            <Text
-              text={`How to Water ${capitalizedMascotName}`}
-              style={themed({ color: theme.colors.text })}
-            />
-          </TouchableOpacity>,
-        ]
+        return []
       },
     },
   ]

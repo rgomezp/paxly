@@ -16,7 +16,6 @@ type MascotNameSlideProps = {
 const heroImage: ImageRequireSource = require("../../../../assets/images/planty/1d/planty.webp")
 
 const options: MultipleChoiceOption<MascotNames>[] = [
-  { id: MascotNames.PLANTY, label: "Planty" },
   { id: MascotNames.WILLOW, label: "Willow" },
   { id: MascotNames.CHLOE, label: "Chloe" },
   { id: MascotNames.OLIVE, label: "Olive" },

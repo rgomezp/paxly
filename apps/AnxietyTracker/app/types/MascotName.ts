@@ -1,5 +1,4 @@
 enum MascotName {
-  PLANTY = "planty",
   WILLOW = "willow",
   CHLOE = "chloe",
   OLIVE = "olive",

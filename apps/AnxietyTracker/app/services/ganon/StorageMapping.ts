@@ -8,7 +8,6 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
 import { IDailyLessonState } from "@/types/IDailyLessonState"
 import IJournalEntry from "@/types/IJournalEntry"
-import { ILastWateredData } from "@/types/ILastWateredData"
 import { GoalChoices } from "@/types/GoalChoice"
 import { Genders } from "@/types/Gender"
 import { AgeRanges } from "@/types/AgeRange"
@@ -58,7 +57,6 @@ interface StorageMapping {
   dailyTasks: IDailyTasks
   journalEntries: IJournalEntry[]
   messageIntoTheVoidDraft: string | null
-  lastWateredData: ILastWateredData
   goals: GoalChoices[]
   gender: Genders | null
   ageRange: AgeRanges | null

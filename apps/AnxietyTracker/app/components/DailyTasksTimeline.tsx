@@ -177,14 +177,14 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
   // Capitalize mascot name with fallback
   const capitalizedMascotName = mascotName
     ? mascotName.charAt(0).toUpperCase() + mascotName.slice(1)
-    : MascotNames.PLANTY.charAt(0).toUpperCase() + MascotNames.PLANTY.slice(1)
+    : "your friend"
 
   return (
     <View style={themed($container)}>
       <View style={themed($header)}>
         <Text text="Daily Tasks" preset="subheading" style={themed({ color: theme.colors.text })} />
         <Text
-          text={`Complete any task to earn water for ${capitalizedMascotName}`}
+          text={`Complete any task to support ${capitalizedMascotName}`}
           size="xs"
           style={themed({ color: theme.colors.textDim })}
         />

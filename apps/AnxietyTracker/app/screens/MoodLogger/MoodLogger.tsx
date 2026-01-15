@@ -19,7 +19,7 @@ import { MOOD_TO_EMOJI, MoodId, MOODS } from "@/types/Moods"
 import { MoodCategory } from "@/types/MoodCategory"
 import { ACTIVITY_TO_EMOJI, Activity } from "@/types/Activities"
 import MoodManager from "@/managers/MoodManager"
-import { ProgressBar, PlantyFromCurrentGoal } from "@/components"
+import { ProgressBar } from "@/components"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import { $styles } from "@/theme"
 
@@ -103,8 +103,6 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         {/* Step 1 - Mood */}
         <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$slideContent}>
           <View style={$moodHeader}>
-            {/* Image of planty here */}
-            <PlantyFromCurrentGoal style={$plantyImage} />
             <Text
               text="How are you feeling?"
               preset="bold"
@@ -245,14 +243,6 @@ const $slideContent: ViewStyle = {
 
 const $moodHeader: ViewStyle = {
   margin: 20,
-  flexDirection: "row",
-  alignItems: "flex-end",
-}
-
-const $plantyImage: ImageStyle = {
-  width: 48,
-  height: 68,
-  marginRight: 12,
 }
 
 const $moodHeaderText: TextStyle = {

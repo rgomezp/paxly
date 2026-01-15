@@ -9,7 +9,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "entitlementId",
       "dailyTasks",
       "finishedOnboarding",
-      "lastWateredData",
       "goals",
       "gender",
       "ageRange",
