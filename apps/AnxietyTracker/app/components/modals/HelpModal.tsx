@@ -5,7 +5,7 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "../buttons/RectangularButton"
 import { useNavigation } from "@react-navigation/native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
-import { URGE_LESSONS } from "@/data/ImAnxiousLessons"
+import { IM_ANXIOUS_LESSON_IDS } from "@/data/ImAnxiousLessons"
 import { RELAPSE_LESSON_IDS } from "@/data/ImHavingAPanicAttackLessons"
 
 interface HelpModalProps {
@@ -24,8 +24,8 @@ type ButtonProps = {
 
 // Helper function to randomly select an urge lesson
 const getRandomUrgeLesson = (): string => {
-  const randomIndex = Math.floor(Math.random() * URGE_LESSONS.length)
-  return URGE_LESSONS[randomIndex]
+  const randomIndex = Math.floor(Math.random() * IM_ANXIOUS_LESSON_IDS.length)
+  return IM_ANXIOUS_LESSON_IDS[randomIndex]
 }
 
 // Helper function to randomly select a relapse lesson
