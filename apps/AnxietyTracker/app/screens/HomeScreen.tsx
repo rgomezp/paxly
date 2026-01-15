@@ -12,7 +12,6 @@ import HelpModal from "@/components/modals/HelpModal"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
 import { createAudioPlayer } from "expo-audio"
-import { NatureSoundsSection } from "@/components/NatureSoundsSection"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
@@ -138,7 +137,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
           />
         </View>
         <DailyTasksTimeline refreshToken={refreshTrigger} />
-        <NatureSoundsSection />
       </ScrollView>
       <HelpModal
         visible={isHelpModalVisible}

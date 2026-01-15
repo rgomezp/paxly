@@ -49,9 +49,33 @@ export const MoodLogItem: FC<MoodLogItemProps> = function MoodLogItem({
           {!!item.notes && (
             <Text style={themed([$notesText, { color: theme.colors.text }])}>{item.notes}</Text>
           )}
-          <Text style={themed([$timeText, { color: theme.colors.textDim }])}>
-            {formatRelativeTime(item.date)}
-          </Text>
+          <View style={$timeRow}>
+            <Text style={themed([$timeText, { color: theme.colors.textDim }])}>
+              {formatRelativeTime(item.date)}
+            </Text>
+            {item.anxietyRating !== undefined && (
+              <View style={$anxietyIndicator}>
+                {[1, 2, 3, 4, 5].map((level) => {
+                  const anxietyRating = item.anxietyRating!
+                  const isActive = level <= anxietyRating
+                  return (
+                    <View
+                      key={level}
+                      style={[
+                        $anxietyDot,
+                        isActive ? $anxietyDotActive : $anxietyDotInactive,
+                        {
+                          backgroundColor: isActive
+                            ? theme.colors.palette.primary500
+                            : theme.colors.separator,
+                        },
+                      ]}
+                    />
+                  )
+                })}
+              </View>
+            )}
+          </View>
         </View>
       </View>
       {showDivider && (
@@ -98,9 +122,35 @@ const $notesText: TextStyle = {
   opacity: 0.7,
 }
 
-const $timeText: TextStyle = {
+const $timeRow: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
   marginTop: 6,
+}
+
+const $timeText: TextStyle = {
   fontSize: 14,
+}
+
+const $anxietyIndicator: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 3,
+}
+
+const $anxietyDot: ViewStyle = {
+  width: 4,
+  height: 4,
+  borderRadius: 2,
+}
+
+const $anxietyDotActive: ViewStyle = {
+  opacity: 1,
+}
+
+const $anxietyDotInactive: ViewStyle = {
+  opacity: 0.3,
 }
 
 const $divider: ViewStyle = {

@@ -93,7 +93,7 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
 
   const renderHeader = () => (
     <View style={themed($headerContainer)}>
-      <Text text="Mood Logs" preset="heading" style={themed($title)} />
+      <Text text="My Logs" preset="heading" style={themed($title)} />
       <MoodGrid />
     </View>
   )
