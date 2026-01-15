@@ -1,1 +1,1 @@
-export const ONBOARDING_VERSION = "1.4"
+export const ONBOARDING_VERSION = "1.0"
