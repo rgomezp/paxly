@@ -55,8 +55,7 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           toggleDrawer: () => void
         }) => (
           <RNScrollView style={[themedDrawer($container), contentInsets]}>
-            <MoodGraph />
-            <AnxietyGraph containerStyle={themed($anxietyGraphStyle)} />
+            <Quote />
             <View style={[themed($buttonsWrapper), { width: containerWidth, gap }]}>
               <ActionCard
                 onPress={() => navigate("MoodLogs", undefined)}
@@ -85,7 +84,8 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
             </View>
-            <Quote />
+            <AnxietyGraph />
+            <MoodGraph containerStyle={themed($moodGraphStyle)} />
             <View style={themed($bottomSpacing)} />
           </RNScrollView>
         )}
@@ -102,12 +102,11 @@ const $buttonsWrapper: ViewStyle = {
   flexDirection: "row",
   flexWrap: "wrap",
   alignItems: "stretch",
-  marginTop: 62,
-  marginBottom: 34,
+  marginVertical: 34,
   alignSelf: "center",
 }
 
-const $anxietyGraphStyle: ViewStyle = {
+const $moodGraphStyle: ViewStyle = {
   marginTop: 32,
 }
 
