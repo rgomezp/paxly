@@ -94,10 +94,10 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
   const renderHeader = () => (
     <View style={themed($headerContainer)}>
       <Text text="My Logs" preset="heading" style={themed($title)} />
+      <Text text="Anxiety" preset="subheading" style={themed([$title, $anxietySubtitle])} />
+      <AnxietyGrid />
       <Text text="Moods" preset="subheading" style={themed([$title, $moodsSubtitle])} />
       <MoodGrid />
-      <Text text="Anxiety" preset="subheading" style={themed($title)} />
-      <AnxietyGrid />
     </View>
   )
 
@@ -140,6 +140,10 @@ const $headerContainer: ViewStyle = {
 const $title: ThemedStyle<TextStyle> = (theme) => ({
   color: theme.colors.text,
 })
+
+const $anxietySubtitle: ViewStyle = {
+  marginTop: 16,
+}
 
 const $moodsSubtitle: ViewStyle = {
   marginTop: 16,
