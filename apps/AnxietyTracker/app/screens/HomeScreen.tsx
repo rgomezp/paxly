@@ -200,8 +200,10 @@ const $contentCard: ThemedStyle<ViewStyle> = (theme) => ({
   borderTopRightRadius: 34,
   paddingTop: 24,
   paddingHorizontal: 20,
-  paddingBottom: 24,
   marginTop: 20,
+  // Extend card background below to cover overscroll bounce
+  marginBottom: -1000,
+  paddingBottom: 1024, // 24 original + 1000 extension
 })
 
 const $logoContainer: ViewStyle = {
