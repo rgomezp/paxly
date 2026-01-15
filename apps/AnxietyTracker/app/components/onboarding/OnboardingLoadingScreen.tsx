@@ -64,7 +64,7 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
           <View style={styles.lottieContainer}>
             <LottieView
               ref={lottieRef}
-              source={require("../../../assets/animations/heart.json")}
+              source={require("../../../assets/animations/blob.json")}
               loop
               style={styles.lottie}
             />
