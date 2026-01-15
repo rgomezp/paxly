@@ -196,7 +196,7 @@ const $scrollContentContainer: ViewStyle = {
 }
 
 const $contentCard: ThemedStyle<ViewStyle> = (theme) => ({
-  backgroundColor: theme.colors.card,
+  backgroundColor: theme.colors.background,
   borderTopLeftRadius: 34,
   borderTopRightRadius: 34,
   paddingTop: 24,
