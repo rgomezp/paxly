@@ -1,57 +1,109 @@
 const palette = {
+  // Neutral grays - inverted for dark mode, soft and easy on eyes
   neutral900: "#FFFFFF",
-  neutral800: "#F4F2F1",
-  neutral700: "#D7CEC9",
-  neutral600: "#B6ACA6",
-  neutral500: "#978F8A",
-  neutral400: "#564E4A",
-  neutral300: "#252023",
-  neutral200: "#191015",
-  neutral100: "#000000",
+  neutral800: "#E2E8F0",
+  neutral700: "#CBD5E0",
+  neutral600: "#A0AEC0",
+  neutral500: "#718096",
+  neutral400: "#4A5568",
+  neutral300: "#2D3748",
+  neutral200: "#1A202C",
+  neutral100: "#0F1419",
 
-  primary600: "#F4E0D9",
-  primary500: "#E8C1B4",
-  primary400: "#DDA28E",
-  primary300: "#D28468",
-  primary200: "#C76542",
-  primary100: "#A54F31",
+  // Primary - bright blue (calming, trustworthy, clear in dark mode)
+  primary600: "#69BDED",
+  primary500: "#27A7E0",
+  primary400: "#1F85B3",
+  primary300: "#176386",
+  primary200: "#0F4159",
+  primary100: "#071F2C",
 
-  secondary500: "#DCDDE9",
-  secondary400: "#BCC0D6",
-  secondary300: "#9196B9",
-  secondary200: "#626894",
-  secondary100: "#41476E",
+  // Secondary - light cyan (soft, airy, gentle in dark)
+  secondary500: "#C3EBEF",
+  secondary400: "#B1EBF3",
+  secondary300: "#8DD8E3",
+  secondary200: "#69C5D3",
+  secondary100: "#45B2C3",
 
-  accent500: "#FFEED4",
-  accent400: "#FFE1B2",
-  accent300: "#FDD495",
-  accent200: "#FBC878",
-  accent100: "#FFBB50",
+  // Accent - warm coral/salmon (warm, inviting, friendly in dark)
+  accent600: "#FFC3B1",
+  accent500: "#FF967D",
+  accent400: "#FF7A5C",
+  accent300: "#E66A4A",
+  accent200: "#CC5A38",
+  accent100: "#B34A26",
 
-  angry100: "#F2D6CD",
-  angry500: "#C03403",
+  // Error - soft coral (gentle, not jarring)
+  angry100: "#FEE2E2",
+  angry500: "#F87171",
 
-  overlay20: "rgba(25, 16, 21, 0.2)",
-  overlay50: "rgba(25, 16, 21, 0.5)",
+  // Overlays - soft and subtle
+  overlay20: "rgba(15, 20, 25, 0.2)",
+  overlay50: "rgba(15, 20, 25, 0.5)",
 
-  positive: "#8AB8A2",
-  negative: "#E09F88",
-  neutral: "#FFEED4",
+  // Semantic colors - calming and positive
+  positive: "#27A7E0", // Soft green
+  negative: "#FF7A5C", // Soft coral
+  neutral: "#E0C988", // Soft yellow
 } as const
 
 export const colors = {
+  /**
+   * The palette is available to use, but prefer using the name.
+   * This is only included for rare, one-off cases. Try to use
+   * semantic names as much as possible.
+   */
   palette,
+  /**
+   * A helper for making something see-thru.
+   */
   transparent: "rgba(0, 0, 0, 0)",
+  /**
+   * The default text color in many components.
+   */
   text: palette.neutral800,
+  /**
+   * Secondary text information.
+   */
   textDim: palette.neutral600,
+  /**
+   * The default color of the screen background - deep, calming dark blue-gray.
+   */
   background: palette.neutral200,
+  /**
+   * The default background color of the text input.
+   */
   textInputBackground: palette.neutral300,
+  /**
+   * Card/surface background color.
+   */
   card: palette.neutral300,
-  dailyTasksTimelineBackground: palette.neutral300,
+  /**
+   * The default border color.
+   */
   border: palette.neutral400,
+  /**
+   * The main tinting color - bright blue.
+   */
   tint: palette.primary500,
-  tintInactive: palette.neutral300,
-  separator: palette.neutral300,
+  /**
+   * The inactive tinting color.
+   */
+  tintInactive: palette.neutral500,
+  /**
+   * A subtle color used for lines.
+   */
+  separator: palette.neutral400,
+  /**
+   * Error messages - gentle coral, not alarming.
+   */
   error: palette.angry500,
+  /**
+   * Error Background.
+   */
   errorBackground: palette.angry100,
+  /**
+   * The default background color of the daily tasks timeline.
+   */
+  dailyTasksTimelineBackground: palette.neutral300,
 } as const
