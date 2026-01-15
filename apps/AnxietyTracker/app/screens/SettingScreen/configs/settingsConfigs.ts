@@ -14,9 +14,7 @@ import {
   MoodReminderFrequencyShorthand,
 } from "@/types/MoodReminderFrequency"
 import { MoodReminderFrequencyModal } from "@/components/settings/MoodReminderFrequencyModal"
-import { StrugglePreferenceModal } from "@/components/settings/StrugglePreferenceModal"
 import { LowContactModal } from "@/components/settings/LowContactModal"
-import { StrugglePreferenceLabels } from "@/types/StrugglePreference"
 import { createElement } from "react"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
@@ -67,24 +65,6 @@ export const useMoodReminderFrequencySettingConfig = (): IAppSettingsModalConfig
     iconType: "font-awesome",
     getValue,
     modalContent: (onClose: () => void) => createElement(MoodReminderFrequencyModal, { onClose }),
-  }
-}
-
-export const useStrugglePreferenceSettingConfig = (): IAppSettingsModalConfig => {
-  const getValue = () => {
-    const preference = ganon.get("strugglePreference")
-    if (!preference) {
-      return "Not set"
-    }
-    return StrugglePreferenceLabels[preference] || "Not set"
-  }
-
-  return {
-    title: "Tracking",
-    iconName: "heart",
-    iconType: "font-awesome",
-    getValue,
-    modalContent: (onClose: () => void) => createElement(StrugglePreferenceModal, { onClose }),
   }
 }
 

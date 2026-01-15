@@ -23,7 +23,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "appMainGoal",
       "awardData",
       "moodReminderFrequency",
-      "strugglePreference",
       "lowContact",
       "trialStatus",
     ],

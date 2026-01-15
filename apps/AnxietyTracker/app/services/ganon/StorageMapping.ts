@@ -21,7 +21,6 @@ import { NoContactReasonChoices } from "@/types/NoContactReason"
 import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
 import { AppMainGoalChoices } from "@/types/AppMainGoal"
 import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
-import { StrugglePreference } from "@/types/StrugglePreference"
 import { IFlags } from "@/types/IFlags"
 import { ILessonResponses } from "@/types/ILessonResponses"
 import { IAwardData } from "@/types/IAwardData"
@@ -77,7 +76,6 @@ interface StorageMapping {
   anxietyTriggerSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
-  strugglePreference: StrugglePreference | null
   lowContact: boolean
   flagOverrides: Partial<IFlags>
   dailyLesson: IDailyLessonState | null

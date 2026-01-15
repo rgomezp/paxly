@@ -9,11 +9,6 @@ import { URGE_LESSONS } from "@/data/UrgeLessons"
 import { RELAPSE_LESSON_IDS } from "@/data/RelapseLessons"
 import { GearIcon } from "phosphor-react-native"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
-import { ganon } from "@/services/ganon/ganon"
-import { StrugglePreference } from "@/types/StrugglePreference"
-import { useEffect, useState } from "react"
-import EventRegister from "@/utils/EventEmitter"
-import { GLOBAL_EVENTS } from "@/constants/events"
 
 interface HelpModalProps {
   visible: boolean
@@ -50,24 +45,6 @@ export default function HelpModal({
 }: HelpModalProps) {
   const { theme, themed } = useAppTheme()
   const navigation = useNavigation<AppStackScreenProps<"Settings">["navigation"]>()
-  const [strugglePreference, setStrugglePreference] = useState<StrugglePreference | null>(
-    ganon.get("strugglePreference") ?? StrugglePreference.CONTACT,
-  )
-
-  // Listen for preference updates
-  useEffect(() => {
-    const handleUpdate = () => {
-      const preference = ganon.get("strugglePreference") ?? StrugglePreference.CONTACT
-      setStrugglePreference(preference)
-    }
-
-    EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
-    handleUpdate() // Initial load
-
-    return () => {
-      EventRegister.off(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
-    }
-  }, [])
 
   const handleOptionPress = (callback: () => void) => {
     callback()
@@ -76,28 +53,13 @@ export default function HelpModal({
 
   const handleSettingsPress = () => {
     onClose()
-    navigation.navigate("Settings", { openModal: "strugglePreference" })
-  }
-
-  // Determine button text based on preference
-  const getUrgeButtonText = () => {
-    if (strugglePreference === StrugglePreference.CHECK_SOCIALS) {
-      return "I have the urge to check"
-    }
-    return "I have the urge to contact"
-  }
-
-  const getContactedButtonText = () => {
-    if (strugglePreference === StrugglePreference.CHECK_SOCIALS) {
-      return "I checked their socials"
-    }
-    return "I contacted"
+    navigation.navigate("Settings")
   }
 
   const buttons: ButtonProps[] = [
     {
       id: "urge_to_contact",
-      buttonText: getUrgeButtonText(),
+      buttonText: "I have the urge to contact",
       icon: "exclamation-triangle",
       isPaidFeature: true,
       onClick: () => {
@@ -108,7 +70,7 @@ export default function HelpModal({
     },
     {
       id: "i_contacted",
-      buttonText: getContactedButtonText(),
+      buttonText: "I contacted",
       onClick: () => {
         handleOptionPress(onIContacted)
         const randomRelapseLessonId = getRandomRelapseLesson()

@@ -10,7 +10,6 @@ import {
   useThemeSettingConfig,
   useDeleteAccountSettingConfig,
   useMoodReminderFrequencySettingConfig,
-  useStrugglePreferenceSettingConfig,
   useLowContactSettingConfig,
 } from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -19,8 +18,6 @@ import LoadingModal from "@/components/modals/LoadingModal"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { useFocusEffect } from "@react-navigation/native"
-import { ganon } from "@/services/ganon/ganon"
-import { StrugglePreference } from "@/types/StrugglePreference"
 
 interface SettingsScreenProps extends AppStackScreenProps<"Settings"> {}
 
@@ -50,7 +47,6 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   // Get setting configurations
   const themeSetting = useThemeSettingConfig()
   const moodReminderFrequencySetting = useMoodReminderFrequencySettingConfig()
-  const strugglePreferenceSetting = useStrugglePreferenceSettingConfig()
   const lowContactSetting = useLowContactSettingConfig()
   const deleteAccountSetting = useDeleteAccountSettingConfig()
 
@@ -115,30 +111,16 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
   const settings = useMemo(
-    () => {
-      // Check struggle preference to conditionally show low contact setting
-      const strugglePreference = ganon.get("strugglePreference") as StrugglePreference | null
-      const shouldShowLowContact = strugglePreference === StrugglePreference.CONTACT
-
-      const baseSettings = [
-        themeSetting,
-        moodReminderFrequencySetting,
-        strugglePreferenceSetting,
-        deleteSettingWithConfirm,
-      ]
-
-      // Only include low contact setting if tracking "No contact"
-      if (shouldShowLowContact) {
-        baseSettings.splice(3, 0, lowContactSetting) // Insert after strugglePreferenceSetting
-      }
-
-      return baseSettings
-    },
+    () => [
+      themeSetting,
+      moodReminderFrequencySetting,
+      lowContactSetting,
+      deleteSettingWithConfirm,
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       themeSetting,
       moodReminderFrequencySetting,
-      strugglePreferenceSetting,
       lowContactSetting,
       deleteSettingWithConfirm,
       refreshKey,
@@ -157,7 +139,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
           key={setting.title}
           config={setting}
           value={setting.getValue()}
-          autoOpen={modalToOpen === "strugglePreference" && setting.title === "Tracking"}
+          autoOpen={false}
           onModalClose={handleModalClose}
         />
       ))}
