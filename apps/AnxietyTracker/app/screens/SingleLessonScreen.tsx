@@ -37,44 +37,66 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
     const completedAt = Date.now()
     const flow = getFlow()
 
-    // Mark lesson as completed
-    LessonManager.markCompleted(lessonId)
+    try {
+      // Mark lesson as completed
+      LessonManager.markCompleted(lessonId)
 
-    // Check if this is today's lesson and mark it as complete
-    const todaysLessonId = DailyLessonManager.getTodaysLesson()
-    if (todaysLessonId === lessonId) {
-      DailyTaskManager.markCompleted("lesson")
-    }
+      // Check if this is today's lesson and mark it as complete
+      const todaysLessonId = DailyLessonManager.getTodaysLesson()
+      if (todaysLessonId === lessonId) {
+        DailyTaskManager.markCompleted("lesson")
+      }
 
-    const awardAvailable = AwardManager.checkAwardAvailability()
+      const awardAvailable = AwardManager.checkAwardAvailability()
 
-    // Randomly decide whether to show the RateLesson screen (~50% of completions)
-    if (await shouldShowRateLesson()) {
-      navigate("RateLesson", {
+      // Randomly decide whether to show the RateLesson screen (~50% of completions)
+      const shouldShowRate = await shouldShowRateLesson()
+
+      if (shouldShowRate) {
+        navigate("RateLesson", {
+          lessonId,
+          startedAt,
+          completedAt,
+          flow,
+          awardAvailable,
+        })
+        return
+      }
+
+      // No rating screen – save completion immediately (without helpful flag)
+      LessonCompletionManager.saveCompletion({
         lessonId,
         startedAt,
         completedAt,
         flow,
-        awardAvailable,
+      }).catch((error) => {
+        // Error is already logged in LessonCompletionManager
+        console.error("[SingleLessonScreen] Error saving completion:", error)
+        // Continue with lesson completion flow even if tracking fails
       })
-      return
-    }
 
-    // No rating screen – save completion immediately (without helpful flag)
-    LessonCompletionManager.saveCompletion({
-      lessonId,
-      startedAt,
-      completedAt,
-      flow,
-    }).catch(() => {
-      // Error is already logged in LessonCompletionManager
-      // Continue with lesson completion flow even if tracking fails
-    })
-
-    if (awardAvailable) {
-      navigate("ClaimAward", undefined)
-    } else {
-      navigation.goBack()
+      // Navigate based on award availability
+      if (awardAvailable) {
+        navigate("ClaimAward", undefined)
+      } else {
+        navigation.goBack()
+      }
+    } catch (error) {
+      console.error("[SingleLessonScreen] Error in handleComplete:", error)
+      // Handle errors gracefully - still try to navigate appropriately
+      // Check award availability again in case it wasn't set before the error
+      try {
+        const awardAvailable = AwardManager.checkAwardAvailability()
+        if (awardAvailable) {
+          navigate("ClaimAward", undefined)
+        } else {
+          navigation.goBack()
+        }
+      } catch (navError) {
+        console.error("[SingleLessonScreen] Error during navigation fallback:", navError)
+        // Last resort: just go back
+        navigation.goBack()
+      }
     }
   }
 
