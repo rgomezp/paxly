@@ -43,11 +43,6 @@ export const anxietyQuotes: Quote[] = [
     quote: "Worry never robs tomorrow of its sorrow, it only saps today of its joy.",
     author: "Leo Buscaglia",
   },
-  {
-    quote:
-      "Anxiety is a thin stream of fear trickling through the mind. If encouraged, it cuts a channel into which all other thoughts are drained.",
-    author: "Arthur Somers Roche",
-  },
   { quote: "The only way out is through.", author: "Robert Frost" },
   { quote: "Feelings are just visitors, let them come and go.", author: "Mooji" },
   {
@@ -62,11 +57,6 @@ export const anxietyQuotes: Quote[] = [
   { quote: "Nothing diminishes anxiety faster than action.", author: "Walter Anderson" },
   { quote: "Worry is interest paid on a debt you may not owe.", author: "Unknown" },
   { quote: "The cave you fear to enter holds the treasure you seek.", author: "Joseph Campbell" },
-  {
-    quote:
-      "Anxiety does not empty tomorrow of its sorrows, but only empties today of its strength.",
-    author: "Charles Spurgeon",
-  },
   {
     quote:
       "You are not your anxiety. You are not your thoughts. You are the observer of your thoughts.",
@@ -95,7 +85,6 @@ export const anxietyQuotes: Quote[] = [
     quote: "It's not the load that breaks you down, it's the way you carry it.",
     author: "Lou Holtz",
   },
-  { quote: "Anxiety is the dizziness of freedom.", author: "Søren Kierkegaard" },
   {
     quote:
       "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
