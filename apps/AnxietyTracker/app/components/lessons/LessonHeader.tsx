@@ -2,10 +2,6 @@ import { View } from "react-native"
 import Animated, { FadeIn } from "react-native-reanimated"
 import { Text } from ".."
 import { useAppTheme } from "@/utils/useAppTheme"
-import Planty from "@/components/Planty"
-import PlantyManager from "@/managers/PlantyManager"
-import NoContactManager from "@/managers/NoContactManager"
-import { NoContactGoal } from "@/types/INoContactData"
 
 export function LessonHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   const { themed, theme } = useAppTheme()
@@ -20,18 +16,7 @@ export function LessonHeader({ title, subtitle }: { title: string; subtitle?: st
       }))}
     >
       {(() => {
-        const progressData = NoContactManager.calculateDisplay()
-        const goal = progressData?.currentGoal ?? NoContactGoal.OneDay
-        const watered = PlantyManager.hasWateredToday()
-        const isSad = PlantyManager.hasNotWateredIn3Days()
-        return (
-          <Planty
-            goal={goal}
-            wateredToday={watered}
-            isSad={isSad}
-            style={themed(() => ({ width: 72, height: 72, marginBottom: theme.spacing.xs }))}
-          />
-        )
+        return null
       })()}
       <Animated.View entering={FadeIn.duration(800)}>
         <Text

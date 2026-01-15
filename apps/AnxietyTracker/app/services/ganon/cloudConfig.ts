@@ -8,7 +8,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "user",
       "entitlementId",
       "dailyTasks",
-      "noContactData",
       "finishedOnboarding",
       "lastWateredData",
       "goals",
@@ -17,8 +16,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "anxietySeverity",
       "anxietyDuration",
       "mascotName",
-      "isFirstTimeTracking",
-      "trackingGoal",
       "anxietyTriggerSituation",
       "appMainGoal",
       "awardData",
@@ -39,7 +36,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
   },
   tools: {
     docKeys: ["letterToMyselfDraft", "messageIntoTheVoidDraft"],
-    subcollectionKeys: ["whyItDidntWork", "redFlags", "letterToMyself"],
+    subcollectionKeys: ["letterToMyself"],
   },
 }
 

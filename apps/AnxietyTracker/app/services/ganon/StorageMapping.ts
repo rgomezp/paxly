@@ -4,7 +4,6 @@ import { ModelSnapshotType } from "mobx-state-tree"
 import { IModalQueueState } from "../../types/modals/modals"
 import { IReferralData } from "@/types/IReferralData"
 import IReviewBackoffData from "@/types/IReviewBackoffData"
-import INoContactData from "@/types/INoContactData"
 import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
 import { IDailyLessonState } from "@/types/IDailyLessonState"
@@ -16,8 +15,6 @@ import { AgeRanges } from "@/types/AgeRange"
 import { RelationshipDurations } from "@/types/RelationshipDuration"
 import { WhoEndedItChoices } from "@/types/WhoEndedIt"
 import { MascotNames } from "@/types/MascotName"
-import { YesNoChoices } from "@/types/YesNo"
-import { NoContactReasonChoices } from "@/types/NoContactReason"
 import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
 import { AppMainGoalChoices } from "@/types/AppMainGoal"
 import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
@@ -25,8 +22,6 @@ import { IFlags } from "@/types/IFlags"
 import { ILessonResponses } from "@/types/ILessonResponses"
 import { IAwardData } from "@/types/IAwardData"
 import { IBadgeData } from "@/types/IBadgeData"
-import { IWhyItDidntWorkReason } from "@/types/IWhyItDidntWorkReason"
-import { IRedFlag } from "@/types/IRedFlag"
 import { ILetterToMyself } from "@/types/ILetterToMyself"
 
 // Storage key constants
@@ -59,7 +54,6 @@ interface StorageMapping {
   reviewBackoff: IReviewBackoffData
   passedAppCheck: boolean
   finishedOnboarding: boolean
-  noContactData: INoContactData
   moodHistory: IMoodHistoryItem[]
   dailyTasks: IDailyTasks
   journalEntries: IJournalEntry[]
@@ -71,8 +65,6 @@ interface StorageMapping {
   anxietySeverity: RelationshipDurations | null
   anxietyDuration: WhoEndedItChoices | null
   mascotName: MascotNames | null
-  isFirstTimeTracking: YesNoChoices | null
-  trackingGoal: NoContactReasonChoices | null
   anxietyTriggerSituation: ContactTemptationSituationsChoices | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
@@ -83,8 +75,6 @@ interface StorageMapping {
   lessonResponses: ILessonResponses
   awardData: IAwardData
   meTabBadgeData: IBadgeData | null
-  whyItDidntWork: { reasons: IWhyItDidntWorkReason[] } | null
-  redFlags: { flags: IRedFlag[] } | null
   letterToMyself: { letters: ILetterToMyself[] } | null
   letterToMyselfDraft: { text: string; deliveryTimeMonths: 1 | 3 | 12 } | null
   lessonsEncouragementDismissed: boolean

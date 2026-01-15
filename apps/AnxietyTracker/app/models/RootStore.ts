@@ -3,8 +3,6 @@ import { MoodStoreModel } from "./mood/MoodStore"
 import { JournalStoreModel } from "./journal/JournalStore"
 import { MessageIntoTheVoidStoreModel } from "./messageIntoTheVoid/MessageIntoTheVoidStore"
 import { LessonStoreModel } from "./lessons/LessonStore"
-import { WhyItDidntWorkStoreModel } from "./whyItDidntWork/WhyItDidntWorkStore"
-import { RedFlagsStoreModel } from "./redFlags/RedFlagsStore"
 import { LetterToMyselfStoreModel } from "./letterToMyself/LetterToMyselfStore"
 
 /**
@@ -15,8 +13,6 @@ export const RootStoreModel = types.model("RootStore").props({
   journalStore: types.optional(JournalStoreModel, {}),
   messageIntoTheVoidStore: types.optional(MessageIntoTheVoidStoreModel, {}),
   lessonStore: types.optional(LessonStoreModel, {}),
-  whyItDidntWorkStore: types.optional(WhyItDidntWorkStoreModel, {}),
-  redFlagsStore: types.optional(RedFlagsStoreModel, {}),
   letterToMyselfStore: types.optional(LetterToMyselfStoreModel, {}),
 })
 

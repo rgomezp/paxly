@@ -41,8 +41,6 @@ export type AppStackParamList = {
     flow: string
     awardAvailable: boolean
   }
-  WhyItDidntWork: undefined
-  RedFlags: undefined
   BreakupTools: undefined
   LetterToMyself: undefined
   ComposeLetter: undefined

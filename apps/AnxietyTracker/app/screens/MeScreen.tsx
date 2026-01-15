@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback } from "react"
+import { FC, useState, useCallback } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, ScrollView as RNScrollView, useWindowDimensions } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
@@ -7,7 +7,6 @@ import { MoodGraph, Quote } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme, ThemedStyle } from "@/theme"
 import { useHomeDrawerSections } from "./HomeDrawerSections"
-import NoContactManager from "@/managers/NoContactManager"
 import BadgeManager from "@/managers/BadgeManager"
 import { useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -34,10 +33,6 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
 
   // State for badge visibility (updates when screen is focused)
   const [badgeToShow, setBadgeToShow] = useState(() => BadgeManager.shouldShowBadgeWithType())
-
-  useEffect(() => {
-    NoContactManager.initializeNoContactData()
-  }, [])
 
   // Update badge state when screen is focused
   useFocusEffect(

@@ -11,7 +11,6 @@ import { howItWorksSlide } from "../slideLibrary/howItWorksSlide"
 import { genderSlide } from "../slideLibrary/genderSlide"
 import { ageSlide } from "../slideLibrary/ageSlide"
 import { anxietySeveritySlide } from "../slideLibrary/anxietySeveritySlide"
-import { trackingGoalSlide } from "../slideLibrary/trackingGoalSlide"
 import { anxietyTriggersSlide } from "../slideLibrary/anxietyTriggersSlide"
 import { anxietyDurationSlide } from "../slideLibrary/anxietyDurationSlide"
 import { mascotNameSlide } from "../slideLibrary/mascotNameSlide"
@@ -95,7 +94,6 @@ export const useSlides = (onSelection?: () => void) => {
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
       anxietySeveritySlide({ onSelection }),
-      trackingGoalSlide({ onSelection }),
       anxietyTriggersSlide({ onSelection }),
       anxietyDurationSlide({ onSelection }),
 

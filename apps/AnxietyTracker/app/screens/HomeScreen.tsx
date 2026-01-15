@@ -6,7 +6,6 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import UserManager from "@/managers/UserManager"
-import NoContactManager from "@/managers/NoContactManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import HelpModal from "@/components/modals/HelpModal"
@@ -30,9 +29,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const { themed, theme, themeContext } = useAppTheme()
   const hasShownPaywallRef = useRef<string | null>(null)
 
-  // Initialize no contact data if needed
   useEffect(() => {
-    NoContactManager.initializeNoContactData()
     OneSignal.InAppMessages.addTrigger("home_screen_loaded", "true")
     return () => {
       OneSignal.InAppMessages.removeTrigger("home_screen_loaded")
@@ -150,7 +147,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         onIContacted={() => {
           Log.info("HomeScreen: User reset the streak")
           AnalyticsManager.getInstance().logEvent("no_contact_relapse")
-          NoContactManager.resetStreak()
           setRefreshTrigger((prev) => prev + 1)
         }}
       />

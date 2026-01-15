@@ -57,8 +57,6 @@ describe("useStores", () => {
         "messageIntoTheVoidStore",
         "lessonStore",
         "letterToMyselfStore",
-        "whyItDidntWorkStore",
-        "redFlagsStore",
       ]
 
       // Verify counts match - if they don't, a store was added to RootStore but not to clearAllStores
@@ -119,8 +117,6 @@ describe("useStores", () => {
         "messageIntoTheVoidStore",
         "lessonStore",
         "letterToMyselfStore",
-        "whyItDidntWorkStore",
-        "redFlagsStore",
       ]
 
       // Verify counts match - if they don't, a store was added to RootStore but not to reloadAllStores

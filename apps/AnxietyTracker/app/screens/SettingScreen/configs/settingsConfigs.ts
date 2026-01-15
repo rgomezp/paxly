@@ -14,7 +14,6 @@ import {
   MoodReminderFrequencyShorthand,
 } from "@/types/MoodReminderFrequency"
 import { MoodReminderFrequencyModal } from "@/components/settings/MoodReminderFrequencyModal"
-import { LowContactModal } from "@/components/settings/LowContactModal"
 import { createElement } from "react"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
@@ -65,21 +64,6 @@ export const useMoodReminderFrequencySettingConfig = (): IAppSettingsModalConfig
     iconType: "font-awesome",
     getValue,
     modalContent: (onClose: () => void) => createElement(MoodReminderFrequencyModal, { onClose }),
-  }
-}
-
-export const useLowContactSettingConfig = (): IAppSettingsModalConfig => {
-  const getValue = () => {
-    const isLowContact = ganon.get("lowContact") ?? false
-    return isLowContact ? "On" : "Off"
-  }
-
-  return {
-    title: "Low contact",
-    iconName: "handshake",
-    iconType: "font-awesome",
-    getValue,
-    modalContent: (onClose: () => void) => createElement(LowContactModal, { onClose }),
   }
 }
 
