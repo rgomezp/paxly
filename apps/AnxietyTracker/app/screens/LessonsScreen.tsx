@@ -21,7 +21,6 @@ import { useEntitlements } from "@/entitlements/useEntitlements"
 import { FEATURES } from "@/entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
-import { useAverageLessonDurations } from "@/hooks/useAverageLessonDurations"
 import { ganon } from "@/services/ganon/ganon"
 
 interface LessonsScreenProps extends AppStackScreenProps<"Lessons"> {}
@@ -32,7 +31,6 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
   const completedLessons = lessonStore.getCompletedLessons()
   const todaysLessonId = DailyLessonManager.getTodaysLesson()
   const { hasFeatureAccess } = useEntitlements()
-  const { durations: averageDurations } = useAverageLessonDurations()
   const flagContext = useContext(FlagContext)
   if (!flagContext) {
     throw new Error("LessonsScreen must be used within a FlagProvider")
@@ -273,8 +271,8 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                         ])}
                         activeOpacity={0.7}
                       >
-                        <View style={themed($lessonItemContent)}>
-                          <View style={themed($lessonItemLeft)}>
+                        <View style={$lessonItemContent}>
+                          <View style={$lessonItemLeft}>
                             {isTodaysLesson && (
                               <ThemedFontAwesome5Icon
                                 name="star"
@@ -284,7 +282,7 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                                 style={themed({ marginRight: 8 })}
                               />
                             )}
-                            <View style={themed($lessonTextContainer)}>
+                            <View style={$lessonTextContainer}>
                               <Text
                                 text={lesson.title}
                                 weight="medium"
@@ -295,24 +293,9 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                                 size="xs"
                                 style={themed({ color: theme.colors.textDim, marginTop: 2 })}
                               />
-                              {(() => {
-                                const avgDurationSec = averageDurations[lesson.id]
-                                if (avgDurationSec) {
-                                  const minutes = Math.max(1, Math.round(avgDurationSec / 60))
-                                  const displayText = minutes > 10 ? "10+ min" : `~${minutes} min`
-                                  return (
-                                    <Text
-                                      text={displayText}
-                                      size="xs"
-                                      style={themed({ color: theme.colors.textDim, marginTop: 4 })}
-                                    />
-                                  )
-                                }
-                                return null
-                              })()}
                             </View>
                           </View>
-                          <View style={themed($lessonItemRight)}>
+                          <View style={$lessonItemRight}>
                             {isCompleted && (
                               <ThemedPhosphorIcon
                                 Component={CheckIcon}
@@ -324,7 +307,6 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                               Component={CaretRightIcon}
                               size={12}
                               color={theme.colors.textDim}
-                              style={themed({ marginLeft: 8 })}
                             />
                           </View>
                         </View>
@@ -432,26 +414,33 @@ const $lessonItem: ViewStyle = {
   marginTop: 22,
   padding: 16,
   borderRadius: 8,
+  overflow: "hidden",
   ...$styles.dropShadow,
 }
 
 const $lessonItemContent: ViewStyle = {
   flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
+  alignItems: "flex-start",
 }
 
 const $lessonItemLeft: ViewStyle = {
   flexDirection: "row",
   alignItems: "flex-start",
   flex: 1,
+  flexShrink: 1,
+  marginRight: 16,
 }
 
 const $lessonTextContainer: ViewStyle = {
   flex: 1,
+  flexShrink: 1,
+  paddingRight: 8,
 }
 
 const $lessonItemRight: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
+  paddingTop: 2,
+  minWidth: 40,
+  justifyContent: "flex-end",
 }
