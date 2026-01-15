@@ -16,7 +16,7 @@ const palette = {
   primary400: "#1F85B3",
   primary300: "#176386",
   primary200: "#0F4159",
-  primary100: "#071F2C",
+  primary100: "#153A4D",
 
   // Secondary - light cyan (soft, airy, gentle in dark)
   secondary500: "#C3EBEF",
