@@ -138,16 +138,17 @@ export default observer(function DailyTasksTimeline({ refreshToken }: Props) {
               style={[
                 $checkCircle,
                 {
-                  borderColor: theme.colors.tint,
-                  ...(completed ? { backgroundColor: theme.colors.tint } : {}),
+                  borderColor: theme.colors.secondaryTint,
+                  ...(completed ? { backgroundColor: theme.colors.secondaryTint } : {}),
                 },
               ]}
             >
               {completed && (
                 <ThemedPhosphorIcon
                   Component={CheckIcon}
-                  size={12}
+                  size={14}
                   color={theme.colors.background}
+                  weight="bold"
                 />
               )}
             </View>

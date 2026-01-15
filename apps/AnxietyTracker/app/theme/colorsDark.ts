@@ -91,6 +91,10 @@ export const colors = {
    */
   tintInactive: palette.neutral500,
   /**
+   * Secondary tinting color - soft cyan
+   */
+  secondaryTint: palette.secondary400,
+  /**
    * A subtle color used for lines.
    */
   separator: palette.neutral400,

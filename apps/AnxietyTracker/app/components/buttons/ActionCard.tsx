@@ -57,7 +57,7 @@ export const ActionCard: FC<CircularButtonProps> = ({
     minWidth: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: badgeColor || theme.colors.palette.accent100,
+    backgroundColor: badgeColor || theme.colors.secondaryTint,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 4,

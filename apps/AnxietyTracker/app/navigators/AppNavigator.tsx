@@ -120,7 +120,7 @@ const TabNavigator = observer(function TabNavigator() {
           ),
           tabBarBadge: shouldShowBadge !== null ? "" : undefined,
           tabBarBadgeStyle: {
-            backgroundColor: theme.colors.palette.accent100,
+            backgroundColor: theme.colors.secondaryTint,
           },
         }}
       />
