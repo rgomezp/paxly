@@ -1,5 +1,5 @@
 import { LESSONS } from "@/data/LessonRegistry"
-import { IM_ANXIOUS_LESSON_DEFINITIONS } from "@/data/ImAnxiousLessons"
+import { IM_ANXIOUS_LESSON_DEFINITIONS } from "@/data/lessons/ImAnxiousLessons"
 import { CardLesson } from "./CardLesson"
 import { PracticeLesson } from "./PracticeLesson"
 import { JournalLesson } from "./JournalLesson"

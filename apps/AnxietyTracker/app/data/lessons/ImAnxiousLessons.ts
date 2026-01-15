@@ -24,7 +24,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_ground_54321: {
     id: "anxious_ground_54321",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "5‑4‑3‑2‑1 Senses Reset",
     goal: "Anchor in the present when anxiety spikes",
     format: "practice",
@@ -78,7 +78,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_breath_box: {
     id: "anxious_breath_box",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "Box Breathing Reset",
     goal: "Calm your nervous system so thoughts can slow down",
     format: "practice",
@@ -116,7 +116,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_worry_window: {
     id: "anxious_worry_window",
-    moduleId: "cognitive_aid",
+    moduleId: "im_anxious",
     title: "10‑Minute Worry Window",
     goal: "Contain worry instead of letting it run your whole day",
     format: "practice",
@@ -158,7 +158,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_thought_reframe: {
     id: "anxious_thought_reframe",
-    moduleId: "cognitive_aid",
+    moduleId: "im_anxious",
     title: "3‑Line Thought Reframe",
     goal: "Shift one anxious thought toward something more balanced",
     format: "practice",
@@ -200,7 +200,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_allow_and_act: {
     id: "anxious_allow_and_act",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "Allow + Act",
     goal: "Make a tiny values‑aligned move with anxiety on board",
     format: "practice",
@@ -242,7 +242,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_cold_interrupt: {
     id: "anxious_cold_interrupt",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "Cold Water Interrupt",
     goal: "Use temperature to quickly interrupt anxious arousal",
     format: "practice",
@@ -280,7 +280,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_mini_body_scan: {
     id: "anxious_mini_body_scan",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "2‑Minute Body Scan",
     goal: "Notice where anxiety lives in your body without fighting it",
     format: "practice",
@@ -318,7 +318,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_reality_check: {
     id: "anxious_reality_check",
-    moduleId: "cognitive_aid",
+    moduleId: "im_anxious",
     title: "Reality Check: How Likely?",
     goal: "Challenge catastrophic predictions with numbers",
     format: "card",
@@ -363,7 +363,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_tiny_exposure: {
     id: "anxious_tiny_exposure",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "Tiny Exposure Step",
     goal: "Approach, instead of avoid, in a micro‑dose",
     format: "practice",
@@ -416,7 +416,7 @@ export const IM_ANXIOUS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
    */
   anxious_support_ping: {
     id: "anxious_support_ping",
-    moduleId: "mini_interventions",
+    moduleId: "im_anxious",
     title: "Support Ping",
     goal: "Reach out to someone safe instead of spiralling alone",
     format: "practice",

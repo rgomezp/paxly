@@ -5,8 +5,8 @@ import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "../buttons/RectangularButton"
 import { useNavigation } from "@react-navigation/native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
-import { IM_ANXIOUS_LESSON_IDS } from "@/data/ImAnxiousLessons"
-import { RELAPSE_LESSON_IDS } from "@/data/ImHavingAPanicAttackLessons"
+import { IM_ANXIOUS_LESSON_IDS } from "@/data/lessons/ImAnxiousLessons"
+import { RELAPSE_LESSON_IDS } from "@/data/lessons/ImHavingAPanicAttackLessons"
 
 interface HelpModalProps {
   visible: boolean
