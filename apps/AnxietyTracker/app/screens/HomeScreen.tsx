@@ -116,13 +116,14 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
       ? require("../../assets/logos/text_logo_dark.png")
       : require("../../assets/logos/text_logo.png")
 
+  const backgroundSource =
+    themeContext === "dark"
+      ? require("../../assets/images/background_dark.png")
+      : require("../../assets/images/background.png")
+
   return (
     <>
-      <ImageBackground
-        source={require("../../assets/images/background.png")}
-        style={$backgroundImage}
-        resizeMode="cover"
-      >
+      <ImageBackground source={backgroundSource} style={$backgroundImage} resizeMode="cover">
         <ScrollView
           style={themed($scrollViewContainer)}
           contentContainerStyle={themed($scrollContentContainer)}
