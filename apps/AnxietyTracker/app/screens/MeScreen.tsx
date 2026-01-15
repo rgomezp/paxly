@@ -1,9 +1,16 @@
-import { FC, useState, useCallback } from "react"
+import { FC, useState, useCallback, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, ScrollView as RNScrollView, useWindowDimensions } from "react-native"
+import {
+  View,
+  ViewStyle,
+  ScrollView as RNScrollView,
+  useWindowDimensions,
+  Pressable,
+  TextStyle,
+} from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import { AppStackScreenProps } from "@/navigators"
-import { MoodGraph, AnxietyGraph, Quote } from "@/components"
+import { MoodGraph, AnxietyGraph, Quote, Text } from "@/components"
 import { HomeDrawer } from "../drawers/HomeDrawer"
 import type { Theme, ThemedStyle } from "@/theme"
 import { useHomeDrawerSections } from "./HomeDrawerSections"
@@ -33,6 +40,9 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
 
   // State for badge visibility (updates when screen is focused)
   const [badgeToShow, setBadgeToShow] = useState(() => BadgeManager.shouldShowBadgeWithType())
+  // State for graph page index
+  const [currentGraphPage, setCurrentGraphPage] = useState(0)
+  const graphScrollViewRef = useRef<RNScrollView>(null)
 
   // Update badge state when screen is focused
   useFocusEffect(
@@ -40,6 +50,17 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
       setBadgeToShow(BadgeManager.shouldShowBadgeWithType())
     }, []),
   )
+
+  const handleGraphPageChange = (pageIndex: number) => {
+    setCurrentGraphPage(pageIndex)
+    graphScrollViewRef.current?.scrollTo({ x: pageIndex * width, animated: true })
+  }
+
+  const handleGraphScroll = (event: any) => {
+    const offsetX = event.nativeEvent.contentOffset.x
+    const pageIndex = Math.round(offsetX / width)
+    setCurrentGraphPage(pageIndex)
+  }
 
   return (
     <>
@@ -84,8 +105,54 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 style={{ width: cardWidth, maxWidth: cardWidth }}
               />
             </View>
-            <AnxietyGraph />
-            <MoodGraph containerStyle={themed($moodGraphStyle)} />
+            <View style={themed($graphsSection)}>
+              <Text preset="subheading" style={themed($sectionTitle)}>
+                Logs this week
+              </Text>
+              <View style={themed($graphButtonsRow)}>
+                <Pressable
+                  onPress={() => handleGraphPageChange(0)}
+                  style={themed([$graphButton, currentGraphPage === 0 && $graphButtonActive])}
+                >
+                  <Text
+                    style={themed([
+                      $graphButtonText,
+                      currentGraphPage === 0 && $graphButtonTextActive,
+                    ])}
+                  >
+                    Anxiety
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => handleGraphPageChange(1)}
+                  style={themed([$graphButton, currentGraphPage === 1 && $graphButtonActive])}
+                >
+                  <Text
+                    style={themed([
+                      $graphButtonText,
+                      currentGraphPage === 1 && $graphButtonTextActive,
+                    ])}
+                  >
+                    Moods
+                  </Text>
+                </Pressable>
+              </View>
+              <RNScrollView
+                ref={graphScrollViewRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={handleGraphScroll}
+                style={themed($graphScrollView)}
+              >
+                <View style={{ width }}>
+                  <AnxietyGraph showTitle={false} />
+                </View>
+                <View style={{ width }}>
+                  <MoodGraph showTitle={false} />
+                </View>
+              </RNScrollView>
+            </View>
             <View style={themed($bottomSpacing)} />
           </RNScrollView>
         )}
@@ -106,8 +173,50 @@ const $buttonsWrapper: ViewStyle = {
   alignSelf: "center",
 }
 
-const $moodGraphStyle: ViewStyle = {
+const $graphsSection: ViewStyle = {
   marginTop: 32,
+}
+
+const $sectionTitle: ThemedStyle<TextStyle> = ({ spacing }) => ({
+  marginBottom: spacing.md,
+  paddingHorizontal: spacing.lg,
+})
+
+const $graphButtonsRow: ViewStyle = {
+  flexDirection: "row",
+  paddingHorizontal: 16,
+  gap: 8,
+  marginBottom: 16,
+}
+
+const $graphButton: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+  flex: 1,
+  paddingVertical: spacing.sm,
+  paddingHorizontal: spacing.md,
+  borderRadius: 8,
+  borderWidth: 1,
+  borderColor: colors.border,
+  alignItems: "center",
+  justifyContent: "center",
+})
+
+const $graphButtonActive: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.tint,
+  borderColor: colors.tint,
+})
+
+const $graphButtonText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 14,
+  fontWeight: "600",
+  color: colors.text,
+})
+
+const $graphButtonTextActive: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.background,
+})
+
+const $graphScrollView: ViewStyle = {
+  flexGrow: 0,
 }
 
 const $bottomSpacing: ThemedStyle<ViewStyle> = ({ spacing }) => ({
