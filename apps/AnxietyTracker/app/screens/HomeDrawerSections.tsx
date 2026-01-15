@@ -161,11 +161,5 @@ export const useHomeDrawerSections = () => {
         />,
       ],
     },
-    {
-      name: "FAQ",
-      data: ({ themed, theme }: { themed: any; theme: Theme }) => {
-        return []
-      },
-    },
   ]
 }
