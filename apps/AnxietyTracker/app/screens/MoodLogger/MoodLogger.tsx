@@ -2,7 +2,6 @@ import { FC, useEffect, useMemo, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   Animated,
-  ImageStyle,
   ScrollView,
   TextInput,
   TouchableOpacity,
@@ -33,14 +32,16 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
 
   const [selectedMood, setSelectedMood] = useState<MoodId | null>(null)
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
+  const [selectedAnxietyRating, setSelectedAnxietyRating] = useState<number | null>(null)
   const [notes, setNotes] = useState("")
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
   const slides: ISlide[] = useMemo(
     () => [
       { id: "mood", title: "select mood" },
-      { id: "activity", title: "what were you doing?" },
-      { id: "notes", title: "add notes (optional)" },
+      { id: "activity", title: "What were you doing?" },
+      { id: "anxiety", title: "Rate your anxiety" },
+      { id: "notes", title: "Add notes (optional)" },
     ],
     [],
   )
@@ -63,10 +64,20 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
     goTo(2)
   }
 
+  function onPickAnxietyRating(rating: number) {
+    setSelectedAnxietyRating(rating)
+    goTo(3)
+  }
+
   function onSave() {
     if (!selectedMood || !selectedActivity) return
 
-    MoodManager.create({ moodId: selectedMood, activity: selectedActivity, notes })
+    MoodManager.create({
+      moodId: selectedMood,
+      activity: selectedActivity,
+      anxietyRating: selectedAnxietyRating ?? undefined,
+      notes,
+    })
     navigation.goBack()
   }
 
@@ -137,7 +148,7 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
         {/* Step 2 - Activity */}
         <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$slideContent}>
           <Text
-            text="what were you doing?"
+            text={slides[1].title}
             preset="bold"
             style={[$activityHeaderText, { color: theme.colors.text }]}
           />
@@ -156,11 +167,69 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
           </Grid>
         </ScrollView>
 
-        {/* Step 3 - Notes */}
+        {/* Step 3 - Anxiety Rating */}
+        <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$slideContent}>
+          <Text
+            text={slides[2].title}
+            preset="bold"
+            style={[$activityHeaderText, { color: theme.colors.text }]}
+          />
+          <View>
+            <View style={$anxietyRatingContainer}>
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <TouchableOpacity
+                  key={rating}
+                  onPress={() => onPickAnxietyRating(rating)}
+                  activeOpacity={0.7}
+                  style={[
+                    $anxietyRatingButton,
+                    {
+                      backgroundColor:
+                        selectedAnxietyRating === rating
+                          ? theme.colors.palette.negative
+                          : theme.colors.card,
+                    },
+                  ]}
+                >
+                  <Text
+                    text={rating.toString()}
+                    weight="bold"
+                    style={[
+                      $anxietyRatingText,
+                      {
+                        color:
+                          selectedAnxietyRating === rating
+                            ? theme.colors.background
+                            : theme.colors.text,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+            <View style={$anxietyRatingLabelContainer}>
+              <Text
+                text="No anxiety"
+                size="xs"
+                style={[$anxietyRatingLabel, { color: theme.colors.textDim }]}
+              />
+              <View style={$anxietyRatingLabelSpacer} />
+              <View style={$anxietyRatingLabelSpacer} />
+              <View style={$anxietyRatingLabelSpacer} />
+              <Text
+                text="Most anxious"
+                size="xs"
+                style={[$anxietyRatingLabel, { color: theme.colors.textDim }]}
+              />
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Step 4 - Notes */}
         <ScrollView style={[$slideContainer, { width }]} contentContainerStyle={$notesContent}>
           <View style={[$notesContainer, { width }]}>
             <Text
-              text="Notes (optional)"
+              text={slides[3].title}
               preset="bold"
               style={[$notesHeaderText, { color: theme.colors.text }]}
             />
@@ -281,4 +350,44 @@ const $emojiText: TextStyle = {
 const $emojiLabel: TextStyle = {
   marginTop: 8,
   textTransform: "lowercase",
+}
+
+const $anxietyRatingContainer: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingHorizontal: 20,
+  marginTop: 20,
+}
+
+const $anxietyRatingButton: ViewStyle = {
+  width: 60,
+  height: 60,
+  borderRadius: 30,
+  alignItems: "center",
+  justifyContent: "center",
+  ...$styles.dropShadow,
+}
+
+const $anxietyRatingLabelContainer: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingHorizontal: 20,
+  marginTop: 8,
+}
+
+const $anxietyRatingLabelSpacer: ViewStyle = {
+  width: 60,
+}
+
+const $anxietyRatingText: TextStyle = {
+  fontSize: 24,
+  lineHeight: 24,
+  textAlign: "center",
+  includeFontPadding: false,
+  textAlignVertical: "center",
+}
+
+const $anxietyRatingLabel: TextStyle = {
+  marginTop: 8,
+  textAlign: "center",
 }

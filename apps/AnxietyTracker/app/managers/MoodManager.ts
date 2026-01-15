@@ -17,13 +17,14 @@ export default class MoodManager {
     ganon.set("moodHistory", [])
   }
 
-  static create(params: { moodId: MoodId; activity: Activity; notes?: string }): IMoodHistoryItem {
-    const { moodId, activity, notes } = params
+  static create(params: { moodId: MoodId; activity: Activity; notes?: string; anxietyRating?: number }): IMoodHistoryItem {
+    const { moodId, activity, notes, anxietyRating } = params
     const mood = MOODS[moodId]
     const item: IMoodHistoryItem = {
       mood,
       activity,
       notes: notes ?? "",
+      anxietyRating,
       date: Date.now(),
     }
 
@@ -48,6 +49,7 @@ export default class MoodManager {
       activity: activity,
       hasNotes: !!notes,
       notesLength: notes?.length ?? 0,
+      anxietyRating: anxietyRating,
     })
 
     return item
