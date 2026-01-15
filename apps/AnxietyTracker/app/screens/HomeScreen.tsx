@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useCallback, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { ScrollView, View, ViewStyle, Image, ImageStyle } from "react-native"
+import { ScrollView, View, ViewStyle, Image, ImageStyle, ImageBackground } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -15,6 +15,7 @@ import { createAudioPlayer } from "expo-audio"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
+import LottieView from "lottie-react-native"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -27,6 +28,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
   const { themed, theme, themeContext } = useAppTheme()
   const hasShownPaywallRef = useRef<string | null>(null)
+  const blobLottieRef = useRef<LottieView>(null)
 
   useEffect(() => {
     OneSignal.InAppMessages.addTrigger("home_screen_loaded", "true")
@@ -84,6 +86,11 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
     playChime()
   }, [])
 
+  // Start blob animation when component mounts
+  useEffect(() => {
+    blobLottieRef.current?.play()
+  }, [])
+
   // Show paywall if rc_offering_id is provided in route params
   useEffect(() => {
     const rcOfferingId = route.params?.rc_offering_id
@@ -110,34 +117,48 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
 
   return (
     <>
-      <ScrollView style={themed([$contentContainer, { backgroundColor: theme.colors.background }])}>
-        <View
-          style={themed({ backgroundColor: theme.colors.background, paddingTop: insets.top })}
-        />
-        <View style={themed($logoContainer)}>
-          <Image source={logoSource} style={themed($logo)} resizeMode="contain" />
-        </View>
-        <View style={themed($headerSection)}>
-          <Text
-            text={getHeaderText()}
-            preset="heading"
-            style={themed({
-              color: theme.colors.text,
-              fontSize: 24,
-              paddingHorizontal: 20,
-              textAlign: "center",
-            })}
+      <ImageBackground
+        source={require("../../assets/images/background.png")}
+        style={$backgroundImage}
+        resizeMode="cover"
+      >
+        <ScrollView style={themed([$contentContainer, { backgroundColor: "transparent" }])}>
+          <View
+            style={themed({ backgroundColor: "transparent", paddingTop: insets.top })}
           />
-        </View>
-        <View style={$resetButtonContainer}>
-          <RectangularButton
-            buttonText="Help"
-            onClick={() => setIsHelpModalVisible(true)}
-            icon="exclamation-triangle"
-          />
-        </View>
-        <DailyTasksTimeline refreshToken={refreshTrigger} />
-      </ScrollView>
+          <View style={themed($logoContainer)}>
+            <Image source={logoSource} style={themed($logo)} resizeMode="contain" />
+          </View>
+          <View style={themed($headerSection)}>
+            <View style={themed($blobContainer)}>
+              <LottieView
+                ref={blobLottieRef}
+                source={require("../../assets/animations/blob.json")}
+                loop
+                style={themed($blobAnimation)}
+              />
+            </View>
+            <Text
+              text={getHeaderText()}
+              preset="heading"
+              style={themed({
+                color: theme.colors.text,
+                fontSize: 24,
+                paddingHorizontal: 20,
+                textAlign: "center",
+              })}
+            />
+          </View>
+          <View style={$resetButtonContainer}>
+            <RectangularButton
+              buttonText="Help"
+              onClick={() => setIsHelpModalVisible(true)}
+              icon="exclamation-triangle"
+            />
+          </View>
+          <DailyTasksTimeline refreshToken={refreshTrigger} />
+        </ScrollView>
+      </ImageBackground>
       <HelpModal
         visible={isHelpModalVisible}
         onClose={() => setIsHelpModalVisible(false)}
@@ -151,6 +172,12 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
     </>
   )
 })
+
+const $backgroundImage: ViewStyle = {
+  flex: 1,
+  width: "100%",
+  height: "100%",
+}
 
 const $contentContainer: ViewStyle = {
   flex: 1,
@@ -176,4 +203,15 @@ const $headerSection: ViewStyle = {
 const $resetButtonContainer: ViewStyle = {
   marginTop: 24,
   paddingHorizontal: 40,
+}
+
+const $blobContainer: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 16,
+}
+
+const $blobAnimation: ViewStyle = {
+  width: 400,
+  height: 180,
 }

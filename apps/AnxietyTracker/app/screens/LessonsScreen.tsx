@@ -437,7 +437,6 @@ const $lessonTextContainer: ViewStyle = {
   flex: 1,
   flexShrink: 1,
   paddingRight: 8,
-  borderWidth: 1,
 }
 
 const $lessonItemRight: ViewStyle = {
