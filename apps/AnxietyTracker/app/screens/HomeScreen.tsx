@@ -16,6 +16,7 @@ import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
 import LottieView from "lottie-react-native"
+import { ThemedStyle } from "@/theme"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -122,41 +123,47 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         style={$backgroundImage}
         resizeMode="cover"
       >
-        <ScrollView style={themed([$contentContainer, { backgroundColor: "transparent" }])}>
-          <View
-            style={themed({ backgroundColor: "transparent", paddingTop: insets.top })}
-          />
+        <ScrollView
+          style={themed($scrollViewContainer)}
+          contentContainerStyle={themed($scrollContentContainer)}
+        >
+          {/* Top section with logo and blob */}
+          <View style={themed({ backgroundColor: "transparent", paddingTop: insets.top })} />
           <View style={themed($logoContainer)}>
             <Image source={logoSource} style={themed($logo)} resizeMode="contain" />
           </View>
-          <View style={themed($headerSection)}>
-            <View style={themed($blobContainer)}>
-              <LottieView
-                ref={blobLottieRef}
-                source={require("../../assets/animations/blob.json")}
-                loop
-                style={themed($blobAnimation)}
+          <View style={themed($blobContainer)}>
+            <LottieView
+              ref={blobLottieRef}
+              source={require("../../assets/animations/blob.json")}
+              loop
+              style={themed($blobAnimation)}
+            />
+          </View>
+
+          {/* Content card with rounded top corners */}
+          <View style={themed($contentCard)}>
+            <View>
+              <Text
+                text={getHeaderText()}
+                preset="heading"
+                style={themed({
+                  color: theme.colors.text,
+                  fontSize: 24,
+                  paddingHorizontal: 20,
+                  textAlign: "center",
+                })}
               />
             </View>
-            <Text
-              text={getHeaderText()}
-              preset="heading"
-              style={themed({
-                color: theme.colors.text,
-                fontSize: 24,
-                paddingHorizontal: 20,
-                textAlign: "center",
-              })}
-            />
+            <View style={$resetButtonContainer}>
+              <RectangularButton
+                buttonText="Help"
+                onClick={() => setIsHelpModalVisible(true)}
+                icon="exclamation-triangle"
+              />
+            </View>
+            <DailyTasksTimeline refreshToken={refreshTrigger} />
           </View>
-          <View style={$resetButtonContainer}>
-            <RectangularButton
-              buttonText="Help"
-              onClick={() => setIsHelpModalVisible(true)}
-              icon="exclamation-triangle"
-            />
-          </View>
-          <DailyTasksTimeline refreshToken={refreshTrigger} />
         </ScrollView>
       </ImageBackground>
       <HelpModal
@@ -179,9 +186,23 @@ const $backgroundImage: ViewStyle = {
   height: "100%",
 }
 
-const $contentContainer: ViewStyle = {
+const $scrollViewContainer: ViewStyle = {
   flex: 1,
 }
+
+const $scrollContentContainer: ViewStyle = {
+  flexGrow: 1,
+}
+
+const $contentCard: ThemedStyle<ViewStyle> = (theme) => ({
+  backgroundColor: theme.colors.card,
+  borderTopLeftRadius: 34,
+  borderTopRightRadius: 34,
+  paddingTop: 24,
+  paddingHorizontal: 20,
+  paddingBottom: 24,
+  marginTop: 20,
+})
 
 const $logoContainer: ViewStyle = {
   alignItems: "center",
@@ -193,11 +214,6 @@ const $logoContainer: ViewStyle = {
 const $logo: ImageStyle = {
   width: 200,
   height: 60,
-}
-
-const $headerSection: ViewStyle = {
-  marginVertical: 24,
-  paddingHorizontal: 20,
 }
 
 const $resetButtonContainer: ViewStyle = {
