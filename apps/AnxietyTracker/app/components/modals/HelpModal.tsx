@@ -1,4 +1,4 @@
-import { View, ViewStyle, TextStyle, TouchableOpacity } from "react-native"
+import { View, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components"
 import BottomModal from "./BottomModal"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -7,8 +7,6 @@ import { useNavigation } from "@react-navigation/native"
 import type { AppStackScreenProps } from "@/navigators/navigationTypes"
 import { URGE_LESSONS } from "@/data/UrgeLessons"
 import { RELAPSE_LESSON_IDS } from "@/data/RelapseLessons"
-import { GearIcon } from "phosphor-react-native"
-import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
 
 interface HelpModalProps {
   visible: boolean
@@ -21,7 +19,6 @@ type ButtonProps = {
   id: string
   buttonText: string
   onClick: () => void
-  isPaidFeature?: boolean
   icon?: string
 }
 
@@ -51,17 +48,10 @@ export default function HelpModal({
     onClose()
   }
 
-  const handleSettingsPress = () => {
-    onClose()
-    navigation.navigate("Settings")
-  }
-
   const buttons: ButtonProps[] = [
     {
-      id: "urge_to_contact",
-      buttonText: "I have the urge to contact",
-      icon: "exclamation-triangle",
-      isPaidFeature: true,
+      id: "im_anxious",
+      buttonText: "I'm anxious",
       onClick: () => {
         handleOptionPress(onLessonActivated)
         const randomLessonId = getRandomUrgeLesson()
@@ -69,8 +59,9 @@ export default function HelpModal({
       },
     },
     {
-      id: "i_contacted",
-      buttonText: "I contacted",
+      id: "im_having_a_panic_attack",
+      buttonText: "I'm having a panic attack",
+      icon: "exclamation-triangle",
       onClick: () => {
         handleOptionPress(onIContacted)
         const randomRelapseLessonId = getRandomRelapseLesson()
@@ -88,9 +79,6 @@ export default function HelpModal({
             preset="subheading"
             style={themed([$title, { color: theme.colors.text }])}
           />
-          <TouchableOpacity onPress={handleSettingsPress} style={themed($settingsButton)}>
-            <ThemedPhosphorIcon Component={GearIcon} size={24} />
-          </TouchableOpacity>
         </View>
 
         <View style={themed($optionsContainer)}>
@@ -102,8 +90,7 @@ export default function HelpModal({
               width="100%"
               customStyles={$buttonSpacing}
               icon={b.icon}
-              isSelected={b.id === "i_contacted"}
-              isPaidFeature={b.isPaidFeature}
+              isSelected={b.id === "im_having_a_panic_attack"}
             />
           ))}
         </View>
@@ -117,22 +104,13 @@ const $container: ViewStyle = {
 }
 
 const $headerContainer: ViewStyle = {
-  flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
   marginBottom: 20,
-  position: "relative",
 }
 
 const $title: ViewStyle & TextStyle = {
   textAlign: "center",
-  flex: 1,
-}
-
-const $settingsButton: ViewStyle = {
-  position: "absolute",
-  right: 0,
-  padding: 8,
 }
 
 const $optionsContainer: ViewStyle = {
