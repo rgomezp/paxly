@@ -13,8 +13,12 @@ export default class DataInitializationManager {
       BadgeManager.setBadge(BadgeType.LETTER_TO_MYSELF)
     }
 
-    // set waves sound as default (sounds on)
-    ganon.set("natureSoundsEnabled", true)
-    ganon.set("natureSoundType", "waves")
+    // set waves sound as default (sounds on) only if not already set
+    if (ganon.get("natureSoundsEnabled") === undefined) {
+      ganon.set("natureSoundsEnabled", true)
+    }
+    if (ganon.get("natureSoundType") === undefined) {
+      ganon.set("natureSoundType", "waves")
+    }
   }
 }
