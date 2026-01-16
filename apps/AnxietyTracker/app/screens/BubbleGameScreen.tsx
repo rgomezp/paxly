@@ -30,8 +30,8 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window")
 const NUM_LANES = 8
 const LANE_WIDTH = SCREEN_WIDTH / NUM_LANES
 const BUBBLE_SPEED = 50 // pixels per second
-const SPAWN_INTERVAL_MIN = 800 // milliseconds
-const SPAWN_INTERVAL_MAX = 2000 // milliseconds
+const SPAWN_INTERVAL_MIN = 200 // milliseconds
+const SPAWN_INTERVAL_MAX = 500 // milliseconds
 const BUBBLE_SMALL_SIZE = 40
 const BUBBLE_LARGE_SIZE = 60
 
@@ -191,7 +191,10 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
         </View>
 
         {/* Counter */}
-        <View style={[themed($counterContainer), { paddingBottom: insets.bottom + 20 }]}>
+        <View
+          style={[themed($counterContainer), { paddingBottom: insets.bottom + 20 }]}
+          pointerEvents="none"
+        >
           <Text
             text={count.toString()}
             preset="heading"
@@ -229,7 +232,7 @@ const $gameArea: ViewStyle = {
 
 const $bubbleContainer: ViewStyle = {
   position: "absolute",
-  bottom: 0, // Start at bottom of container
+  bottom: -BUBBLE_LARGE_SIZE, // Start off-screen below the container
 }
 
 const $bubbleTouchable: ViewStyle = {
