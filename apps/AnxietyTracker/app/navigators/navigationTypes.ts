@@ -18,6 +18,7 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   Home: { rc_offering_id?: string } | undefined
   Me: undefined
+  BubbleGame: undefined
   Settings: { openModal?: string } | undefined
   TabNavigator: undefined
   Login: undefined

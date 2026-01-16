@@ -20,7 +20,7 @@ import { ThemeContext } from "@/utils/useAppTheme"
 import { lightTheme, darkTheme } from "@/theme"
 import { useContext, useMemo, ComponentProps, useRef, useState, useEffect } from "react"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
-import { HouseIcon, UserIcon, BooksIcon } from "phosphor-react-native"
+import { HouseIcon, UserIcon, BooksIcon, CircleIcon } from "phosphor-react-native"
 import Log from "@/utils/Log"
 import BadgeManager from "@/managers/BadgeManager"
 import { isOneSignalAdditionalData } from "@/types/IOneSignalAdditionalData"
@@ -99,6 +99,20 @@ const TabNavigator = observer(function TabNavigator() {
           tabBarIcon: ({ color, size, focused }) => (
             <ThemedPhosphorIcon
               Component={BooksIcon}
+              color={color}
+              size={size ?? 22}
+              weight={focused ? "fill" : "regular"}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="BubbleGame"
+        component={Screens.BubbleGameScreen}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <ThemedPhosphorIcon
+              Component={CircleIcon}
               color={color}
               size={size ?? 22}
               weight={focused ? "fill" : "regular"}
