@@ -14,6 +14,7 @@ import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useFocusEffect } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { createAudioPlayer } from "expo-audio"
 
 interface BubbleGameScreenProps extends AppStackScreenProps<"BubbleGame"> {}
 
@@ -108,6 +109,8 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
             // Remove bubble when it goes off screen
             setBubbles((prev) => prev.filter((b) => b.id !== bubbleId))
             animationRefs.current.delete(bubbleId)
+            // Clean up the animated value to prevent memory leaks
+            animValue.removeAllListeners()
           }
         })
 
@@ -134,6 +137,25 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
     if (anim) {
       anim.stop()
       animationRefs.current.delete(bubbleId)
+    }
+
+    // Play pop sound
+    try {
+      const sound = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
+      sound.volume = 1.0
+      sound.play()
+
+      // Clean up when playback finishes
+      let isCleanedUp = false
+      const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+        if (status.didJustFinish && !isCleanedUp) {
+          isCleanedUp = true
+          sound.remove()
+          removeListener.remove()
+        }
+      })
+    } catch {
+      // Silently fail if sound can't be played
     }
 
     // Remove bubble immediately
