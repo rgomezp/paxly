@@ -39,6 +39,7 @@ import LoginManager from "./managers/LoginManager"
 import { FlagProvider } from "./hooks/useFlags"
 import * as SystemUI from "expo-system-ui"
 import { lightTheme, darkTheme } from "./theme"
+import { useNatureSounds } from "./hooks/useNatureSounds"
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -87,6 +88,9 @@ function OnboardingWrapper() {
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
+  
+  // Manage nature sounds at app level
+  useNatureSounds()
 
   // Hide splash screen when both rehydration and initialization are complete
   useEffect(() => {

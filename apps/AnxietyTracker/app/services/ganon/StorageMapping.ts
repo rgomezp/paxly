@@ -73,6 +73,8 @@ interface StorageMapping {
   letterToMyself: { letters: ILetterToMyself[] } | null
   letterToMyselfDraft: { text: string; deliveryTimeMonths: 1 | 3 | 12 } | null
   lessonsEncouragementDismissed: boolean
+  natureSoundsEnabled: boolean
+  natureSoundType: "waves" | "birds"
 }
 
 export default StorageMapping

@@ -10,6 +10,8 @@ import {
   useThemeSettingConfig,
   useDeleteAccountSettingConfig,
   useMoodReminderFrequencySettingConfig,
+  useNatureSoundsEnabledSettingConfig,
+  useNatureSoundTypeSettingConfig,
 } from "./configs"
 import { useAppTheme } from "@/utils/useAppTheme"
 import type { ThemedStyle } from "@/theme"
@@ -46,6 +48,8 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   // Get setting configurations
   const themeSetting = useThemeSettingConfig()
   const moodReminderFrequencySetting = useMoodReminderFrequencySettingConfig()
+  const natureSoundsEnabledSetting = useNatureSoundsEnabledSettingConfig()
+  const natureSoundTypeSetting = useNatureSoundTypeSettingConfig()
   const deleteAccountSetting = useDeleteAccountSettingConfig()
 
   // Check route params for opening a specific modal - only once per param value
@@ -109,9 +113,22 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
 
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
   const settings = useMemo(
-    () => [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm],
+    () => [
+      themeSetting,
+      moodReminderFrequencySetting,
+      natureSoundsEnabledSetting,
+      natureSoundTypeSetting,
+      deleteSettingWithConfirm,
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [themeSetting, moodReminderFrequencySetting, deleteSettingWithConfirm, refreshKey],
+    [
+      themeSetting,
+      moodReminderFrequencySetting,
+      natureSoundsEnabledSetting,
+      natureSoundTypeSetting,
+      deleteSettingWithConfirm,
+      refreshKey,
+    ],
   )
 
   return (

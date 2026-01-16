@@ -1,4 +1,4 @@
-import { IAppSettingsModalConfig, IAppSettingsThemeConfig } from "@/types/IAppSettingsConfig"
+import { IAppSettingsModalConfig, IAppSettingsThemeConfig, IAppSettingsBinaryConfig } from "@/types/IAppSettingsConfig"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemeContexts } from "@/theme"
 import Language from "@/internationalization/Language"
@@ -6,6 +6,7 @@ import LANGUAGE_COPY from "@/internationalization/LanguageCopy"
 import { ganon } from "@/services/ganon/ganon"
 import LoginManager from "@/managers/LoginManager"
 import DataInitializationManager from "@/managers/DataInitializationManager"
+import Log from "@/utils/Log"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { reloadAllStores } from "@/models/helpers/useStores"
@@ -14,6 +15,7 @@ import {
   MoodReminderFrequencyShorthand,
 } from "@/types/MoodReminderFrequency"
 import { MoodReminderFrequencyModal } from "@/components/settings/MoodReminderFrequencyModal"
+import { NatureSoundTypeModal } from "@/components/settings/NatureSoundTypeModal"
 import { createElement } from "react"
 
 export const useThemeSettingConfig = (): IAppSettingsThemeConfig => {
@@ -64,6 +66,45 @@ export const useMoodReminderFrequencySettingConfig = (): IAppSettingsModalConfig
     iconType: "font-awesome",
     getValue,
     modalContent: (onClose: () => void) => createElement(MoodReminderFrequencyModal, { onClose }),
+  }
+}
+
+export const useNatureSoundsEnabledSettingConfig = (): IAppSettingsBinaryConfig => {
+  const getValue = () => {
+    const enabled = ganon.get("natureSoundsEnabled") as boolean | undefined
+    return enabled ? "On" : "Off"
+  }
+
+  const toggleBinarySetting = (value: boolean) => {
+    try {
+      ganon.set("natureSoundsEnabled", value)
+      EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+    } catch (e) {
+      Log.error(`useNatureSoundsEnabledSettingConfig: Error saving natureSoundsEnabled: ${e}`)
+    }
+  }
+
+  return {
+    title: "Nature sounds",
+    iconName: "music",
+    iconType: "font-awesome",
+    getValue,
+    toggleBinarySetting,
+  }
+}
+
+export const useNatureSoundTypeSettingConfig = (): IAppSettingsModalConfig => {
+  const getValue = () => {
+    const soundType = (ganon.get("natureSoundType") as "waves" | "birds" | null) ?? "waves"
+    return soundType === "waves" ? "Waves" : "Birds"
+  }
+
+  return {
+    title: "Nature sound",
+    iconName: "volume-up",
+    iconType: "font-awesome",
+    getValue,
+    modalContent: (onClose: () => void) => createElement(NatureSoundTypeModal, { onClose }),
   }
 }
 

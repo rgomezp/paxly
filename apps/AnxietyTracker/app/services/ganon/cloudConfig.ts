@@ -27,7 +27,7 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
     subcollectionKeys: ["completedLessons", "lessonResponses", "dailyLesson"],
   },
   settings: {
-    docKeys: ["theme"],
+    docKeys: ["theme", "natureSoundsEnabled", "natureSoundType"],
   },
   utils: {
     docKeys: ["lastRunMigration"],
