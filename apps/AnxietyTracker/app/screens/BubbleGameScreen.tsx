@@ -166,7 +166,12 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
   }
 
   return (
-    <Screen preset="fixed" style={themed($screen)} contentContainerStyle={themed($screenContent)}>
+    <Screen
+      preset="fixed"
+      style={themed($screen)}
+      contentContainerStyle={themed($screenContent)}
+      safeAreaEdges={["top", "left", "right"]}
+    >
       <View style={themed($container)}>
         {/* Game area */}
         <View style={themed($gameArea)}>

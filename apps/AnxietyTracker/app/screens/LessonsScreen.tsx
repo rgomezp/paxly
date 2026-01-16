@@ -121,7 +121,7 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
   const isTodaysLessonCompleted = todaysLessonId ? completedLessons.includes(todaysLessonId) : false
 
   return (
-    <Screen preset="scroll" style={themed($screen)}>
+    <Screen preset="scroll" style={themed($screen)} safeAreaEdges={["top", "left", "right"]}>
       <View style={themed($header)}>
         <Text text="Lessons" preset="heading" style={themed({ color: theme.colors.text })} />
         {todaysLessonId && (
