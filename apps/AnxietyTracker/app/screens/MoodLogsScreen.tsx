@@ -107,7 +107,7 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
         <View style={themed($emptyStateWrapper)}>
           <EmptyState
             style={themed($emptyStateContainer as any)}
-            heading="No mood logs yet"
+            heading="No logs yet"
             content="Track how you feel to see insights over time."
           />
         </View>
