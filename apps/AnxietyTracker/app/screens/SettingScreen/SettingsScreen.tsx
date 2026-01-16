@@ -19,6 +19,7 @@ import LoadingModal from "@/components/modals/LoadingModal"
 import EventRegister from "@/utils/EventEmitter"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { useFocusEffect } from "@react-navigation/native"
+import { ganon } from "@/services/ganon/ganon"
 
 interface SettingsScreenProps extends AppStackScreenProps<"Settings"> {}
 
@@ -112,24 +113,29 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(function Setting
   }, [deleteAccountSetting])
 
   // Recalculate settings array when refreshKey changes to ensure getValue() is called fresh
-  const settings = useMemo(
-    () => [
-      themeSetting,
-      moodReminderFrequencySetting,
-      natureSoundsEnabledSetting,
-      natureSoundTypeSetting,
-      deleteSettingWithConfirm,
-    ],
+  const settings = useMemo(() => {
+    // Only show nature sound type setting if nature sounds are enabled
+    const natureSoundsEnabled = (ganon.get("natureSoundsEnabled") as boolean | undefined) ?? false
+
+    const baseSettings = [themeSetting, moodReminderFrequencySetting, natureSoundsEnabledSetting]
+
+    // Conditionally include nature sound type setting
+    if (natureSoundsEnabled) {
+      baseSettings.push(natureSoundTypeSetting)
+    }
+
+    baseSettings.push(deleteSettingWithConfirm)
+
+    return baseSettings
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      themeSetting,
-      moodReminderFrequencySetting,
-      natureSoundsEnabledSetting,
-      natureSoundTypeSetting,
-      deleteSettingWithConfirm,
-      refreshKey,
-    ],
-  )
+  }, [
+    themeSetting,
+    moodReminderFrequencySetting,
+    natureSoundsEnabledSetting,
+    natureSoundTypeSetting,
+    deleteSettingWithConfirm,
+    refreshKey,
+  ])
 
   return (
     <Screen style={themed($root)} preset="scroll" safeAreaEdges={["bottom", "left", "right"]}>
