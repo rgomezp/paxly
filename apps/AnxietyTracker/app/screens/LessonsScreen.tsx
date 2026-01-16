@@ -141,7 +141,9 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                 <Text
                   text={`Completed: ${LESSONS[todaysLessonId]?.title || "Daily Lesson"}`}
                   size="sm"
-                  style={themed({ color: theme.colors.textDim, marginLeft: 8 })}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={themed({ color: theme.colors.textDim, marginLeft: 8, flex: 1 })}
                 />
               </View>
             ) : (
@@ -160,7 +162,9 @@ export const LessonsScreen: FC<LessonsScreenProps> = observer(function LessonsSc
                 <Text
                   text={`Today's Lesson: ${LESSONS[todaysLessonId]?.title || "Daily Lesson"}`}
                   size="sm"
-                  style={themed({ color: theme.colors.text, marginLeft: 8 })}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={themed({ color: theme.colors.text, marginLeft: 8, flex: 1 })}
                 />
               </TouchableOpacity>
             )}
