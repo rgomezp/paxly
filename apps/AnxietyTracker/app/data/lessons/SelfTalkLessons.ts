@@ -290,7 +290,8 @@ export const SELF_TALK_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
             kind: "check",
           },
           {
-            label: "Reassurance-seeking creates dependency; tolerating uncertainty builds confidence",
+            label:
+              "Reassurance-seeking creates dependency; tolerating uncertainty builds confidence",
             kind: "check",
           },
           {
@@ -401,4 +402,3 @@ export const SELF_TALK_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     commitment: { text: "Finish" },
   },
 }
-

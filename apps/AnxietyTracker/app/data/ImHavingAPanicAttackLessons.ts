@@ -21,7 +21,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_anchor_90s: {
     id: "panic_anchor_90s",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "90-Second Panic Anchor",
     goal: "Ride out the first intense wave of panic",
     format: "practice",
@@ -60,7 +60,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_self_compassion: {
     id: "panic_self_compassion",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Self‑Compassion in Panic",
     goal: "Soften self‑judgment during and after a panic spike",
     format: "practice",
@@ -107,7 +107,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_cycle_education: {
     id: "panic_cycle_education",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Understand the Panic Cycle",
     goal: "Reduce fear of sensations by understanding what’s happening",
     format: "card",
@@ -147,7 +147,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_values_anchor: {
     id: "panic_values_anchor",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Values Anchor",
     goal: "Remember what matters beyond this moment of panic",
     format: "practice",
@@ -189,7 +189,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_body_reset: {
     id: "panic_body_reset",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Body Reset for Panic",
     goal: "Signal safety to your nervous system through the body",
     format: "practice",
@@ -232,7 +232,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_map_episode: {
     id: "panic_map_episode",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Map This Panic Episode",
     goal: "Understand what led into and out of this attack",
     format: "card",
@@ -276,7 +276,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_future_self: {
     id: "panic_future_self",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Message From Calmer You",
     goal: "Borrow wisdom from a future, steadier version of you",
     format: "practice",
@@ -310,7 +310,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_count_wins: {
     id: "panic_count_wins",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Count Panic Wins",
     goal: "Notice evidence that you can handle panic",
     format: "card",
@@ -346,7 +346,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_allow_wave: {
     id: "panic_allow_wave",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "Allow the Wave",
     goal: "Stop fighting sensations so panic can pass",
     format: "practice",
@@ -385,7 +385,7 @@ export const IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS: Record<string, ILesson
    */
   panic_personal_plan: {
     id: "panic_personal_plan",
-    moduleId: "mini_interventions",
+    moduleId: "im_having_a_panic_attack",
     title: "My Panic Plan",
     goal: "Create a 3-step plan you can reuse every time",
     format: "card",

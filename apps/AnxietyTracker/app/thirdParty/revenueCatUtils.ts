@@ -159,7 +159,7 @@ const executePaywallSafely = async <T>(
 
 /**
  * Safely presents the RevenueCat paywall on the main thread
- * 
+ *
  * Uses age-based placement to ensure consistent pricing throughout the app.
  * If an offeringId is provided (e.g., from deep links), it will be used instead.
  * Falls back to default offering if placement lookup fails.
@@ -198,7 +198,9 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
       )
     } else {
       // Last resort: use RevenueCat's default paywall
-      Log.warn("No offering available (neither explicit ID nor age-based placement), using RevenueCat default")
+      Log.warn(
+        "No offering available (neither explicit ID nor age-based placement), using RevenueCat default",
+      )
       result = await executePaywallSafely(
         () => RevenueCatUI.presentPaywall(),
         "Error presenting paywall",

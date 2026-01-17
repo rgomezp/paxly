@@ -51,12 +51,7 @@ describe("useStores", () => {
 
       // Get all stores that are actually cleared in clearAllStores
       // This list should match the stores in RootStore
-      const clearedStoreNames = [
-        "moodStore",
-        "journalStore",
-        "lessonStore",
-        "letterToMyselfStore",
-      ]
+      const clearedStoreNames = ["moodStore", "journalStore", "lessonStore", "letterToMyselfStore"]
 
       // Verify counts match - if they don't, a store was added to RootStore but not to clearAllStores
       expect(storeNames.length).toBe(clearedStoreNames.length)
@@ -110,12 +105,7 @@ describe("useStores", () => {
 
       // Get all stores that are actually reloaded in reloadAllStores
       // This list should match the stores in RootStore
-      const reloadedStoreNames = [
-        "moodStore",
-        "journalStore",
-        "lessonStore",
-        "letterToMyselfStore",
-      ]
+      const reloadedStoreNames = ["moodStore", "journalStore", "lessonStore", "letterToMyselfStore"]
 
       // Verify counts match - if they don't, a store was added to RootStore but not to reloadAllStores
       expect(storeNames.length).toBe(reloadedStoreNames.length)
@@ -132,4 +122,3 @@ describe("useStores", () => {
     })
   })
 })
-

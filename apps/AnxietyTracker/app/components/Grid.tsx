@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { View, ViewStyle, TextStyle, LayoutChangeEvent } from "react-native"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { Text } from "./Text"
@@ -22,7 +22,7 @@ export const Grid = <T extends GridValue>({
   getColorForValue,
   style,
 }: GridProps<T>) => {
-  const { theme, themed } = useAppTheme()
+  const { themed } = useAppTheme()
   const [containerWidth, setContainerWidth] = useState(0)
 
   // Calculate dot size and gap based on available width
@@ -88,7 +88,20 @@ export const Grid = <T extends GridValue>({
   // Generate month labels with their positions
   const monthLabels = useMemo(() => {
     const labels: { label: string; weekIndex: number }[] = []
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ]
 
     let lastMonth = -1
     gridData.forEach((week, weekIndex) => {
@@ -115,6 +128,19 @@ export const Grid = <T extends GridValue>({
     { label: "Fri", row: 5 },
     { label: "", row: 6 }, // Saturday - no label
   ]
+
+  // Helper function to get dot style
+  const getDotStyle = useMemo(
+    () => (isFuture: boolean, value: T | null) => ({
+      backgroundColor: isFuture ? "transparent" : getColorForValue(value),
+      width: dotSize,
+      height: dotSize,
+      marginRight: dotGap,
+      marginBottom: dotGap,
+      borderRadius: Math.max(2, dotSize * 0.2),
+    }),
+    [dotSize, dotGap, getColorForValue],
+  )
 
   // Don't render until we have measured the container
   if (containerWidth === 0) {
@@ -150,10 +176,7 @@ export const Grid = <T extends GridValue>({
           {dayLabels.map(({ label, row }) => (
             <View
               key={`day-${row}`}
-              style={[
-                $dayLabelCell,
-                { height: dotSize, marginBottom: dotGap },
-              ]}
+              style={[$dayLabelCell, { height: dotSize, marginBottom: dotGap }]}
             >
               {label ? (
                 <Text style={[themed($dayLabel), { lineHeight: dotSize }]}>{label}</Text>
@@ -175,17 +198,7 @@ export const Grid = <T extends GridValue>({
                 return (
                   <View
                     key={`dot-${weekIndex}-${dayIndex}`}
-                    style={[
-                      $dot,
-                      {
-                        backgroundColor: isFuture ? "transparent" : getColorForValue(value),
-                        width: dotSize,
-                        height: dotSize,
-                        marginRight: dotGap,
-                        marginBottom: dotGap,
-                        borderRadius: Math.max(2, dotSize * 0.2),
-                      },
-                    ]}
+                    style={[$dot, getDotStyle(isFuture, value)]}
                   />
                 )
               })}
@@ -249,4 +262,3 @@ const $dotsRow: ViewStyle = {
 const $dot: ViewStyle = {}
 
 export default Grid
-

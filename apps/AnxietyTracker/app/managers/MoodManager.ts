@@ -17,7 +17,12 @@ export default class MoodManager {
     ganon.set("moodHistory", [])
   }
 
-  static create(params: { moodId: MoodId; activity: Activity; notes?: string; anxietyRating?: number }): IMoodHistoryItem {
+  static create(params: {
+    moodId: MoodId
+    activity: Activity
+    notes?: string
+    anxietyRating?: number
+  }): IMoodHistoryItem {
     const { moodId, activity, notes, anxietyRating } = params
     const mood = MOODS[moodId]
     const item: IMoodHistoryItem = {

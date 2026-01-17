@@ -1,4 +1,8 @@
-import { IAppSettingsModalConfig, IAppSettingsThemeConfig, IAppSettingsBinaryConfig } from "@/types/IAppSettingsConfig"
+import {
+  IAppSettingsModalConfig,
+  IAppSettingsThemeConfig,
+  IAppSettingsBinaryConfig,
+} from "@/types/IAppSettingsConfig"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { ThemeContexts } from "@/theme"
 import Language from "@/internationalization/Language"

@@ -70,4 +70,3 @@ export function NatureSoundTypeModal({ onClose }: NatureSoundTypeModalProps) {
 const $container: ThemedStyle<ViewStyle> = () => ({
   width: "100%",
 })
-

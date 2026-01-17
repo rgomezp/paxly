@@ -280,7 +280,8 @@ export const BODY_FIRST_REGULATION_LESSON_DEFINITIONS: Record<string, ILessonCon
         title: "Key Understanding",
         items: [
           {
-            label: "Body-first regulation works because it addresses anxiety where it lives—in the body",
+            label:
+              "Body-first regulation works because it addresses anxiety where it lives—in the body",
             kind: "check",
           },
           {
@@ -405,4 +406,3 @@ export const BODY_FIRST_REGULATION_LESSON_DEFINITIONS: Record<string, ILessonCon
     commitment: { text: "Finish" },
   },
 }
-

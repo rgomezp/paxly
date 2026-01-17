@@ -218,31 +218,36 @@ export const ANXIETY_ESCALATION_LADDER_LESSON_DEFINITIONS: Record<string, ILesso
       {
         name: "early_signs",
         kind: "longText",
-        label: "What are your early warning signals? (Physical: tight chest, faster breathing, etc. Mental: initial worry thoughts, etc. Behavioral: urge to check, avoid, etc.)",
+        label:
+          "What are your early warning signals? (Physical: tight chest, faster breathing, etc. Mental: initial worry thoughts, etc. Behavioral: urge to check, avoid, etc.)",
         minWords: 25,
       },
       {
         name: "mid_level_signs",
         kind: "longText",
-        label: "What happens at mid-level anxiety? (What physical, mental, and behavioral signs appear as anxiety builds?)",
+        label:
+          "What happens at mid-level anxiety? (What physical, mental, and behavioral signs appear as anxiety builds?)",
         minWords: 25,
       },
       {
         name: "peak_signs",
         kind: "longText",
-        label: "What happens at peak anxiety? (What are the most intense symptoms when anxiety is at its highest?)",
+        label:
+          "What happens at peak anxiety? (What are the most intense symptoms when anxiety is at its highest?)",
         minWords: 25,
       },
       {
         name: "pattern_noticed",
         kind: "longText",
-        label: "What pattern do you notice? (Do physical, mental, or behavioral signs come first? How do they build on each other?)",
+        label:
+          "What pattern do you notice? (Do physical, mental, or behavioral signs come first? How do they build on each other?)",
         minWords: 20,
       },
       {
         name: "early_intervention",
         kind: "longText",
-        label: "How might catching your early signs help you intervene earlier? What could you do differently if you noticed anxiety starting to build?",
+        label:
+          "How might catching your early signs help you intervene earlier? What could you do differently if you noticed anxiety starting to build?",
         minWords: 20,
       },
     ],
@@ -382,4 +387,3 @@ export const ANXIETY_ESCALATION_LADDER_LESSON_DEFINITIONS: Record<string, ILesso
     commitment: { text: "Finish" },
   },
 }
-

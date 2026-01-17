@@ -223,7 +223,11 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
         t: "instruction",
         body: "Now, notice the difference between primary anxiety (the initial anxiety) and secondary fear (anxiety about the anxiety). Can you see how the secondary fear amplified the primary anxiety?",
       },
-      { t: "timer", seconds: 30, label: "Notice the difference between primary and secondary fear" },
+      {
+        t: "timer",
+        seconds: 30,
+        label: "Notice the difference between primary and secondary fear",
+      },
       {
         t: "instruction",
         body: "Practice this reframe: When you notice anxiety about anxiety, say to yourself: 'This is anxiety about anxiety. This is secondary fear amplifying primary anxiety. I can work with this.'",
@@ -350,7 +354,8 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
         title: "My Reminder",
         items: [
           {
-            label: "Write a reminder you can use when you notice anxiety about anxiety (e.g., 'This is secondary fear, not truth,' 'Anxiety always passes')",
+            label:
+              "Write a reminder you can use when you notice anxiety about anxiety (e.g., 'This is secondary fear, not truth,' 'Anxiety always passes')",
             kind: "shortText",
             inputId: "anxiety_about_anxiety_reminder",
           },
@@ -361,4 +366,3 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
     commitment: { text: "Finish" },
   },
 }
-

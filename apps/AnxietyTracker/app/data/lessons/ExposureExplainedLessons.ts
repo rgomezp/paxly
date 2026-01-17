@@ -249,7 +249,8 @@ export const EXPOSURE_EXPLAINED_LESSON_DEFINITIONS: Record<string, ILessonConfig
       },
       {
         t: "check",
-        prompt: "I can practice small exposure and learn from actual outcomes instead of just predictions.",
+        prompt:
+          "I can practice small exposure and learn from actual outcomes instead of just predictions.",
       },
     ],
     commitment: { text: "Finish" },
@@ -272,7 +273,8 @@ export const EXPOSURE_EXPLAINED_LESSON_DEFINITIONS: Record<string, ILessonConfig
         title: "Key Understanding",
         items: [
           {
-            label: "Exposure is facing what I'm avoiding, in small steps, until it's no longer scary",
+            label:
+              "Exposure is facing what I'm avoiding, in small steps, until it's no longer scary",
             kind: "check",
           },
           {
@@ -367,4 +369,3 @@ export const EXPOSURE_EXPLAINED_LESSON_DEFINITIONS: Record<string, ILessonConfig
     commitment: { text: "Finish" },
   },
 }
-

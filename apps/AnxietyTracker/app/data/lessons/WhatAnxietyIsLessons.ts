@@ -210,19 +210,22 @@ export const WHAT_ANXIETY_IS_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
       {
         name: "how_it_shows_up",
         kind: "longText",
-        label: "How does anxiety show up for you? What does it feel like in your body, your thoughts, your behavior?",
+        label:
+          "How does anxiety show up for you? What does it feel like in your body, your thoughts, your behavior?",
         minWords: 20,
       },
       {
         name: "what_it_means",
         kind: "longText",
-        label: "What have you believed anxiety means about you? (e.g., 'I'm weak,' 'I'm broken,' 'I can't handle life')",
+        label:
+          "What have you believed anxiety means about you? (e.g., 'I'm weak,' 'I'm broken,' 'I can't handle life')",
         minWords: 15,
       },
       {
         name: "new_perspective",
         kind: "longText",
-        label: "If anxiety is a protective system (not a flaw), how might you relate to it differently?",
+        label:
+          "If anxiety is a protective system (not a flaw), how might you relate to it differently?",
         minWords: 20,
       },
       {
@@ -277,7 +280,8 @@ export const WHAT_ANXIETY_IS_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
             kind: "check",
           },
           {
-            label: "Thoughts (e.g., 'What if...', 'I can't handle this', 'Something bad will happen')",
+            label:
+              "Thoughts (e.g., 'What if...', 'I can't handle this', 'Something bad will happen')",
             kind: "check",
           },
           {
@@ -302,4 +306,3 @@ export const WHAT_ANXIETY_IS_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
     commitment: { text: "Finish" },
   },
 }
-

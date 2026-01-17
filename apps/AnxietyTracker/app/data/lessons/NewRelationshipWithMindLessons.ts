@@ -252,7 +252,8 @@ export const NEW_RELATIONSHIP_WITH_MIND_LESSON_DEFINITIONS: Record<string, ILess
       },
       {
         t: "check",
-        prompt: "I can practice seeing thoughts as events, emotions as weather, and myself as the awareness.",
+        prompt:
+          "I can practice seeing thoughts as events, emotions as weather, and myself as the awareness.",
       },
     ],
     commitment: { text: "Finish" },
@@ -272,37 +273,42 @@ export const NEW_RELATIONSHIP_WITH_MIND_LESSON_DEFINITIONS: Record<string, ILess
     format: "journal",
     fields: [
       {
-        id: "thoughts_as_events",
-        label: "How does seeing thoughts as events, not truths, change your relationship with anxious thoughts?",
+        name: "thoughts_as_events",
+        label:
+          "How does seeing thoughts as events, not truths, change your relationship with anxious thoughts?",
         kind: "longText",
       },
       {
-        id: "emotions_as_weather",
-        label: "How does seeing emotions as weather change how you relate to anxiety and other difficult emotions?",
+        name: "emotions_as_weather",
+        label:
+          "How does seeing emotions as weather change how you relate to anxiety and other difficult emotions?",
         kind: "longText",
       },
       {
-        id: "context_not_content",
-        label: "What does it mean to you to be the context (awareness) rather than the content (thoughts/emotions)?",
+        name: "context_not_content",
+        label:
+          "What does it mean to you to be the context (awareness) rather than the content (thoughts/emotions)?",
         kind: "longText",
       },
       {
-        id: "freedom",
-        label: "How does this new relationship give you more freedom and choice in how you respond to anxiety?",
+        name: "freedom",
+        label:
+          "How does this new relationship give you more freedom and choice in how you respond to anxiety?",
         kind: "longText",
       },
       {
-        id: "practice_reminder",
-        label: "Write a reminder you can use to practice this new relationship (e.g., 'Thoughts are events, emotions are weather, I am the awareness').",
+        name: "practice_reminder",
+        label:
+          "Write a reminder you can use to practice this new relationship (e.g., 'Thoughts are events, emotions are weather, I am the awareness').",
         kind: "shortText",
       },
       {
-        id: "integration",
-        label: "How will you integrate this new relationship into your daily life? What will you practice?",
+        name: "integration",
+        label:
+          "How will you integrate this new relationship into your daily life? What will you practice?",
         kind: "longText",
       },
     ],
     commitment: { text: "Finish" },
   },
 }
-

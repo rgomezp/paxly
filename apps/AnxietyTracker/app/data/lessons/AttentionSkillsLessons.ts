@@ -380,4 +380,3 @@ export const ATTENTION_SKILLS_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
     commitment: { text: "Finish" },
   },
 }
-

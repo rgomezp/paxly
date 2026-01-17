@@ -247,7 +247,8 @@ export const ACCEPTANCE_VS_RESIGNATION_LESSON_DEFINITIONS: Record<string, ILesso
       },
       {
         t: "check",
-        prompt: "I can practice acceptance as active willingness to feel anxiety while taking action.",
+        prompt:
+          "I can practice acceptance as active willingness to feel anxiety while taking action.",
       },
     ],
     commitment: { text: "Finish" },
@@ -362,7 +363,8 @@ export const ACCEPTANCE_VS_RESIGNATION_LESSON_DEFINITIONS: Record<string, ILesso
         title: "My Acceptance Reminder",
         items: [
           {
-            label: "Write an acceptance reminder you can use (e.g., 'I'm willing to feel this while I act,' 'Allowing reduces intensity')",
+            label:
+              "Write an acceptance reminder you can use (e.g., 'I'm willing to feel this while I act,' 'Allowing reduces intensity')",
             kind: "shortText",
             inputId: "acceptance_reminder",
           },
@@ -373,4 +375,3 @@ export const ACCEPTANCE_VS_RESIGNATION_LESSON_DEFINITIONS: Record<string, ILesso
     commitment: { text: "Finish" },
   },
 }
-

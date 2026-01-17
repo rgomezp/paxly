@@ -1,4 +1,4 @@
-import { Linking, Platform } from "react-native"
+import { Linking } from "react-native"
 import Log from "@/utils/Log"
 
 /**
@@ -14,13 +14,13 @@ export async function openLinkInBrowser(url: string) {
     } else {
       Log.warn(`openLinkInBrowser: canOpenURL returned false, attempting anyway`, { url })
       // Try opening anyway for certain URL types as canOpenURL might be overly restrictive
-      const shouldTryAnyway = 
+      const shouldTryAnyway =
         url.startsWith("mailto:") ||
         url.includes("apps.apple.com") ||
         url.includes("play.google.com") ||
         url.startsWith("https://") ||
         url.startsWith("http://")
-      
+
       if (shouldTryAnyway) {
         try {
           await Linking.openURL(url)

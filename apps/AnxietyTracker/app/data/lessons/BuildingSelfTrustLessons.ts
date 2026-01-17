@@ -352,7 +352,8 @@ export const BUILDING_SELF_TRUST_LESSON_DEFINITIONS: Record<string, ILessonConfi
         title: "My Self-Trust Reminder",
         items: [
           {
-            label: "Write a reminder you can use to build self-trust (e.g., 'I've handled this before, I can handle it again,' 'I can handle discomfort')",
+            label:
+              "Write a reminder you can use to build self-trust (e.g., 'I've handled this before, I can handle it again,' 'I can handle discomfort')",
             kind: "shortText",
             inputId: "self_trust_reminder",
           },
@@ -363,4 +364,3 @@ export const BUILDING_SELF_TRUST_LESSON_DEFINITIONS: Record<string, ILessonConfi
     commitment: { text: "Finish" },
   },
 }
-

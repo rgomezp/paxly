@@ -191,7 +191,8 @@ export const TRIGGERS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       {
         t: "check",
-        prompt: "I can identify triggers in my anxiety episodes and understand they're cues, not causes.",
+        prompt:
+          "I can identify triggers in my anxiety episodes and understand they're cues, not causes.",
       },
     ],
     commitment: { text: "Finish" },
@@ -214,31 +215,36 @@ export const TRIGGERS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       {
         name: "internal_triggers",
         kind: "longText",
-        label: "What are your internal triggers? (Thoughts, physical sensations, memories, bodily states like hunger/fatigue, emotions)",
+        label:
+          "What are your internal triggers? (Thoughts, physical sensations, memories, bodily states like hunger/fatigue, emotions)",
         minWords: 25,
       },
       {
         name: "external_triggers",
         kind: "longText",
-        label: "What are your external triggers? (Situations, people, places, substances like caffeine, sleep deprivation, stress)",
+        label:
+          "What are your external triggers? (Situations, people, places, substances like caffeine, sleep deprivation, stress)",
         minWords: 25,
       },
       {
         name: "trigger_combinations",
         kind: "longText",
-        label: "How do your triggers combine? (e.g., 'When I'm tired and then have a difficult conversation, anxiety spikes')",
+        label:
+          "How do your triggers combine? (e.g., 'When I'm tired and then have a difficult conversation, anxiety spikes')",
         minWords: 20,
       },
       {
         name: "out_of_nowhere",
         kind: "longText",
-        label: "Think of a time anxiety felt like it came 'out of nowhere.' Looking back, what triggers can you identify?",
+        label:
+          "Think of a time anxiety felt like it came 'out of nowhere.' Looking back, what triggers can you identify?",
         minWords: 20,
       },
       {
         name: "trigger_response",
         kind: "longText",
-        label: "How might understanding your triggers help you respond differently? (Remember: triggers are cues, not causes)",
+        label:
+          "How might understanding your triggers help you respond differently? (Remember: triggers are cues, not causes)",
         minWords: 20,
       },
     ],
@@ -271,7 +277,8 @@ export const TRIGGERS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
             kind: "check",
           },
           {
-            label: "Most anxiety episodes are triggered by a combination of internal and external factors",
+            label:
+              "Most anxiety episodes are triggered by a combination of internal and external factors",
             kind: "check",
           },
           {
@@ -360,4 +367,3 @@ export const TRIGGERS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
     commitment: { text: "Finish" },
   },
 }
-

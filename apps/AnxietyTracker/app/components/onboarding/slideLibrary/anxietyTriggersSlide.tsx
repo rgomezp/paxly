@@ -19,11 +19,11 @@ const options: MultipleChoiceOption<ContactTemptationSituationsChoices>[] = [
   { id: ContactTemptationSituationsChoices.WHEN_DRUNK, label: "Before bed" },
 ]
 
-export function anxietyTriggersSlide({
-  onSelection,
-}: AnxietyTriggersSlideProps): ISlide {
+export function anxietyTriggersSlide({ onSelection }: AnxietyTriggersSlideProps): ISlide {
   // Read saved anxietyTriggerSituation from ganon
-  const savedTrigger = ganon.get("anxietyTriggerSituation") as ContactTemptationSituationsChoices | null
+  const savedTrigger = ganon.get(
+    "anxietyTriggerSituation",
+  ) as ContactTemptationSituationsChoices | null
   const initialSelected = savedTrigger ? [savedTrigger] : []
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
@@ -34,9 +34,7 @@ export function anxietyTriggersSlide({
     // Save to ganon with new key
     try {
       ganon.set("anxietyTriggerSituation", selectedTrigger)
-      Log.info(
-        `AnxietyTriggersSlide: Saved anxietyTriggerSituation: ${selectedTrigger}`,
-      )
+      Log.info(`AnxietyTriggersSlide: Saved anxietyTriggerSituation: ${selectedTrigger}`)
     } catch (e) {
       Log.error(`AnxietyTriggersSlide: Error saving anxietyTriggerSituation: ${e}`)
     }
@@ -62,4 +60,3 @@ export function anxietyTriggersSlide({
     ),
   }
 }
-

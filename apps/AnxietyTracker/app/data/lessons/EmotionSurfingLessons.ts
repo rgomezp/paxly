@@ -246,7 +246,8 @@ export const EMOTION_SURFING_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
       },
       {
         t: "check",
-        prompt: "I can ride out emotions like waves, staying present with them as they build, peak, and fall.",
+        prompt:
+          "I can ride out emotions like waves, staying present with them as they build, peak, and fall.",
       },
     ],
     commitment: { text: "Finish" },
@@ -343,7 +344,8 @@ export const EMOTION_SURFING_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
         title: "My Emotion Surfing Reminder",
         items: [
           {
-            label: "Write a reminder you can use when emotions feel intense (e.g., 'This is a wave, it will pass,' 'I can ride this out')",
+            label:
+              "Write a reminder you can use when emotions feel intense (e.g., 'This is a wave, it will pass,' 'I can ride this out')",
             kind: "shortText",
             inputId: "surfing_reminder",
           },
@@ -354,4 +356,3 @@ export const EMOTION_SURFING_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
     commitment: { text: "Finish" },
   },
 }
-

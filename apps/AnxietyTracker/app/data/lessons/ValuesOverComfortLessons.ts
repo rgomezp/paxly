@@ -348,7 +348,8 @@ export const VALUES_OVER_COMFORT_LESSON_DEFINITIONS: Record<string, ILessonConfi
         title: "My Values-Based Action",
         items: [
           {
-            label: "Write one values-based action you'll take this week, even if it creates some anxiety",
+            label:
+              "Write one values-based action you'll take this week, even if it creates some anxiety",
             kind: "shortText",
             inputId: "values_action",
           },
@@ -359,4 +360,3 @@ export const VALUES_OVER_COMFORT_LESSON_DEFINITIONS: Record<string, ILessonConfi
     commitment: { text: "Finish" },
   },
 }
-

@@ -269,7 +269,8 @@ export const SETBACKS_WITHOUT_SPIRAL_LESSON_DEFINITIONS: Record<string, ILessonC
       },
       {
         t: "check",
-        prompt: "I can recognize setbacks as temporary fluctuations and respond skillfully without spiraling.",
+        prompt:
+          "I can recognize setbacks as temporary fluctuations and respond skillfully without spiraling.",
       },
     ],
     commitment: { text: "Finish" },
@@ -289,37 +290,42 @@ export const SETBACKS_WITHOUT_SPIRAL_LESSON_DEFINITIONS: Record<string, ILessonC
     format: "journal",
     fields: [
       {
-        id: "setback_experience",
-        label: "Think about a setback or flare-up you've experienced. What happened? What did it feel like?",
+        name: "setback_experience",
+        label:
+          "Think about a setback or flare-up you've experienced. What happened? What did it feel like?",
         kind: "longText",
       },
       {
-        id: "setback_thoughts",
-        label: "What thoughts came up during that setback? Did you spiral? What did you tell yourself?",
+        name: "setback_thoughts",
+        label:
+          "What thoughts came up during that setback? Did you spiral? What did you tell yourself?",
         kind: "longText",
       },
       {
-        id: "setback_causes",
-        label: "Looking back, what might have contributed to that setback? Was there stress stacking? Life transitions? Physical factors?",
+        name: "setback_causes",
+        label:
+          "Looking back, what might have contributed to that setback? Was there stress stacking? Life transitions? Physical factors?",
         kind: "longText",
       },
       {
-        id: "skillful_response",
-        label: "If you could go back, how would you respond more skillfully? What would you think? What tools would you use?",
+        name: "skillful_response",
+        label:
+          "If you could go back, how would you respond more skillfully? What would you think? What tools would you use?",
         kind: "longText",
       },
       {
-        id: "setback_reminder",
-        label: "Write a reminder you can use when you have a setback (e.g., 'This is temporary, I can handle it,' 'Setbacks are normal, not failures').",
+        name: "setback_reminder",
+        label:
+          "Write a reminder you can use when you have a setback (e.g., 'This is temporary, I can handle it,' 'Setbacks are normal, not failures').",
         kind: "shortText",
       },
       {
-        id: "stress_bucket",
-        label: "Right now, how full is your stress bucket? What stressors are present? What can you do to reduce stress or increase capacity?",
+        name: "stress_bucket",
+        label:
+          "Right now, how full is your stress bucket? What stressors are present? What can you do to reduce stress or increase capacity?",
         kind: "longText",
       },
     ],
     commitment: { text: "Finish" },
   },
 }
-

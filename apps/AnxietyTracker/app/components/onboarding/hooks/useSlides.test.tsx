@@ -6,7 +6,6 @@ import { renderHook } from "@testing-library/react-native"
 import { useSlides } from "./useSlides"
 import { FlagContext } from "@/hooks/useFlags"
 import UserManager from "@/managers/UserManager"
-import { YesNoChoices } from "@/types/YesNo"
 
 // Mock ganon
 const mockGanonStorage: Record<string, any> = {}
@@ -32,8 +31,8 @@ jest.mock("@/services/ganon/ganon", () => {
  */
 const EXPECTED_SLIDE_IDS = [
   "wowMoment",
-  "hero",
   "problem_solution",
+  "hero",
   "howItWorks",
   "name_input",
   "gender",
@@ -41,9 +40,10 @@ const EXPECTED_SLIDE_IDS = [
   "anxietySeverity",
   "anxietyTriggerSituation",
   "anxietyDuration",
-  "testimonials",
   "moodTrackingIntro",
   "moodReminderFrequency",
+  "congratulationsAward",
+  "testimonials",
   "referralSource",
   "freeToTry",
   "reminderBell",
@@ -78,6 +78,7 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       problemSolutionSlide: "problem_solution",
       howItWorksSlide: "howItWorks",
       nicknameSlide: "name_input",
+      congratulationsAwardSlide: "congratulationsAward",
       testimonialsSlide: "testimonials",
       genderSlide: "gender",
       ageSlide: "ageRange",
@@ -133,7 +134,6 @@ describe("useSlides - leadup slides feature", () => {
     jest.spyOn(UserManager, "getUser").mockReturnValue({
       nickname: "TestUser",
     } as any)
-
   })
 
   afterEach(() => {
@@ -141,7 +141,10 @@ describe("useSlides - leadup slides feature", () => {
   })
 
   const createWrapper = (leadup_slides: boolean) => {
-    const mockUseFeatureFlags = jest.fn(() => ({ leadup_slides }))
+    const mockUseFeatureFlags = jest.fn(() => ({
+      leadup_slides,
+      testimonials_slide: true, // testimonials_slide is enabled by default
+    }))
     const mockFlagContext = {
       useFeatureFlags: mockUseFeatureFlags,
     }
@@ -216,7 +219,10 @@ describe("useSlides - leadup slides feature", () => {
 
   it("should update slides when leadup_slides flag changes", () => {
     let leadup_slides = false
-    const mockUseFeatureFlags = jest.fn(() => ({ leadup_slides }))
+    const mockUseFeatureFlags = jest.fn(() => ({
+      leadup_slides,
+      testimonials_slide: true, // testimonials_slide is enabled by default
+    }))
     const mockFlagContext = {
       useFeatureFlags: mockUseFeatureFlags,
     }
@@ -235,7 +241,10 @@ describe("useSlides - leadup slides feature", () => {
 
     // Enable the flag
     leadup_slides = true
-    mockUseFeatureFlags.mockReturnValue({ leadup_slides })
+    mockUseFeatureFlags.mockReturnValue({
+      leadup_slides,
+      testimonials_slide: true, // testimonials_slide is enabled by default
+    })
     rerender({})
 
     // Should now include leadup slides

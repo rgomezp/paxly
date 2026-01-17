@@ -93,10 +93,10 @@ export const BarGraph: FC<BarGraphProps> = function BarGraph({
           {data.map((bar) => {
             const denom = yMax === 0 ? 1 : yMax
             const totalHeight = bar.total === 0 ? 0 : (bar.total / denom) * chartHeight
-            
+
             // Calculate heights for each segment
             const segmentHeights = bar.segments.map((seg) =>
-              bar.total === 0 ? 0 : (seg.value / denom) * chartHeight
+              bar.total === 0 ? 0 : (seg.value / denom) * chartHeight,
             )
 
             return (
@@ -274,4 +274,3 @@ const $legendText: TextStyle = {
 }
 
 export default BarGraph
-

@@ -53,4 +53,3 @@ export function anxietyDurationSlide({ onSelection }: AnxietyDurationSlideProps)
     ),
   }
 }
-

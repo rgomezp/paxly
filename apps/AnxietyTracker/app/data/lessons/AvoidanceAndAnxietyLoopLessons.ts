@@ -259,7 +259,8 @@ export const AVOIDANCE_AND_ANXIETY_LOOP_LESSON_DEFINITIONS: Record<string, ILess
       },
       {
         t: "check",
-        prompt: "I can identify my avoidance patterns and start taking small steps to face what I'm avoiding.",
+        prompt:
+          "I can identify my avoidance patterns and start taking small steps to face what I'm avoiding.",
       },
     ],
     commitment: { text: "Finish" },
@@ -379,4 +380,3 @@ export const AVOIDANCE_AND_ANXIETY_LOOP_LESSON_DEFINITIONS: Record<string, ILess
     commitment: { text: "Finish" },
   },
 }
-

@@ -211,31 +211,36 @@ export const SAFETY_BEHAVIORS_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
       {
         name: "checking_behaviors",
         kind: "longText",
-        label: "What checking behaviors do you engage in? (e.g., checking locks, emails, symptoms, phone) How often?",
+        label:
+          "What checking behaviors do you engage in? (e.g., checking locks, emails, symptoms, phone) How often?",
         minWords: 25,
       },
       {
         name: "reassurance_seeking",
         kind: "longText",
-        label: "How do you seek reassurance? (e.g., asking others, Googling symptoms, searching for answers) What do you need reassurance about?",
+        label:
+          "How do you seek reassurance? (e.g., asking others, Googling symptoms, searching for answers) What do you need reassurance about?",
         minWords: 25,
       },
       {
         name: "avoidance_behaviors",
         kind: "longText",
-        label: "What do you avoid because of anxiety? (situations, places, activities, people) How has avoidance affected your life?",
+        label:
+          "What do you avoid because of anxiety? (situations, places, activities, people) How has avoidance affected your life?",
         minWords: 25,
       },
       {
         name: "safety_items",
         kind: "longText",
-        label: "What safety items do you carry or what escape plans do you have? (e.g., always need water, phone, medication, escape route) Why do you need them?",
+        label:
+          "What safety items do you carry or what escape plans do you have? (e.g., always need water, phone, medication, escape route) Why do you need them?",
         minWords: 20,
       },
       {
         name: "impact",
         kind: "longText",
-        label: "How have safety behaviors affected your life? How do they reinforce anxiety? What would it be like to reduce them?",
+        label:
+          "How have safety behaviors affected your life? How do they reinforce anxiety? What would it be like to reduce them?",
         minWords: 25,
       },
     ],
@@ -389,4 +394,3 @@ export const SAFETY_BEHAVIORS_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
     commitment: { text: "Finish" },
   },
 }
-

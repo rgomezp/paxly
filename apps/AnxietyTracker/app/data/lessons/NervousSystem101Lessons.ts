@@ -213,25 +213,29 @@ export const NERVOUS_SYSTEM_101_LESSON_DEFINITIONS: Record<string, ILessonConfig
       {
         name: "common_symptoms",
         kind: "longText",
-        label: "What physical symptoms do you experience when anxious? (e.g., racing heart, tight chest, sweaty palms, stomach issues, shaking)",
+        label:
+          "What physical symptoms do you experience when anxious? (e.g., racing heart, tight chest, sweaty palms, stomach issues, shaking)",
         minWords: 15,
       },
       {
         name: "what_they_mean",
         kind: "longText",
-        label: "What have you believed these symptoms mean? (e.g., 'I'm having a heart attack,' 'I'm losing control,' 'Something is wrong with me')",
+        label:
+          "What have you believed these symptoms mean? (e.g., 'I'm having a heart attack,' 'I'm losing control,' 'Something is wrong with me')",
         minWords: 15,
       },
       {
         name: "new_understanding",
         kind: "longText",
-        label: "If these symptoms are your nervous system preparing for action (not signs of danger), how does that change how you relate to them?",
+        label:
+          "If these symptoms are your nervous system preparing for action (not signs of danger), how does that change how you relate to them?",
         minWords: 20,
       },
       {
         name: "symptom_intensity",
         kind: "slider",
-        label: "Right now, how intense are any physical symptoms you're feeling? (0 = none, 10 = extremely intense)",
+        label:
+          "Right now, how intense are any physical symptoms you're feeling? (0 = none, 10 = extremely intense)",
         min: 0,
         max: 10,
         step: 1,
@@ -343,4 +347,3 @@ export const NERVOUS_SYSTEM_101_LESSON_DEFINITIONS: Record<string, ILessonConfig
     commitment: { text: "Finish" },
   },
 }
-

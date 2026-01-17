@@ -331,12 +331,11 @@ describe("AwardManager", () => {
 
   describe("duplicate prevention", () => {
     it("should prevent duplicate awards when sequence is reordered", () => {
-      // Simulate a user who earned awards in old order: [sneakers, green-thumb]
-      // But now green-thumb is at index 2 in the sequence
+      // Simulate a user who earned awards: [miracle-legumes (0), green-thumb (2)]
       // User has 2 awards, so expectedIndex = 2
       LessonManager.getCompletedLessons.mockReturnValue(["lesson1", "lesson2", "lesson3"])
       ganon.set("awardData", {
-        earnedAwardIds: [AWARD_SEQUENCE[0].id, AWARD_SEQUENCE[2].id], // sneakers (0), green-thumb (2)
+        earnedAwardIds: [AWARD_SEQUENCE[0].id, AWARD_SEQUENCE[2].id], // miracle-legumes (0), green-thumb (2)
         lastAwardDate: Date.now() - 4 * 24 * 60 * 60 * 1000,
       })
 
@@ -345,12 +344,13 @@ describe("AwardManager", () => {
       const result = AwardManager.award(true)
       expect(result).not.toBeNull()
       expect(result?.id).not.toBe("green-thumb") // Should not duplicate
-      expect(result?.id).not.toBe("sneakers") // Should not duplicate
+      expect(result?.id).toBe("back-pack") // Should award back-pack (index 3)
 
       const awardData = ganon.get("awardData") as IAwardData
       expect(awardData.earnedAwardIds).toHaveLength(3)
-      expect(awardData.earnedAwardIds).toContain("sneakers")
+      expect(awardData.earnedAwardIds).toContain("miracle-legumes")
       expect(awardData.earnedAwardIds).toContain("green-thumb")
+      expect(awardData.earnedAwardIds).toContain("back-pack")
       // Should not have duplicates
       expect(new Set(awardData.earnedAwardIds).size).toBe(3)
     })

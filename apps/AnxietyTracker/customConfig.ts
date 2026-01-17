@@ -52,7 +52,8 @@ export default function customConfig(): CustomConfig {
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
     oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
     iosAppStoreUrl: "https://apps.apple.com/us/app/anxiety-tracker/id6754750980",
-    androidAppStoreUrl: "https://play.google.com/store/apps/details?id=com.honeywolf.anxietytracker",
+    androidAppStoreUrl:
+      "https://play.google.com/store/apps/details?id=com.honeywolf.anxietytracker",
     useReferrals: false,
     supportEmail: "team@anxietytracker.com",
   }

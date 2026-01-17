@@ -217,31 +217,36 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
       {
         name: "anxiety_experience",
         kind: "longText",
-        label: "How does anxiety show up for you? What does it feel like? (e.g., ongoing worry, persistent thoughts, background unease)",
+        label:
+          "How does anxiety show up for you? What does it feel like? (e.g., ongoing worry, persistent thoughts, background unease)",
         minWords: 20,
       },
       {
         name: "panic_experience",
         kind: "longText",
-        label: "Have you experienced panic attacks? If so, what do they feel like? If not, what do you imagine they might feel like?",
+        label:
+          "Have you experienced panic attacks? If so, what do they feel like? If not, what do you imagine they might feel like?",
         minWords: 15,
       },
       {
         name: "medical_fears",
         kind: "longText",
-        label: "During panic or intense anxiety, what medical fears come up? (e.g., 'I'm having a heart attack,' 'I'm losing my mind')",
+        label:
+          "During panic or intense anxiety, what medical fears come up? (e.g., 'I'm having a heart attack,' 'I'm losing my mind')",
         minWords: 15,
       },
       {
         name: "existential_fears",
         kind: "longText",
-        label: "What existential fears come up? (e.g., 'I'll never be normal again,' 'This will never end,' 'I'm going crazy')",
+        label:
+          "What existential fears come up? (e.g., 'I'll never be normal again,' 'This will never end,' 'I'm going crazy')",
         minWords: 15,
       },
       {
         name: "new_understanding",
         kind: "longText",
-        label: "If panic is intense but not harmful, and these fears are symptoms not facts, how does that change your relationship with panic?",
+        label:
+          "If panic is intense but not harmful, and these fears are symptoms not facts, how does that change your relationship with panic?",
         minWords: 20,
       },
     ],
@@ -344,7 +349,8 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
         title: "My Panic Reframe",
         items: [
           {
-            label: "Write a reframe you can use during panic (e.g., 'This is intense but not dangerous,' 'This is a false alarm and it will pass')",
+            label:
+              "Write a reframe you can use during panic (e.g., 'This is intense but not dangerous,' 'This is a false alarm and it will pass')",
             kind: "shortText",
             inputId: "panic_reframe",
           },
@@ -355,4 +361,3 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
     commitment: { text: "Finish" },
   },
 }
-

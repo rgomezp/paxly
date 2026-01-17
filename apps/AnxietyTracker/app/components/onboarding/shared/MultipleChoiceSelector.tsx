@@ -1,11 +1,5 @@
 import RectangularButton from "@/components/buttons/RectangularButton"
-import {
-  View,
-  StyleSheet,
-  TextStyle,
-  ScrollView,
-  ViewStyle,
-} from "react-native"
+import { View, StyleSheet, TextStyle, ScrollView, ViewStyle } from "react-native"
 import { useState, useEffect } from "react"
 import { Text } from "@/components/Text"
 import { useAppTheme } from "@/utils/useAppTheme"

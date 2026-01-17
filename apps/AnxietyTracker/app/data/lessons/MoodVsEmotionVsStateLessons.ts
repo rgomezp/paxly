@@ -212,31 +212,36 @@ export const MOOD_VS_EMOTION_VS_STATE_LESSON_DEFINITIONS: Record<string, ILesson
       {
         name: "mood_experience",
         kind: "longText",
-        label: "What moods do you tend to experience? (e.g., anxious mood lasting hours/days, irritable mood, down mood) How long do they typically last?",
+        label:
+          "What moods do you tend to experience? (e.g., anxious mood lasting hours/days, irritable mood, down mood) How long do they typically last?",
         minWords: 20,
       },
       {
         name: "emotion_experience",
         kind: "longText",
-        label: "What emotions do you experience? (e.g., fear, anger, sadness, joy) How long do they typically last? Do they feel permanent when they're happening?",
+        label:
+          "What emotions do you experience? (e.g., fear, anger, sadness, joy) How long do they typically last? Do they feel permanent when they're happening?",
         minWords: 20,
       },
       {
         name: "state_experience",
         kind: "longText",
-        label: "How do your states change throughout the day? Do you notice moments of calm even in anxious moods? Do states fluctuate moment to moment?",
+        label:
+          "How do your states change throughout the day? Do you notice moments of calm even in anxious moods? Do states fluctuate moment to moment?",
         minWords: 20,
       },
       {
         name: "identity_trap",
         kind: "longText",
-        label: "Have you ever believed that what you feel defines who you are? (e.g., 'I'm an anxious person,' 'I'm broken') How does understanding moods/emotions/states change that?",
+        label:
+          "Have you ever believed that what you feel defines who you are? (e.g., 'I'm an anxious person,' 'I'm broken') How does understanding moods/emotions/states change that?",
         minWords: 20,
       },
       {
         name: "language_shift",
         kind: "longText",
-        label: "How might you describe your experience differently using this framework? (e.g., 'I'm experiencing an anxious mood' instead of 'I'm anxious')",
+        label:
+          "How might you describe your experience differently using this framework? (e.g., 'I'm experiencing an anxious mood' instead of 'I'm anxious')",
         minWords: 20,
       },
     ],
@@ -327,7 +332,8 @@ export const MOOD_VS_EMOTION_VS_STATE_LESSON_DEFINITIONS: Record<string, ILesson
         title: "My Key Insight",
         items: [
           {
-            label: "Write one key insight about moods, emotions, and states that you want to remember",
+            label:
+              "Write one key insight about moods, emotions, and states that you want to remember",
             kind: "shortText",
             inputId: "key_insight",
           },
@@ -338,4 +344,3 @@ export const MOOD_VS_EMOTION_VS_STATE_LESSON_DEFINITIONS: Record<string, ILesson
     commitment: { text: "Finish" },
   },
 }
-

@@ -88,7 +88,7 @@ function OnboardingWrapper() {
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
-  
+
   // Manage nature sounds at app level
   useNatureSounds()
 

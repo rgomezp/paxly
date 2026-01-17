@@ -93,7 +93,7 @@ export function useNatureSounds() {
             try {
               natureSoundPlayer.pause()
               natureSoundPlayer.remove()
-            } catch (e) {
+            } catch {
               // Ignore errors when cleaning up old player
             }
             natureSoundPlayer = null
@@ -131,4 +131,3 @@ export function useNatureSounds() {
     }
   }, [natureSoundsEnabled, natureSoundType, stopCurrentSound]) // Re-run when settings change
 }
-

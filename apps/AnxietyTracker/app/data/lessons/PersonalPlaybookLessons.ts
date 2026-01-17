@@ -291,7 +291,8 @@ export const PERSONAL_PLAYBOOK_LESSON_DEFINITIONS: Record<string, ILessonConfig>
         title: "My Early Warning Signs",
         items: [
           {
-            label: "Physical early warning signs (e.g., tight chest, shallow breathing, muscle tension)",
+            label:
+              "Physical early warning signs (e.g., tight chest, shallow breathing, muscle tension)",
             kind: "check",
           },
           {
@@ -299,7 +300,8 @@ export const PERSONAL_PLAYBOOK_LESSON_DEFINITIONS: Record<string, ILessonConfig>
             kind: "check",
           },
           {
-            label: "Behavioral early warning signs (e.g., avoidance urges, checking, reassurance seeking)",
+            label:
+              "Behavioral early warning signs (e.g., avoidance urges, checking, reassurance seeking)",
             kind: "check",
           },
           {
@@ -314,7 +316,8 @@ export const PERSONAL_PLAYBOOK_LESSON_DEFINITIONS: Record<string, ILessonConfig>
         title: "My Go-To Tools",
         items: [
           {
-            label: "Body-first regulation tools (e.g., deep breathing, movement, temperature, grounding)",
+            label:
+              "Body-first regulation tools (e.g., deep breathing, movement, temperature, grounding)",
             kind: "check",
           },
           {
@@ -322,7 +325,8 @@ export const PERSONAL_PLAYBOOK_LESSON_DEFINITIONS: Record<string, ILessonConfig>
             kind: "check",
           },
           {
-            label: "Emotion surfing tools (e.g., riding it out, remembering feelings peak and fall)",
+            label:
+              "Emotion surfing tools (e.g., riding it out, remembering feelings peak and fall)",
             kind: "check",
           },
           {
@@ -391,4 +395,3 @@ export const PERSONAL_PLAYBOOK_LESSON_DEFINITIONS: Record<string, ILessonConfig>
     commitment: { text: "Finish" },
   },
 }
-

@@ -33,7 +33,9 @@ export const MoodGrid: FC<MoodGridProps> = observer(function MoodGrid({ style })
     }
   }
 
-  return <Grid getValueForDate={getValueForDate} getColorForValue={getColorForValue} style={style} />
+  return (
+    <Grid getValueForDate={getValueForDate} getColorForValue={getColorForValue} style={style} />
+  )
 })
 
 export default MoodGrid
