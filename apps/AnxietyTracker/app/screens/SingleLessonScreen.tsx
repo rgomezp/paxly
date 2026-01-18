@@ -10,6 +10,7 @@ import AwardManager from "@/managers/AwardManager"
 import LessonCompletionManager from "@/managers/LessonCompletionManager"
 import { navigate } from "@/navigators/navigationUtilities"
 import { shouldShowRateLesson } from "@/utils/lessonFeedback"
+import Log from "@/utils/Log"
 
 interface SingleLessonScreenProps extends AppStackScreenProps<"SingleLesson"> {}
 
@@ -82,7 +83,7 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
         navigation.goBack()
       }
     } catch (error) {
-      console.error("[SingleLessonScreen] Error in handleComplete:", error)
+      Log.error(`[SingleLessonScreen] Error in handleComplete: ${error}`)
       // Handle errors gracefully - still try to navigate appropriately
       // Check award availability again in case it wasn't set before the error
       try {
@@ -93,7 +94,7 @@ export const SingleLessonScreen: FC<SingleLessonScreenProps> = ({ route, navigat
           navigation.goBack()
         }
       } catch (navError) {
-        console.error("[SingleLessonScreen] Error during navigation fallback:", navError)
+        Log.error(`[SingleLessonScreen] Error during navigation fallback: ${navError}`)
         // Last resort: just go back
         navigation.goBack()
       }
