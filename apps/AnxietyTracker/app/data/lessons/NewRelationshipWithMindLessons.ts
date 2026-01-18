@@ -88,7 +88,7 @@ export const NEW_RELATIONSHIP_WITH_MIND_LESSON_DEFINITIONS: Record<string, ILess
     cards: [
       {
         type: "text",
-        body: "Emotions are like weather. They come and go. They change. They're temporary. Just like you can't control the weather, you can't always control your emotions—but you can learn to live with them.",
+        body: "Emotions can be thought of like weather. They tend to come and go. They change. For most people, they're temporary. Just like you can't control the weather, you can't always control your emotions—but you can learn to live with them.",
       },
       {
         type: "text",
@@ -124,7 +124,7 @@ export const NEW_RELATIONSHIP_WITH_MIND_LESSON_DEFINITIONS: Record<string, ILess
       },
       {
         type: "text",
-        body: "The more you see emotions as weather, the less you fight them. You don't try to stop the rain—you just wait for it to pass. You don't try to eliminate anxiety—you just let it be weather.",
+        body: "The more you see emotions as weather, the less you may fight them. You don't try to stop the rain—you wait for it to pass. Similarly, you might not try to eliminate anxiety—you can let it be like weather.",
       },
       {
         type: "text",

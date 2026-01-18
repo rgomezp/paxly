@@ -104,7 +104,7 @@ export const SETBACKS_WITHOUT_SPIRAL_LESSON_DEFINITIONS: Record<string, ILessonC
       },
       {
         type: "text",
-        body: "3. Physical factors: Illness, lack of sleep, poor nutrition, hormonal changes, medication changes. Your body and mind are connected—when your body is stressed, your anxiety system can flare up.",
+        body: "3. Physical factors: Illness, lack of sleep, poor nutrition, hormonal changes. Your body and mind are connected—when your body is stressed, your anxiety system can flare up. (Note: Never change medications without consulting your healthcare provider.)",
       },
       {
         type: "tip",

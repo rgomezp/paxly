@@ -98,7 +98,7 @@ export const NERVOUS_SYSTEM_101_LESSON_DEFINITIONS: Record<string, ILessonConfig
       },
       {
         type: "tip",
-        body: "Racing heart = Your body trying to deliver fuel to your muscles, not a sign of danger.",
+        body: "Racing heart during anxiety can be your body trying to deliver fuel to your muscles. (Note: If you have concerns about heart symptoms, please consult a healthcare provider.)",
       },
       {
         type: "text",
@@ -114,7 +114,7 @@ export const NERVOUS_SYSTEM_101_LESSON_DEFINITIONS: Record<string, ILessonConfig
       },
       {
         type: "tip",
-        body: "Stomach issues = Your body prioritizing survival over digestion, not a sign of illness.",
+        body: "Stomach issues during anxiety can be your body prioritizing survival over digestion. (Note: Persistent stomach issues should be evaluated by a healthcare provider.)",
       },
       {
         type: "text",

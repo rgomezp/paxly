@@ -128,7 +128,7 @@ export const VALUES_OVER_COMFORT_LESSON_DEFINITIONS: Record<string, ILessonConfi
       },
       {
         type: "text",
-        body: "Remember: You don't have to eliminate anxiety to have a meaningful life. You can feel anxious and still live by your values. Meaning and anxiety can coexist.",
+        body: "Remember: You don't necessarily have to eliminate anxiety to have a meaningful life. Many people find they can feel anxious and still live by their values. Meaning and anxiety can often coexist.",
       },
     ],
     commitment: { text: "Finish" },

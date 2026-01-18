@@ -153,11 +153,11 @@ export const SELF_TALK_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "Fighting thoughts creates tension. You're trying to force them away, which your brain interprets as more threat, which creates more anxiety. Fighting amplifies what you're trying to eliminate.",
+        body: "For many people, fighting thoughts can create tension. Trying to force thoughts away may be interpreted as more threat, which can increase anxiety.",
       },
       {
         type: "tip",
-        body: "Fighting thoughts = Creating tension = More anxiety. Fighting amplifies what you're trying to eliminate.",
+        body: "For many people: Fighting thoughts can create tension, which may increase anxiety.",
       },
       {
         type: "text",

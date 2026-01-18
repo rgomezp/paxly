@@ -11,7 +11,7 @@ import { ILessonConfig } from "@/types/lessons/ILessonConfig"
  * - Why they *feel* helpful but reinforce anxiety
  * - Gentle self-recognition (no shame)
  *
- * This is one of the **most important lessons** in anxiety recovery.
+ * Understanding safety behaviors can be helpful for many people working on anxiety.
  */
 export const SAFETY_BEHAVIORS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
   /**
@@ -33,7 +33,7 @@ export const SAFETY_BEHAVIORS_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
       },
       {
         type: "text",
-        body: "Common safety behaviors include: checking things repeatedly (locks, emails, symptoms), seeking reassurance from others, avoiding situations or places, carrying 'safety items' (water, phone, medication), or having escape plans.",
+        body: "Common safety behaviors include: checking things repeatedly (locks, emails, symptoms), seeking reassurance from others, avoiding situations or places, or having escape plans. (Note: Carrying necessary medications as prescribed by a doctor is not a safety behavior—always follow your healthcare provider's guidance.)",
       },
       {
         type: "tip",
@@ -233,7 +233,7 @@ export const SAFETY_BEHAVIORS_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
         name: "safety_items",
         kind: "longText",
         label:
-          "What safety items do you carry or what escape plans do you have? (e.g., always need water, phone, medication, escape route) Why do you need them?",
+          "What safety items do you carry or what escape plans do you have? (Note: Prescribed medications should always be carried as directed by your doctor.)",
         minWords: 20,
       },
       {

@@ -96,7 +96,7 @@ export const BUILDING_SELF_TRUST_LESSON_DEFINITIONS: Record<string, ILessonConfi
       },
       {
         type: "text",
-        body: "But here's what's true: You've handled discomfort before. Every anxiety episode you've survived is proof. Every panic attack you've gotten through is evidence. You can handle discomfort.",
+        body: "Here's something to consider: You may have handled discomfort before. Past anxiety episodes you've gotten through can be evidence. Many people find they can handle more discomfort than they initially thought.",
       },
       {
         type: "text",
@@ -193,7 +193,7 @@ export const BUILDING_SELF_TRUST_LESSON_DEFINITIONS: Record<string, ILessonConfi
       },
       {
         type: "tip",
-        body: "Panic memories = Proof you survived, not proof you're weak. Every panic attack you got through is evidence of strength.",
+        body: "Panic memories can be reframed as evidence that you got through a difficult experience. Many people find this perspective helpful.",
       },
       {
         type: "text",

@@ -244,7 +244,7 @@ export const PERSONAL_PLAYBOOK_LESSON_DEFINITIONS: Record<string, ILessonConfig>
       },
       {
         type: "text",
-        body: "Unhelpful language amplifies anxiety: 'This is terrible.' 'I can't handle this.' 'This will never end.' 'I'm broken.' This language makes anxiety worse, not better.",
+        body: "Some language patterns may amplify anxiety: 'This is terrible.' 'I can't handle this.' 'This will never end.' 'I'm broken.' For many people, this type of language can make anxiety feel worse.",
       },
       {
         type: "text",

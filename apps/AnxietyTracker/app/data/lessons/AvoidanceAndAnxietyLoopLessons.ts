@@ -59,7 +59,7 @@ export const AVOIDANCE_AND_ANXIETY_LOOP_LESSON_DEFINITIONS: Record<string, ILess
       },
       {
         type: "text",
-        body: "When you face what you're avoiding, you learn that you can handle it, even with anxiety. You learn that the thing isn't as dangerous as you thought, and that you're more capable than you believed.",
+        body: "When you face what you're avoiding, you may learn that you can handle it, even with anxiety. Many people discover that things aren't as dangerous as feared, and that they're more capable than they believed.",
       },
       {
         type: "tip",

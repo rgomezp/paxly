@@ -67,7 +67,7 @@ export const ACCEPTANCE_VS_RESIGNATION_LESSON_DEFINITIONS: Record<string, ILesso
       },
       {
         type: "text",
-        body: "The paradox: Fighting anxiety makes it stronger. Accepting anxiety (being willing to feel it) makes it weaker. It's counterintuitive, but it's true.",
+        body: "The paradox: For many people, fighting anxiety can make it feel stronger. Accepting anxiety (being willing to feel it) may help reduce its intensity. It's counterintuitive, but many find it helpful.",
       },
     ],
     commitment: { text: "Finish" },
@@ -157,7 +157,7 @@ export const ACCEPTANCE_VS_RESIGNATION_LESSON_DEFINITIONS: Record<string, ILesso
       },
       {
         type: "tip",
-        body: "Fighting anxiety = Creating tension = More threat signal = More anxiety. Fighting amplifies anxiety.",
+        body: "For many people: Fighting anxiety can create tension, which may signal more threat and potentially increase anxiety.",
       },
       {
         type: "text",
@@ -189,7 +189,7 @@ export const ACCEPTANCE_VS_RESIGNATION_LESSON_DEFINITIONS: Record<string, ILesso
       },
       {
         type: "text",
-        body: "The more you practice allowing, the more you see this paradox in action: Fighting makes anxiety stronger, allowing makes it weaker. It's counterintuitive, but it's true.",
+        body: "The more you practice allowing, the more you may see this pattern: For many people, fighting can intensify anxiety, while allowing may help reduce it. It's counterintuitive, but many find it helpful.",
       },
     ],
     commitment: { text: "Finish" },

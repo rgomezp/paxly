@@ -102,47 +102,43 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
       },
       {
         type: "text",
-        body: "When your heart races and your chest tightens, it's natural to think 'heart attack.' When you feel dizzy and disconnected, it's natural to think 'stroke' or 'losing my mind.' But these are panic symptoms, not medical emergencies.",
-      },
-      {
-        type: "text",
-        body: "The key difference: Medical emergencies get worse over time. Panic attacks peak and then subside, usually within 10-20 minutes. If you've had panic attacks before and they always pass, that's important information.",
+        body: "When your heart races and your chest tightens, it's natural to worry about your health. Many people with panic attacks have these concerns, and it's completely understandable.",
       },
       {
         type: "tip",
-        body: "Panic attacks are self-limiting—they peak and then fade. Medical emergencies don't get better on their own.",
+        body: "Important: If you're experiencing new, unusual, or concerning physical symptoms, please consult a healthcare provider. This information is educational, not medical advice.",
       },
       {
         type: "text",
-        body: "Understanding that panic feels medical but isn't medical can help you ride it out instead of escalating it with catastrophic thoughts.",
+        body: "Once a doctor has confirmed you experience panic attacks, understanding them can help. Panic attacks typically peak and then subside. For many people, knowing this pattern can make them feel less frightening.",
       },
       {
         type: "text",
-        body: "If you're ever truly unsure whether something is panic or a medical emergency, it's okay to get checked out. But if you've had panic attacks before and this feels the same, that's valuable information.",
+        body: "If you're ever unsure whether you're having a panic attack or a medical issue, it's always okay—and often wise—to seek medical attention. There's no harm in getting checked out.",
       },
       {
         type: "tip",
-        body: "Panic attacks feel the same each time. If this feels like previous panic attacks, it's likely panic, not a new medical problem.",
+        body: "When in doubt, seek medical care. It's always better to be safe, and a healthcare provider can help determine what's happening.",
       },
       {
         type: "text",
-        body: "The more you understand that panic symptoms are your body's alarm system (not signs of illness), the less scary they become. They're still intense, but they're not dangerous.",
+        body: "For those who have worked with a doctor and know their panic attack patterns, understanding that the intense sensations are part of the body's alarm system can help reduce fear of the sensations themselves.",
       },
       {
         type: "text",
-        body: "Remember: Medical emergencies get worse. Panic attacks get better. If your symptoms are peaking and then fading, that's panic, not a medical emergency.",
+        body: "Note: This information applies to panic attacks that have been identified by a healthcare provider. If you haven't been evaluated, or if something feels different than usual, please seek medical attention.",
       },
       {
         type: "text",
-        body: "Panic also feels existential. During a panic attack, you might think: 'I'm losing my mind,' 'I'm going crazy,' 'I'll never be normal again,' or 'This will never end.' These thoughts are your brain trying to explain intense sensations, not facts.",
+        body: "Panic can also feel existential. During a panic attack, you might think: 'I'm losing my mind' or 'This will never end.' These intense thoughts often accompany panic and can feel very real in the moment.",
       },
       {
         type: "tip",
-        body: "Catastrophic thoughts during panic are symptoms, not truths. You don't have to believe them—you can notice them and let them pass.",
+        body: "Intense thoughts during panic are common. Many people find it helpful to notice these thoughts without fully believing them in the moment.",
       },
       {
         type: "text",
-        body: "Every panic attack you've survived is proof that you can handle it. The feeling of 'this will never end' is part of the panic, not a prediction. Panic always ends.",
+        body: "If you've experienced panic attacks before, you may have noticed that they do typically pass. For many people, remembering this can provide some comfort during difficult moments.",
       },
     ],
     commitment: { text: "Finish" },
@@ -163,7 +159,7 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
     steps: [
       {
         t: "instruction",
-        body: "Panic attacks feel terrible. They're intense, overwhelming, and scary. But here's what's true: They're not dangerous. Your body can handle the intensity.",
+        body: "Panic attacks feel terrible. They're intense, overwhelming, and scary. For those with diagnosed panic attacks, while the sensations are distressing, the body is generally able to manage them. (If you have health concerns, please consult a healthcare provider.)",
       },
       {
         t: "instruction",
@@ -177,7 +173,7 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
       { t: "timer", seconds: 20, label: "Reflect on whether it actually caused harm" },
       {
         t: "instruction",
-        body: "Panic attacks are intense, but they don't cause physical harm. Your heart can race safely. Your breathing can be fast. Your body can handle the intensity—it's designed to.",
+        body: "For people with diagnosed panic attacks, the intense sensations—while very uncomfortable—are typically something the body can manage. If you have any concerns about your physical health, please consult a healthcare provider.",
       },
       {
         t: "instruction",
@@ -190,7 +186,7 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
       { t: "timer", seconds: 30, label: "Practice the reframe" },
       {
         t: "instruction",
-        body: "Panic is intense, not harmful. You can feel terrible and still be safe. You can feel like you're dying and still be okay. The intensity is real, but the danger is not.",
+        body: "For many people with panic attacks, learning that the intense feelings typically pass can be reassuring. The intensity is real and valid, even when the feared outcome doesn't occur.",
       },
       {
         t: "check",
@@ -275,15 +271,15 @@ export const ANXIETY_VS_PANIC_LESSON_DEFINITIONS: Record<string, ILessonConfig> 
             kind: "check",
           },
           {
-            label: "Panic feels medical, but it's not a medical emergency",
+            label: "When in doubt about symptoms, I should seek medical care",
             kind: "check",
           },
           {
-            label: "Panic is intense, but it's not harmful",
+            label: "Panic attacks are typically intense but generally pass",
             kind: "check",
           },
           {
-            label: "Panic attacks always peak and then fade",
+            label: "Understanding my panic patterns can help me cope",
             kind: "check",
           },
         ],

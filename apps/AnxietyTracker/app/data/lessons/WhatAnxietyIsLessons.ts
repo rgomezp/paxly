@@ -126,7 +126,7 @@ export const WHAT_ANXIETY_IS_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
       },
       {
         type: "text",
-        body: "The goal isn't to eliminate anxiety (that's not possible or even desirable). The goal is to understand it, work with it, and stop letting it control your life.",
+        body: "The goal isn't to completely eliminate anxiety. For many people, the goal is to understand it, work with it, and reduce how much it controls their life.",
       },
       {
         type: "text",

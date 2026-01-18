@@ -5,7 +5,9 @@ import { ILessonConfig } from "@/types/lessons/ILessonConfig"
  *
  * Phase 5: Action - Module 15
  *
- * These lessons help users understand exposure therapy in a non-threatening way.
+ * These lessons provide educational information about exposure concepts.
+ * Note: This is educational content, not therapy. For actual exposure therapy,
+ * working with a qualified mental health professional is recommended.
  * They cover:
  * - What exposure *actually* is
  * - Why small + repeated works
@@ -29,11 +31,11 @@ export const EXPOSURE_EXPLAINED_LESSON_DEFINITIONS: Record<string, ILessonConfig
     cards: [
       {
         type: "text",
-        body: "Exposure therapy sounds scary, but it's actually simple: It's facing what you're avoiding, in small steps, until it's no longer scary.",
+        body: "Exposure-based approaches involve facing what you're avoiding, in small steps. While this educational content explains the concept, working with a mental health professional for actual exposure therapy is recommended.",
       },
       {
         type: "text",
-        body: "That's it. Exposure isn't about throwing yourself into your worst fear. It's about taking small, manageable steps toward what you're avoiding, one step at a time.",
+        body: "Exposure isn't about throwing yourself into your worst fear. It's about taking small, manageable steps toward what you're avoiding, one step at a time. A therapist can help guide this process safely.",
       },
       {
         type: "tip",
@@ -41,7 +43,7 @@ export const EXPOSURE_EXPLAINED_LESSON_DEFINITIONS: Record<string, ILessonConfig
       },
       {
         type: "text",
-        body: "The goal of exposure isn't to eliminate anxiety. It's to learn that you can handle anxiety and that what you're avoiding isn't as dangerous as you thought.",
+        body: "The goal of exposure isn't to eliminate anxiety. It's to learn that you may be able to handle anxiety and that what you're avoiding may not be as dangerous as feared.",
       },
       {
         type: "text",
@@ -69,7 +71,7 @@ export const EXPOSURE_EXPLAINED_LESSON_DEFINITIONS: Record<string, ILessonConfig
       },
       {
         type: "text",
-        body: "Remember: Exposure isn't about eliminating anxiety. It's about learning that you can live your life even when anxiety is present. That's the real goal.",
+        body: "Note: This is educational information about exposure concepts. For actual exposure therapy, consider working with a qualified mental health professional who can guide the process safely and effectively.",
       },
     ],
     commitment: { text: "Finish" },

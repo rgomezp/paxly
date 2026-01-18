@@ -114,7 +114,7 @@ export const TRIGGERS_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
       },
       {
         type: "text",
-        body: "External triggers include substances (caffeine, alcohol, medications), sleep deprivation, hunger or blood sugar fluctuations, stressful situations (work deadlines, conflicts, social situations), people, and places.",
+        body: "External triggers include substances (caffeine, alcohol), sleep deprivation, hunger or blood sugar fluctuations, stressful situations (work deadlines, conflicts, social situations), people, and places. (Note: Never change prescribed medications without consulting your healthcare provider.)",
       },
       {
         type: "tip",

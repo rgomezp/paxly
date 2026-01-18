@@ -42,11 +42,11 @@ export const EMOTION_SURFING_LESSON_DEFINITIONS: Record<string, ILessonConfig> =
       },
       {
         type: "text",
-        body: "But here's what's true: Every wave peaks and then falls. No wave stays at its peak forever. The same is true for emotions—they peak and then subside, even when it feels like they'll last forever.",
+        body: "But here's what many people find: Waves typically peak and then fall. No wave stays at its peak forever. For most people, emotions also peak and then subside, even when it feels like they'll last forever.",
       },
       {
         type: "tip",
-        body: "Every emotion peaks and falls. The peak feels permanent, but it's temporary. The wave will break.",
+        body: "Emotions typically peak and fall. The peak often feels permanent, but it's usually temporary. The wave tends to break.",
       },
       {
         type: "text",

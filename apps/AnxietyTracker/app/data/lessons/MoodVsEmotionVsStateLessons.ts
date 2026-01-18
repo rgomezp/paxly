@@ -98,7 +98,7 @@ export const MOOD_VS_EMOTION_VS_STATE_LESSON_DEFINITIONS: Record<string, ILesson
       },
       {
         type: "tip",
-        body: "Emotions feel permanent when they're happening, but they always pass. Recognizing them as emotions (not moods) helps you wait them out.",
+        body: "Emotions often feel permanent when they're happening, but they typically pass. Recognizing them as emotions (not moods) can help you wait them out.",
       },
       {
         type: "text",

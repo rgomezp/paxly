@@ -11,7 +11,7 @@ import { ILessonConfig } from "@/types/lessons/ILessonConfig"
  * - "What if this never stops?"
  * - Why panic disorder persists
  *
- * This lesson alone can change trajectories.
+ * For many people, understanding this concept can be a helpful turning point.
  */
 export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonConfig> = {
   /**
@@ -69,7 +69,7 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
       },
       {
         type: "text",
-        body: "Breaking free from anxiety about anxiety is often the turning point in anxiety recovery. Once you stop fearing the fear, anxiety loses much of its power.",
+        body: "For many people, addressing anxiety about anxiety can be a helpful step forward. When the fear of fear itself lessens, anxiety may feel less overwhelming.",
       },
     ],
     commitment: { text: "Finish" },
@@ -102,11 +102,11 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
       },
       {
         type: "text",
-        body: "Think about it: Have you ever had anxiety that truly never stopped? Every anxiety episode you've had has ended. Every panic attack has passed. Every wave of worry has subsided.",
+        body: "Think about it: Has your anxiety ever been permanent? For most people, anxiety episodes do eventually pass. Panic attacks typically subside. Waves of worry tend to ebb.",
       },
       {
         type: "text",
-        body: "The thought 'this will never stop' feels true when you're anxious, but it's not. Anxiety always passes. It might come back, but it always passes. You have evidence of this from every anxiety episode you've survived.",
+        body: "The thought 'this will never stop' feels true when you're anxious, but for most people, anxiety does pass. It might return, but it typically subsides. You may have evidence of this from past anxiety episodes you've gotten through.",
       },
       {
         type: "tip",
@@ -130,7 +130,7 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
       },
       {
         type: "text",
-        body: "Breaking free from 'what if this never stops?' is often a major turning point. Once you stop believing that thought, anxiety loses much of its power to terrify you.",
+        body: "For many people, learning to relate differently to the thought 'what if this never stops?' can be helpful. When you stop fully believing that thought, anxiety may feel less overwhelming.",
       },
     ],
     commitment: { text: "Finish" },
@@ -187,11 +187,11 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
       },
       {
         type: "text",
-        body: "The key insight: Panic disorder persists because of anxiety about anxiety. Once you address that, panic attacks often become less frequent and less intense, or they stop altogether.",
+        body: "The key insight: Anxiety about anxiety can play a role in maintaining panic disorder. Addressing this pattern may help some people experience less frequent or less intense panic attacks over time.",
       },
       {
         type: "text",
-        body: "Understanding this is often the turning point in panic disorder recovery. Once you see how anxiety about anxiety keeps panic going, you can work with it differently and break the cycle.",
+        body: "Understanding this pattern can be helpful for many people. Once you see how anxiety about anxiety may contribute to panic, you can work with it differently. (Note: If you have panic disorder, working with a mental health professional is recommended.)",
       },
     ],
     commitment: { text: "Finish" },
@@ -249,7 +249,7 @@ export const ANXIETY_ABOUT_ANXIETY_LESSON_DEFINITIONS: Record<string, ILessonCon
       },
       {
         t: "instruction",
-        body: "Remember: Breaking free from anxiety about anxiety is often the turning point. Once you stop fearing the fear, anxiety loses much of its power.",
+        body: "Remember: Addressing anxiety about anxiety can be helpful for many people. When the fear of fear itself lessens, anxiety may feel more manageable.",
       },
       {
         t: "check",
