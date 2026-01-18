@@ -9,29 +9,23 @@ import Purchases from "react-native-purchases"
 /**
  * Mapping of age ranges to paywall placement identifiers
  *
- * NOTE: Placement names are misnomers - they are named "onboarding_placement" but are used
- * throughout the entire app (not just onboarding) to ensure consistent age-based pricing.
- * This ensures users see the same price they saw during onboarding when they encounter
- * pay-gated features later.
  */
 export const AGE_TO_PLACEMENT_ID: Record<AgeRanges, string> = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "onboarding_placement_young",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "onboarding_placement",
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "onboarding_placement",
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "onboarding_placement_old",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "onboarding_placement_old",
-  [AgeRanges.FIFTY_SIX_PLUS]: "onboarding_placement_old",
+  [AgeRanges.SEVENTEEN_OR_UNDER]: "placement_young",
+  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "placement",
+  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "placement",
+  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "placement_old",
+  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "placement_old",
+  [AgeRanges.FIFTY_SIX_PLUS]: "placement_old",
 }
 
 /**
  * Mapping of age ranges to abandonment paywall placement identifiers
  * Used for the abandonment paywall shown after user dismisses the main paywall
  *
- * CHANGES MADE:
- * - Switched from using offering IDs directly (AGE_TO_ABANDONMENT_OFFERING) to using placements
- * - Placements allow RevenueCat to manage A/B testing and offering selection server-side
- * - The abandonment paywall now uses fetchAbandonmentPlacementOffering() which calls
- *   Purchases.getCurrentOfferingForPlacement() instead of looking up offerings by ID
+ * Placements allow RevenueCat to manage A/B testing and offering selection server-side.
+ * The abandonment paywall uses fetchAbandonmentPlacementOffering() which calls
+ * Purchases.getCurrentOfferingForPlacement() to get the offering for the placement.
  */
 export const AGE_TO_ABANDONMENT_PLACEMENT_ID: Record<AgeRanges, string> = {
   [AgeRanges.SEVENTEEN_OR_UNDER]: "abandonment_placement_young",
@@ -40,53 +34,6 @@ export const AGE_TO_ABANDONMENT_PLACEMENT_ID: Record<AgeRanges, string> = {
   [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "abandonment_placement_old",
   [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "abandonment_placement_old",
   [AgeRanges.FIFTY_SIX_PLUS]: "abandonment_placement_old",
-}
-
-/**
- * @deprecated This is a fallback mechanism. Use placements instead.
- *
- * Mapping of age ranges to onboarding paywall offering identifiers
- * Used as a fallback when placement returns the current offering instead of the age-specific offering
- * This ensures we get the correct offering (e.g., default_offering_old for old age ranges)
- * even if the placement isn't properly configured in RevenueCat
- *
- * NOTE: This fallback is necessary due to RevenueCat's getCurrentOfferingForPlacement() sometimes
- * returning the current offering instead of the placement-specific offering. Once placements are
- * fully working and experiments are properly configured, this fallback can be removed.
- */
-export const AGE_TO_OFFERING_ID: Record<AgeRanges, string | null> = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "default_offering_young",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: null, // Uses default_offering via placement
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: null, // Uses default_offering via placement
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "default_offering_old",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "default_offering_old",
-  [AgeRanges.FIFTY_SIX_PLUS]: "default_offering_old",
-}
-
-/**
- * TODO: Remove this constant and getAgeBasedAbandonmentOffering() after 2026-02-01
- *
- * CLEANUP STEPS:
- * 1. Remove AGE_TO_ABANDONMENT_OFFERING constant (lines 54-61)
- * 2. Remove getAgeBasedAbandonmentOffering() function (lines 297-328)
- * 3. Remove the fallback logic in fetchAbandonmentPlacementOffering() that calls
- *    getAgeBasedAbandonmentOffering() (lines 262-270)
- * 4. Update fetchAbandonmentPlacementOffering() to only use placements (no fallback)
- *
- * DEPRECATED:
- * This was replaced by AGE_TO_ABANDONMENT_PLACEMENT_ID and fetchAbandonmentPlacementOffering()
- * Kept temporarily as a fallback when placement lookup fails, to avoid breaking changes
- *
- * Mapping of age ranges to abandonment paywall offering identifiers
- * Used for the abandonment paywall shown after user dismisses the main paywall
- */
-export const AGE_TO_ABANDONMENT_OFFERING: Record<AgeRanges, string> = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "fallback_offering_young",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "fallback_offering",
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "fallback_offering",
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "fallback_offering_old",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "fallback_offering_old",
-  [AgeRanges.FIFTY_SIX_PLUS]: "fallback_offering_old",
 }
 
 /**
@@ -203,11 +150,11 @@ export const getAgeRange = (): AgeRanges | null => {
 /**
  * Gets the placement ID based on age range, with fallback
  *
- * NOTE: Despite the name "onboarding_placement", this placement is used throughout
+ * NOTE: Despite the name "placement", this placement is used throughout
  * the entire app to ensure consistent age-based pricing across all paywalls.
  */
 export const getPlacementId = (ageRange: AgeRanges | null): string => {
-  return (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) || "onboarding_placement"
+  return (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) || "placement"
 }
 
 /**
@@ -263,15 +210,9 @@ export const getAbandonmentPlacementId = (ageRange: AgeRanges | null): string =>
  * Fetches abandonment paywall offering with placement logic
  * Used specifically for the abandonment paywall shown after user dismisses the main paywall
  *
- * CHANGES MADE:
- * - Switched from direct offering ID lookup to using RevenueCat placements
+ * Uses RevenueCat placements to get the offering:
  * - Uses Purchases.getCurrentOfferingForPlacement() to get the offering for the placement
  * - Placements allow RevenueCat to manage A/B testing and offering selection server-side
- *
- * FALLBACK BEHAVIOR:
- * - Currently falls back to getAgeBasedAbandonmentOffering() (deprecated) if placement lookup fails
- * - This fallback should be removed during cleanup (see TODO in AGE_TO_ABANDONMENT_OFFERING)
- * - After cleanup, this function should return null if placement lookup fails
  */
 export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffering | null> => {
   const ageRange = getAgeRange()
@@ -286,25 +227,6 @@ export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffe
 
   // If placement exists and returns a valid offering
   if (placementOffering && isValidOffering(placementOffering)) {
-    // If the placement is effectively "not configured" and just returns the same offering
-    // as the current/default offering, we want to fall back to our explicit abandonment
-    // fallback_offering instead. This avoids depending on a specific offering ID string.
-    const ageBasedAbandonmentOffering = getAgeBasedAbandonmentOffering(offerings, ageRange)
-    const isSameAsCurrent =
-      offerings.current && placementOffering.identifier === offerings.current.identifier
-
-    if (isSameAsCurrent && ageBasedAbandonmentOffering) {
-      Log.warn(
-        `Abandonment placement ${placementId} returned current offering (${placementOffering.identifier}); using age-based fallback abandonment offering instead: ${ageBasedAbandonmentOffering.identifier}`,
-      )
-      paywallAnalytics.placementLoaded(
-        ageBasedAbandonmentOffering.identifier,
-        placementId,
-        ageRange,
-      )
-      return ageBasedAbandonmentOffering
-    }
-
     Log.info(
       `Using ${placementId} offering for abandonment paywall: ${placementOffering.identifier}`,
     )
@@ -313,24 +235,12 @@ export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffe
   }
 
   // Placement doesn't exist, is null, or returned invalid offering
-  // TODO: Remove this fallback during cleanup (after 2026-02-01)
-  // Fallback to offering by ID (deprecated functionality)
-  // This is temporary to avoid breaking changes while transitioning to placements
   if (placementOffering && !isValidOffering(placementOffering)) {
     Log.warn(
-      `Abandonment placement ${placementId} returned invalid offering (${placementOffering.identifier}), falling back to offering by ID`,
+      `Abandonment placement ${placementId} returned invalid offering (${placementOffering.identifier})`,
     )
   } else {
-    Log.warn(
-      `Abandonment placement ${placementId} not found or returned null, falling back to offering by ID`,
-    )
-  }
-
-  const fallbackOffering = getAgeBasedAbandonmentOffering(offerings, ageRange)
-  if (fallbackOffering) {
-    Log.info(`Using fallback abandonment offering: ${fallbackOffering.identifier}`)
-    paywallAnalytics.placementLoaded(fallbackOffering.identifier, placementId, ageRange)
-    return fallbackOffering
+    Log.warn(`Abandonment placement ${placementId} not found or returned null`)
   }
 
   // Last resort: try to get any valid offering
@@ -347,103 +257,6 @@ export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffe
   Log.error(
     `No valid abandonment offering found for placement ${placementId}. Placement may be deleted or misconfigured in RevenueCat dashboard.`,
   )
-  return null
-}
-
-/**
- * Gets the abandonment paywall offering based on age range by looking up offering IDs directly
- *
- * @deprecated Use fetchAbandonmentPlacementOffering instead
- *
- * TODO: Remove this function during cleanup (after 2026-02-01)
- *
- * DEPRECATED FUNCTIONALITY:
- * - This function looks up offerings by ID from offerings.all[offeringId]
- * - Replaced by fetchAbandonmentPlacementOffering() which uses placements
- * - Currently only used as a fallback in fetchAbandonmentPlacementOffering()
- *
- * REMOVAL STEPS:
- * 1. Remove this entire function (lines 297-328)
- * 2. Remove the fallback call to this function in fetchAbandonmentPlacementOffering() (lines 262-270)
- * 3. Remove AGE_TO_ABANDONMENT_OFFERING constant that this function depends on (lines 54-61)
- *
- * Legacy behavior:
- * - young: fallback_offering_young
- * - old: fallback_offering_old
- * - other: fallback_offering
- */
-export const getAgeBasedAbandonmentOffering = (
-  offerings: PurchasesOfferings,
-  ageRange: AgeRanges | null,
-): PurchasesOffering | null => {
-  Log.info(`getAgeBasedAbandonmentOffering: offerings for age range ${ageRange}`)
-  if (!offerings || typeof offerings !== "object") {
-    return null
-  }
-
-  if (ageRange && AGE_TO_ABANDONMENT_OFFERING[ageRange]) {
-    const abandonmentOfferingId = AGE_TO_ABANDONMENT_OFFERING[ageRange]
-    if (offerings.all && typeof offerings.all === "object") {
-      const abandonmentOffering = offerings.all[abandonmentOfferingId]
-      if (isValidOffering(abandonmentOffering)) {
-        Log.info(`Found abandonment paywall offering: ${abandonmentOfferingId}`)
-        return abandonmentOffering
-      }
-    }
-  }
-
-  // Fallback to fallback_offering if age-based abandonment offering not found
-  if (offerings.all && typeof offerings.all === "object") {
-    const fallbackOffering = offerings.all["fallback_offering"]
-    if (isValidOffering(fallbackOffering)) {
-      Log.info(`Using fallback abandonment offering: fallback_offering`)
-      return fallbackOffering
-    }
-  }
-
-  // Last resort: log error and return null
-  Log.error("No abandonment offering found (neither age-based nor fallback_offering)")
-  return null
-}
-
-/**
- * @deprecated Use placements instead. This is a fallback mechanism.
- *
- * Gets the onboarding paywall offering based on age range by looking up offering IDs directly
- * Used as a fallback when placement returns the current offering instead of the age-specific offering
- *
- * @param offerings - The RevenueCat offerings object
- * @param ageRange - The user's age range
- * @returns The age-based offering if found, null otherwise
- */
-export const getAgeBasedOffering = (
-  offerings: PurchasesOfferings,
-  ageRange: AgeRanges | null,
-): PurchasesOffering | null => {
-  if (!offerings || typeof offerings !== "object") {
-    return null
-  }
-
-  if (ageRange && AGE_TO_OFFERING_ID[ageRange]) {
-    const offeringId = AGE_TO_OFFERING_ID[ageRange]
-    if (offerings.all && typeof offerings.all === "object") {
-      const offering = offerings.all[offeringId]
-      if (isValidOffering(offering)) {
-        Log.info(`Found age-based offering: ${offeringId}`)
-        return offering
-      } else if (offeringId) {
-        // Offering ID is mapped but the offering doesn't exist or is invalid
-        Log.warn(
-          `Age-based offering ${offeringId} for age range ${ageRange} is mapped but not found or invalid in RevenueCat. Offering may have been deleted.`,
-        )
-      }
-    } else if (offeringId) {
-      Log.warn(
-        `Age-based offering ${offeringId} for age range ${ageRange} is mapped but offerings.all is not available.`,
-      )
-    }
-  }
-
   return null
 }
 
@@ -466,24 +279,11 @@ export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
  * age-based pricing. Despite placement names containing "onboarding", they are used
  * everywhere to maintain price consistency.
  *
- * Robust fallback chain to handle missing placements or offerings gracefully:
+ * Fallback chain to handle missing placements or offerings gracefully:
  * 1. Try placement offering (if valid)
- * 2. If placement returns current offering, try age-based offering
- * 3. If placement is missing/null, try age-based offering
- * 4. Fall back to current offering
- * 5. Return null if nothing is available
- *
- * UPSTREAM ISSUE (RevenueCat):
- * RevenueCat's getCurrentOfferingForPlacement() has a known issue where it can return
- * the current/default offering instead of the placement-specific offering, even when
- * the placement is correctly configured in the RevenueCat dashboard. This occurs when:
- * - The user isn't assigned to the experiment variant with placement mappings
- * - The placement configuration hasn't synced to the device yet
- * - The experiment variant isn't active or properly configured
- *
- * This function implements a workaround by detecting when the placement returns the
- * current offering and falling back to age-based offering lookup to ensure correct
- * offering selection (e.g., default_offering_old for old age ranges).
+ * 2. Fall back to current offering
+ * 3. Try to get any valid offering
+ * 4. Return null if nothing is available
  */
 export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null> => {
   const ageRange = getAgeRange()
@@ -514,59 +314,12 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
 
   // If placement exists and returns a valid offering
   if (placementOffering && isValidOffering(placementOffering)) {
-    // If the placement is effectively "not configured" and just returns the same offering
-    // as the current/default offering, we want to fall back to an age-based offering lookup.
-    // This ensures we get the correct offering (e.g., default_offering_old for old age ranges)
-    // even if the placement isn't properly configured in RevenueCat.
-    //
-    // NOTE: RevenueCat's getCurrentOfferingForPlacement() can return the current offering
-    // as a fallback when:
-    // 1. The placement isn't configured in the active experiment variant
-    // 2. The user isn't assigned to the experiment variant with placement mappings
-    // 3. The placement configuration hasn't synced yet
-    // This is why we need the age-based fallback to ensure correct offering selection.
-    const isSameAsCurrent =
-      offerings.current && placementOffering.identifier === offerings.current.identifier
-
-    if (isSameAsCurrent) {
-      // Only warn if this age range has a specific offering mapped (not null)
-      // For age ranges with null (EIGHTEEN_TO_TWENTY_FIVE, TWENTY_SIX_TO_THIRTY_FIVE),
-      // it's expected that the placement returns the current/default offering
-      const hasSpecificOffering = ageRange && AGE_TO_OFFERING_ID[ageRange] !== null
-
-      if (hasSpecificOffering) {
-        Log.warn(
-          `Placement ${placementId} returned current offering (${placementOffering.identifier}) for age range ${ageRange}. This suggests the placement may not be configured in the active RevenueCat experiment variant, or the user isn't assigned to the variant with placement mappings.`,
-        )
-        // Fallback to age-based offering lookup
-        const ageBasedOffering = getAgeBasedOffering(offerings, ageRange)
-        if (ageBasedOffering) {
-          Log.warn(
-            `Placement ${placementId} returned current offering (${placementOffering.identifier}); using age-based offering instead: ${ageBasedOffering.identifier}`,
-          )
-          paywallAnalytics.placementLoaded(ageBasedOffering.identifier, placementId, ageRange)
-          return ageBasedOffering
-        }
-        // If age-based offering doesn't exist, continue with placement offering
-        Log.warn(
-          `Placement ${placementId} returned current offering, but age-based offering not found. Using placement offering: ${placementOffering.identifier}`,
-        )
-      } else {
-        // For age ranges without a specific offering (null in AGE_TO_OFFERING_ID),
-        // it's expected that the placement returns the current/default offering
-        Log.info(
-          `Placement ${placementId} returned current offering (${placementOffering.identifier}) for age range ${ageRange}. This is expected since this age range uses the default offering.`,
-        )
-      }
-    }
-
     Log.info(`Using ${placementId} offering for A/B testing: ${placementOffering.identifier}`)
     paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, ageRange)
     return placementOffering
   }
 
   // Placement doesn't exist, is null, or returned invalid offering
-  // Try age-based offering as fallback
   if (placementOffering && !isValidOffering(placementOffering)) {
     Log.warn(
       `Placement ${placementId} returned invalid offering (${placementOffering.identifier}), trying fallbacks`,
@@ -575,19 +328,10 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
     Log.warn(`Placement ${placementId} not found or returned null, trying fallbacks`)
   }
 
-  const ageBasedOffering = getAgeBasedOffering(offerings, ageRange)
-  if (ageBasedOffering) {
-    Log.info(
-      `Using age-based offering as fallback for placement ${placementId}: ${ageBasedOffering.identifier}`,
-    )
-    paywallAnalytics.placementLoaded(ageBasedOffering.identifier, placementId, ageRange)
-    return ageBasedOffering
-  }
-
   // Fall back to current offering if available and valid
   if (offerings.current && isValidOffering(offerings.current)) {
     Log.warn(
-      `No placement or age-based offering found for ${placementId}, using current offering: ${offerings.current.identifier}`,
+      `No placement offering found for ${placementId}, using current offering: ${offerings.current.identifier}`,
     )
     paywallAnalytics.placementLoaded(offerings.current.identifier, placementId, ageRange)
     return offerings.current
