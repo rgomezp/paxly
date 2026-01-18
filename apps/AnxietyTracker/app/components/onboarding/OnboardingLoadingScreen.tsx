@@ -69,7 +69,7 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
               style={styles.lottie}
             />
           </View>
-          <Text style={[styles.text, { color: theme.colors.textDim }]}>Ready to heal</Text>
+          <Text style={[styles.text, { color: theme.colors.textDim }]}>Loading calm...</Text>
           <View style={[styles.progressBarContainer, { width: progressBarWidth }]}>
             <View style={[styles.progressBarTrack, { backgroundColor: theme.colors.border }]}>
               <Animated.View
