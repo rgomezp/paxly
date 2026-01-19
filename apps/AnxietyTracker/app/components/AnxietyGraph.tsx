@@ -97,7 +97,7 @@ export const AnxietyGraph: FC<AnxietyGraphProps> = observer(function AnxietyGrap
       return Object.values(map)
     })()
 
-  // In light mode: accent100 is lightest, accent500 is darkest
+  // In light mode: accent200 is lightest, accent600 is darkest
   // In dark mode: accent100 is darkest, accent600 is lightest (reversed)
   // We want level 1 (lowest anxiety) to be lightest, level 5 (highest anxiety) to be darkest
   const colors =
@@ -112,11 +112,11 @@ export const AnxietyGraph: FC<AnxietyGraphProps> = observer(function AnxietyGrap
         }
       : {
           // Light mode: normal order - darkest for highest anxiety
-          level1: theme.colors.palette.accent100,
-          level2: theme.colors.palette.accent200,
-          level3: theme.colors.palette.accent300,
-          level4: theme.colors.palette.accent400,
-          level5: theme.colors.palette.accent500,
+          level1: theme.colors.palette.accent200,
+          level2: theme.colors.palette.accent300,
+          level3: theme.colors.palette.accent400,
+          level4: theme.colors.palette.accent500,
+          level5: theme.colors.palette.accent600,
         }
 
   // Transform DayBucket data to BarData format

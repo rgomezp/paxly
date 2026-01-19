@@ -85,7 +85,7 @@ export const colors = {
   /**
    * The main tinting color - bright blue.
    */
-  tint: palette.primary500,
+  tint: palette.secondary300,
   /**
    * The inactive tinting color.
    */

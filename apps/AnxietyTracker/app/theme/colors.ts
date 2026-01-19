@@ -27,12 +27,12 @@ const palette = {
   secondary600: "#8DD8E3",
 
   // Accent - warm coral/salmon (warm, inviting, friendly)
-  accent100: "#FFF5F2",
-  accent200: "#FFEBE5",
-  accent300: "#FFD7CB",
-  accent400: "#FFC3B1",
-  accent500: "#FF967D",
-  accent600: "#FF7A5C",
+  accent100: "#FFEBE5",
+  accent200: "#FFD7CB",
+  accent300: "#FFC3B1",
+  accent400: "#FF967D",
+  accent500: "#FF7A5C",
+  accent600: "#FF5D3A",
 
   // Background - soft, calming light blue-white
   backgroundLight: "#F8FCFE",

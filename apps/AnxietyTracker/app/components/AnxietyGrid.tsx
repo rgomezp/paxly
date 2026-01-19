@@ -45,7 +45,7 @@ export const AnxietyGrid: FC<AnxietyGridProps> = observer(function AnxietyGrid({
       return theme.colors.separator
     }
 
-    // In light mode: accent100 is lightest, accent500 is darkest
+    // In light mode: accent200 is lightest, accent600 is darkest
     // In dark mode: accent100 is darkest, accent600 is lightest (reversed)
     // We want level 1 (lowest anxiety) to be lightest, level 5 (highest anxiety) to be darkest
     const colors =
@@ -60,11 +60,11 @@ export const AnxietyGrid: FC<AnxietyGridProps> = observer(function AnxietyGrid({
           }
         : {
             // Light mode: normal order - darkest for highest anxiety
-            1: theme.colors.palette.accent100,
-            2: theme.colors.palette.accent200,
-            3: theme.colors.palette.accent300,
-            4: theme.colors.palette.accent400,
-            5: theme.colors.palette.accent500,
+            1: theme.colors.palette.accent200,
+            2: theme.colors.palette.accent300,
+            3: theme.colors.palette.accent400,
+            4: theme.colors.palette.accent500,
+            5: theme.colors.palette.accent600,
           }
 
     return colors[level as keyof typeof colors] || theme.colors.separator
