@@ -74,7 +74,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         "com.google.android.gms.permission.AD_ID",
       ],
       allowBackup: false,
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+      googleServicesFile: "./googleServices/google-services.json",
     },
     ios: {
       icon: "./assets/images/app-icon-ios.png",
@@ -89,7 +89,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
         NSLocationWhenInUseUsageDescription:
           "This app needs access to your location to send push notifications.",
       },
-      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
+      googleServicesFile: "./googleServices/GoogleService-Info.plist",
     },
     extra: {
       ...customConfig(),
