@@ -9,6 +9,8 @@ import UserManager from "@/managers/UserManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import DailyTasksTimeline from "@/components/DailyTasksTimeline"
 import HelpModal from "@/components/modals/HelpModal"
+import MedicalDisclaimerModal from "@/components/modals/MedicalDisclaimerModal"
+import { useMedicalDisclaimer } from "@/hooks/useMedicalDisclaimer"
 import Log from "@/utils/Log"
 import { useFocusEffect } from "@react-navigation/native"
 import { createAudioPlayer } from "expo-audio"
@@ -30,6 +32,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const { themed, theme, themeContext } = useAppTheme()
   const hasShownPaywallRef = useRef<string | null>(null)
   const blobLottieRef = useRef<LottieView>(null)
+  const { showModal, acceptDisclaimer } = useMedicalDisclaimer()
 
   useEffect(() => {
     OneSignal.InAppMessages.addTrigger("home_screen_loaded", "true")
@@ -175,6 +178,13 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
           Log.info("HomeScreen: User reset the streak")
           AnalyticsManager.getInstance().logEvent("no_contact_relapse")
           setRefreshTrigger((prev) => prev + 1)
+        }}
+      />
+      <MedicalDisclaimerModal
+        visible={showModal}
+        onAccept={acceptDisclaimer}
+        onDismiss={() => {
+          // Modal can be dismissed, but it will show again next time if not accepted
         }}
       />
     </>

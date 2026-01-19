@@ -9,7 +9,6 @@ import { LESSONS } from "@/data/LessonRegistry"
 import { MODULE_DISPLAY_NAMES, MODULE_ORDER } from "@/data/ModuleDisplayNames"
 import { MODULE_ICONS } from "@/data/ModuleIcons"
 import { ModuleId } from "@/types/lessons/ModuleId"
-import { navigate } from "@/navigators/navigationUtilities"
 import DailyLessonManager from "@/managers/DailyLessonManager"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import { ThemedPhosphorIcon } from "@/components/ThemedPhosphorIcon"
@@ -22,6 +21,7 @@ import { FEATURES } from "@/entitlements/constants/features"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import { FlagContext } from "@/hooks/useFlags"
 import { ganon } from "@/services/ganon/ganon"
+import { navigate } from "@/navigators/navigationUtilities"
 
 interface LessonsScreenProps extends AppStackScreenProps<"Lessons"> {}
 

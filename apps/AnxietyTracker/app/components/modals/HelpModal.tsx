@@ -3,10 +3,9 @@ import { Text } from "@/components"
 import BottomModal from "./BottomModal"
 import { useAppTheme } from "@/utils/useAppTheme"
 import RectangularButton from "../buttons/RectangularButton"
-import { useNavigation } from "@react-navigation/native"
-import type { AppStackScreenProps } from "@/navigators/navigationTypes"
 import { IM_ANXIOUS_LESSON_IDS } from "@/data/lessons/ImAnxiousLessons"
 import { RELAPSE_LESSON_IDS } from "@/data/lessons/ImHavingAPanicAttackLessons"
+import { navigate } from "@/navigators/navigationUtilities"
 
 interface HelpModalProps {
   visible: boolean
@@ -41,7 +40,6 @@ export default function HelpModal({
   onIContacted,
 }: HelpModalProps) {
   const { theme, themed } = useAppTheme()
-  const navigation = useNavigation<AppStackScreenProps<"Settings">["navigation"]>()
 
   const handleOptionPress = (callback: () => void) => {
     callback()
@@ -55,7 +53,7 @@ export default function HelpModal({
       onClick: () => {
         handleOptionPress(onLessonActivated)
         const randomLessonId = getRandomUrgeLesson()
-        navigation.navigate("SingleLesson", { lessonId: randomLessonId })
+        navigate("SingleLesson", { lessonId: randomLessonId })
       },
     },
     {
@@ -65,37 +63,39 @@ export default function HelpModal({
       onClick: () => {
         handleOptionPress(onIContacted)
         const randomRelapseLessonId = getRandomRelapseLesson()
-        navigation.navigate("SingleLesson", { lessonId: randomRelapseLessonId })
+        navigate("SingleLesson", { lessonId: randomRelapseLessonId })
       },
     },
   ]
 
   return (
-    <BottomModal visible={visible} onClose={onClose}>
-      <View style={themed($container)}>
-        <View style={themed($headerContainer)}>
-          <Text
-            text="How can we help?"
-            preset="subheading"
-            style={themed([$title, { color: theme.colors.text }])}
-          />
-        </View>
-
-        <View style={themed($optionsContainer)}>
-          {buttons.map((b) => (
-            <RectangularButton
-              key={b.id}
-              buttonText={b.buttonText}
-              onClick={b.onClick}
-              width="100%"
-              customStyles={$buttonSpacing}
-              icon={b.icon}
-              isSelected={b.id === "im_having_a_panic_attack"}
+    <>
+      <BottomModal visible={visible} onClose={onClose}>
+        <View style={themed($container)}>
+          <View style={themed($headerContainer)}>
+            <Text
+              text="How can we help?"
+              preset="subheading"
+              style={themed([$title, { color: theme.colors.text }])}
             />
-          ))}
+          </View>
+
+          <View style={themed($optionsContainer)}>
+            {buttons.map((b) => (
+              <RectangularButton
+                key={b.id}
+                buttonText={b.buttonText}
+                onClick={b.onClick}
+                width="100%"
+                customStyles={$buttonSpacing}
+                icon={b.icon}
+                isSelected={b.id === "im_having_a_panic_attack"}
+              />
+            ))}
+          </View>
         </View>
-      </View>
-    </BottomModal>
+      </BottomModal>
+    </>
   )
 }
 

@@ -88,7 +88,7 @@ export default function MedicalDisclaimerModal({
                 style={themed([$sectionText, { color: theme.colors.text }])}
               />
               <Text
-                text="If you are experiencing a medical emergency, call 911 or go to your nearest emergency room immediately. If you are having thoughts of self-harm or suicide, contact the National Suicide Prevention Lifeline at 988 or seek immediate medical attention."
+                text="If you are experiencing a medical emergency, contact your local emergency services or go to your nearest emergency room immediately. If you are having thoughts of self-harm or suicide, please contact your local crisis helpline or seek immediate medical attention."
                 size="sm"
                 style={themed([$sectionText, { color: theme.colors.text, marginTop: 12 }])}
               />
