@@ -9,12 +9,16 @@ export function useAudio() {
   }, [])
 
   const setupAudio = async () => {
-    await setAudioModeAsync({
-      playsInSilentMode: true,
-      interruptionMode: "mixWithOthers",
-      interruptionModeAndroid: "duckOthers",
-    })
-    setIsAudioSetup(true)
+    try {
+      await setAudioModeAsync({
+        playsInSilentMode: true,
+        interruptionMode: "mixWithOthers",
+        interruptionModeAndroid: "duckOthers",
+      })
+      setIsAudioSetup(true)
+    } catch (e) {
+      setIsAudioSetup(false)
+    }
   }
 
   return isAudioSetup

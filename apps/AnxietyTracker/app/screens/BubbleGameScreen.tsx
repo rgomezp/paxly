@@ -36,6 +36,7 @@ const SPAWN_INTERVAL_MIN = 200 // milliseconds
 const SPAWN_INTERVAL_MAX = 500 // milliseconds
 const BUBBLE_SMALL_SIZE = 40
 const BUBBLE_LARGE_SIZE = 60
+const POP_SOUND_POOL_MAX = 8
 
 export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameScreen() {
   const { theme, themed } = useAppTheme()
@@ -47,28 +48,23 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
   const spawnTimerRef = useRef<NodeJS.Timeout | null>(null)
   const animationRefs = useRef<Map<string, Animated.CompositeAnimation>>(new Map())
   const isActiveRef = useRef(true)
-  const popSoundRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null)
+  const popSoundPoolRef = useRef<ReturnType<typeof createAudioPlayer>[]>([])
 
-  // Preload and reuse the pop sound to reduce latency and avoid creating
-  // a new audio player instance on every bubble press.
+  // Manage a small pool of short-lived pop sound players.
+  // Using a single reused AudioPlayer seems to only play once (can't be retriggered reliably),
+  // so we instead cap concurrent players and always clean them up on completion.
   useEffect(() => {
-    if (!isAudioSetup) return
-
-    if (!popSoundRef.current) {
-      const sound = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
-      sound.volume = 1.0
-      popSoundRef.current = sound
-    }
-
     return () => {
-      if (popSoundRef.current) {
+      // On unmount, stop and remove any remaining pooled players
+      popSoundPoolRef.current.forEach((player) => {
         try {
-          popSoundRef.current.remove()
-        } catch {
-          // Ignore cleanup errors
-        }
-        popSoundRef.current = null
-      }
+          player.pause()
+        } catch {}
+        try {
+          player.remove()
+        } catch {}
+      })
+      popSoundPoolRef.current = []
     }
   }, [isAudioSetup])
 
@@ -165,15 +161,44 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
       animationRefs.current.delete(bubbleId)
     }
 
-    // Play pop sound using a preloaded, shared audio player instance.
-    // This avoids repeatedly creating/destroying players and significantly
-    // reduces latency between the press event and the sound.
-    const sound = popSoundRef.current
-    if (sound) {
+    // Play pop sound.
+    // We cap concurrent players to avoid resource exhaustion after many pops.
+    if (isAudioSetup) {
       try {
+        // If we're at cap, remove the oldest player (prevents runaway growth).
+        if (popSoundPoolRef.current.length >= POP_SOUND_POOL_MAX) {
+          const oldest = popSoundPoolRef.current.shift()
+          if (oldest) {
+            try {
+              oldest.pause()
+            } catch {}
+            try {
+              oldest.remove()
+            } catch {}
+          }
+        }
+
+        const sound = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
+        sound.volume = 1.0
+        popSoundPoolRef.current.push(sound)
         sound.play()
+
+        // Clean up when playback finishes (and remove from pool).
+        const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
+          if (status?.didJustFinish) {
+            try {
+              sound.remove()
+            } catch {}
+            try {
+              removeListener.remove()
+            } catch {}
+
+            const idx = popSoundPoolRef.current.indexOf(sound)
+            if (idx >= 0) popSoundPoolRef.current.splice(idx, 1)
+          }
+        })
       } catch {
-        // Silently fail if sound can't be played
+        // Swallow audio errors in production; bubbles still disappear visually.
       }
     }
 
