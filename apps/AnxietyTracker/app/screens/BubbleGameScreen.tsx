@@ -36,7 +36,9 @@ const SPAWN_INTERVAL_MIN = 200 // milliseconds
 const SPAWN_INTERVAL_MAX = 500 // milliseconds
 const BUBBLE_SMALL_SIZE = 40
 const BUBBLE_LARGE_SIZE = 60
-const POP_SOUND_POOL_MAX = 8
+
+// Pool of reusable audio players - we cycle through these instead of creating new ones
+const POP_SOUND_POOL_SIZE = 4
 
 export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameScreen() {
   const { theme, themed } = useAppTheme()
@@ -49,13 +51,32 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
   const animationRefs = useRef<Map<string, Animated.CompositeAnimation>>(new Map())
   const isActiveRef = useRef(true)
   const popSoundPoolRef = useRef<ReturnType<typeof createAudioPlayer>[]>([])
+  const popSoundIndexRef = useRef(0)
+  const poolInitializedRef = useRef(false)
 
-  // Manage a small pool of short-lived pop sound players.
-  // Using a single reused AudioPlayer seems to only play once (can't be retriggered reliably),
-  // so we instead cap concurrent players and always clean them up on completion.
+  // Initialize a fixed pool of reusable audio players on mount.
+  // We reuse these by seeking to 0 before each play, avoiding resource exhaustion.
   useEffect(() => {
+    if (!isAudioSetup || poolInitializedRef.current) return
+
+    // Create the pool of players
+    const initPool = () => {
+      try {
+        for (let i = 0; i < POP_SOUND_POOL_SIZE; i++) {
+          const player = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
+          player.volume = 1.0
+          popSoundPoolRef.current.push(player)
+        }
+        poolInitializedRef.current = true
+      } catch {
+        // Audio initialization failed, sounds will be disabled
+      }
+    }
+
+    initPool()
+
     return () => {
-      // On unmount, stop and remove any remaining pooled players
+      // On unmount, stop and remove all pooled players
       popSoundPoolRef.current.forEach((player) => {
         try {
           player.pause()
@@ -65,6 +86,7 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
         } catch {}
       })
       popSoundPoolRef.current = []
+      poolInitializedRef.current = false
     }
   }, [isAudioSetup])
 
@@ -161,42 +183,17 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
       animationRefs.current.delete(bubbleId)
     }
 
-    // Play pop sound.
-    // We cap concurrent players to avoid resource exhaustion after many pops.
-    if (isAudioSetup) {
+    // Play pop sound using the reusable pool.
+    // We cycle through players and seek to 0 before playing again.
+    if (isAudioSetup && popSoundPoolRef.current.length > 0) {
       try {
-        // If we're at cap, remove the oldest player (prevents runaway growth).
-        if (popSoundPoolRef.current.length >= POP_SOUND_POOL_MAX) {
-          const oldest = popSoundPoolRef.current.shift()
-          if (oldest) {
-            try {
-              oldest.pause()
-            } catch {}
-            try {
-              oldest.remove()
-            } catch {}
-          }
-        }
+        const player = popSoundPoolRef.current[popSoundIndexRef.current]
+        // Cycle to next player for the next pop
+        popSoundIndexRef.current = (popSoundIndexRef.current + 1) % popSoundPoolRef.current.length
 
-        const sound = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
-        sound.volume = 1.0
-        popSoundPoolRef.current.push(sound)
-        sound.play()
-
-        // Clean up when playback finishes (and remove from pool).
-        const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
-          if (status?.didJustFinish) {
-            try {
-              sound.remove()
-            } catch {}
-            try {
-              removeListener.remove()
-            } catch {}
-
-            const idx = popSoundPoolRef.current.indexOf(sound)
-            if (idx >= 0) popSoundPoolRef.current.splice(idx, 1)
-          }
-        })
+        // Reset to beginning and play
+        player.seekTo(0)
+        player.play()
       } catch {
         // Swallow audio errors in production; bubbles still disappear visually.
       }
