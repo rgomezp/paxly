@@ -58,11 +58,11 @@ jobs:
           fi
 
       - name: 📂 Setup Google Services Files
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: ./scripts/eas_pre_install
 
       - name: Check Google Services Files
-        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
+        working-directory: apps/AnxietyTracker  # Ensure this runs in the correct directory
         run: |
           echo "Searching for Google Services files..."
           GOOGLE_SERVICES_JSON_PATH=$(find . -type f -name "google-services.json" | head -n 1)
@@ -91,7 +91,7 @@ jobs:
           fi
 
       - name: Compute source hash
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         id: compute_hash
         run: |
           find . -type f \
@@ -121,7 +121,7 @@ jobs:
         with:
           node-version: 20
           cache: yarn
-          cache-dependency-path: apps/LetThemGo/yarn.lock
+          cache-dependency-path: apps/AnxietyTracker/yarn.lock
 
       - name: ♻️ Cache Yarn dependencies
         uses: actions/cache@v3
@@ -136,21 +136,21 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: 📦 Install dependencies
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: yarn install
 
       - name: 📦 Install EAS CLI
         run: npm -g i eas-cli
       - name: 📦 Build project
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: yarn build
 
       - name: Prebuild
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: echo 'current dir:' && pwd && ls -la && npx expo prebuild
 
       - name: 📋 Test project
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: yarn test
 
       - name: Set up JDK 17
@@ -162,12 +162,12 @@ jobs:
 
       - name: 🔄 Update Android Version Code
         if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'android' }}
-        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
+        working-directory: apps/AnxietyTracker  # Ensure this runs in the correct directory
         run: ./scripts/update_android_version_code
 
       - name: 🔄 Update iOS Build Number
         if: ${{ github.event.inputs.should_submit && github.event.inputs.platform == 'ios' }}
-        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
+        working-directory: apps/AnxietyTracker  # Ensure this runs in the correct directory
         run: ./scripts/update_ios_build_number
 
       - name: ♻️ Cache Expo CLI
@@ -179,7 +179,7 @@ jobs:
             ${{ runner.os }}-expo-
 
       - name: 🔍 Run Expo Doctor
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: npx expo-doctor@latest
 
       - name: 🏗 Setup Expo and EAS
@@ -200,11 +200,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-${{ steps.compute_hash.outputs.code_hash }}-${{ github.event.inputs.platform }}-${{ github.event.inputs.profile }}
-          path: apps/LetThemGo  # Ensure artifacts are downloaded to the correct directory
+          path: apps/AnxietyTracker  # Ensure artifacts are downloaded to the correct directory
         continue-on-error: true  # Don't fail if not found
 
       - name: Check if artifact was downloaded
-        working-directory: apps/LetThemGo  # Ensure this runs in the correct directory
+        working-directory: apps/AnxietyTracker  # Ensure this runs in the correct directory
         id: check_app_build
         run: |
           if [ "${{ github.event.inputs.platform }}" = "android" ]; then
@@ -228,7 +228,7 @@ jobs:
       # Build steps (skip if we already have an artifact):
       - name: 👷 Build app
         if: steps.check_app_build.outputs.found == 'false'
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: |
           OUTPUT_PATH=app-build.${{ github.event.inputs.platform == 'android' && 'aab' || 'ipa' }}
           # Use wrapper script that fixes the cleanup bug in @expo/build-tools
@@ -246,12 +246,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ steps.compute_hash.outputs.code_hash }}-${{ github.event.inputs.platform }}-${{ github.event.inputs.profile }}
-          path: apps/LetThemGo/app-build.*  # Ensure the correct files are uploaded
+          path: apps/AnxietyTracker/app-build.*  # Ensure the correct files are uploaded
           retention-days: 7  # Optional: Set artifact retention period
 
       - name: 🚢 Submit
         if: ${{ github.event.inputs.should_submit }} == "true"
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: |
           if [ "${{ github.event.inputs.platform }}" = "android" ]; then
             npx eas submit -p android --profile ${{ github.event.inputs.profile }} --path app-build.aab
@@ -265,7 +265,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: 📝 Commit changes
-        working-directory: apps/LetThemGo
+        working-directory: apps/AnxietyTracker
         run: |
           git status
           git add app.config.ts
