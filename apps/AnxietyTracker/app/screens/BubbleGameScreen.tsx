@@ -1,4 +1,4 @@
-import { FC, useRef, useState, useCallback } from "react"
+import { FC, useRef, useState, useCallback, useEffect } from "react"
 import {
   View,
   ViewStyle,
@@ -12,6 +12,7 @@ import { AppStackScreenProps } from "@/navigators"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { useAudio } from "@/hooks/useAudio"
 import { useFocusEffect } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createAudioPlayer } from "expo-audio"
@@ -39,12 +40,37 @@ const BUBBLE_LARGE_SIZE = 60
 export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameScreen() {
   const { theme, themed } = useAppTheme()
   const insets = useSafeAreaInsets()
+  const isAudioSetup = useAudio()
   const [bubbles, setBubbles] = useState<Bubble[]>([])
   const [count, setCount] = useState(0)
   const bubbleIdCounter = useRef(0)
   const spawnTimerRef = useRef<NodeJS.Timeout | null>(null)
   const animationRefs = useRef<Map<string, Animated.CompositeAnimation>>(new Map())
   const isActiveRef = useRef(true)
+  const popSoundRef = useRef<ReturnType<typeof createAudioPlayer> | null>(null)
+
+  // Preload and reuse the pop sound to reduce latency and avoid creating
+  // a new audio player instance on every bubble press.
+  useEffect(() => {
+    if (!isAudioSetup) return
+
+    if (!popSoundRef.current) {
+      const sound = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
+      sound.volume = 1.0
+      popSoundRef.current = sound
+    }
+
+    return () => {
+      if (popSoundRef.current) {
+        try {
+          popSoundRef.current.remove()
+        } catch {
+          // Ignore cleanup errors
+        }
+        popSoundRef.current = null
+      }
+    }
+  }, [isAudioSetup])
 
   const resetGame = useCallback(() => {
     // Clear spawn timer
@@ -139,23 +165,16 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
       animationRefs.current.delete(bubbleId)
     }
 
-    // Play pop sound
-    try {
-      const sound = createAudioPlayer(require("../../assets/sounds/bubble_pop.mp3"))
-      sound.volume = 1.0
-      sound.play()
-
-      // Clean up when playback finishes
-      let isCleanedUp = false
-      const removeListener = sound.addListener("playbackStatusUpdate", (status: any) => {
-        if (status.didJustFinish && !isCleanedUp) {
-          isCleanedUp = true
-          sound.remove()
-          removeListener.remove()
-        }
-      })
-    } catch {
-      // Silently fail if sound can't be played
+    // Play pop sound using a preloaded, shared audio player instance.
+    // This avoids repeatedly creating/destroying players and significantly
+    // reduces latency between the press event and the sound.
+    const sound = popSoundRef.current
+    if (sound) {
+      try {
+        sound.play()
+      } catch {
+        // Silently fail if sound can't be played
+      }
     }
 
     // Remove bubble immediately
