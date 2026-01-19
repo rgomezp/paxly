@@ -50,7 +50,7 @@ interface CustomConfig {
 
 export default function customConfig(): CustomConfig {
   return {
-    termsOfServiceUrl: "https://terms-and-conditions-anxietytracker.carrd.co/",
+    termsOfServiceUrl: "https://paxly-terms.carrd.co/",
     privacyPolicyUrl: "https://paxly-privacy.carrd.co/",
     eas: {
       projectId: "06db5f25-8ccd-4ef5-9bd7-0867e2caca83",
