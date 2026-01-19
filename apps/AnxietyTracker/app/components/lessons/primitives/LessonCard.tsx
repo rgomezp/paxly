@@ -11,8 +11,12 @@ export function LessonCard({
   children: ReactNode
   tone?: "default" | "tip"
 }) {
-  const { themed, theme } = useAppTheme()
-  const bg = tone === "tip" ? theme.colors.palette.primary400 : theme.colors.card
+  const { themed, theme, themeContext } = useAppTheme()
+  const tipBgColor =
+    themeContext === "dark" ? theme.colors.palette.primary300 : theme.colors.palette.secondary200
+  const bg = tone === "tip" ? tipBgColor : theme.colors.card
+  const bulbColor =
+    themeContext === "dark" ? theme.colors.palette.neutral800 : theme.colors.palette.primary400
   return (
     <View
       style={themed(() => ({
@@ -35,7 +39,7 @@ export function LessonCard({
           <ThemedFontAwesome5Icon
             name="lightbulb"
             size={16}
-            color={theme.colors.palette.primary200}
+            color={bulbColor}
             solid
             style={themed(() => ({ marginRight: theme.spacing.xs }))}
           />

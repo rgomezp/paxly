@@ -19,11 +19,11 @@ const palette = {
   primary100: "#153A4D",
 
   // Secondary - light cyan (soft, airy, gentle in dark)
-  secondary500: "#C3EBEF",
-  secondary400: "#B1EBF3",
-  secondary300: "#8DD8E3",
-  secondary200: "#69C5D3",
-  secondary100: "#45B2C3",
+  secondary500: "#B1EBF3",
+  secondary400: "#8DD8E3",
+  secondary300: "#69C5D3",
+  secondary200: "#45B2C3",
+  secondary100: "#2D9FB0",
 
   // Accent - warm coral/salmon (warm, inviting, friendly in dark)
   accent600: "#FFF5F2",
