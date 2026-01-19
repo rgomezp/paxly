@@ -19,6 +19,9 @@ export interface InitializationState {
 export const InitializationContext = createContext<InitializationState | null>(null)
 
 export function InitializationProvider({ children }: { children: React.ReactNode }) {
+  // Set log level synchronously before any hooks that might log
+  Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Info : LogLevel.None)
+
   const isAppCheckComplete = useAppCheck()
   const isOnboardingComplete = useOnboardingFlow()
   const isAudioSetup = useAudio()
@@ -48,11 +51,6 @@ export function InitializationProvider({ children }: { children: React.ReactNode
     return () => {
       unsubscribe()
     }
-  }, [])
-
-  // Set log level once on mount
-  useEffect(() => {
-    Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Info : LogLevel.None)
   }, [])
 
   /* B L O C K I N G */
