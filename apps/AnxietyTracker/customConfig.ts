@@ -51,7 +51,7 @@ interface CustomConfig {
 export default function customConfig(): CustomConfig {
   return {
     termsOfServiceUrl: "https://terms-and-conditions-anxietytracker.carrd.co/",
-    privacyPolicyUrl: "https://anxietytracker-privacy.carrd.co",
+    privacyPolicyUrl: "https://paxly-privacy.carrd.co/",
     eas: {
       projectId: "06db5f25-8ccd-4ef5-9bd7-0867e2caca83",
     },
@@ -59,7 +59,7 @@ export default function customConfig(): CustomConfig {
     includeSettingsScreen: true,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
-    oneSignalAppId: "2236d12a-343d-4638-9804-17f4a4473504",
+    oneSignalAppId: "a8148f93-f3a7-42fc-85cd-3801756416f6",
     iosAppStoreUrl: "https://apps.apple.com/us/app/anxiety-tracker/id6754750980",
     androidAppStoreUrl:
       "https://play.google.com/store/apps/details?id=com.honeywolf.anxietytracker",
