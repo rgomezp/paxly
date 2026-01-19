@@ -12,7 +12,7 @@ export function LessonCard({
   tone?: "default" | "tip"
 }) {
   const { themed, theme } = useAppTheme()
-  const bg = tone === "tip" ? theme.colors.palette.secondary100 : theme.colors.card
+  const bg = tone === "tip" ? theme.colors.palette.primary400 : theme.colors.card
   return (
     <View
       style={themed(() => ({
@@ -35,7 +35,7 @@ export function LessonCard({
           <ThemedFontAwesome5Icon
             name="lightbulb"
             size={16}
-            color={theme.colors.tint}
+            color={theme.colors.palette.primary200}
             solid
             style={themed(() => ({ marginRight: theme.spacing.xs }))}
           />
