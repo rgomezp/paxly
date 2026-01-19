@@ -23,7 +23,6 @@ const useOneSignal = (): boolean => {
 
         // Get app ID from expo config
         const appId = Constants?.expoConfig?.extra?.oneSignalAppId
-
         if (!appId) {
           Log.error("OneSignal App ID is not set in config")
           setIsOneSignalSetup(false)
