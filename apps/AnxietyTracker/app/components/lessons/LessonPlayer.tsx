@@ -1,5 +1,6 @@
 import { LESSONS } from "@/data/LessonRegistry"
 import { IM_ANXIOUS_LESSON_DEFINITIONS } from "@/data/lessons/ImAnxiousLessons"
+import { IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS } from "@/data/lessons/ImHavingAPanicAttackLessons"
 import { CardLesson } from "./CardLesson"
 import { PracticeLesson } from "./PracticeLesson"
 import { JournalLesson } from "./JournalLesson"
@@ -17,8 +18,8 @@ export function LessonPlayer({
   lessonId: string
   onComplete?: () => void
 }) {
-  // Check both regular lessons and urge lessons
-  const cfg = LESSONS[lessonId] || IM_ANXIOUS_LESSON_DEFINITIONS[lessonId]
+  // Check regular lessons, urge lessons, and panic attack lessons
+  const cfg = LESSONS[lessonId] || IM_ANXIOUS_LESSON_DEFINITIONS[lessonId] || IM_HAVING_A_PANIC_ATTACK_LESSON_DEFINITIONS[lessonId]
   if (!cfg) return <Text>Unknown lesson: {lessonId}</Text>
   switch (cfg.format) {
     case "card":
