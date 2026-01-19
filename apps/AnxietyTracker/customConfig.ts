@@ -5,6 +5,12 @@ interface CustomConfig {
   termsOfServiceUrl: string
   privacyPolicyUrl: string
   /**
+   * EAS project ID
+   */
+  eas: {
+    projectId: string
+  }
+  /**
    * Whether to include the login screen
    */
   includeLoginScreen?: boolean
@@ -46,6 +52,9 @@ export default function customConfig(): CustomConfig {
   return {
     termsOfServiceUrl: "https://terms-and-conditions-anxietytracker.carrd.co/",
     privacyPolicyUrl: "https://anxietytracker-privacy.carrd.co",
+    eas: {
+      projectId: "06db5f25-8ccd-4ef5-9bd7-0867e2caca83",
+    },
     includeLoginScreen: true,
     includeSettingsScreen: true,
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)

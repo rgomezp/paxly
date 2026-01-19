@@ -35,10 +35,10 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     : "@react-native-google-signin/google-signin"
 
   return {
-    name: "Anxiety Tracker",
-    slug: "anxiety-tracker",
-    scheme: "anxietytracker",
-    owner: "honeywolf",
+    name: "Paxly",
+    slug: "paxly",
+    scheme: "paxly",
+    owner: "honeywolfllc",
     version: "0.1.0",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
@@ -92,9 +92,6 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
     },
     extra: {
-      eas: {
-        projectId: "3bd038bc-12a4-4fa0-9928-431e77c2b743",
-      },
       ...customConfig(),
     },
     web: {
