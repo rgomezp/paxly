@@ -54,8 +54,8 @@ export function congratulationsAwardSlide({
 
   return {
     id: "congratulationsAward",
-    title: "Congratulations!",
-    description: "Earn rewards as you complete lessons.",
+    title: "Stay motivated!",
+    description: "Collect rewards as you complete lessons.",
     component: <CongratulationsAwardComponent />,
     onLoad,
     textPlacement: "top",
