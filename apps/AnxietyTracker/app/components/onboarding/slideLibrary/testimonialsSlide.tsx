@@ -30,12 +30,12 @@ const TestimonialComponent: React.FC = () => {
 
   const testimonials: Testimonial[] = [
     {
-      name: "Sarah K.",
-      text: "I love this app. It has helped me so much to process my grief and move on.",
+      name: "Alex K.",
+      text: "I love this app. It has helped me so much to work through my anxiety.",
     },
     {
       name: "Meghan L.",
-      text: "Anxiety Tracker was a godsend when I needed it most. If your on the fence about it just go for it.",
+      text: "Paxly was a godsend. If your on the fence about it just go for it.",
     },
   ]
 
