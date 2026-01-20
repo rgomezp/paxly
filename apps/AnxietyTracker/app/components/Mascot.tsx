@@ -11,6 +11,12 @@ try {
   ExpoImage = require("expo-image").Image
 } catch {}
 
+// Blob's natural aspect ratio (width:height) from original design (400x180)
+const BLOB_ASPECT_RATIO = 400 / 180
+
+// Face size as a ratio of the blob's actual rendered height
+const FACE_SIZE_RATIO = 0.5
+
 interface MascotProps {
   /**
    * Width of the mascot animation
@@ -39,6 +45,27 @@ export const Mascot: FC<MascotProps> = ({ width = 400, height = 180, style }) =>
 
   const faceImageSource = require("../../assets/animations/cute_face_animation.webp")
 
+  // Calculate the blob's actual rendered size based on its aspect ratio
+  // The blob will scale to fit within the container while maintaining its aspect ratio
+  const containerAspectRatio = width / height
+  let blobRenderedHeight: number
+
+  if (containerAspectRatio >= BLOB_ASPECT_RATIO) {
+    // Container is wider than blob - blob is constrained by height
+    blobRenderedHeight = height
+  } else {
+    // Container is taller than blob - blob is constrained by width
+    blobRenderedHeight = width / BLOB_ASPECT_RATIO
+  }
+
+  // Calculate face size based on blob's actual rendered height
+  const faceSize = blobRenderedHeight * FACE_SIZE_RATIO
+
+  const $faceImageDynamic: ImageStyle = {
+    width: faceSize,
+    height: faceSize,
+  }
+
   return (
     <View style={[themed($container), { width, height }, style]}>
       {/* Blob Lottie animation as base */}
@@ -53,12 +80,12 @@ export const Mascot: FC<MascotProps> = ({ width = 400, height = 180, style }) =>
         {ExpoImage ? (
           <ExpoImage
             source={faceImageSource}
-            style={themed($faceImage)}
+            style={$faceImageDynamic}
             contentFit="contain"
             transition={0}
           />
         ) : (
-          <Image source={faceImageSource} style={themed($faceImage)} resizeMode="contain" />
+          <Image source={faceImageSource} style={$faceImageDynamic} resizeMode="contain" />
         )}
       </View>
     </View>
@@ -84,10 +111,4 @@ const $faceContainer: ThemedStyle<ViewStyle> = () => ({
   bottom: 0,
   alignItems: "center",
   justifyContent: "center",
-})
-
-const $faceImage: ThemedStyle<ImageStyle> = () => ({
-  width: "100%",
-  height: "100%",
-  transform: [{ scale: 0.34 }], // 66% smaller (34% of original size)
 })
