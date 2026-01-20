@@ -28,8 +28,10 @@ jest.mock("@/services/ganon/ganon", () => {
  * Expected slide order and IDs - update this when slides change:
  * Last updated for ONBOARDING_VERSION: 1.4
  * Note: freeToTrySlide and reminderBellSlide are conditional (leadup_slides flag)
+ * Note: testimonialsSlide is conditional (testimonials_slide flag)
  */
 const EXPECTED_SLIDE_IDS = [
+  "whatMadeYouOpen",
   "wowMoment",
   "problem_solution",
   "hero",
@@ -37,9 +39,15 @@ const EXPECTED_SLIDE_IDS = [
   "name_input",
   "gender",
   "ageRange",
+  "anxietyFeelings",
   "anxietySeverity",
-  "anxietyTriggerSituation",
+  "anxietyTriggers",
   "anxietyDuration",
+  "copingStyle",
+  "intentCommitment",
+  "sleepDuration",
+  "lifeSatisfaction",
+  "goalAchievement",
   "moodTrackingIntro",
   "moodReminderFrequency",
   "congratulationsAward",
@@ -73,6 +81,7 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
     // Map function names to slide IDs
     // This mapping should match the actual slide IDs returned by each function
     const functionNameToId: Record<string, string> = {
+      whatMadeYouOpenSlide: "whatMadeYouOpen",
       wowMomentSlide: "wowMoment",
       heroSlide: "hero",
       problemSolutionSlide: "problem_solution",
@@ -82,9 +91,15 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       testimonialsSlide: "testimonials",
       genderSlide: "gender",
       ageSlide: "ageRange",
+      anxietyFeelingsSlide: "anxietyFeelings",
       anxietySeveritySlide: "anxietySeverity",
-      anxietyTriggersSlide: "anxietyTriggerSituation",
+      anxietyTriggersSlide: "anxietyTriggers",
       anxietyDurationSlide: "anxietyDuration",
+      copingStyleSlide: "copingStyle",
+      intentCommitmentSlide: "intentCommitment",
+      sleepDurationSlide: "sleepDuration",
+      lifeSatisfactionSlide: "lifeSatisfaction",
+      goalAchievementSlide: "goalAchievement",
       moodTrackingIntroSlide: "moodTrackingIntro",
       moodReminderFrequencySlide: "moodReminderFrequency",
       referralSourceSlide: "referralSource",

@@ -61,6 +61,14 @@ interface StorageMapping {
   anxietySeverity: RelationshipDurations | null
   anxietyDuration: WhoEndedItChoices | null
   anxietyTriggerSituation: ContactTemptationSituationsChoices | null
+  whatMadeYouOpen: string[] | null
+  anxietyFeelings: string[] | null
+  anxietyTriggers: string[] | null
+  copingStyle: string[] | null
+  intentCommitment: string[] | null
+  sleepDuration: string | null
+  lifeSatisfaction: string | null
+  goalAchievement: string | null
   appMainGoal: AppMainGoalChoices | null
   moodReminderFrequency: MoodReminderFrequency | null
   lowContact: boolean

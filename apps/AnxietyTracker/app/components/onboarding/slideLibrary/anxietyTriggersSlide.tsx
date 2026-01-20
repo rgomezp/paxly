@@ -1,62 +1,85 @@
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
-import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
 import { ganon } from "@/services/ganon/ganon"
+import { useState, useEffect } from "react"
+
+type AnxietyTriggerChoices =
+  | "relationships"
+  | "health_worries"
+  | "money"
+  | "news_social_media"
+  | "lack_of_sleep"
+  | "unclear"
 
 type AnxietyTriggersSlideProps = {
   onSelection?: () => void
 }
 
-const options: MultipleChoiceOption<ContactTemptationSituationsChoices>[] = [
-  { id: ContactTemptationSituationsChoices.WHEN_LONELY, label: "In social situations" },
-  { id: ContactTemptationSituationsChoices.WHEN_SAD, label: "When I'm stressed" },
-  {
-    id: ContactTemptationSituationsChoices.WHEN_SEEING_THEIR_POSTS,
-    label: "At work or school",
-  },
-  { id: ContactTemptationSituationsChoices.ON_SPECIAL_DATES, label: "In the morning" },
-  { id: ContactTemptationSituationsChoices.WHEN_DRUNK, label: "Before bed" },
+const options: MultipleChoiceOption<AnxietyTriggerChoices>[] = [
+  { id: "relationships", label: "Relationships" },
+  { id: "health_worries", label: "Health worries" },
+  { id: "money", label: "Money" },
+  { id: "news_social_media", label: "News / social media" },
+  { id: "lack_of_sleep", label: "Lack of sleep" },
+  { id: "unclear", label: "Unclear" },
 ]
 
-export function anxietyTriggersSlide({ onSelection }: AnxietyTriggersSlideProps): ISlide {
-  // Read saved anxietyTriggerSituation from ganon
-  const savedTrigger = ganon.get(
-    "anxietyTriggerSituation",
-  ) as ContactTemptationSituationsChoices | null
-  const initialSelected = savedTrigger ? [savedTrigger] : []
+interface AnxietyTriggersComponentProps {
+  onSelection?: () => void
+}
+
+function AnxietyTriggersComponent({ onSelection }: AnxietyTriggersComponentProps) {
+  // Read saved triggers from ganon
+  const savedTriggers = (ganon.get("anxietyTriggers") as AnxietyTriggerChoices[] | null) || []
+  const [selectedTriggers, setSelectedTriggers] = useState<AnxietyTriggerChoices[]>(savedTriggers)
+
+  // Update selected triggers when saved triggers change
+  useEffect(() => {
+    const saved = (ganon.get("anxietyTriggers") as AnxietyTriggerChoices[] | null) || []
+    setSelectedTriggers(saved)
+  }, [])
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`AnxietyTriggersSlide: buttonPressed: ${optionId}`)
 
-    const selectedTrigger = optionId as ContactTemptationSituationsChoices
+    const trigger = optionId as AnxietyTriggerChoices
 
-    // Save to ganon with new key
-    try {
-      ganon.set("anxietyTriggerSituation", selectedTrigger)
-      Log.info(`AnxietyTriggersSlide: Saved anxietyTriggerSituation: ${selectedTrigger}`)
-    } catch (e) {
-      Log.error(`AnxietyTriggersSlide: Error saving anxietyTriggerSituation: ${e}`)
-    }
+    // Update local state
+    setSelectedTriggers((prev) => {
+      const newTriggers = prev.includes(trigger)
+        ? prev.filter((id) => id !== trigger)
+        : [...prev, trigger]
 
-    // Auto-advance when shouldAutoAdvance is true
-    if (shouldAutoAdvance) {
-      onSelection?.()
-    }
+      // Save to ganon
+      try {
+        ganon.set("anxietyTriggers", newTriggers)
+        Log.info(`AnxietyTriggersSlide: Saved anxietyTriggers: ${JSON.stringify(newTriggers)}`)
+      } catch (e) {
+        Log.error(`AnxietyTriggersSlide: Error saving anxietyTriggers: ${e}`)
+      }
+
+      return newTriggers
+    })
   }
 
+  return (
+    <MultipleChoiceSelector
+      options={options}
+      onSelection={buttonPressed}
+      allowMultiple={true}
+      maxOptions={6}
+      initialSelectedOptions={selectedTriggers}
+      onAutoAdvance={onSelection}
+    />
+  )
+}
+
+export function anxietyTriggersSlide({ onSelection }: AnxietyTriggersSlideProps): ISlide {
   return {
-    id: "anxietyTriggerSituation",
-    title: "When do you experience anxiety most?",
-    component: (
-      <MultipleChoiceSelector
-        options={options}
-        onSelection={buttonPressed}
-        allowMultiple={false}
-        maxOptions={5}
-        initialSelectedOptions={initialSelected}
-        onAutoAdvance={onSelection}
-      />
-    ),
+    id: "anxietyTriggers",
+    title: "What tends to trigger your anxiety?",
+    component: <AnxietyTriggersComponent onSelection={onSelection} />,
+    textAlignment: "center",
   }
 }

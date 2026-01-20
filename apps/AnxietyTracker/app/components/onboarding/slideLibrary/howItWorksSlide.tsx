@@ -34,7 +34,7 @@ const steps: IconTextData[] = [
 export function howItWorksSlide({ onSelection: _onSelection }: HowItWorksSlideProps): ISlide {
   return {
     id: "howItWorks",
-    title: "Start your journey today",
+    title: "Start your journey",
     description: "Join thousands who are building awareness and managing their anxiety better.",
     component: <HowItWorksComponent />,
   }

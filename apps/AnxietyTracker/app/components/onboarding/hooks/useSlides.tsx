@@ -19,6 +19,13 @@ import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
 import { congratulationsAwardSlide } from "../slideLibrary/congratulationsAwardSlide"
+import { whatMadeYouOpenSlide } from "../slideLibrary/whatMadeYouOpenSlide"
+import { anxietyFeelingsSlide } from "../slideLibrary/anxietyFeelingsSlide"
+import { copingStyleSlide } from "../slideLibrary/copingStyleSlide"
+import { intentCommitmentSlide } from "../slideLibrary/intentCommitmentSlide"
+import { sleepDurationSlide } from "../slideLibrary/sleepDurationSlide"
+import { lifeSatisfactionSlide } from "../slideLibrary/lifeSatisfactionSlide"
+import { goalAchievementSlide } from "../slideLibrary/goalAchievementSlide"
 import { FlagContext } from "@/hooks/useFlags"
 
 export const useSlides = (onSelection?: () => void) => {
@@ -57,6 +64,9 @@ export const useSlides = (onSelection?: () => void) => {
 
   const slides: ISlide[] = useMemo(
     () => [
+      // First screen: What made you open Paxly today?
+      whatMadeYouOpenSlide({ onSelection }), // Understanding user's current state
+
       // First 5 screens: Wow moment and key principles
       wowMomentSlide({ onSelection }), // Reciprocity (valuable insight) + Authority (research-backed) - WOW MOMENT
       problemSolutionSlide({ onSelection }), // Unity ("we've all been there", "together")
@@ -69,9 +79,15 @@ export const useSlides = (onSelection?: () => void) => {
       // Data collection slides
       genderSlide({ onSelection }),
       ageSlide({ onSelection }),
+      anxietyFeelingsSlide({ onSelection }), // Anxiety Profile - understand their anxiety without labels
       anxietySeveritySlide({ onSelection }),
       anxietyTriggersSlide({ onSelection }),
       anxietyDurationSlide({ onSelection }),
+      copingStyleSlide({ onSelection }), // Coping Style - strength-based framing
+      intentCommitmentSlide({ onSelection }), // Intent & Commitment - understand motivation without pressure
+      sleepDurationSlide({ onSelection }),
+      lifeSatisfactionSlide({ onSelection }),
+      goalAchievementSlide({ onSelection }),
 
       // Setup slides
       moodTrackingIntroSlide({ onSelection }),
