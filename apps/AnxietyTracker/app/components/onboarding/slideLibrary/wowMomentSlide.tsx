@@ -16,7 +16,7 @@ export function wowMomentSlide({ onSelection: _onSelection }: WowMomentSlideProp
     id: "wowMoment",
     title: "Anxiety is real 🧠",
     description:
-      "Research shows anxiety affects millions of people, and tracking your patterns can help you understand and manage it better.",
+      "You’re not alone in feeling anxious. Tracking patterns can help things feel more manageable.”",
     component: <WowMomentComponent />,
     textPlacement: "bottom",
     textAlignment: "center",
