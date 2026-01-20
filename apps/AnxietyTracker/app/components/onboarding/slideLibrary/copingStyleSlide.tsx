@@ -41,7 +41,7 @@ function CopingStyleComponent({ onSelection }: CopingStyleComponentProps) {
     setSelectedCopingStyles(saved)
   }, [])
 
-  const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
+  const buttonPressed = (optionId: string, _shouldAutoAdvance?: boolean) => {
     Log.info(`CopingStyleSlide: buttonPressed: ${optionId}`)
 
     const copingStyle = optionId as CopingStyleChoices

@@ -40,7 +40,7 @@ function AnxietyTriggersComponent({ onSelection }: AnxietyTriggersComponentProps
     setSelectedTriggers(saved)
   }, [])
 
-  const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
+  const buttonPressed = (optionId: string, _shouldAutoAdvance?: boolean) => {
     Log.info(`AnxietyTriggersSlide: buttonPressed: ${optionId}`)
 
     const trigger = optionId as AnxietyTriggerChoices

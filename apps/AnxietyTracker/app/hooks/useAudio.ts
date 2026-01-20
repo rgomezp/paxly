@@ -16,7 +16,7 @@ export function useAudio() {
         interruptionModeAndroid: "duckOthers",
       })
       setIsAudioSetup(true)
-    } catch (e) {
+    } catch {
       setIsAudioSetup(false)
     }
   }

@@ -40,7 +40,7 @@ function WhatMadeYouOpenComponent({ onSelection }: WhatMadeYouOpenComponentProps
     setSelectedReasons(saved)
   }, [])
 
-  const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
+  const buttonPressed = (optionId: string, _shouldAutoAdvance?: boolean) => {
     Log.info(`WhatMadeYouOpenSlide: buttonPressed: ${optionId}`)
 
     const reason = optionId as WhatMadeYouOpenChoices
