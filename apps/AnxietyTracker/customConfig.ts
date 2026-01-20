@@ -60,7 +60,7 @@ export default function customConfig(): CustomConfig {
     startingTheme: "dark", // Options: 'light', 'dark', or 'auto' (follows system)
     primaryFont: "spaceGrotesk", // Options: 'poppins', 'inter', 'roboto', or 'spaceGrotesk'
     oneSignalAppId: "a8148f93-f3a7-42fc-85cd-3801756416f6",
-    iosAppStoreUrl: "https://apps.apple.com/us/app/anxiety-tracker/id6754750980",
+    iosAppStoreUrl: "https://apps.apple.com/us/app/anxiety-tracker-paxly/id6757827361",
     androidAppStoreUrl:
       "https://play.google.com/store/apps/details?id=com.honeywolf.anxietytracker",
     useReferrals: false,
