@@ -23,6 +23,7 @@ import {
   getAgeRange,
   getPlacementId,
   handlePurchaseCompletion,
+  setEntitlementTags,
 } from "@/utils/paywallUtils"
 import { paywallAnalytics } from "@/utils/paywallAnalytics"
 
@@ -49,6 +50,11 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
       Log.warn(`OnboardingHardPaywall: Error logging restore info: ${error}`)
     }
 
+    // Set entitlement ID tags immediately after restore
+    if (customerInfo) {
+      setEntitlementTags(customerInfo, "OnboardingHardPaywall")
+    }
+
     paywallAnalytics.restored()
 
     try {
@@ -64,8 +70,14 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     onCancel()
   }
 
-  const handlePurchaseCompleted = () => {
-    handlePurchaseCompletion(offering, "OnboardingHardPaywall", onComplete)
+  const handlePurchaseCompleted = async () => {
+    try {
+      await handlePurchaseCompletion(offering, "OnboardingHardPaywall", onComplete)
+    } catch (error) {
+      Log.error(`OnboardingHardPaywall: Error in handlePurchaseCompleted: ${error}`)
+      // Still call onComplete to allow user to proceed even if tagging fails
+      // The usePurchaseStatus hook will detect the entitlement and call onComplete anyway
+    }
   }
 
   // If no offering is available after loading, proceed to next step

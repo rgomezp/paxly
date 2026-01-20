@@ -8,8 +8,18 @@ import { fetchAbandonmentPlacementOffering, handlePurchaseCompletion } from "@/u
 export default function OnboardingFallbackPaywall({ onFinished }: { onFinished: () => void }) {
   const [offering, setOffering] = useState<PurchasesOffering | null>(null)
 
-  const handlePurchaseCompleted = useCallback(() => {
-    handlePurchaseCompletion(offering, "OnboardingFallbackPaywall", onFinished)
+  const handlePurchaseCompleted = useCallback(async () => {
+    try {
+      await handlePurchaseCompletion(offering, "OnboardingFallbackPaywall", onFinished)
+    } catch (error) {
+      Log.error(`OnboardingFallbackPaywall: Error in handlePurchaseCompleted: ${error}`)
+      // Still call onFinished to allow user to proceed even if tagging fails
+      try {
+        onFinished()
+      } catch (callbackError) {
+        Log.error(`OnboardingFallbackPaywall: Error in onFinished callback: ${callbackError}`)
+      }
+    }
   }, [offering, onFinished])
 
   useEffect(() => {

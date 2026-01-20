@@ -1,10 +1,16 @@
 import { AgeRanges } from "@/types/AgeRange"
 import { ganon } from "@/services/ganon/ganon"
 import Log from "./Log"
-import { PurchasesOffering, PurchasesOfferings } from "react-native-purchases"
+import {
+  PurchasesOffering,
+  PurchasesOfferings,
+  PurchasesEntitlementInfo,
+  CustomerInfo,
+} from "react-native-purchases"
 import { paywallAnalytics } from "./paywallAnalytics"
 import { OneSignal } from "react-native-onesignal"
 import Purchases from "react-native-purchases"
+import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
 
 /**
  * Mapping of age ranges to paywall placement identifiers
@@ -355,18 +361,103 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
 }
 
 /**
+ * Sets entitlement ID tags in ganon and OneSignal based on active entitlements
+ * This is a shared utility to ensure consistent tagging across purchase and restore flows
+ */
+export const setEntitlementTags = (
+  customerInfo: CustomerInfo | null | undefined,
+  componentName: string,
+): void => {
+  try {
+    // Validate customerInfo structure
+    if (
+      !customerInfo ||
+      typeof customerInfo !== "object" ||
+      !customerInfo.entitlements ||
+      typeof customerInfo.entitlements !== "object" ||
+      !customerInfo.entitlements.active ||
+      typeof customerInfo.entitlements.active !== "object"
+    ) {
+      Log.warn(`${componentName}: Invalid customerInfo structure, cannot set entitlement tags`)
+      return
+    }
+
+    // Extract active entitlements
+    const active = Object.fromEntries(
+      Object.entries(customerInfo.entitlements.active).filter(
+        ([_, value]) => (value as PurchasesEntitlementInfo)?.isActive,
+      ),
+    ) as Record<string, PurchasesEntitlementInfo>
+
+    // Set entitlement ID in ganon and OneSignal
+    if (active["elite"]?.isActive) {
+      ganon.set("entitlementId", "elite")
+      OneSignal.User.addTag("entitlementId", "elite")
+      Log.info(`${componentName}: Tagged user with entitlementId: elite`)
+    } else if (active["pro"]?.isActive) {
+      ganon.set("entitlementId", "pro")
+      OneSignal.User.addTag("entitlementId", "pro")
+      Log.info(`${componentName}: Tagged user with entitlementId: pro`)
+    } else if (ganon.contains("entitlementId")) {
+      ganon.remove("entitlementId")
+      OneSignal.User.removeTag("entitlementId")
+      Log.info(`${componentName}: Removed entitlementId tag (no active entitlements)`)
+    }
+  } catch (error) {
+    Log.error(`${componentName}: Error setting entitlement tags: ${error}`)
+  }
+}
+
+/**
  * Handles purchase completion logic shared between paywall components
  * - Logs purchase completion
- * - Tags user if trial offering
+ * - Refreshes customer info to ensure entitlements are up to date
+ * - Tags user with entitlement ID and trial status if applicable
  * - Calls analytics
  * - Calls completion callback with error handling (if provided)
  */
-export const handlePurchaseCompletion = (
+export const handlePurchaseCompletion = async (
   offering: PurchasesOffering | null | undefined,
   componentName: string,
   onComplete?: () => void,
-): void => {
+): Promise<void> => {
   Log.info(`${componentName}: Purchase completed`)
+
+  // Immediately refresh customer info to ensure entitlements are updated
+  // This is critical because RevenueCat listeners may have delays
+  try {
+    await ensureRevenueCatConfigured()
+    // Sync purchases to ensure server state is up to date
+    // This will trigger the customerInfoUpdateListener in useEntitlements
+    await Purchases.syncPurchases()
+    const customerInfo = await Purchases.getCustomerInfo()
+
+    // Set entitlement ID tags immediately after purchase
+    setEntitlementTags(customerInfo, componentName)
+
+    // Extract active entitlements for logging (with validation)
+    if (
+      customerInfo &&
+      customerInfo.entitlements &&
+      customerInfo.entitlements.active &&
+      typeof customerInfo.entitlements.active === "object"
+    ) {
+      const active = Object.fromEntries(
+        Object.entries(customerInfo.entitlements.active).filter(
+          ([_, value]) => (value as PurchasesEntitlementInfo)?.isActive,
+        ),
+      )
+
+      Log.info(
+        `${componentName}: Customer info refreshed after purchase. Active entitlements: ${Object.keys(active).join(", ") || "none"}`,
+      )
+    } else {
+      Log.warn(`${componentName}: Customer info structure invalid, cannot log active entitlements`)
+    }
+  } catch (error) {
+    Log.error(`${componentName}: Error refreshing customer info after purchase: ${error}`)
+    // Continue with the rest of the flow even if refresh fails
+  }
 
   // Check if this is a trial offering using robust detection method
   if (isTrialOffering(offering)) {
