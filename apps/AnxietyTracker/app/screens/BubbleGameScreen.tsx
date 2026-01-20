@@ -31,11 +31,11 @@ interface Bubble {
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window")
 const NUM_LANES = 8
 const LANE_WIDTH = SCREEN_WIDTH / NUM_LANES
-const BUBBLE_SPEED = 30 // pixels per second
-const SPAWN_INTERVAL_MIN = 200 // milliseconds
-const SPAWN_INTERVAL_MAX = 500 // milliseconds
-const BUBBLE_SMALL_SIZE = 40
-const BUBBLE_LARGE_SIZE = 60
+const BUBBLE_SPEED = 70 // pixels per second
+const SPAWN_INTERVAL_MIN = 800 // milliseconds
+const SPAWN_INTERVAL_MAX = 1200 // milliseconds
+const BUBBLE_SMALL_SIZE = 60
+const BUBBLE_LARGE_SIZE = 80
 
 // Pool of reusable audio players - we cycle through these instead of creating new ones
 const POP_SOUND_POOL_SIZE = 4
@@ -53,6 +53,7 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
   const popSoundPoolRef = useRef<ReturnType<typeof createAudioPlayer>[]>([])
   const popSoundIndexRef = useRef(0)
   const poolInitializedRef = useRef(false)
+  const instructionOpacity = useRef(new Animated.Value(0)).current
 
   // Initialize a fixed pool of reusable audio players on mount.
   // We reuse these by seeking to 0 before each play, avoiding resource exhaustion.
@@ -113,6 +114,22 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
       // Screen is focused - start the game
       isActiveRef.current = true
 
+      // Play instruction animation: fade in -> show for 2 seconds -> fade out
+      instructionOpacity.setValue(0)
+      Animated.sequence([
+        Animated.timing(instructionOpacity, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.delay(2000),
+        Animated.timing(instructionOpacity, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start()
+
       const spawnBubble = () => {
         if (!isActiveRef.current) return
 
@@ -172,7 +189,7 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
         isActiveRef.current = false
         resetGame()
       }
-    }, [resetGame]),
+    }, [resetGame, instructionOpacity]),
   )
 
   const handleBubblePress = (bubbleId: string) => {
@@ -260,7 +277,7 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
 
         {/* Counter */}
         <View
-          style={[themed($counterContainer), { paddingBottom: insets.bottom + 20 }]}
+          style={[themed($counterContainer), { paddingTop: insets.top + 20 }]}
           pointerEvents="none"
         >
           <Text
@@ -274,6 +291,27 @@ export const BubbleGameScreen: FC<BubbleGameScreenProps> = function BubbleGameSc
             })}
           />
         </View>
+
+        {/* Instruction text */}
+        <Animated.View
+          style={[
+            themed($instructionContainer),
+            {
+              opacity: instructionOpacity,
+            },
+          ]}
+          pointerEvents="none"
+        >
+          <Text
+            text="Pop the bubbles!"
+            preset="heading"
+            style={themed({
+              color: theme.colors.text,
+              fontSize: 36,
+              fontWeight: "600",
+            })}
+          />
+        </Animated.View>
       </View>
     </Screen>
   )
@@ -314,10 +352,20 @@ const $bubbleImage: ImageStyle = {
 
 const $counterContainer: ViewStyle = {
   position: "absolute",
-  bottom: 0,
+  top: 0,
   left: 0,
   right: 0,
   alignItems: "center",
   justifyContent: "center",
   paddingTop: 20,
+}
+
+const $instructionContainer: ViewStyle = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  alignItems: "center",
+  justifyContent: "center",
 }
