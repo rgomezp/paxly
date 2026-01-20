@@ -4,7 +4,7 @@ import { ganon } from "@/services/ganon/ganon"
 /**
  * Hook to manage medical disclaimer acceptance state.
  * Checks if the user has accepted the disclaimer and provides a function to accept it.
- * 
+ *
  * @returns Object with:
  * - hasAccepted: boolean indicating if disclaimer has been accepted
  * - showModal: boolean indicating if modal should be shown
@@ -28,4 +28,3 @@ export function useMedicalDisclaimer() {
     acceptDisclaimer,
   }
 }
-

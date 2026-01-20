@@ -32,9 +32,8 @@ interface CopingStyleComponentProps {
 function CopingStyleComponent({ onSelection }: CopingStyleComponentProps) {
   // Read saved coping styles from ganon
   const savedCopingStyles = (ganon.get("copingStyle") as CopingStyleChoices[] | null) || []
-  const [selectedCopingStyles, setSelectedCopingStyles] = useState<CopingStyleChoices[]>(
-    savedCopingStyles,
-  )
+  const [selectedCopingStyles, setSelectedCopingStyles] =
+    useState<CopingStyleChoices[]>(savedCopingStyles)
 
   // Update selected coping styles when saved coping styles change
   useEffect(() => {
@@ -85,4 +84,3 @@ export function copingStyleSlide({ onSelection }: CopingStyleSlideProps): ISlide
     textAlignment: "center",
   }
 }
-

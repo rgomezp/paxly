@@ -56,4 +56,3 @@ export function goalAchievementSlide({ onSelection }: GoalAchievementSlideProps)
     textAlignment: "center",
   }
 }
-

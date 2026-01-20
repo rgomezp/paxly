@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
   Easing,
 } from "react-native-reanimated"
-import LottieView from "lottie-react-native"
+import { Mascot } from "../Mascot"
 import { useAppTheme } from "@/utils/useAppTheme"
 
 const LOADING_DURATION = 5000 // 5 seconds
@@ -21,13 +21,9 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
   const { width } = useWindowDimensions()
   const progress = useSharedValue(0)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const lottieRef = useRef<LottieView>(null)
 
-  // Animate progress bar and start Lottie animation when component mounts
+  // Animate progress bar when component mounts
   useEffect(() => {
-    // Start Lottie animation
-    lottieRef.current?.play()
-
     // Animate progress bar from 0 to 100% over 5 seconds
     progress.value = withTiming(1, {
       duration: LOADING_DURATION,
@@ -62,12 +58,7 @@ export default function OnboardingLoadingScreen({ onComplete }: OnboardingLoadin
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <View style={styles.lottieContainer}>
-            <LottieView
-              ref={lottieRef}
-              source={require("../../../assets/animations/blob.json")}
-              loop
-              style={styles.lottie}
-            />
+            <Mascot width={200} height={200} />
           </View>
           <Text style={[styles.text, { color: theme.colors.textDim }]}>Loading calm...</Text>
           <View style={[styles.progressBarContainer, { width: progressBarWidth }]}>
@@ -95,10 +86,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
-  },
-  lottie: {
-    height: 200,
-    width: 200,
   },
   lottieContainer: {
     alignItems: "center",

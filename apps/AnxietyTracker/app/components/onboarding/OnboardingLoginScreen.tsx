@@ -1,7 +1,7 @@
 import { StyleSheet, View, Linking, Text, TouchableOpacity } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useEffect, useRef, useState } from "react"
-import LottieView from "lottie-react-native"
+import { Mascot } from "../Mascot"
 import LoginComponent from "../login/LoginComponent"
 import { useAppTheme } from "@/utils/useAppTheme"
 import customConfig from "../../../customConfig"
@@ -16,12 +16,6 @@ const OnboardingLoginScreen: React.FC = () => {
   const { completeOnboarding, step, isLoggedIn } = useOnboardingState()
   const hasCompletedOnboardingRef = useRef(false)
   const [restoreFinished, setRestoreFinished] = useState(false)
-  const lottieRef = useRef<LottieView>(null)
-
-  // Start Lottie animation when component mounts
-  useEffect(() => {
-    lottieRef.current?.play()
-  }, [])
 
   // Listen for restore completion
   useEffect(() => {
@@ -83,12 +77,7 @@ const OnboardingLoginScreen: React.FC = () => {
         <View style={styles.contentContainer}>
           {/* Animation container - takes up 1/2 of the screen */}
           <View style={styles.imageContainer}>
-            <LottieView
-              ref={lottieRef}
-              source={require("../../../assets/animations/blob.json")}
-              loop
-              style={styles.logo}
-            />
+            <Mascot width={250} height={250} />
           </View>
 
           {/* Login component */}
@@ -163,10 +152,6 @@ const styles = StyleSheet.create({
   loginContainer: {
     flex: 0.25,
     justifyContent: "center",
-  },
-  logo: {
-    height: 250,
-    width: 250,
   },
   safeArea: {
     flex: 1,

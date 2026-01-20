@@ -55,4 +55,3 @@ export function lifeSatisfactionSlide({ onSelection }: LifeSatisfactionSlideProp
     textAlignment: "center",
   }
 }
-

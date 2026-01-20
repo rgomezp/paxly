@@ -7,7 +7,7 @@ import MedicalDisclaimerModal from "@/components/modals/MedicalDisclaimerModal"
 /**
  * Hook that provides a function to navigate to a lesson, showing the medical disclaimer
  * modal first if it hasn't been accepted yet.
- * 
+ *
  * @returns Object with:
  * - navigateToLesson: function to call with lessonId to navigate
  * - disclaimerModal: JSX element for the disclaimer modal (should be rendered in component)
@@ -57,4 +57,3 @@ export function useNavigateToLesson() {
     disclaimerModal,
   }
 }
-

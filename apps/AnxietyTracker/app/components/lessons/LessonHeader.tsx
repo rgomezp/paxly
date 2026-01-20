@@ -1,17 +1,10 @@
 import { View } from "react-native"
-import { useEffect, useRef } from "react"
 import Animated, { FadeIn } from "react-native-reanimated"
-import LottieView from "lottie-react-native"
-import { Text } from ".."
+import { Text, Mascot } from ".."
 import { useAppTheme } from "@/utils/useAppTheme"
 
 export function LessonHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   const { themed, theme } = useAppTheme()
-  const lottieRef = useRef<LottieView>(null)
-
-  useEffect(() => {
-    lottieRef.current?.play()
-  }, [])
 
   return (
     <View
@@ -24,12 +17,7 @@ export function LessonHeader({ title, subtitle }: { title: string; subtitle?: st
       }))}
     >
       <Animated.View entering={FadeIn.duration(600)}>
-        <LottieView
-          ref={lottieRef}
-          source={require("../../../assets/animations/blob.json")}
-          loop
-          style={{ height: 120, width: 120 }}
-        />
+        <Mascot width={120} height={120} />
       </Animated.View>
       <Animated.View entering={FadeIn.duration(800)}>
         <Text

@@ -1,9 +1,8 @@
-import { useEffect, useRef } from "react"
 import { StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import LottieView from "lottie-react-native"
 import RectangularButton from "../buttons/RectangularButton"
 import { Text } from "../Text"
+import { Mascot } from "../Mascot"
 import { useAppTheme } from "@/utils/useAppTheme"
 
 interface OnboardingOpeningScreenProps {
@@ -16,11 +15,6 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
   onIHaveAccount,
 }) => {
   const { theme } = useAppTheme()
-  const lottieRef = useRef<LottieView>(null)
-
-  useEffect(() => {
-    lottieRef.current?.play()
-  }, [])
 
   return (
     <View style={[styles.view, { backgroundColor: theme.colors.background }]}>
@@ -37,12 +31,7 @@ const OnboardingOpeningScreen: React.FC<OnboardingOpeningScreenProps> = ({
             Paxly
           </Text>
           <View style={styles.logoContainer}>
-            <LottieView
-              ref={lottieRef}
-              source={require("../../../assets/animations/blob.json")}
-              loop
-              style={styles.logo}
-            />
+            <Mascot width={300} height={140} />
           </View>
           <View style={styles.buttonContainer}>
             <RectangularButton
@@ -86,10 +75,6 @@ const styles = StyleSheet.create({
   },
   getStartedButton: {
     marginBottom: 16,
-  },
-  logo: {
-    height: 140,
-    width: 300,
   },
   logoContainer: {
     alignItems: "center",

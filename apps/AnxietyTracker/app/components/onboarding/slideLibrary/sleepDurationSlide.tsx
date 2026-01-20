@@ -56,4 +56,3 @@ export function sleepDurationSlide({ onSelection }: SleepDurationSlideProps): IS
     textAlignment: "center",
   }
 }
-

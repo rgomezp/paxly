@@ -2,7 +2,7 @@ import { FC, useEffect, useState, useCallback, useRef } from "react"
 import { observer } from "mobx-react-lite"
 import { ScrollView, View, ViewStyle, Image, ImageStyle, ImageBackground } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
-import { Text } from "@/components"
+import { Text, Mascot } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import UserManager from "@/managers/UserManager"
@@ -17,7 +17,6 @@ import { createAudioPlayer } from "expo-audio"
 import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
-import LottieView from "lottie-react-native"
 import { ThemedStyle } from "@/theme"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
@@ -31,7 +30,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const [isHelpModalVisible, setIsHelpModalVisible] = useState(false)
   const { themed, theme, themeContext } = useAppTheme()
   const hasShownPaywallRef = useRef<string | null>(null)
-  const blobLottieRef = useRef<LottieView>(null)
   const { showModal, acceptDisclaimer } = useMedicalDisclaimer()
 
   useEffect(() => {
@@ -90,11 +88,6 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
     playChime()
   }, [])
 
-  // Start blob animation when component mounts
-  useEffect(() => {
-    blobLottieRef.current?.play()
-  }, [])
-
   // Show paywall if rc_offering_id is provided in route params
   useEffect(() => {
     const rcOfferingId = route.params?.rc_offering_id
@@ -137,12 +130,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
             <Image source={logoSource} style={themed($logo)} resizeMode="contain" />
           </View>
           <View style={themed($blobContainer)}>
-            <LottieView
-              ref={blobLottieRef}
-              source={require("../../assets/animations/blob.json")}
-              loop
-              style={themed($blobAnimation)}
-            />
+            <Mascot width={400} height={180} />
           </View>
 
           {/* Content card with rounded top corners */}
@@ -238,9 +226,4 @@ const $blobContainer: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
   marginBottom: 16,
-}
-
-const $blobAnimation: ViewStyle = {
-  width: 400,
-  height: 180,
 }
