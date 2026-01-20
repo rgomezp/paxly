@@ -1,3 +1,4 @@
+import { useContext } from "react"
 import { View, ViewStyle, TextStyle } from "react-native"
 import { Text } from "@/components"
 import BottomModal from "./BottomModal"
@@ -6,6 +7,9 @@ import RectangularButton from "../buttons/RectangularButton"
 import { IM_ANXIOUS_LESSON_IDS } from "@/data/lessons/ImAnxiousLessons"
 import { RELAPSE_LESSON_IDS } from "@/data/lessons/ImHavingAPanicAttackLessons"
 import { navigate } from "@/navigators/navigationUtilities"
+import FreeUserUsageManager from "@/managers/FreeUserUsageManager"
+import HelpUsageManager from "@/managers/HelpUsageManager"
+import { FlagContext } from "@/hooks/useFlags"
 
 interface HelpModalProps {
   visible: boolean
@@ -19,6 +23,7 @@ type ButtonProps = {
   buttonText: string
   onClick: () => void
   icon?: string
+  isPaidFeature?: boolean
 }
 
 // Helper function to randomly select an urge lesson
@@ -40,6 +45,19 @@ export default function HelpModal({
   onIContacted,
 }: HelpModalProps) {
   const { theme, themed } = useAppTheme()
+  const flagContext = useContext(FlagContext)
+
+  if (!flagContext) {
+    throw new Error("HelpModal must be used within a FlagProvider")
+  }
+
+  const flags = flagContext.useFeatureFlags()
+
+  // Get the task limit from feature flags, fallback to default if not available
+  const taskLimit = flags.task_limit_free_users ?? FreeUserUsageManager.getDefaultFreeLimit()
+
+  const hasReachedImAnxiousLimit = HelpUsageManager.hasReachedImAnxiousLimit(taskLimit)
+  const hasReachedPanicAttackLimit = HelpUsageManager.hasReachedPanicAttackLimit(taskLimit)
 
   const handleOptionPress = (callback: () => void) => {
     callback()
@@ -50,8 +68,10 @@ export default function HelpModal({
     {
       id: "im_anxious",
       buttonText: "I'm anxious",
+      isPaidFeature: hasReachedImAnxiousLimit,
       onClick: () => {
         handleOptionPress(onLessonActivated)
+        HelpUsageManager.incrementImAnxious()
         const randomLessonId = getRandomUrgeLesson()
         navigate("SingleLesson", { lessonId: randomLessonId })
       },
@@ -60,8 +80,10 @@ export default function HelpModal({
       id: "im_having_a_panic_attack",
       buttonText: "I'm having a panic attack",
       icon: "exclamation-triangle",
+      isPaidFeature: hasReachedPanicAttackLimit,
       onClick: () => {
         handleOptionPress(onIContacted)
+        HelpUsageManager.incrementPanicAttack()
         const randomRelapseLessonId = getRandomRelapseLesson()
         navigate("SingleLesson", { lessonId: randomRelapseLessonId })
       },
@@ -89,6 +111,7 @@ export default function HelpModal({
                 width="100%"
                 customStyles={$buttonSpacing}
                 icon={b.icon}
+                isPaidFeature={b.isPaidFeature}
                 isSelected={b.id === "im_having_a_panic_attack"}
               />
             ))}
