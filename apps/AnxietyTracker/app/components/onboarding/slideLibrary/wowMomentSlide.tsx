@@ -16,7 +16,7 @@ export function wowMomentSlide({ onSelection: _onSelection }: WowMomentSlideProp
     id: "wowMoment",
     title: "Anxiety is real 🧠",
     description:
-      "You’re not alone in feeling anxious. Tracking patterns can help things feel more manageable.”",
+      "You’re not alone in feeling anxious. Tracking patterns can help things feel more manageable.",
     component: <WowMomentComponent />,
     textPlacement: "bottom",
     textAlignment: "center",
