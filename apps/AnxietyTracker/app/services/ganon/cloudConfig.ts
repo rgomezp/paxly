@@ -29,7 +29,6 @@ const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
       "lifeSatisfaction",
       "goalAchievement",
       "hasAcceptedMedicalDisclaimer",
-      "helpUsageCounters",
     ],
     subcollectionKeys: ["moodHistory", "journalEntries"],
   },

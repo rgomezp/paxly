@@ -21,7 +21,6 @@ import { ILessonResponses } from "@/types/ILessonResponses"
 import { IAwardData } from "@/types/IAwardData"
 import { IBadgeData } from "@/types/IBadgeData"
 import { ILetterToMyself } from "@/types/ILetterToMyself"
-import { IHelpUsageCounters } from "@/types/IHelpUsageCounters"
 
 // Storage key constants
 export const STORAGE_KEYS = {
@@ -85,7 +84,6 @@ interface StorageMapping {
   natureSoundsEnabled: boolean
   natureSoundType: "waves" | "birds"
   hasAcceptedMedicalDisclaimer: boolean
-  helpUsageCounters?: IHelpUsageCounters
 }
 
 export default StorageMapping
