@@ -15,15 +15,33 @@ import { MoodGrid, AnxietyGrid } from "@/components"
 import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 import type { ThemedStyle } from "@/theme"
 import type { ViewStyle as RNViewStyle } from "react-native"
+import { useHeader } from "@/utils/useHeader"
 
 interface MoodLogsScreenProps extends AppStackScreenProps<"MoodLogs"> {}
 
 type MoodLogListItem = IMoodHistoryItem & { id: string }
 
-export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLogsScreen() {
+export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLogsScreen({
+  navigation,
+}) {
   const { theme, themed } = useAppTheme()
   const { moodStore } = useStores()
   const swipeableRefs = useRef<Map<string, Swipeable>>(new Map())
+
+  useHeader(
+    {
+      LeftActionComponent: (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigation.goBack()}
+          style={themed($headerAction)}
+        >
+          <ThemedFontAwesome5Icon name="chevron-left" color={theme.colors.text} size={18} solid />
+        </Pressable>
+      ),
+    },
+    [navigation, theme.colors.text],
+  )
 
   const historySource: IMoodHistoryItem[] = moodStore.history.length
     ? (moodStore.history.slice() as IMoodHistoryItem[])
@@ -176,3 +194,10 @@ const $listContainer: ViewStyle = {
   flex: 1,
   marginHorizontal: 8,
 }
+
+const $headerAction: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.md,
+  height: 56,
+  alignItems: "center",
+  justifyContent: "center",
+})

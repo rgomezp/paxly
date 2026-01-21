@@ -19,6 +19,8 @@ import DailyTaskManager from "@/managers/DailyTaskManager"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import FloatingCenterWrapper from "@/components/FloatingCenterWrapper"
 import { getRandomPrompt } from "./prompts"
+import { useHeader } from "@/utils/useHeader"
+import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 
 interface JournalScreenProps extends AppStackScreenProps<"Journal"> {}
 
@@ -151,6 +153,21 @@ export const JournalScreen: FC<JournalScreenProps> = observer(function JournalSc
   const handleShowPrompt = () => {
     setPromptText(getRandomPrompt())
   }
+
+  useHeader(
+    {
+      LeftActionComponent: (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigation.goBack()}
+          style={themed($headerAction)}
+        >
+          <ThemedFontAwesome5Icon name="chevron-left" color={theme.colors.text} size={18} solid />
+        </Pressable>
+      ),
+    },
+    [navigation, theme.colors.text],
+  )
 
   return (
     <KeyboardAvoidingView
@@ -366,4 +383,11 @@ const $promptButtonText: ThemedStyle<TextStyle> = (theme) => ({
   fontSize: 14,
   color: theme.colors.tint,
   fontStyle: "italic",
+})
+
+const $headerAction: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.md,
+  height: 56,
+  alignItems: "center",
+  justifyContent: "center",
 })

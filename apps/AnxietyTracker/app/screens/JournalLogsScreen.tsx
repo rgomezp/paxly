@@ -11,6 +11,7 @@ import { navigate } from "@/navigators/navigationUtilities"
 import { EmptyState } from "@/components/EmptyState"
 import type { ThemedStyle } from "@/theme"
 import type { ViewStyle as RNViewStyle } from "react-native"
+import { useHeader } from "@/utils/useHeader"
 
 interface JournalLogsScreenProps extends AppStackScreenProps<"JournalLogs"> {}
 
@@ -22,9 +23,26 @@ type JournalLogItem = {
   text: string
 }
 
-export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(function JournalLogsScreen() {
+export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(function JournalLogsScreen({
+  navigation,
+}) {
   const { theme, themed } = useAppTheme()
   const { journalStore } = useStores()
+
+  useHeader(
+    {
+      LeftActionComponent: (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigation.goBack()}
+          style={themed($headerAction)}
+        >
+          <ThemedFontAwesome5Icon name="chevron-left" color={theme.colors.text} size={18} solid />
+        </Pressable>
+      ),
+    },
+    [navigation, theme.colors.text],
+  )
 
   const entries: JournalLogItem[] = useMemo(
     () =>
@@ -152,6 +170,13 @@ const $emptyStateWrapper: ThemedStyle<ViewStyle> = () => ({
 
 const $emptyStateContainer: ThemedStyle<RNViewStyle> = () => ({
   paddingHorizontal: 16,
+})
+
+const $headerAction: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.md,
+  height: 56,
+  alignItems: "center",
+  justifyContent: "center",
 })
 
 function formatRelativeTime(timestamp: number): string {

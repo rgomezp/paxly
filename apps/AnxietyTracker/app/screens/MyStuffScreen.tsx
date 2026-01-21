@@ -1,6 +1,6 @@
 import { FC, useMemo, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, TextStyle, ImageStyle, ScrollView, Image } from "react-native"
+import { View, ViewStyle, TextStyle, ImageStyle, ScrollView, Image, Pressable } from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Screen, Text } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -10,16 +10,35 @@ import { BadgeType } from "@/types/IBadgeData"
 import { IAward } from "@/types/IAward"
 import type { ThemedStyle } from "@/theme"
 import { getAwardImage } from "@/data/AwardImageRegistry"
+import { useHeader } from "@/utils/useHeader"
+import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 
 interface MyStuffScreenProps extends AppStackScreenProps<"MyStuff"> {}
 
-export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffScreen() {
-  const { themed } = useAppTheme()
+export const MyStuffScreen: FC<MyStuffScreenProps> = observer(function MyStuffScreen({
+  navigation,
+}) {
+  const { themed, theme } = useAppTheme()
 
   // Clear badge when user visits My Stuff screen
   useEffect(() => {
     BadgeManager.clearBadge(BadgeType.MY_STUFF)
   }, [])
+
+  useHeader(
+    {
+      LeftActionComponent: (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigation.goBack()}
+          style={themed($headerAction)}
+        >
+          <ThemedFontAwesome5Icon name="chevron-left" color={theme.colors.text} size={18} solid />
+        </Pressable>
+      ),
+    },
+    [navigation, theme.colors.text],
+  )
 
   const allAwards = AwardManager.getAllAwards()
   const earnedAwards = AwardManager.getEarnedAwards()
@@ -162,4 +181,11 @@ const $awardName: ThemedStyle<TextStyle> = (theme) => ({
   fontWeight: "600",
   textAlign: "center",
   marginBottom: 4,
+})
+
+const $headerAction: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  paddingHorizontal: spacing.md,
+  height: 56,
+  alignItems: "center",
+  justifyContent: "center",
 })

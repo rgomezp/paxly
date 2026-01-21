@@ -2,6 +2,7 @@ import { FC, useEffect, useMemo, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   Animated,
+  Pressable,
   ScrollView,
   TextInput,
   TouchableOpacity,
@@ -21,12 +22,14 @@ import MoodManager from "@/managers/MoodManager"
 import { ProgressBar } from "@/components"
 import FloatingCenterButton from "@/components/buttons/FloatingCenterButton"
 import { $styles } from "@/theme"
+import { useHeader } from "@/utils/useHeader"
+import { ThemedFontAwesome5Icon } from "@/components/ThemedFontAwesome5Icon"
 
 interface MoodLoggerProps extends AppStackScreenProps<"MoodLogger"> {}
 
 export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ navigation }) {
   const { width } = useWindowDimensions()
-  const { theme } = useAppTheme()
+  const { theme, themed } = useAppTheme()
   const scrollX = useRef(new Animated.Value(0)).current
   const pagerRef = useRef<ScrollView>(null)
 
@@ -96,6 +99,21 @@ export const MoodLogger: FC<MoodLoggerProps> = observer(function MoodLogger({ na
   }, [scrollX, width])
 
   const isOnFinalSlide = currentSlideIndex === slides.length - 1
+
+  useHeader(
+    {
+      LeftActionComponent: (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigation.goBack()}
+          style={themed($headerAction)}
+        >
+          <ThemedFontAwesome5Icon name="chevron-left" color={theme.colors.text} size={18} solid />
+        </Pressable>
+      ),
+    },
+    [navigation, theme.colors.text],
+  )
 
   return (
     <View style={[$container, { backgroundColor: theme.colors.background }]}>
@@ -285,6 +303,13 @@ function EmojiTile(props: {
 const $container: ViewStyle = {
   flex: 1,
 }
+
+const $headerAction: any = ({ spacing }: any) => ({
+  paddingHorizontal: spacing.md,
+  height: 56,
+  alignItems: "center",
+  justifyContent: "center",
+})
 
 const $grid: ViewStyle = {
   flexDirection: "row",
