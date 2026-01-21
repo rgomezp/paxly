@@ -76,35 +76,6 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
           toggleDrawer: () => void
         }) => (
           <RNScrollView style={[themedDrawer($container), contentInsets]}>
-            <Quote />
-            <View style={[themed($buttonsWrapper), { width: containerWidth, gap }]}>
-              <ActionCard
-                onPress={() => navigate("MoodLogs", undefined)}
-                icon={SmileyIcon}
-                label="My logs"
-                style={{ width: cardWidth, maxWidth: cardWidth }}
-              />
-              <ActionCard
-                onPress={() => navigate("JournalLogs", undefined)}
-                icon={BookOpenIcon}
-                label="Journal entries"
-                style={{ width: cardWidth, maxWidth: cardWidth }}
-              />
-              <ActionCard
-                onPress={() => navigate("LetterToMyself", undefined)}
-                icon={EnvelopeIcon}
-                label="Letter to Myself"
-                style={{ width: cardWidth, maxWidth: cardWidth }}
-                badge={badgeToShow === BadgeType.LETTER_TO_MYSELF}
-              />
-              <ActionCard
-                onPress={() => navigate("MyStuff", undefined)}
-                icon={TrophyIcon}
-                label="My Stuff"
-                badge={badgeToShow === BadgeType.MY_STUFF}
-                style={{ width: cardWidth, maxWidth: cardWidth }}
-              />
-            </View>
             <View style={themed($graphsSection)}>
               <Text preset="subheading" style={themed($sectionTitle)}>
                 Logs this week
@@ -153,6 +124,35 @@ export const MeScreen: FC<MeScreenProps> = observer(function MeScreen() {
                 </View>
               </RNScrollView>
             </View>
+            <View style={[themed($buttonsWrapper), { width: containerWidth, gap }]}>
+              <ActionCard
+                onPress={() => navigate("MoodLogs", undefined)}
+                icon={SmileyIcon}
+                label="My logs"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("JournalLogs", undefined)}
+                icon={BookOpenIcon}
+                label="Journal entries"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+              <ActionCard
+                onPress={() => navigate("LetterToMyself", undefined)}
+                icon={EnvelopeIcon}
+                label="Letter to Myself"
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+                badge={badgeToShow === BadgeType.LETTER_TO_MYSELF}
+              />
+              <ActionCard
+                onPress={() => navigate("MyStuff", undefined)}
+                icon={TrophyIcon}
+                label="My Stuff"
+                badge={badgeToShow === BadgeType.MY_STUFF}
+                style={{ width: cardWidth, maxWidth: cardWidth }}
+              />
+            </View>
+            <Quote />
             <View style={themed($bottomSpacing)} />
           </RNScrollView>
         )}
@@ -174,7 +174,7 @@ const $buttonsWrapper: ViewStyle = {
 }
 
 const $graphsSection: ViewStyle = {
-  marginTop: 32,
+  marginBottom: 22,
 }
 
 const $sectionTitle: ThemedStyle<TextStyle> = ({ spacing }) => ({
