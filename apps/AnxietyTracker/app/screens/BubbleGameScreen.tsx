@@ -31,9 +31,9 @@ interface Bubble {
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window")
 const NUM_LANES = 8
 const LANE_WIDTH = SCREEN_WIDTH / NUM_LANES
-const BUBBLE_SPEED = 70 // pixels per second
-const SPAWN_INTERVAL_MIN = 800 // milliseconds
-const SPAWN_INTERVAL_MAX = 1200 // milliseconds
+const BUBBLE_SPEED = 90 // pixels per second
+const SPAWN_INTERVAL_MIN = 400 // milliseconds
+const SPAWN_INTERVAL_MAX = 700 // milliseconds
 const BUBBLE_SMALL_SIZE = 60
 const BUBBLE_LARGE_SIZE = 80
 
