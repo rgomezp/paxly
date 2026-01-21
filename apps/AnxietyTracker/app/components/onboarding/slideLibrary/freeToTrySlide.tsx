@@ -7,7 +7,7 @@ type FreeToTrySlideProps = {
 export function freeToTrySlide({ onSelection: _onSelection }: FreeToTrySlideProps): ISlide {
   return {
     id: "freeToTry",
-    title: "Try Anxiety Tracker for free",
+    title: "Try Paxly for free",
     description: "No risk, no commitment.",
     image: require("../../../../assets/images/onboarding/device.png"),
     textPlacement: "bottom",
