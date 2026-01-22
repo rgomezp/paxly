@@ -1,0 +1,50 @@
+import { CloudBackupConfig } from "@potionforge/ganon"
+import StorageMapping from "./StorageMapping"
+
+const CLOUD_BACKUP_CONFIG: CloudBackupConfig<StorageMapping> = {
+  // v1
+  user: {
+    docKeys: [
+      "user",
+      "entitlementId",
+      "dailyTasks",
+      "finishedOnboarding",
+      "goals",
+      "gender",
+      "ageRange",
+      "anxietySeverity",
+      "anxietyDuration",
+      "anxietyTriggerSituation",
+      "appMainGoal",
+      "awardData",
+      "moodReminderFrequency",
+      "lowContact",
+      "trialStatus",
+      "whatMadeYouOpen",
+      "anxietyFeelings",
+      "anxietyTriggers",
+      "copingStyle",
+      "intentCommitment",
+      "sleepDuration",
+      "lifeSatisfaction",
+      "goalAchievement",
+      "hasAcceptedMedicalDisclaimer",
+    ],
+    subcollectionKeys: ["moodHistory", "journalEntries"],
+  },
+  lessons: {
+    subcollectionKeys: ["completedLessons", "lessonResponses", "dailyLesson"],
+  },
+  settings: {
+    docKeys: ["theme", "natureSoundsEnabled", "natureSoundType"],
+  },
+  utils: {
+    docKeys: ["lastRunMigration"],
+  },
+  tools: {
+    docKeys: ["letterToMyselfDraft"],
+    subcollectionKeys: ["letterToMyself"],
+  },
+}
+
+export default CLOUD_BACKUP_CONFIG

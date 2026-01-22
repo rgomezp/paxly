@@ -2,7 +2,7 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/LetThemGo"
+      "path": "./apps/AnxietyTracker"
     },
     {
       "path": "./backend"

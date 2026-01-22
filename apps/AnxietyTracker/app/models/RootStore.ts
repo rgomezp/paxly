@@ -1,0 +1,24 @@
+import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { MoodStoreModel } from "./mood/MoodStore"
+import { JournalStoreModel } from "./journal/JournalStore"
+import { LessonStoreModel } from "./lessons/LessonStore"
+import { LetterToMyselfStoreModel } from "./letterToMyself/LetterToMyselfStore"
+
+/**
+ * A RootStore model.
+ */
+export const RootStoreModel = types.model("RootStore").props({
+  moodStore: types.optional(MoodStoreModel, {}),
+  journalStore: types.optional(JournalStoreModel, {}),
+  lessonStore: types.optional(LessonStoreModel, {}),
+  letterToMyselfStore: types.optional(LetterToMyselfStoreModel, {}),
+})
+
+/**
+ * The RootStore instance.
+ */
+export interface RootStore extends Instance<typeof RootStoreModel> {}
+/**
+ * The data of a RootStore.
+ */
+export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> {}
