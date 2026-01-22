@@ -7,6 +7,7 @@ import OnboardingLoginScreen from "@/components/onboarding/OnboardingLoginScreen
 import OnboardingHardPaywall from "./OnboardingHardPaywall"
 import OnboardingFallbackPaywall from "./OnboardingFallbackPaywall"
 import OnboardingLoadingScreen from "@/components/onboarding/OnboardingLoadingScreen"
+import OnboardingWowScreen from "@/components/onboarding/OnboardingWowScreen"
 
 export const OnboardingScreen = () => {
   const { step, setStep } = useOnboardingState()
@@ -15,9 +16,15 @@ export const OnboardingScreen = () => {
     case "welcome":
       return (
         <OnboardingOpeningScreen
-          onGetStarted={() => setStep("main")}
+          onGetStarted={() => setStep("wow")}
           onIHaveAccount={() => setStep("login")}
         />
+      )
+    case "wow":
+      return (
+        <View style={$root}>
+          <OnboardingWowScreen onComplete={() => setStep("main")} />
+        </View>
       )
     case "main":
       return (

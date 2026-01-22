@@ -1,5 +1,6 @@
 export type OnboardingStep =
   | "welcome"
+  | "wow"
   | "main"
   | "loading"
   | "paywall"
