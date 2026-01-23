@@ -20,7 +20,6 @@ import { useOffering } from "@/hooks/useOffering"
 import { usePurchaseStatus } from "@/hooks/usePurchaseStatus"
 import {
   isValidOffering,
-  getAgeRange,
   getPlacementId,
   handlePurchaseCompletion,
   setEntitlementTags,
@@ -95,11 +94,10 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     if (!isLoading && isValidOffering(offering) && offering && !paywallDisplayedRef.current) {
       paywallDisplayedRef.current = true
 
-      const ageRange = getAgeRange()
-      const placementId = getPlacementId(ageRange)
+      const placementId = getPlacementId()
 
       Log.info(`OnboardingHardPaywall: Paywall displayed with placement ${placementId}`)
-      paywallAnalytics.displayed(offering.identifier, placementId, ageRange)
+      paywallAnalytics.displayed(offering.identifier, placementId, null)
     }
   }, [isLoading, offering])
 

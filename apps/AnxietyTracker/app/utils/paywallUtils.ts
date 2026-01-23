@@ -1,4 +1,3 @@
-import { AgeRanges } from "@/types/AgeRange"
 import { ganon } from "@/services/ganon/ganon"
 import Log from "./Log"
 import {
@@ -11,36 +10,6 @@ import { paywallAnalytics } from "./paywallAnalytics"
 import { OneSignal } from "react-native-onesignal"
 import Purchases from "react-native-purchases"
 import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
-
-/**
- * Mapping of age ranges to paywall placement identifiers
- *
- */
-export const AGE_TO_PLACEMENT_ID: Record<AgeRanges, string> = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "placement_young",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "placement",
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "placement",
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "placement_old",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "placement_old",
-  [AgeRanges.FIFTY_SIX_PLUS]: "placement_old",
-}
-
-/**
- * Mapping of age ranges to abandonment paywall placement identifiers
- * Used for the abandonment paywall shown after user dismisses the main paywall
- *
- * Placements allow RevenueCat to manage A/B testing and offering selection server-side.
- * The abandonment paywall uses fetchAbandonmentPlacementOffering() which calls
- * Purchases.getCurrentOfferingForPlacement() to get the offering for the placement.
- */
-export const AGE_TO_ABANDONMENT_PLACEMENT_ID: Record<AgeRanges, string> = {
-  [AgeRanges.SEVENTEEN_OR_UNDER]: "abandonment_placement_young",
-  [AgeRanges.EIGHTEEN_TO_TWENTY_FIVE]: "abandonment_placement",
-  [AgeRanges.TWENTY_SIX_TO_THIRTY_FIVE]: "abandonment_placement",
-  [AgeRanges.THIRTY_SIX_TO_FORTY_FIVE]: "abandonment_placement_old",
-  [AgeRanges.FORTY_SIX_TO_FIFTY_FIVE]: "abandonment_placement_old",
-  [AgeRanges.FIFTY_SIX_PLUS]: "abandonment_placement_old",
-}
 
 /**
  * Checks if an offering contains packages with free trial periods by examining package product information
@@ -139,28 +108,12 @@ export const isTrialOffering = (offering: PurchasesOffering | null | undefined):
 }
 
 /**
- * Safely retrieves the age range from storage
- */
-export const getAgeRange = (): AgeRanges | null => {
-  try {
-    const storedAgeRange = ganon.get("ageRange")
-    if (storedAgeRange && Object.values(AgeRanges).includes(storedAgeRange as AgeRanges)) {
-      return storedAgeRange as AgeRanges
-    }
-  } catch (error) {
-    Log.warn(`Error reading ageRange from storage: ${error}`)
-  }
-  return null
-}
-
-/**
- * Gets the placement ID based on age range, with fallback
+ * Gets the placement ID for the main paywall
  *
- * NOTE: Despite the name "placement", this placement is used throughout
- * the entire app to ensure consistent age-based pricing across all paywalls.
+ * NOTE: This placement is used throughout the entire app to ensure consistent pricing across all paywalls.
  */
-export const getPlacementId = (ageRange: AgeRanges | null): string => {
-  return (ageRange && AGE_TO_PLACEMENT_ID[ageRange]) || "placement"
+export const getPlacementId = (): string => {
+  return "placement"
 }
 
 /**
@@ -206,10 +159,15 @@ export const getValidOffering = (
 }
 
 /**
- * Gets the abandonment placement ID based on age range, with fallback
+ * Gets the abandonment placement ID for the abandonment paywall
+ * Used for the abandonment paywall shown after user dismisses the main paywall
+ *
+ * Placements allow RevenueCat to manage A/B testing and offering selection server-side.
+ * The abandonment paywall uses fetchAbandonmentPlacementOffering() which calls
+ * Purchases.getCurrentOfferingForPlacement() to get the offering for the placement.
  */
-export const getAbandonmentPlacementId = (ageRange: AgeRanges | null): string => {
-  return (ageRange && AGE_TO_ABANDONMENT_PLACEMENT_ID[ageRange]) || "abandonment_placement"
+export const getAbandonmentPlacementId = (): string => {
+  return "abandonment_placement"
 }
 
 /**
@@ -221,8 +179,7 @@ export const getAbandonmentPlacementId = (ageRange: AgeRanges | null): string =>
  * - Placements allow RevenueCat to manage A/B testing and offering selection server-side
  */
 export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffering | null> => {
-  const ageRange = getAgeRange()
-  const placementId = getAbandonmentPlacementId(ageRange)
+  const placementId = getAbandonmentPlacementId()
 
   Log.info(`Syncing offerings before fetching abandonment placement ${placementId}`)
   const offerings = await Purchases.getOfferings()
@@ -236,7 +193,7 @@ export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffe
     Log.info(
       `Using ${placementId} offering for abandonment paywall: ${placementOffering.identifier}`,
     )
-    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, ageRange)
+    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, null)
     return placementOffering
   }
 
@@ -255,7 +212,7 @@ export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffe
     Log.warn(
       `No suitable abandonment offering found for placement ${placementId}, using fallback offering: ${validOffering.identifier}`,
     )
-    paywallAnalytics.placementLoaded(validOffering.identifier, placementId, ageRange)
+    paywallAnalytics.placementLoaded(validOffering.identifier, placementId, null)
     return validOffering
   }
 
@@ -281,9 +238,7 @@ export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
 /**
  * Fetches offering with placement logic
  *
- * This function is used throughout the app (not just onboarding) to ensure consistent
- * age-based pricing. Despite placement names containing "onboarding", they are used
- * everywhere to maintain price consistency.
+ * This function is used throughout the app to ensure consistent pricing.
  *
  * Fallback chain to handle missing placements or offerings gracefully:
  * 1. Try placement offering (if valid)
@@ -292,8 +247,7 @@ export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
  * 4. Return null if nothing is available
  */
 export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null> => {
-  const ageRange = getAgeRange()
-  const placementId = getPlacementId(ageRange)
+  const placementId = getPlacementId()
 
   Log.info(`Syncing offerings before fetching placement ${placementId}`)
   const offerings = await Purchases.getOfferings()
@@ -321,7 +275,7 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
   // If placement exists and returns a valid offering
   if (placementOffering && isValidOffering(placementOffering)) {
     Log.info(`Using ${placementId} offering for A/B testing: ${placementOffering.identifier}`)
-    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, ageRange)
+    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, null)
     return placementOffering
   }
 
@@ -339,7 +293,7 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
     Log.warn(
       `No placement offering found for ${placementId}, using current offering: ${offerings.current.identifier}`,
     )
-    paywallAnalytics.placementLoaded(offerings.current.identifier, placementId, ageRange)
+    paywallAnalytics.placementLoaded(offerings.current.identifier, placementId, null)
     return offerings.current
   }
 
@@ -349,7 +303,7 @@ export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null
     Log.warn(
       `No suitable offering found for placement ${placementId}, using fallback offering: ${validOffering.identifier}`,
     )
-    paywallAnalytics.placementLoaded(validOffering.identifier, placementId, ageRange)
+    paywallAnalytics.placementLoaded(validOffering.identifier, placementId, null)
     return validOffering
   }
 
