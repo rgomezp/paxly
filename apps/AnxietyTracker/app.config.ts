@@ -58,7 +58,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.anxietytracker",
-      versionCode: 60,
+      versionCode: 61,
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
