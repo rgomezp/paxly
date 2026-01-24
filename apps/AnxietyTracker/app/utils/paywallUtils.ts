@@ -108,15 +108,6 @@ export const isTrialOffering = (offering: PurchasesOffering | null | undefined):
 }
 
 /**
- * Gets the placement ID for the main paywall
- *
- * NOTE: This placement is used throughout the entire app to ensure consistent pricing across all paywalls.
- */
-export const getPlacementId = (): string => {
-  return "placement"
-}
-
-/**
  * Validates if an offering object is valid
  * Based on PurchasesOffering interface from react-native-purchases
  */
@@ -159,71 +150,6 @@ export const getValidOffering = (
 }
 
 /**
- * Gets the abandonment placement ID for the abandonment paywall
- * Used for the abandonment paywall shown after user dismisses the main paywall
- *
- * Placements allow RevenueCat to manage A/B testing and offering selection server-side.
- * The abandonment paywall uses fetchAbandonmentPlacementOffering() which calls
- * Purchases.getCurrentOfferingForPlacement() to get the offering for the placement.
- */
-export const getAbandonmentPlacementId = (): string => {
-  return "abandonment_placement"
-}
-
-/**
- * Fetches abandonment paywall offering with placement logic
- * Used specifically for the abandonment paywall shown after user dismisses the main paywall
- *
- * Uses RevenueCat placements to get the offering:
- * - Uses Purchases.getCurrentOfferingForPlacement() to get the offering for the placement
- * - Placements allow RevenueCat to manage A/B testing and offering selection server-side
- */
-export const fetchAbandonmentPlacementOffering = async (): Promise<PurchasesOffering | null> => {
-  const placementId = getAbandonmentPlacementId()
-
-  Log.info(`Syncing offerings before fetching abandonment placement ${placementId}`)
-  const offerings = await Purchases.getOfferings()
-  logAvailableOfferings(offerings)
-
-  // Try to get placement offering
-  const placementOffering = await Purchases.getCurrentOfferingForPlacement(placementId)
-
-  // If placement exists and returns a valid offering
-  if (placementOffering && isValidOffering(placementOffering)) {
-    Log.info(
-      `Using ${placementId} offering for abandonment paywall: ${placementOffering.identifier}`,
-    )
-    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, null)
-    return placementOffering
-  }
-
-  // Placement doesn't exist, is null, or returned invalid offering
-  if (placementOffering && !isValidOffering(placementOffering)) {
-    Log.warn(
-      `Abandonment placement ${placementId} returned invalid offering (${placementOffering.identifier})`,
-    )
-  } else {
-    Log.warn(`Abandonment placement ${placementId} not found or returned null`)
-  }
-
-  // Last resort: try to get any valid offering
-  const validOffering = getValidOffering(offerings)
-  if (validOffering) {
-    Log.warn(
-      `No suitable abandonment offering found for placement ${placementId}, using fallback offering: ${validOffering.identifier}`,
-    )
-    paywallAnalytics.placementLoaded(validOffering.identifier, placementId, null)
-    return validOffering
-  }
-
-  // Nothing available - this should be handled by the calling component
-  Log.error(
-    `No valid abandonment offering found for placement ${placementId}. Placement may be deleted or misconfigured in RevenueCat dashboard.`,
-  )
-  return null
-}
-
-/**
  * Logs available offerings for debugging purposes
  */
 export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
@@ -233,85 +159,6 @@ export const logAvailableOfferings = (offerings: PurchasesOfferings): void => {
       Log.info(`Available offerings: ${offeringIds.join(", ")}`)
     }
   }
-}
-
-/**
- * Fetches offering with placement logic
- *
- * This function is used throughout the app to ensure consistent pricing.
- *
- * Fallback chain to handle missing placements or offerings gracefully:
- * 1. Try placement offering (if valid)
- * 2. Fall back to current offering
- * 3. Try to get any valid offering
- * 4. Return null if nothing is available
- */
-export const fetchPlacementOffering = async (): Promise<PurchasesOffering | null> => {
-  const placementId = getPlacementId()
-
-  Log.info(`Syncing offerings before fetching placement ${placementId}`)
-  const offerings = await Purchases.getOfferings()
-  logAvailableOfferings(offerings)
-
-  // Log current offering for diagnostic purposes
-  if (offerings.current) {
-    Log.info(`Current offering: ${offerings.current.identifier}`)
-  }
-
-  // Try to get placement offering
-  const placementOffering = await Purchases.getCurrentOfferingForPlacement(placementId)
-
-  // Diagnostic logging
-  if (placementOffering) {
-    Log.info(
-      `Placement ${placementId} returned offering: ${placementOffering.identifier} (valid: ${isValidOffering(placementOffering)})`,
-    )
-  } else {
-    Log.warn(
-      `Placement ${placementId} returned null - placement may not be configured in RevenueCat`,
-    )
-  }
-
-  // If placement exists and returns a valid offering
-  if (placementOffering && isValidOffering(placementOffering)) {
-    Log.info(`Using ${placementId} offering for A/B testing: ${placementOffering.identifier}`)
-    paywallAnalytics.placementLoaded(placementOffering.identifier, placementId, null)
-    return placementOffering
-  }
-
-  // Placement doesn't exist, is null, or returned invalid offering
-  if (placementOffering && !isValidOffering(placementOffering)) {
-    Log.warn(
-      `Placement ${placementId} returned invalid offering (${placementOffering.identifier}), trying fallbacks`,
-    )
-  } else {
-    Log.warn(`Placement ${placementId} not found or returned null, trying fallbacks`)
-  }
-
-  // Fall back to current offering if available and valid
-  if (offerings.current && isValidOffering(offerings.current)) {
-    Log.warn(
-      `No placement offering found for ${placementId}, using current offering: ${offerings.current.identifier}`,
-    )
-    paywallAnalytics.placementLoaded(offerings.current.identifier, placementId, null)
-    return offerings.current
-  }
-
-  // Last resort: try to get any valid offering
-  const validOffering = getValidOffering(offerings)
-  if (validOffering) {
-    Log.warn(
-      `No suitable offering found for placement ${placementId}, using fallback offering: ${validOffering.identifier}`,
-    )
-    paywallAnalytics.placementLoaded(validOffering.identifier, placementId, null)
-    return validOffering
-  }
-
-  // Nothing available - this should be handled by the calling component
-  Log.error(
-    `No valid offering found for placement ${placementId}. Placement may be deleted or misconfigured in RevenueCat dashboard.`,
-  )
-  return null
 }
 
 /**
