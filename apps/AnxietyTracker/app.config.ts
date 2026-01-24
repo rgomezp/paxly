@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "paxly",
     scheme: "paxly",
     owner: "honeywolfllc",
-    version: "0.1.0",
+    version: "1.0.0",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -58,7 +58,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.anxietytracker",
-      versionCode: 60,
+      versionCode: 62,
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",

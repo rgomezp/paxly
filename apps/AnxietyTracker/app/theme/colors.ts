@@ -35,7 +35,7 @@ const palette = {
   accent600: "#FF5D3A",
 
   // Background - soft, calming light blue-white
-  backgroundLight: "#F8FCFE",
+  backgroundLight: "#F3FAFE",
 
   // Error - soft coral (gentle, not alarming)
   angry100: "#FEF2F2",

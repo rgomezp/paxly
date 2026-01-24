@@ -15,8 +15,7 @@ try {
 const BLOB_ASPECT_RATIO = 400 / 180
 
 // Face size as a ratio of the blob's actual rendered height
-const FACE_SIZE_RATIO = 0.5
-
+const FACE_SIZE_RATIO = 0.32
 interface MascotProps {
   /**
    * Width of the mascot animation
@@ -111,4 +110,5 @@ const $faceContainer: ThemedStyle<ViewStyle> = () => ({
   bottom: 0,
   alignItems: "center",
   justifyContent: "center",
+  transform: [{ translateX: 3 }, { translateY: -3 }],
 })
