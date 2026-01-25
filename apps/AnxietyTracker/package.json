@@ -104,7 +104,7 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@testing-library/react-native": "^12.5.2",
+    "@testing-library/react-native": "^13.3.3",
     "@types/eventemitter3": "^2.0.4",
     "@types/jest": "29.5.14",
     "@types/lodash": "^4.17.20",
@@ -123,7 +123,7 @@
     "patch-package": "^8.0.0",
     "postinstall-prepare": "1.0.1",
     "prettier": "^3.3.3",
-    "react-test-renderer": "19.0.0",
+    "react-test-renderer": "19.1.0",
     "reactotron-core-client": "^2.9.4",
     "reactotron-mst": "^3.1.7",
     "reactotron-react-js": "^3.3.11",
@@ -138,7 +138,9 @@
   },
   "expo": {
     "install": {
-      "exclude": ["react-native-reanimated"]
+      "exclude": [
+        "react-native-reanimated"
+      ]
     }
   },
   "referenceBuildSize": 11
