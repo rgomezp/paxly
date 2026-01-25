@@ -105,11 +105,11 @@ function AppContent() {
     if (rehydrated && isInitialized && !splashReady) {
       const startTime = Date.now()
       const minDisplayTime = 1000 // Minimum 1 second display time
-      
+
       const hideSplash = () => {
         const elapsed = Date.now() - startTime
         const remainingTime = Math.max(0, minDisplayTime - elapsed)
-        
+
         setTimeout(() => {
           SplashScreen.hideAsync()
             .then(() => setSplashReady(true))
@@ -119,7 +119,7 @@ function AppContent() {
             })
         }, remainingTime)
       }
-      
+
       hideSplash()
     }
   }, [rehydrated, isInitialized, splashReady])
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   splashBackground: {
-    flex: 1,
-    backgroundColor: "#191015", // Must match splash screen backgroundColor in app.config.ts
+    backgroundColor: "#191015",
+    flex: 1, // Must match splash screen backgroundColor in app.config.ts
   },
 })

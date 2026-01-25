@@ -1,7 +1,7 @@
-import { ForwardedRef, forwardRef, ReactElement, RefObject } from "react"
-import { FlashList, FlashListProps } from "@shopify/flash-list"
+import { type ElementRef, type ForwardedRef, forwardRef, ReactElement, RefObject } from "react"
+import { FlashList, type FlashListProps } from "@shopify/flash-list"
 
-export type ListViewRef<T> = FlashList<T>
+export type ListViewRef<T> = ElementRef<typeof FlashList>
 export type ListViewProps<T> = FlashListProps<T>
 
 /**
@@ -12,7 +12,8 @@ export type ListViewProps<T> = FlashListProps<T>
  */
 const ListViewComponent = forwardRef(
   <T,>(props: ListViewProps<T>, ref: ForwardedRef<ListViewRef<T>>) => {
-    return <FlashList {...props} ref={ref} />
+    // FlashList v2 is a function component; keep ref typing flexible.
+    return <FlashList {...props} ref={ref as any} />
   },
 )
 

@@ -135,7 +135,6 @@ export const MoodLogsScreen: FC<MoodLogsScreenProps> = observer(function MoodLog
             data={history}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-            estimatedItemSize={100}
             ListHeaderComponent={renderHeader}
           />
         </View>

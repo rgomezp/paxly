@@ -1,7 +1,6 @@
 import { FC, ReactElement, RefObject, useCallback, useRef, useState } from "react"
 import { Image, ImageStyle, Platform, Pressable, TextStyle, View, ViewStyle } from "react-native"
 import { Drawer } from "react-native-drawer-layout"
-import { type ContentStyle } from "@shopify/flash-list"
 import * as Application from "expo-application"
 import {
   ListView,
@@ -207,7 +206,6 @@ export const HomeDrawer: FC<HomeDrawerProps> = ({ logo, sections, renderContent 
           <ListView<DrawerMenuItem>
             ref={menuRef as RefObject<ListViewRef<DrawerMenuItem>>}
             contentContainerStyle={themed($listContentContainer)}
-            estimatedItemSize={250}
             data={sections.map((d) => ({
               name: d.name,
               useCases: d.data({ theme, themed }).map((u: ReactElement) => {
@@ -270,7 +268,7 @@ const $drawer: ThemedStyle<ViewStyle> = ({ colors }) => ({
  * Styled object for the list content container.
  * Adds horizontal padding to the list items.
  */
-const $listContentContainer: ThemedStyle<ContentStyle> = ({ spacing }) => ({
+const $listContentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingHorizontal: spacing.lg,
 })
 

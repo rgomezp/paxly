@@ -103,7 +103,6 @@ export const JournalLogsScreen: FC<JournalLogsScreenProps> = observer(function J
           data={entries}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          estimatedItemSize={100}
           ListHeaderComponent={renderHeader}
         />
       )}
