@@ -33,7 +33,7 @@ import { InitializationProvider } from "./initialization/InitializationProvider"
 import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { FlagProvider } from "./hooks/useFlags"
@@ -88,21 +88,35 @@ function OnboardingWrapper() {
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
+  const [splashReady, setSplashReady] = useState(false)
 
   // Manage nature sounds at app level
   useNatureSounds()
 
   // Hide splash screen when both rehydration and initialization are complete
+  // Ensure splash screen is visible for at least 1 second for better UX
   useEffect(() => {
-    if (rehydrated && isInitialized) {
-      // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed
-      setTimeout(() => {
-        SplashScreen.hideAsync().catch(() => {
-          // Ignore errors if splash screen is already hidden
-        })
-      }, 500)
+    if (rehydrated && isInitialized && !splashReady) {
+      const startTime = Date.now()
+      const minDisplayTime = 1000 // Minimum 1 second display time
+
+      const hideSplash = () => {
+        const elapsed = Date.now() - startTime
+        const remainingTime = Math.max(0, minDisplayTime - elapsed)
+
+        setTimeout(() => {
+          SplashScreen.hideAsync()
+            .then(() => setSplashReady(true))
+            .catch(() => {
+              // Ignore errors if splash screen is already hidden
+              setSplashReady(true)
+            })
+        }, remainingTime)
+      }
+
+      hideSplash()
     }
-  }, [rehydrated, isInitialized])
+  }, [rehydrated, isInitialized, splashReady])
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
