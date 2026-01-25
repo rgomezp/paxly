@@ -34,12 +34,18 @@ import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
 import { useEffect, useState } from "react"
-import { StyleSheet } from "react-native"
+import { StyleSheet, View } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { FlagProvider } from "./hooks/useFlags"
 import * as SystemUI from "expo-system-ui"
 import { lightTheme, darkTheme } from "./theme"
 import { useNatureSounds } from "./hooks/useNatureSounds"
+
+// Prevent splash screen from auto-hiding before app is ready
+// This MUST be called at module level to prevent any flash of blank screen
+SplashScreen.preventAutoHideAsync().catch(() => {
+  // Ignore errors if already prevented or not available
+})
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -99,11 +105,11 @@ function AppContent() {
     if (rehydrated && isInitialized && !splashReady) {
       const startTime = Date.now()
       const minDisplayTime = 1000 // Minimum 1 second display time
-
+      
       const hideSplash = () => {
         const elapsed = Date.now() - startTime
         const remainingTime = Math.max(0, minDisplayTime - elapsed)
-
+        
         setTimeout(() => {
           SplashScreen.hideAsync()
             .then(() => setSplashReady(true))
@@ -113,19 +119,15 @@ function AppContent() {
             })
         }, remainingTime)
       }
-
+      
       hideSplash()
     }
   }, [rehydrated, isInitialized, splashReady])
 
   // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color.
-  // In iOS: application:didFinishLaunchingWithOptions:
-  // In Android: https://stackoverflow.com/a/45838109/204044
-  // You can replace with your own loading component if you wish.
+  // Show a view matching the splash screen background to prevent blank flash.
   if (!rehydrated || !isInitialized) {
-    return null
+    return <View style={styles.splashBackground} />
   }
 
   if (!isOnboardingComplete) {
@@ -159,11 +161,6 @@ export function App() {
     config.startingTheme,
   )
 
-  // Prevent the splash screen from auto-hiding until we're ready
-  useEffect(() => {
-    SplashScreen.preventAutoHideAsync()
-  }, [])
-
   // Set system UI background color (affects splash screen area) based on theme
   useEffect(() => {
     const theme = themeScheme === "dark" ? darkTheme : lightTheme
@@ -192,5 +189,9 @@ export function App() {
 const styles = StyleSheet.create({
   flex1: {
     flex: 1,
+  },
+  splashBackground: {
+    flex: 1,
+    backgroundColor: "#191015", // Must match splash screen backgroundColor in app.config.ts
   },
 })
