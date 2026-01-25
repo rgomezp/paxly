@@ -46,7 +46,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     updates: {
       fallbackToCacheTimeout: 0,
     },
-    newArchEnabled: false,
+    newArchEnabled: true,
     jsEngine: "hermes",
     assetBundlePatterns: [
       "assets/images/**/*",
