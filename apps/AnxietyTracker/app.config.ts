@@ -80,7 +80,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.anxietytracker",
-      buildNumber: "40",
+      buildNumber: "41",
       config: {
         usesNonExemptEncryption: false,
       },
