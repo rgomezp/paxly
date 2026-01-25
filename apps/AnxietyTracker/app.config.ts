@@ -107,6 +107,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
           largeIcons: ["./assets/notifIcons/ic_onesignal_large_icon_default.png"],
         },
       ],
+      "expo-asset",
       "expo-localization",
       "expo-font",
       "expo-audio",
