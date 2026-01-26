@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import UserManager from "@/managers/UserManager"
 import RectangularButton from "@/components/buttons/RectangularButton"
 import DailyTasksTimeline from "@/components/DailyTasksTimeline"
+import DailyStreakSection from "@/components/DailyStreakSection"
 import HelpModal from "@/components/modals/HelpModal"
 import MedicalDisclaimerModal from "@/components/modals/MedicalDisclaimerModal"
 import { useMedicalDisclaimer } from "@/hooks/useMedicalDisclaimer"
@@ -155,6 +156,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
               />
             </View>
             <DailyTasksTimeline refreshToken={refreshTrigger} />
+            <DailyStreakSection refreshToken={refreshTrigger} />
           </View>
         </ScrollView>
       </ImageBackground>

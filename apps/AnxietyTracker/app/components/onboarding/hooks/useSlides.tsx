@@ -15,6 +15,7 @@ import { anxietyTriggersSlide } from "../slideLibrary/anxietyTriggersSlide"
 import { anxietyDurationSlide } from "../slideLibrary/anxietyDurationSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
+import { oneDayStreakSlide } from "../slideLibrary/oneDayStreakSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
@@ -91,6 +92,7 @@ export const useSlides = (onSelection?: () => void) => {
 
       // Setup slides
       moodTrackingIntroSlide({ onSelection }),
+      oneDayStreakSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
 
       congratulationsAwardSlide({ onSelection }), // Award first award
