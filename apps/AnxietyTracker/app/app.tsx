@@ -33,7 +33,7 @@ import { InitializationProvider } from "./initialization/InitializationProvider"
 import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { StyleSheet, View } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { ganon } from "@/services/ganon/ganon"
@@ -43,6 +43,9 @@ import { FlagProvider } from "./hooks/useFlags"
 import * as SystemUI from "expo-system-ui"
 import { lightTheme, darkTheme } from "./theme"
 import { useNatureSounds } from "./hooks/useNatureSounds"
+
+/** Must match splash screen backgroundColor in app.config.ts */
+const SPLASH_BACKGROUND_COLOR = "#191015"
 
 // Prevent splash screen from auto-hiding before app is ready
 // This MUST be called at module level to prevent any flash of blank screen
@@ -97,7 +100,6 @@ function OnboardingWrapper() {
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
-  const [splashReady, setSplashReady] = useState(false)
 
   // Manage nature sounds at app level
   useNatureSounds()
@@ -109,7 +111,7 @@ function AppContent() {
         // Ignore errors if splash screen is already hidden
       })
     }
-  }, [rehydrated, isInitialized, splashReady])
+  }, [rehydrated, isInitialized])
 
   // Before we show the app, we have to wait for our state to be ready.
   // Show a view matching the splash screen background to prevent blank flash.
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   splashBackground: {
+    backgroundColor: SPLASH_BACKGROUND_COLOR,
     flex: 1,
-    backgroundColor: "#191015", // Must match splash screen backgroundColor in app.config.ts
   },
 })
