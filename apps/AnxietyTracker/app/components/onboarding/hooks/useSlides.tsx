@@ -15,11 +15,9 @@ import { anxietyTriggersSlide } from "../slideLibrary/anxietyTriggersSlide"
 import { anxietyDurationSlide } from "../slideLibrary/anxietyDurationSlide"
 import { moodReminderFrequencySlide } from "../slideLibrary/moodReminderFrequencySlide"
 import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
-import { oneDayStreakSlide } from "../slideLibrary/oneDayStreakSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
-import { congratulationsAwardSlide } from "../slideLibrary/congratulationsAwardSlide"
 import { whatMadeYouOpenSlide } from "../slideLibrary/whatMadeYouOpenSlide"
 import { anxietyFeelingsSlide } from "../slideLibrary/anxietyFeelingsSlide"
 import { copingStyleSlide } from "../slideLibrary/copingStyleSlide"
@@ -92,10 +90,8 @@ export const useSlides = (onSelection?: () => void) => {
 
       // Setup slides
       moodTrackingIntroSlide({ onSelection }),
-      oneDayStreakSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
 
-      congratulationsAwardSlide({ onSelection }), // Award first award
       ...(testimonials_slide ? [testimonialsSlide({ onSelection })] : []), // Social Proof (user testimonials, 10k+ users)
 
       // Final slides
