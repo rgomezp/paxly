@@ -6,6 +6,8 @@ import {
   TextStyle,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Dimensions,
+  Platform,
 } from "react-native"
 import Modal from "react-native-modal"
 import { Text } from "@/components"
@@ -18,6 +20,8 @@ interface MedicalDisclaimerModalProps {
   onDismiss?: () => void
 }
 
+const MODAL_MAX_HEIGHT_RATIO = 0.85
+
 export default function MedicalDisclaimerModal({
   visible,
   onAccept,
@@ -25,7 +29,24 @@ export default function MedicalDisclaimerModal({
 }: MedicalDisclaimerModalProps) {
   const { theme, themed } = useAppTheme()
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false)
+  const [visibleReady, setVisibleReady] = useState(false)
   const scrollViewRef = useRef<ScrollView>(null)
+
+  // On Android, delay showing modal content by one frame so layout is measured first.
+  // Avoids the accept button being unreachable when modal renders before layout is ready.
+  useEffect(() => {
+    if (visible) {
+      if (Platform.OS === "android") {
+        const id = requestAnimationFrame(() => {
+          setVisibleReady(true)
+        })
+        return () => cancelAnimationFrame(id)
+      }
+      setVisibleReady(true)
+    } else {
+      setVisibleReady(false)
+    }
+  }, [visible])
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent
@@ -45,10 +66,14 @@ export default function MedicalDisclaimerModal({
     }
   }, [visible])
 
+  const modalVisible = Platform.OS === "android" ? visibleReady : visible
+  const windowHeight = Dimensions.get("window").height
+  const androidContentHeight = windowHeight * MODAL_MAX_HEIGHT_RATIO
+
   return (
     <Modal
       testID="medical-disclaimer-modal"
-      isVisible={visible}
+      isVisible={modalVisible}
       onBackdropPress={onDismiss}
       onSwipeComplete={undefined}
       swipeDirection={[]}
@@ -57,7 +82,16 @@ export default function MedicalDisclaimerModal({
       useNativeDriverForBackdrop={true}
       propagateSwipe={true}
     >
-      <View style={[$modalContent, { backgroundColor: theme.colors.background }]}>
+      <View
+        style={[
+          $modalContent,
+          { backgroundColor: theme.colors.background },
+          Platform.OS === "android" && {
+            height: androidContentHeight,
+            maxHeight: androidContentHeight,
+          },
+        ]}
+      >
         <View style={themed($headerContainer)}>
           <Text
             text="Important Information"
@@ -176,17 +210,19 @@ const $modalContent: ViewStyle = {
   width: "90%",
   marginHorizontal: 10,
   flexDirection: "column",
+  // Explicit height so the inner flex (ScrollView + button) can distribute; avoids Android layout issues
+  height: "85%",
 }
 
 const $headerContainer: ViewStyle = {
   padding: 20,
   paddingBottom: 16,
+  flexShrink: 0,
 }
 
 const $scrollView: ViewStyle = {
-  flexBasis: 350,
-  flexShrink: 1,
-  flexGrow: 0,
+  flex: 1,
+  minHeight: 0, // Required on Android so ScrollView can shrink and button stays visible
 }
 
 const $scrollContent: ViewStyle = {
@@ -219,6 +255,7 @@ const $buttonContainer: ViewStyle = {
   paddingTop: 16,
   borderTopWidth: 1,
   borderTopColor: "rgba(0, 0, 0, 0.1)",
+  flexShrink: 0, // Keep button always visible and tappable
 }
 
 const $button: ViewStyle = {
