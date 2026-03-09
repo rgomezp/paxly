@@ -25,6 +25,29 @@ export default class DailyLessonManager {
   }
 
   /**
+   * Returns all curriculum lessons in program order (phase order, then MODULE_ORDER within phase,
+   * then lesson order within module). Excludes phase 0 (on-demand) modules.
+   */
+  private static getLessonsInProgramOrder(): string[] {
+    const modulesByPhase = this.getModulesByPhase()
+    const phases = Array.from(modulesByPhase.keys())
+      .filter((p) => p >= 1)
+      .sort((a, b) => a - b)
+    const result: string[] = []
+    const lessonIds = Object.keys(LESSONS)
+    for (const phase of phases) {
+      const modules = modulesByPhase.get(phase) ?? []
+      for (const moduleId of modules) {
+        const moduleLessons = lessonIds
+          .filter((id) => LESSONS[id].moduleId === moduleId)
+          .sort((a, b) => lessonIds.indexOf(a) - lessonIds.indexOf(b))
+        result.push(...moduleLessons)
+      }
+    }
+    return result
+  }
+
+  /**
    * Groups modules by phase for phase-based round-robin selection
    */
   private static getModulesByPhase(): Map<number, ModuleId[]> {
@@ -66,112 +89,53 @@ export default class DailyLessonManager {
   }
 
   /**
-   * Selects today's lesson using a phase-based round-robin algorithm.
-   * Round-robins through modules within the current phase until all lessons
-   * in that phase are complete, then advances to the next phase.
-   * Excludes special cases lessons and completed lessons from daily lesson selection.
+   * Selects today's lesson by picking the first uncompleted lesson in program order.
+   * Does not advance by calendar day—if the user missed days, they still get the next
+   * lesson they haven't completed, avoiding jumping ahead in the program.
    */
   private static selectTodaysLesson(): string | null {
     const todayKey = getLocalDateKey()
 
     // Re-check state after getting lesson list to avoid race conditions
-    // If another call already selected a lesson for today, use that instead
     const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState | undefined
     if (state && state.dateKey === todayKey && state.lessonId) {
       return state.lessonId
     }
 
-    const modulesByPhase = this.getModulesByPhase()
-    if (modulesByPhase.size === 0) {
+    const orderedLessonIds = this.getLessonsInProgramOrder()
+    const firstUncompleted = orderedLessonIds.find((id) => !LessonManager.isCompleted(id))
+    if (!firstUncompleted) {
       return null
     }
 
-    // Determine current phase (start at phase 1 if none set)
-    let currentPhase = state?.currentPhase ?? 1
-    const phases = Array.from(modulesByPhase.keys()).sort((a, b) => a - b)
-
-    // Find the first phase that has uncompleted lessons
-    while (currentPhase <= phases[phases.length - 1]) {
-      if (!modulesByPhase.has(currentPhase)) {
-        currentPhase++
-        continue
+    // Persist state so we return the same lesson for the rest of the day
+    const lesson = LESSONS[firstUncompleted]
+    const modulesByPhase = this.getModulesByPhase()
+    const phase = lesson ? (MODULE_PHASES[lesson.moduleId] ?? 1) : 1
+    const phaseModules = modulesByPhase.get(phase) ?? []
+    const moduleIndex =
+      phaseModules.indexOf(lesson?.moduleId ?? "") >= 0 ? phaseModules.indexOf(lesson.moduleId) : 0
+    const moduleLessonIndices = { ...(state?.moduleLessonIndices ?? {}) }
+    if (lesson) {
+      const lessonIds = Object.keys(LESSONS)
+      const inModule = lessonIds
+        .filter((id) => LESSONS[id].moduleId === lesson.moduleId)
+        .sort((a, b) => lessonIds.indexOf(a) - lessonIds.indexOf(b))
+      const idx = inModule.indexOf(firstUncompleted)
+      if (idx >= 0) {
+        moduleLessonIndices[lesson.moduleId] = idx + 1
       }
-
-      const phaseModules = modulesByPhase.get(currentPhase)!
-
-      // If this phase is complete, move to next phase
-      if (this.isPhaseComplete(phaseModules)) {
-        currentPhase++
-        continue
-      }
-
-      // We found a phase with uncompleted lessons
-      // Get the module index within this phase (or -1 if starting fresh)
-      const lastModuleIndex = state?.currentPhase === currentPhase ? (state?.moduleIndex ?? -1) : -1
-      const startModuleIndex = (lastModuleIndex + 1) % phaseModules.length
-
-      // Try to find a lesson from modules in this phase
-      let currentModuleIndex = startModuleIndex
-      let attempts = 0
-      const maxAttempts = phaseModules.length
-
-      while (attempts < maxAttempts) {
-        const currentModuleId = phaseModules[currentModuleIndex]
-
-        // Get all lessons for the current module, excluding completed ones
-        const moduleLessons = Object.keys(LESSONS)
-          .filter(
-            (lessonId) =>
-              LESSONS[lessonId].moduleId === currentModuleId &&
-              !LessonManager.isCompleted(lessonId),
-          )
-          .sort((a, b) => {
-            // Sort by original order in LESSONS to maintain consistency
-            const orderA = Object.keys(LESSONS).indexOf(a)
-            const orderB = Object.keys(LESSONS).indexOf(b)
-            return orderA - orderB
-          })
-
-        if (moduleLessons.length > 0) {
-          // Found uncompleted lessons in this module
-          // Get the lesson index for this module (or 0 if none)
-          const moduleLessonIndices = state?.moduleLessonIndices ?? {}
-          const currentLessonIndex = moduleLessonIndices[currentModuleId] ?? 0
-
-          // Select the lesson at the current index (round-robin within the module)
-          const selectedLessonIndex = currentLessonIndex % moduleLessons.length
-          const lessonId = moduleLessons[selectedLessonIndex]
-
-          // Update the lesson index for this module
-          const updatedModuleLessonIndices = {
-            ...moduleLessonIndices,
-            [currentModuleId]: selectedLessonIndex + 1,
-          }
-
-          // Save the selection
-          const newState: IDailyLessonState = {
-            dateKey: todayKey,
-            lessonId,
-            currentPhase,
-            moduleIndex: currentModuleIndex,
-            moduleLessonIndices: updatedModuleLessonIndices,
-          }
-          ganon.set(STORAGE_KEYS.dailyLesson, newState)
-
-          return lessonId
-        }
-
-        // No uncompleted lessons in this module, try next module in phase
-        currentModuleIndex = (currentModuleIndex + 1) % phaseModules.length
-        attempts++
-      }
-
-      // All modules in this phase exhausted, move to next phase
-      currentPhase++
     }
 
-    // All phases exhausted, no lessons available
-    return null
+    const newState: IDailyLessonState = {
+      dateKey: todayKey,
+      lessonId: firstUncompleted,
+      currentPhase: phase,
+      moduleIndex,
+      moduleLessonIndices,
+    }
+    ganon.set(STORAGE_KEYS.dailyLesson, newState)
+    return firstUncompleted
   }
 
   /**
@@ -198,98 +162,19 @@ export default class DailyLessonManager {
 
   /**
    * Gets the next uncompleted lesson without saving state.
-   * This is used to show the next lesson when today's lesson is completed.
+   * Returns the first uncompleted lesson after today's lesson in program order.
    */
   private static getNextLesson(): string | null {
     const state = ganon.get(STORAGE_KEYS.dailyLesson) as IDailyLessonState | undefined
     const todaysLessonId = state?.lessonId
+    const orderedLessonIds = this.getLessonsInProgramOrder()
 
-    // If we have today's lesson, find its module and advance from there
-    const advancedModuleLessonIndices = { ...(state?.moduleLessonIndices ?? {}) }
-    if (todaysLessonId && state) {
-      const todaysLesson = LESSONS[todaysLessonId]
-      if (todaysLesson) {
-        const moduleId = todaysLesson.moduleId
-        // Advance the lesson index for today's module
-        const currentIndex = advancedModuleLessonIndices[moduleId] ?? 0
-        advancedModuleLessonIndices[moduleId] = currentIndex + 1
+    const startIndex = todaysLessonId ? orderedLessonIds.indexOf(todaysLessonId) + 1 : 0
+    for (let i = startIndex; i < orderedLessonIds.length; i++) {
+      if (!LessonManager.isCompleted(orderedLessonIds[i])) {
+        return orderedLessonIds[i]
       }
     }
-
-    const modulesByPhase = this.getModulesByPhase()
-    if (modulesByPhase.size === 0) {
-      return null
-    }
-
-    // Start from the current phase and module index
-    let currentPhase = state?.currentPhase ?? 1
-    const phases = Array.from(modulesByPhase.keys()).sort((a, b) => a - b)
-
-    // Find the first phase that has uncompleted lessons
-    while (currentPhase <= phases[phases.length - 1]) {
-      if (!modulesByPhase.has(currentPhase)) {
-        currentPhase++
-        continue
-      }
-
-      const phaseModules = modulesByPhase.get(currentPhase)!
-
-      // If this phase is complete, move to next phase
-      if (this.isPhaseComplete(phaseModules)) {
-        currentPhase++
-        continue
-      }
-
-      // We found a phase with uncompleted lessons
-      // Start from the current module index (or next if today's lesson was from this phase)
-      const lastModuleIndex = state?.currentPhase === currentPhase ? (state?.moduleIndex ?? -1) : -1
-      const startModuleIndex = (lastModuleIndex + 1) % phaseModules.length
-
-      // Try to find a lesson from modules in this phase
-      let currentModuleIndex = startModuleIndex
-      let attempts = 0
-      const maxAttempts = phaseModules.length
-
-      while (attempts < maxAttempts) {
-        const currentModuleId = phaseModules[currentModuleIndex]
-
-        // Get all lessons for the current module, excluding completed ones
-        const moduleLessons = Object.keys(LESSONS)
-          .filter(
-            (lessonId) =>
-              LESSONS[lessonId].moduleId === currentModuleId &&
-              !LessonManager.isCompleted(lessonId),
-          )
-          .sort((a, b) => {
-            // Sort by original order in LESSONS to maintain consistency
-            const orderA = Object.keys(LESSONS).indexOf(a)
-            const orderB = Object.keys(LESSONS).indexOf(b)
-            return orderA - orderB
-          })
-
-        if (moduleLessons.length > 0) {
-          // Found uncompleted lessons in this module
-          // Use the advanced lesson index for this module
-          const currentLessonIndex = advancedModuleLessonIndices[currentModuleId] ?? 0
-
-          // Select the lesson at the current index (round-robin within the module)
-          const selectedLessonIndex = currentLessonIndex % moduleLessons.length
-          const lessonId = moduleLessons[selectedLessonIndex]
-
-          // Return the next lesson without saving state
-          return lessonId
-        }
-
-        // No uncompleted lessons in this module, try next module in phase
-        currentModuleIndex = (currentModuleIndex + 1) % phaseModules.length
-        attempts++
-      }
-
-      // All modules in this phase exhausted, move to next phase
-      currentPhase++
-    }
-
-    // All phases exhausted, no lessons available
     return null
   }
 
