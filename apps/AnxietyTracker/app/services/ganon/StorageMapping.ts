@@ -86,6 +86,8 @@ interface StorageMapping {
   natureSoundsEnabled: boolean
   natureSoundType: "waves" | "birds"
   hasAcceptedMedicalDisclaimer: boolean
+  enjoyBannerResponded: boolean
+  enjoyBannerSaidNo: boolean
 }
 
 export default StorageMapping

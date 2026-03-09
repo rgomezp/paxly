@@ -1,6 +1,14 @@
 import { FC, useEffect, useState, useCallback, useRef } from "react"
 import { observer } from "mobx-react-lite"
-import { ScrollView, View, ViewStyle, Image, ImageStyle, ImageBackground } from "react-native"
+import {
+  Alert,
+  ScrollView,
+  View,
+  ViewStyle,
+  Image,
+  ImageStyle,
+  ImageBackground,
+} from "react-native"
 import { AppStackScreenProps } from "@/navigators"
 import { Text, Mascot } from "@/components"
 import { useAppTheme } from "@/utils/useAppTheme"
@@ -19,6 +27,14 @@ import { presentPaywallSafely } from "@/thirdParty/revenueCatUtils"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import { OneSignal } from "react-native-onesignal"
 import { ThemedStyle } from "@/theme"
+import { ganon } from "@/services/ganon/ganon"
+import { EventRegister } from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
+import DailyStreakManager from "@/managers/DailyStreakManager"
+import { msUntilNextLocalMidnight } from "@/utils/date"
+import StoreReviewManager from "@/managers/StoreReviewManager"
+import { showToast } from "@/utils/toast"
+import EnjoyPaxlyBanner from "@/components/home/EnjoyPaxlyBanner"
 
 // Module-level variable to track if chime has been played (persists across component remounts)
 let hasPlayedChime = false
@@ -32,6 +48,12 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   const { themed, theme, themeContext } = useAppTheme()
   const hasShownPaywallRef = useRef<string | null>(null)
   const { showModal, acceptDisclaimer } = useMedicalDisclaimer()
+  const [dailyStreakCurrent, setDailyStreakCurrent] = useState(
+    () => DailyStreakManager.getState().current,
+  )
+  const [enjoyBannerResponded, setEnjoyBannerResponded] = useState<boolean>(
+    () => (ganon.get("enjoyBannerResponded") as boolean | undefined) ?? false,
+  )
 
   useEffect(() => {
     OneSignal.InAppMessages.addTrigger("home_screen_loaded", "true")
@@ -41,6 +63,63 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
   }, [])
 
   const name = UserManager.getUser()?.nickname ?? UserManager.getUser()?.first ?? "Friend"
+
+  // Listen for setting updates
+  useEffect(() => {
+    const handleUpdate = () => {
+      setDailyStreakCurrent(DailyStreakManager.getState().current)
+      setEnjoyBannerResponded((ganon.get("enjoyBannerResponded") as boolean | undefined) ?? false)
+    }
+
+    EventRegister.on(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
+    handleUpdate() // Initial load
+
+    return () => {
+      EventRegister.off(GLOBAL_EVENTS.UPDATE_ALL, handleUpdate)
+    }
+  }, [])
+
+  // Keep daily streak value fresh across focus and local midnight.
+  useEffect(() => {
+    const refresh = () => setDailyStreakCurrent(DailyStreakManager.getState().current)
+    refresh()
+
+    const id = setTimeout(refresh, msUntilNextLocalMidnight())
+    return () => clearTimeout(id)
+  }, [refreshTrigger])
+
+  const onPressEnjoyBanner = () => {
+    const analytics = AnalyticsManager.getInstance()
+    analytics.logEvent("enjoy_banner_pressed", { source: "home_two_day_streak" })
+
+    Alert.alert(
+      "Are you enjoying Paxly?",
+      undefined,
+      [
+        {
+          text: "No",
+          style: "cancel",
+          onPress: () => {
+            analytics.logEvent("enjoy_banner_response_no", { source: "home_two_day_streak" })
+            ganon.set("enjoyBannerResponded", true)
+            ganon.set("enjoyBannerSaidNo", true)
+            setEnjoyBannerResponded(true)
+            showToast("Thank you, your response has been recorded.")
+          },
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            analytics.logEvent("enjoy_banner_response_yes", { source: "home_two_day_streak" })
+            ganon.set("enjoyBannerResponded", true)
+            setEnjoyBannerResponded(true)
+            void StoreReviewManager.requestReview(true)
+          },
+        },
+      ],
+      { cancelable: true },
+    )
+  }
 
   // Generate header text based on struggle preference
   const getHeaderText = () => {
@@ -118,6 +197,9 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
       ? require("../../assets/images/background_dark.png")
       : require("../../assets/images/background.png")
 
+  // TEMP: force show in dev for testing (remove later).
+  const shouldShowEnjoyBanner = (__DEV__ || dailyStreakCurrent >= 2) && !enjoyBannerResponded
+
   return (
     <>
       <ImageBackground source={backgroundSource} style={$backgroundImage} resizeMode="cover">
@@ -127,6 +209,9 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen({ ro
         >
           {/* Top section with logo and blob */}
           <View style={themed({ backgroundColor: "transparent", paddingTop: insets.top })} />
+          {shouldShowEnjoyBanner ? (
+            <EnjoyPaxlyBanner name={name} onPress={onPressEnjoyBanner} />
+          ) : null}
           <View style={themed($logoContainer)}>
             <Image source={logoSource} style={themed($logo)} resizeMode="contain" />
           </View>
