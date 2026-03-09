@@ -99,28 +99,12 @@ function AppContent() {
   // Manage nature sounds at app level
   useNatureSounds()
 
-  // Hide splash screen when both rehydration and initialization are complete
-  // Ensure splash screen is visible for at least 1 second for better UX
+  // Hide splash screen as soon as we're ready to avoid adding to cold start time
   useEffect(() => {
-    if (rehydrated && isInitialized && !splashReady) {
-      const startTime = Date.now()
-      const minDisplayTime = 1000 // Minimum 1 second display time
-      
-      const hideSplash = () => {
-        const elapsed = Date.now() - startTime
-        const remainingTime = Math.max(0, minDisplayTime - elapsed)
-        
-        setTimeout(() => {
-          SplashScreen.hideAsync()
-            .then(() => setSplashReady(true))
-            .catch(() => {
-              // Ignore errors if splash screen is already hidden
-              setSplashReady(true)
-            })
-        }, remainingTime)
-      }
-      
-      hideSplash()
+    if (rehydrated && isInitialized) {
+      SplashScreen.hideAsync().catch(() => {
+        // Ignore errors if splash screen is already hidden
+      })
     }
   }, [rehydrated, isInitialized, splashReady])
 
