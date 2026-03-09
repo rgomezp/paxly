@@ -42,6 +42,7 @@ import { GLOBAL_EVENTS } from "@/constants/events"
 import { FlagProvider } from "./hooks/useFlags"
 import * as SystemUI from "expo-system-ui"
 import { lightTheme, darkTheme } from "./theme"
+import ToastHost from "@/components/toast/ToastHost"
 import { useNatureSounds } from "./hooks/useNatureSounds"
 
 /** Must match splash screen backgroundColor in app.config.ts */
@@ -89,6 +90,7 @@ function OnboardingWrapper() {
               <OnboardingProvider>
                 <OnboardingScreen />
               </OnboardingProvider>
+              <ToastHost />
             </KeyboardProvider>
           </ErrorBoundary>
         </FlagProvider>
@@ -145,6 +147,7 @@ function AppContent() {
           <ErrorBoundary catchErrors={Config.catchErrors}>
             <KeyboardProvider>
               <AppNavigator linking={linking} />
+              <ToastHost />
             </KeyboardProvider>
           </ErrorBoundary>
         </FlagProvider>
