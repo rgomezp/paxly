@@ -21,6 +21,10 @@ import Log from "@/utils/Log"
 export default class StoreReviewManager {
   public static async requestReview(force?: boolean): Promise<boolean> {
     Log.info("StoreReviewManager: requestReview", { force })
+    if (ganon.get("enjoyBannerSaidNo") === true) {
+      Log.info("StoreReviewManager: Skipping review prompt - user declined via enjoy banner")
+      return false
+    }
     if (!force && !(await this.canRequestReview())) {
       Log.info("StoreReviewManager: requestReview - cannot request review at this time")
       return false
