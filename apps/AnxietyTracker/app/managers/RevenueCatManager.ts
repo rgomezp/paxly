@@ -61,5 +61,3 @@ export default class RevenueCatManager {
     return identifier in DEFAULT_TO_ABANDONMENT_OFFERINGS_MAP
   }
 }
-
-
