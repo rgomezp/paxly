@@ -33,7 +33,7 @@ import { InitializationProvider } from "./initialization/InitializationProvider"
 import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import LoginManager from "./managers/LoginManager"
 import { ganon } from "@/services/ganon/ganon"
@@ -97,21 +97,30 @@ function OnboardingWrapper() {
   )
 }
 
+const SPLASH_MIN_DURATION_MS = 1000
+
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
+  const [minSplashElapsed, setMinSplashElapsed] = useState(false)
 
   // Manage nature sounds at app level
   useNatureSounds()
 
-  // Hide splash screen as soon as we're ready to avoid adding to cold start time
+  // Ensure splash screen is shown for at least 1 second
   useEffect(() => {
-    if (rehydrated && isInitialized) {
+    const timer = setTimeout(() => setMinSplashElapsed(true), SPLASH_MIN_DURATION_MS)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Hide splash screen once we're ready and minimum duration has elapsed
+  useEffect(() => {
+    if (rehydrated && isInitialized && minSplashElapsed) {
       SplashScreen.hideAsync().catch(() => {
         // Ignore errors if splash screen is already hidden
       })
     }
-  }, [rehydrated, isInitialized])
+  }, [rehydrated, isInitialized, minSplashElapsed])
 
   // Before we show the app, we have to wait for our state to be ready.
   // Show a view matching the splash screen background to prevent blank flash.
