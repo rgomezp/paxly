@@ -22,7 +22,7 @@ import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-c
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
-import { useInitialRootStore } from "./models"
+import { useInitialRootStore, reloadAllStores } from "./models"
 import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import Config from "./config"
@@ -36,6 +36,9 @@ import customConfig from "../customConfig"
 import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import LoginManager from "./managers/LoginManager"
+import { ganon } from "@/services/ganon/ganon"
+import { EventRegister } from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
 import { FlagProvider } from "./hooks/useFlags"
 import * as SystemUI from "expo-system-ui"
 import { lightTheme, darkTheme } from "./theme"
@@ -158,6 +161,22 @@ export function App() {
     const unsubscribe = LoginManager.getInstance().setupAuthListener()
     return () => {
       unsubscribe()
+    }
+  }, [])
+
+  // Reload rootStore from ganon when hydration/sync/restore complete (avoids race with foreground refresh).
+  useEffect(() => {
+    const onGanonComplete = () => {
+      reloadAllStores()
+      EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+    }
+    ganon.on("hydrationComplete", onGanonComplete)
+    ganon.on("syncComplete", onGanonComplete)
+    ganon.on("restoreComplete", onGanonComplete)
+    return () => {
+      ganon.off("hydrationComplete", onGanonComplete)
+      ganon.off("syncComplete", onGanonComplete)
+      ganon.off("restoreComplete", onGanonComplete)
     }
   }, [])
 
