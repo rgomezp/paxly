@@ -15,7 +15,7 @@ const SQUARE_GAP = 5
 const NUM_ROWS = 10 // Total number of rows to display
 
 const OnboardingWowScreen: React.FC<OnboardingWowScreenProps> = ({ onComplete }) => {
-  const { theme, themeContext, themed } = useAppTheme()
+  const { theme, themed } = useAppTheme()
   const [containerWidth, setContainerWidth] = useState(0)
   const [currentRow, setCurrentRow] = useState(0)
   const animationRefs = useRef<Animated.Value[][]>([])
@@ -152,26 +152,13 @@ const OnboardingWowScreen: React.FC<OnboardingWowScreenProps> = ({ onComplete })
   }
 
   const getColorForValue = (level: number): string => {
-    // Use same color logic as AnxietyGrid
-    const colors =
-      themeContext === "dark"
-        ? {
-            // Dark mode: reversed order - darkest for highest anxiety
-            1: theme.colors.palette.accent600,
-            2: theme.colors.palette.accent500,
-            3: theme.colors.palette.accent400,
-            4: theme.colors.palette.accent300,
-            5: theme.colors.palette.accent100,
-          }
-        : {
-            // Light mode: normal order - darkest for highest anxiety
-            1: theme.colors.palette.accent200,
-            2: theme.colors.palette.accent300,
-            3: theme.colors.palette.accent400,
-            4: theme.colors.palette.accent500,
-            5: theme.colors.palette.accent600,
-          }
-
+    const colors = {
+      1: theme.colors.anxietyLevel1,
+      2: theme.colors.anxietyLevel2,
+      3: theme.colors.anxietyLevel3,
+      4: theme.colors.anxietyLevel4,
+      5: theme.colors.anxietyLevel5,
+    }
     return colors[level as keyof typeof colors] || theme.colors.separator
   }
 
