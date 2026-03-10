@@ -5,27 +5,24 @@
  * - Removes the close button (displayCloseButton: false)
  * - Does NOT allow users to bypass without subscribing
  * - Only proceeds to the next step when an active subscription is confirmed
- * - Uses RevenueCat placement offerings for A/B testing
+ * - Uses RevenueCat A/B testing via RevenueCatManager.getCurrentOffering()
  * - Continuously checks subscription status to detect successful purchases
  *
  * Users CANNOT proceed without completing a purchase or having an active subscription.
  */
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { View, StyleSheet, SafeAreaView } from "react-native"
 import RevenueCatUI from "react-native-purchases-ui"
+import { PurchasesOffering } from "react-native-purchases"
 import Log from "../../utils/Log"
 import { useAppTheme } from "@/utils/useAppTheme"
-import { useOffering } from "@/hooks/useOffering"
 import { usePurchaseStatus } from "@/hooks/usePurchaseStatus"
-import {
-  isValidOffering,
-  getAgeRange,
-  getPlacementId,
-  handlePurchaseCompletion,
-  setEntitlementTags,
-} from "@/utils/paywallUtils"
+import { isValidOffering, handlePurchaseCompletion, setEntitlementTags } from "@/utils/paywallUtils"
 import { paywallAnalytics } from "@/utils/paywallAnalytics"
+import { ensureRevenueCatConfigured } from "@/thirdParty/revenueCatUtils"
+import RevenueCatManager from "@/managers/RevenueCatManager"
+import { useOnboardingState } from "@/onboarding/state/useOnboardingState"
 
 interface OnboardingHardPaywallProps {
   onComplete: () => void
@@ -34,12 +31,35 @@ interface OnboardingHardPaywallProps {
 
 const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplete, onCancel }) => {
   const { theme } = useAppTheme()
-  const { offering, isLoading } = useOffering()
+  const { setOriginalOffering } = useOnboardingState()
+  const [offering, setOffering] = useState<PurchasesOffering | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const noOfferingHandledRef = useRef(false)
   const paywallDisplayedRef = useRef(false)
 
   // Monitor purchase status to detect successful purchases
   usePurchaseStatus(onComplete)
+
+  // Fetch offering on mount
+  useEffect(() => {
+    const fetchOffering = async () => {
+      try {
+        await ensureRevenueCatConfigured()
+        const fetchedOffering = await RevenueCatManager.getCurrentOffering()
+        setOffering(fetchedOffering)
+        // Store in context so fallback paywall can use it
+        setOriginalOffering(fetchedOffering)
+      } catch (error) {
+        Log.error(`OnboardingHardPaywall: Error fetching offering: ${error}`)
+        paywallAnalytics.error(String(error), "fetch_offering")
+        setOffering(null)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchOffering()
+  }, [setOriginalOffering])
 
   const handleRestoreCompleted = ({ customerInfo }: { customerInfo: any }) => {
     try {
@@ -95,11 +115,8 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
     if (!isLoading && isValidOffering(offering) && offering && !paywallDisplayedRef.current) {
       paywallDisplayedRef.current = true
 
-      const ageRange = getAgeRange()
-      const placementId = getPlacementId(ageRange)
-
-      Log.info(`OnboardingHardPaywall: Paywall displayed with placement ${placementId}`)
-      paywallAnalytics.displayed(offering.identifier, placementId, ageRange)
+      Log.info(`OnboardingHardPaywall: Paywall displayed with offering ${offering.identifier}`)
+      paywallAnalytics.displayed(offering.identifier)
     }
   }, [isLoading, offering])
 
@@ -128,7 +145,7 @@ const OnboardingHardPaywall: React.FC<OnboardingHardPaywallProps> = ({ onComplet
         <SafeAreaView style={styles.safeArea}>
           <RevenueCatUI.Paywall
             options={{
-              offering: offering, // Use the specific placement offering for A/B testing
+              offering: offering, // Uses A/B testing via RevenueCatManager.getCurrentOffering()
             }}
             onRestoreCompleted={handleRestoreCompleted}
             onDismiss={() => handleCancel("dismiss")}

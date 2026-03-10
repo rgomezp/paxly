@@ -3,7 +3,8 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui"
 import Log from "@/utils/Log"
 import AnalyticsManager from "@/managers/AnalyticsManager"
 import Purchases from "react-native-purchases"
-import { handlePurchaseCompletion, fetchPlacementOffering } from "@/utils/paywallUtils"
+import RevenueCatManager from "@/managers/RevenueCatManager"
+import { handlePurchaseCompletion } from "@/utils/paywallUtils"
 
 // Memory cache for configuration state
 type ConfigState = {
@@ -160,9 +161,9 @@ const executePaywallSafely = async <T>(
 /**
  * Safely presents the RevenueCat paywall on the main thread
  *
- * Uses age-based placement to ensure consistent pricing throughout the app.
+ * Uses RevenueCat A/B testing via RevenueCatManager.getCurrentOffering().
  * If an offeringId is provided (e.g., from deep links), it will be used instead.
- * Falls back to default offering if placement lookup fails.
+ * Falls back to default offering if explicit ID is not found.
  */
 export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL_RESULT> => {
   try {
@@ -176,14 +177,14 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
       // Use explicit offering ID if provided (e.g., from deep links)
       offering = offerings.all[offeringId]
       if (!offering) {
-        Log.warn(`Offering ${offeringId} not found, falling back to age-based placement`)
+        Log.warn(`Offering ${offeringId} not found, falling back to current offering`)
       }
     }
 
-    // If no explicit offering ID or it wasn't found, use age-based placement
+    // If no explicit offering ID or it wasn't found, use current offering with A/B testing
     // This ensures consistent pricing throughout the app (same as onboarding)
     if (!offering) {
-      offering = await fetchPlacementOffering()
+      offering = await RevenueCatManager.getCurrentOffering()
     }
 
     let result: PAYWALL_RESULT
@@ -199,7 +200,7 @@ export const presentPaywallSafely = async (offeringId?: string): Promise<PAYWALL
     } else {
       // Last resort: use RevenueCat's default paywall
       Log.warn(
-        "No offering available (neither explicit ID nor age-based placement), using RevenueCat default",
+        "No offering available (neither explicit ID nor current offering), using RevenueCat default",
       )
       result = await executePaywallSafely(
         () => RevenueCatUI.presentPaywall(),

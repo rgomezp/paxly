@@ -144,7 +144,7 @@ const OnboardingWowScreen: React.FC<OnboardingWowScreenProps> = ({ onComplete })
     }, nextRowStartDelay)
 
     return () => clearTimeout(timer)
-  }, [currentRow, gridData, onComplete])
+  }, [currentRow, gridData, onComplete, screenOpacity, finalTextOpacity])
 
   const handleLayout = (event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout

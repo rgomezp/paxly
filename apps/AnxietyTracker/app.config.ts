@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "paxly",
     scheme: "paxly",
     owner: "honeywolfllc",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -58,7 +58,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.honeywolf.anxietytracker",
-      versionCode: 62,
+      versionCode: 68,
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon-android-adaptive-foreground.png",
         backgroundImage: "./assets/images/app-icon-android-adaptive-background.png",
@@ -80,7 +80,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.anxietytracker",
-      buildNumber: "32",
+      buildNumber: "41",
       config: {
         usesNonExemptEncryption: false,
       },

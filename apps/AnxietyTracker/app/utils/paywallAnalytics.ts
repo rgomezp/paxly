@@ -13,22 +13,6 @@ const safeLogEvent = (eventName: string, params?: Record<string, any>) => {
 }
 
 export const paywallAnalytics = {
-  placementLoaded: (offeringId: string, placement: string, ageRange: string | null) => {
-    safeLogEvent("onboarding_paywall_placement_loaded", {
-      offering_id: offeringId,
-      placement,
-      age_range: ageRange || "unknown",
-    })
-  },
-
-  fallbackOffering: (offeringId: string, reason: string, placementRequested?: string) => {
-    safeLogEvent("onboarding_paywall_fallback_offering", {
-      offering_id: offeringId,
-      reason,
-      ...(placementRequested && { placement_requested: placementRequested }),
-    })
-  },
-
   error: (error: string, step: string) => {
     safeLogEvent("onboarding_paywall_error", {
       error: String(error),
@@ -55,11 +39,9 @@ export const paywallAnalytics = {
     safeLogEvent("onboarding_paywall_no_offering")
   },
 
-  displayed: (offeringId: string, placement: string, ageRange: string | null) => {
+  displayed: (offeringId: string) => {
     safeLogEvent("onboarding_paywall_displayed", {
       offering_id: offeringId || "unknown",
-      placement,
-      age_range: ageRange || "unknown",
     })
   },
 

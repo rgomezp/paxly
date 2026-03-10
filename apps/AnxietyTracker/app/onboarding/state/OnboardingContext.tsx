@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react"
+import { PurchasesOffering } from "react-native-purchases"
 import { OnboardingStep } from "./OnboardingStep"
 import LoginManager from "@/managers/LoginManager"
 import { OneSignal } from "react-native-onesignal"
@@ -13,6 +14,9 @@ interface OnboardingContextType {
   isLoggedIn: boolean
   setStep: (step: OnboardingStep) => void
   completeOnboarding: (emailOptIn: boolean) => Promise<void>
+  /** The original offering shown on the main paywall, used for abandonment paywall */
+  originalOffering: PurchasesOffering | null
+  setOriginalOffering: (offering: PurchasesOffering | null) => void
 }
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null)
@@ -20,6 +24,7 @@ const OnboardingContext = createContext<OnboardingContextType | null>(null)
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [step, setStep] = useState<OnboardingStep>("welcome")
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [originalOffering, setOriginalOffering] = useState<PurchasesOffering | null>(null)
 
   useEffect(() => {
     const loginManager = LoginManager.getInstance()
@@ -68,6 +73,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         isLoggedIn,
         setStep,
         completeOnboarding,
+        originalOffering,
+        setOriginalOffering,
       }}
     >
       {children}
