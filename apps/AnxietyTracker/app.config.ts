@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
     slug: "paxly",
     scheme: "paxly",
     owner: "honeywolfllc",
-    version: "1.0.1",
+    version: "1.0.2",
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
@@ -80,7 +80,7 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.honeywolf.anxietytracker",
-      buildNumber: "41",
+      buildNumber: "43",
       config: {
         usesNonExemptEncryption: false,
       },
