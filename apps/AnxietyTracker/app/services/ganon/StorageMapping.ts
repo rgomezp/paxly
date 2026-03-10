@@ -13,7 +13,7 @@ import { GoalChoices } from "@/types/GoalChoice"
 import { Genders } from "@/types/Gender"
 import { AgeRanges } from "@/types/AgeRange"
 import { RelationshipDurations } from "@/types/RelationshipDuration"
-import { WhoEndedItChoices } from "@/types/WhoEndedIt"
+import { AnxietyDurationChoices } from "@/types/WhoEndedIt"
 import { ContactTemptationSituationsChoices } from "@/types/ContactTemptationSituations"
 import { AppMainGoalChoices } from "@/types/AppMainGoal"
 import { MoodReminderFrequency } from "@/types/MoodReminderFrequency"
@@ -61,7 +61,7 @@ interface StorageMapping {
   gender: Genders | null
   ageRange: AgeRanges | null
   anxietySeverity: RelationshipDurations | null
-  anxietyDuration: WhoEndedItChoices | null
+  anxietyDuration: AnxietyDurationChoices | null
   anxietyTriggerSituation: ContactTemptationSituationsChoices | null
   whatMadeYouOpen: string[] | null
   anxietyFeelings: string[] | null

@@ -1,28 +1,28 @@
 import type { ISlide } from "@/types/ISlide"
 import { MultipleChoiceSelector, type MultipleChoiceOption } from "../shared/MultipleChoiceSelector"
 import Log from "@/utils/Log"
-import { WhoEndedItChoices } from "@/types/WhoEndedIt"
+import { AnxietyDurationChoices } from "@/types/WhoEndedIt"
 import { ganon } from "@/services/ganon/ganon"
 
 type AnxietyDurationSlideProps = {
   onSelection?: () => void
 }
 
-const options: MultipleChoiceOption<WhoEndedItChoices>[] = [
-  { id: WhoEndedItChoices.ME, label: "Less than 6 months" },
-  { id: WhoEndedItChoices.THEM, label: "6 months to 2 years" },
-  { id: WhoEndedItChoices.MUTUAL, label: "More than 2 years" },
+const options: MultipleChoiceOption<AnxietyDurationChoices>[] = [
+  { id: AnxietyDurationChoices.LESS_THAN_6_MONTHS, label: "Less than 6 months" },
+  { id: AnxietyDurationChoices.SIX_MONTHS_TO_TWO_YEARS, label: "6 months to 2 years" },
+  { id: AnxietyDurationChoices.MORE_THAN_TWO_YEARS, label: "More than 2 years" },
 ]
 
 export function anxietyDurationSlide({ onSelection }: AnxietyDurationSlideProps): ISlide {
   // Read saved anxietyDuration from ganon
-  const savedDuration = ganon.get("anxietyDuration") as WhoEndedItChoices | null
+  const savedDuration = ganon.get("anxietyDuration") as AnxietyDurationChoices | null
   const initialSelected = savedDuration ? [savedDuration] : []
 
   const buttonPressed = (optionId: string, shouldAutoAdvance?: boolean) => {
     Log.info(`AnxietyDurationSlide: buttonPressed: ${optionId}`)
 
-    const selectedDuration = optionId as WhoEndedItChoices
+    const selectedDuration = optionId as AnxietyDurationChoices
 
     // Save to ganon with new key
     try {
