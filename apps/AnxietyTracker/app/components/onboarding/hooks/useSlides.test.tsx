@@ -26,7 +26,7 @@ jest.mock("@/services/ganon/ganon", () => {
  * (order or length), the ONBOARDING_VERSION constant must be updated.
  *
  * Expected slide order and IDs - update this when slides change:
- * Last updated for ONBOARDING_VERSION: 1.4
+ * Last updated for ONBOARDING_VERSION: 1.2
  * Note: freeToTrySlide and reminderBellSlide are conditional (leadup_slides flag)
  * Note: testimonialsSlide is conditional (testimonials_slide flag)
  */
@@ -50,7 +50,6 @@ const EXPECTED_SLIDE_IDS = [
   "goalAchievement",
   "moodTrackingIntro",
   "moodReminderFrequency",
-  "congratulationsAward",
   "testimonials",
   "referralSource",
   "freeToTry",
@@ -87,7 +86,6 @@ describe("useSlides - ONBOARDING_VERSION consistency", () => {
       problemSolutionSlide: "problem_solution",
       howItWorksSlide: "howItWorks",
       nicknameSlide: "name_input",
-      congratulationsAwardSlide: "congratulationsAward",
       testimonialsSlide: "testimonials",
       genderSlide: "gender",
       ageSlide: "ageRange",

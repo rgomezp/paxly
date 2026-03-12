@@ -22,7 +22,7 @@ import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-c
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
-import { useInitialRootStore } from "./models"
+import { useInitialRootStore, reloadAllStores } from "./models"
 import { AppNavigator } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import Config from "./config"
@@ -33,13 +33,26 @@ import { InitializationProvider } from "./initialization/InitializationProvider"
 import { OnboardingProvider } from "./onboarding/state/OnboardingContext"
 import { useThemeProvider } from "./utils/useAppTheme"
 import customConfig from "../customConfig"
-import { useEffect } from "react"
-import { StyleSheet } from "react-native"
+import { useEffect, useState } from "react"
+import { StyleSheet, View } from "react-native"
 import LoginManager from "./managers/LoginManager"
+import { ganon } from "@/services/ganon/ganon"
+import { EventRegister } from "@/utils/EventEmitter"
+import { GLOBAL_EVENTS } from "@/constants/events"
 import { FlagProvider } from "./hooks/useFlags"
 import * as SystemUI from "expo-system-ui"
 import { lightTheme, darkTheme } from "./theme"
+import ToastHost from "@/components/toast/ToastHost"
 import { useNatureSounds } from "./hooks/useNatureSounds"
+
+/** Must match splash screen backgroundColor in app.config.ts */
+const SPLASH_BACKGROUND_COLOR = "#191015"
+
+// Prevent splash screen from auto-hiding before app is ready
+// This MUST be called at module level to prevent any flash of blank screen
+SplashScreen.preventAutoHideAsync().catch(() => {
+  // Ignore errors if already prevented or not available
+})
 
 // Web linking configuration
 const prefix = Linking.createURL("/")
@@ -77,6 +90,7 @@ function OnboardingWrapper() {
               <OnboardingProvider>
                 <OnboardingScreen />
               </OnboardingProvider>
+              <ToastHost />
             </KeyboardProvider>
           </ErrorBoundary>
         </FlagProvider>
@@ -85,33 +99,35 @@ function OnboardingWrapper() {
   )
 }
 
+const SPLASH_MIN_DURATION_MS = 1000
+
 function AppContent() {
   const { isInitialized, isOnboardingComplete } = useAppInitialization()
   const { rehydrated } = useInitialRootStore()
+  const [minSplashElapsed, setMinSplashElapsed] = useState(false)
 
   // Manage nature sounds at app level
   useNatureSounds()
 
-  // Hide splash screen when both rehydration and initialization are complete
+  // Ensure splash screen is shown for at least 1 second
   useEffect(() => {
-    if (rehydrated && isInitialized) {
-      // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed
-      setTimeout(() => {
-        SplashScreen.hideAsync().catch(() => {
-          // Ignore errors if splash screen is already hidden
-        })
-      }, 500)
+    const timer = setTimeout(() => setMinSplashElapsed(true), SPLASH_MIN_DURATION_MS)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Hide splash screen once we're ready and minimum duration has elapsed
+  useEffect(() => {
+    if (rehydrated && isInitialized && minSplashElapsed) {
+      SplashScreen.hideAsync().catch(() => {
+        // Ignore errors if splash screen is already hidden
+      })
     }
-  }, [rehydrated, isInitialized])
+  }, [rehydrated, isInitialized, minSplashElapsed])
 
   // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color.
-  // In iOS: application:didFinishLaunchingWithOptions:
-  // In Android: https://stackoverflow.com/a/45838109/204044
-  // You can replace with your own loading component if you wish.
+  // Show a view matching the splash screen background to prevent blank flash.
   if (!rehydrated || !isInitialized) {
-    return null
+    return <View style={styles.splashBackground} />
   }
 
   if (!isOnboardingComplete) {
@@ -131,6 +147,7 @@ function AppContent() {
           <ErrorBoundary catchErrors={Config.catchErrors}>
             <KeyboardProvider>
               <AppNavigator linking={linking} />
+              <ToastHost />
             </KeyboardProvider>
           </ErrorBoundary>
         </FlagProvider>
@@ -144,11 +161,6 @@ export function App() {
   const { ThemeProvider, themeScheme, setThemeContextOverride, navigationTheme } = useThemeProvider(
     config.startingTheme,
   )
-
-  // Prevent the splash screen from auto-hiding until we're ready
-  useEffect(() => {
-    SplashScreen.preventAutoHideAsync()
-  }, [])
 
   // Set system UI background color (affects splash screen area) based on theme
   useEffect(() => {
@@ -166,6 +178,22 @@ export function App() {
     }
   }, [])
 
+  // Reload rootStore from ganon when hydration/sync/restore complete (avoids race with foreground refresh).
+  useEffect(() => {
+    const onGanonComplete = () => {
+      reloadAllStores()
+      EventRegister.emit(GLOBAL_EVENTS.UPDATE_ALL)
+    }
+    ganon.on("hydrationComplete", onGanonComplete)
+    ganon.on("syncComplete", onGanonComplete)
+    ganon.on("restoreComplete", onGanonComplete)
+    return () => {
+      ganon.off("hydrationComplete", onGanonComplete)
+      ganon.off("syncComplete", onGanonComplete)
+      ganon.off("restoreComplete", onGanonComplete)
+    }
+  }, [])
+
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride, navigationTheme }}>
       <InitializationProvider>
@@ -177,6 +205,10 @@ export function App() {
 
 const styles = StyleSheet.create({
   flex1: {
+    flex: 1,
+  },
+  splashBackground: {
+    backgroundColor: SPLASH_BACKGROUND_COLOR,
     flex: 1,
   },
 })

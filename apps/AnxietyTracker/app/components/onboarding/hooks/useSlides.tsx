@@ -18,7 +18,6 @@ import { moodTrackingIntroSlide } from "../slideLibrary/moodTrackingIntroSlide"
 import { wowMomentSlide } from "../slideLibrary/wowMomentSlide"
 import { freeToTrySlide } from "../slideLibrary/freeToTrySlide"
 import { reminderBellSlide } from "../slideLibrary/reminderBellSlide"
-import { congratulationsAwardSlide } from "../slideLibrary/congratulationsAwardSlide"
 import { whatMadeYouOpenSlide } from "../slideLibrary/whatMadeYouOpenSlide"
 import { anxietyFeelingsSlide } from "../slideLibrary/anxietyFeelingsSlide"
 import { copingStyleSlide } from "../slideLibrary/copingStyleSlide"
@@ -93,7 +92,6 @@ export const useSlides = (onSelection?: () => void) => {
       moodTrackingIntroSlide({ onSelection }),
       moodReminderFrequencySlide({ onSelection }),
 
-      congratulationsAwardSlide({ onSelection }), // Award first award
       ...(testimonials_slide ? [testimonialsSlide({ onSelection })] : []), // Social Proof (user testimonials, 10k+ users)
 
       // Final slides

@@ -97,7 +97,9 @@ export const clearAllStores = () => {
 }
 
 /**
- * Reload all stores from ganon. Useful after restore completes.
+ * Reload all stores from ganon. Useful after restore completes (see LoginManager).
+ * This keeps the in-memory rootStore in sync when ganon's cloud-backed keys have
+ * been updated by restore() or hydrate(); without it, rootState would be stale.
  * When new stores are added, they should be reloaded here.
  */
 export const reloadAllStores = () => {

@@ -45,6 +45,13 @@ const palette = {
   positive: "#27A7E0", // Soft green
   negative: "#FF7A5C", // Soft coral
   neutral: "#E0C988", // Soft yellow
+
+  // Anxiety levels 1–5 (dark mode: muted → strong, all visible on dark background)
+  anxietyLevel1: "#6B4A42",
+  anxietyLevel2: "#8F5A4A",
+  anxietyLevel3: "#B86B55",
+  anxietyLevel4: "#E07D62",
+  anxietyLevel5: "#FF9070",
 } as const
 
 export const colors = {
@@ -110,4 +117,12 @@ export const colors = {
    * The default background color of the daily tasks timeline.
    */
   dailyTasksTimelineBackground: palette.neutral300,
+  /**
+   * Anxiety level colors (1 = lowest, 5 = highest). Use these for grids and charts.
+   */
+  anxietyLevel1: palette.anxietyLevel1,
+  anxietyLevel2: palette.anxietyLevel2,
+  anxietyLevel3: palette.anxietyLevel3,
+  anxietyLevel4: palette.anxietyLevel4,
+  anxietyLevel5: palette.anxietyLevel5,
 } as const

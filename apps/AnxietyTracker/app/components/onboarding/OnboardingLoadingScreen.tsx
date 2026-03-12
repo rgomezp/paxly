@@ -10,7 +10,7 @@ import Animated, {
 import { Mascot } from "../Mascot"
 import { useAppTheme } from "@/utils/useAppTheme"
 
-const LOADING_DURATION = 5000 // 5 seconds
+const LOADING_DURATION = 3000 // 3 seconds
 
 interface OnboardingLoadingScreenProps {
   onComplete: () => void

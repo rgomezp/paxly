@@ -28,7 +28,6 @@ import { OneSignal } from "react-native-onesignal"
 import type { AppStackParamList } from "./navigationTypes"
 import { useAppInitialization } from "@/initialization/useAppInitialization"
 import { useInitialRootStore } from "@/models"
-import * as SplashScreen from "expo-splash-screen"
 
 /**
  * This is a list of all the route names that will exit the app if the back button
@@ -221,13 +220,6 @@ const AppStack = observer(function AppStack() {
           Log.error(
             `OneSignal: Both route (${route}) and rc_offering_id provided. Overriding to Home.`,
           )
-        }
-
-        // Ensure splash screen is shown when opening from notification
-        try {
-          await SplashScreen.preventAutoHideAsync()
-        } catch {
-          // Ignore if already prevented
         }
 
         // If app is not initialized, queue the navigation

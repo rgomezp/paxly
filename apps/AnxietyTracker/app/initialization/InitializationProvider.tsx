@@ -22,7 +22,7 @@ export function InitializationProvider({ children }: { children: React.ReactNode
   // Set log level synchronously before any hooks that might log
   Log.setLevel(process.env.NODE_ENV === "development" ? LogLevel.Info : LogLevel.None)
 
-  const isAppCheckComplete = useAppCheck()
+  useAppCheck() // runs in background; completion no longer blocks cold start
   const isOnboardingComplete = useOnboardingFlow()
   const isAudioSetup = useAudio()
 
@@ -53,8 +53,8 @@ export function InitializationProvider({ children }: { children: React.ReactNode
     }
   }, [])
 
-  /* B L O C K I N G */
-  const isInitialized = isAppCheckComplete && areFontsLoaded && isAudioSetup && isDataInitialized
+  /* B L O C K I N G - App Check runs in background to avoid slowing cold start */
+  const isInitialized = areFontsLoaded && isAudioSetup && isDataInitialized
 
   return (
     <InitializationContext.Provider

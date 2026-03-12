@@ -8,6 +8,7 @@ import { IMoodHistoryItem } from "@/types/IMoodHistoryItem"
 import { IDailyTasks } from "@/types/IDailyTasks"
 import { IDailyLessonState } from "@/types/IDailyLessonState"
 import IJournalEntry from "@/types/IJournalEntry"
+import { IDailyStreak } from "@/types/IDailyStreak"
 import { GoalChoices } from "@/types/GoalChoice"
 import { Genders } from "@/types/Gender"
 import { AgeRanges } from "@/types/AgeRange"
@@ -54,6 +55,7 @@ interface StorageMapping {
   finishedOnboarding: boolean
   moodHistory: IMoodHistoryItem[]
   dailyTasks: IDailyTasks
+  dailyStreak: IDailyStreak
   journalEntries: IJournalEntry[]
   goals: GoalChoices[]
   gender: Genders | null
@@ -84,6 +86,8 @@ interface StorageMapping {
   natureSoundsEnabled: boolean
   natureSoundType: "waves" | "birds"
   hasAcceptedMedicalDisclaimer: boolean
+  enjoyBannerResponded: boolean
+  enjoyBannerSaidNo: boolean
 }
 
 export default StorageMapping

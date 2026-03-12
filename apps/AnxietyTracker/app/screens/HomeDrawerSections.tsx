@@ -13,6 +13,7 @@ import UserManager from "@/managers/UserManager"
 import type IUser from "@/types/IUser"
 import { GLOBAL_EVENTS } from "@/constants/events"
 import { EventRegister } from "@/utils/EventEmitter"
+import { ganon } from "@/services/ganon/ganon"
 
 export const useHomeDrawerSections = () => {
   const config = customConfig()
@@ -114,15 +115,18 @@ export const useHomeDrawerSections = () => {
           />,
         )
 
-        // Add Leave a Review button
-        items.push(
-          <LeaveReviewDrawerItem
-            key="leaveReview"
-            text="Leave a Review"
-            style={themed({ color: theme.colors.text })}
-            containerStyle={themed({ marginBottom: theme.spacing.sm })}
-          />,
-        )
+        // Add Leave a Review button (hidden if user said No on enjoy banner)
+        const enjoyBannerSaidNo = (ganon.get("enjoyBannerSaidNo") as boolean | undefined) ?? false
+        if (!enjoyBannerSaidNo) {
+          items.push(
+            <LeaveReviewDrawerItem
+              key="leaveReview"
+              text="Leave a Review"
+              style={themed({ color: theme.colors.text })}
+              containerStyle={themed({ marginBottom: theme.spacing.sm })}
+            />,
+          )
+        }
 
         return items
       },
