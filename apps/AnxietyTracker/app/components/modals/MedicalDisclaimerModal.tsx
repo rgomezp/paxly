@@ -35,16 +35,24 @@ export default function MedicalDisclaimerModal({
   // On Android, delay showing modal content by one frame so layout is measured first.
   // Avoids the accept button being unreachable when modal renders before layout is ready.
   useEffect(() => {
+    let frameId: number | null = null
+
     if (visible) {
       if (Platform.OS === "android") {
-        const id = requestAnimationFrame(() => {
+        frameId = requestAnimationFrame(() => {
           setVisibleReady(true)
         })
-        return () => cancelAnimationFrame(id)
+      } else {
+        setVisibleReady(true)
       }
-      setVisibleReady(true)
     } else {
       setVisibleReady(false)
+    }
+
+    return () => {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId)
+      }
     }
   }, [visible])
 

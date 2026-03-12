@@ -137,5 +137,13 @@
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
-  "referenceBuildSize": 11
+  "referenceBuildSize": 11,
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": ["react-native-confetti-cannon"],
+        "listUnknownPackages": false
+      }
+    }
+  }
 }
